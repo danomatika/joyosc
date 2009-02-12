@@ -1,0 +1,79 @@
+#N canvas 1687 46 850 545 10;
+#X obj 21 92 routeOSC /pd;
+#X obj 21 121 routeOSC /unitd /devices;
+#X obj 21 55 unpackOSC;
+#X obj 615 392 udpsend;
+#X msg 664 321 connect 127.0.0.1 7770;
+#X obj 615 205 packOSC;
+#X obj 615 428 tgl 15 0 empty empty empty 0 -6 0 10 -262144 -1 -1 1
+1;
+#X obj 615 232 prepend send;
+#X msg 663 359 disconnect;
+#X msg 615 166 send /unitd/wiimote \$1;
+#X obj 258 486 tgl 15 0 empty empty empty 0 -6 0 10 -262144 -1 -1 0
+1;
+#X msg 609 137 1;
+#X msg 644 137 0;
+#X obj 125 41 unpack 0 0 0 0;
+#X floatatom 125 64 3 0 0 0 - - -;
+#X floatatom 160 64 3 0 0 0 - - -;
+#X floatatom 196 64 3 0 0 0 - - -;
+#X floatatom 232 64 3 0 0 0 - - -;
+#X text 92 63 from;
+#X obj 21 451 routeOSC /insert /removal /ready /shutdown /wii;
+#X obj 25 487 bng 15 250 50 0 empty empty empty 0 -6 0 10 -262144 -1
+-1;
+#X obj 79 492 bng 15 250 50 0 empty empty empty 0 -6 0 10 -262144 -1
+-1;
+#X obj 138 492 bng 15 250 50 0 empty empty empty 0 -6 0 10 -262144
+-1 -1;
+#X obj 191 490 bng 15 250 50 0 empty empty empty 0 -6 0 10 -262144
+-1 -1;
+#X obj 637 294 sel 0;
+#X obj 637 269 tgl 15 0 empty empty empty 0 -6 0 10 -262144 -1 -1 1
+1;
+#X obj 716 205 loadbang;
+#X msg 716 234 1;
+#X obj 21 17 udpreceive 8880;
+#X text 571 49 start and stop wiimote listening;
+#X text 660 268 connection;
+#X text 46 523 osc receive address for rc-unitd deamon events;
+#X text 258 144 change names to match joystick addresses;
+#X text 271 273 if no match in joy_names.conf;
+#X text 271 291 the kernel name ie "js#" is used;
+#X text 592 90 it may take some seconds to connect;
+#X text 584 69 press 1 + 2 on the wiimote;
+#X text 278 484 wiimote connected;
+#X obj 182 360 unit-classic;
+#X obj 49 176 unit-wiimote wii;
+#X obj 273 176 unit-joystick js1;
+#X connect 0 0 1 0;
+#X connect 1 0 19 0;
+#X connect 1 1 39 0;
+#X connect 1 1 40 0;
+#X connect 2 0 0 0;
+#X connect 3 0 6 0;
+#X connect 4 0 3 0;
+#X connect 5 0 7 0;
+#X connect 7 0 3 0;
+#X connect 8 0 3 0;
+#X connect 9 0 5 0;
+#X connect 11 0 9 0;
+#X connect 12 0 9 0;
+#X connect 13 0 14 0;
+#X connect 13 1 15 0;
+#X connect 13 2 16 0;
+#X connect 13 3 17 0;
+#X connect 19 0 20 0;
+#X connect 19 1 21 0;
+#X connect 19 2 22 0;
+#X connect 19 3 23 0;
+#X connect 19 4 10 0;
+#X connect 24 0 8 0;
+#X connect 24 1 4 0;
+#X connect 25 0 24 0;
+#X connect 26 0 27 0;
+#X connect 27 0 25 0;
+#X connect 28 0 2 0;
+#X connect 28 1 13 0;
+#X connect 39 3 38 0;
