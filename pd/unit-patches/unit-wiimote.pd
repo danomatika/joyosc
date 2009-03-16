@@ -22,17 +22,17 @@
 #X obj 96 55 nbx 3 14 -1e+37 1e+37 0 0 empty \$0-ir-y ir-y 0 -6 0 10
 -204786 -1 -1 0 256;
 #X obj 54 107 nbx 7 14 -1e+37 1e+37 0 0 empty \$0-acc acc -20 6 0 10
--203904 -1 -1 1.04914 256;
+-203904 -1 -1 0 256;
 #X obj 54 83 nbx 3 14 -1e+37 1e+37 0 0 empty \$0-acc-x acc-x 0 -6 0
-10 -203904 -1 -1 120 256;
+10 -203904 -1 -1 0 256;
 #X obj 96 84 nbx 3 14 -1e+37 1e+37 0 0 empty \$0-acc-y acc-y 0 -6 0
-10 -203904 -1 -1 123 256;
+10 -203904 -1 -1 0 256;
 #X obj 11 82 nbx 3 14 -1e+37 1e+37 0 0 empty \$0-acc-z acc-z 0 -6 0
-10 -203904 -1 -1 146 256;
+10 -203904 -1 -1 0 256;
 #X obj 54 147 nbx 7 14 -1e+37 1e+37 0 0 empty \$0-acc-pitch pitch -35
 6 0 10 -203904 -1 -1 0 256;
 #X obj 54 127 nbx 7 14 -1e+37 1e+37 0 0 empty \$0-acc-roll roll -25
-6 0 10 -203904 -1 -1 0.119429 256;
+6 0 10 -203904 -1 -1 0 256;
 #N canvas 0 0 450 300 ir 0;
 #X obj 46 66 unpack f f f;
 #X obj 46 114 s \$0-ir;
@@ -96,7 +96,6 @@
 #X connect 3 1 5 0;
 #X connect 6 0 4 0;
 #X restore 53 315 pd button;
-#X text 275 246 ex: wm0;
 #X symbolatom 54 27 5 0 0 0 button #0-button_name -;
 #X text 391 274 events;
 #X obj 339 332 outlet;
@@ -109,15 +108,16 @@
 #X connect 0 0 3 0;
 #X restore 339 308 pd ext;
 #X obj 68 271 routeOSC /button /ir /acc;
-#X obj 68 222 routeOSC /\$1;
-#X connect 1 0 33 0;
-#X connect 31 0 30 0;
-#X connect 32 0 7 0;
-#X connect 32 0 26 0;
-#X connect 32 1 24 0;
-#X connect 32 1 0 0;
-#X connect 32 2 25 0;
-#X connect 32 2 2 0;
-#X connect 32 3 31 0;
-#X connect 33 0 32 0;
+#X obj 68 222 routeOSC \$1;
+#X text 275 246 ex: /wm0;
+#X connect 1 0 32 0;
+#X connect 30 0 29 0;
+#X connect 31 0 7 0;
+#X connect 31 0 26 0;
+#X connect 31 1 24 0;
+#X connect 31 1 0 0;
+#X connect 31 2 25 0;
+#X connect 31 2 2 0;
+#X connect 31 3 30 0;
+#X connect 32 0 31 0;
 #X coords 0 -1 1 1 140 170 1 0 0;

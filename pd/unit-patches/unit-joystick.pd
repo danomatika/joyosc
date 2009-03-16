@@ -47,8 +47,8 @@
 #X connect 3 0 5 0;
 #X restore 17 280 pd axis;
 #X obj 17 194 routeOSC /axis /button;
-#X obj 17 143 routeOSC /\$1;
-#X text 215 164 ex: joy1;
+#X obj 17 143 routeOSC \$1;
+#X text 215 164 ex: /joy1;
 #X connect 1 0 21 0;
 #X connect 16 0 21 0;
 #X connect 20 0 0 0;
