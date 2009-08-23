@@ -1,0 +1,99 @@
+#N canvas 175 384 567 432 10;
+#X obj 131 336 outlet;
+#X obj 68 180 inlet;
+#X obj 221 329 outlet;
+#X text 112 180 incoming OSC messages;
+#X text 185 222 creation arg : address for the device;
+#X text 23 356 button;
+#X text 172 21 parses incoming OSC data for OSC from unit_wiimote;
+#X obj 48 329 outlet;
+#X text 246 350 acceleration;
+#X text 246 374 acc list: x y z a roll pitch;
+#X text 112 359 ir;
+#X text 114 376 i.e. "0 100 200";
+#X text 112 394 point 0 at (100 \, 200);
+#X text 173 56 has built in gui for simple debugging;
+#X obj 97 27 nbx 2 14 -1e+37 1e+37 0 0 empty \$0-button_val empty -20
+6 0 10 -261234 -1 -1 0 256;
+#X obj 20 55 nbx 2 14 -1e+37 1e+37 0 0 empty \$0-ir ir -15 6 0 10 -204786
+-1 -1 0 256;
+#X obj 54 55 nbx 3 14 -1e+37 1e+37 0 0 empty \$0-ir-x ir-x 0 -6 0 10
+-204786 -1 -1 0 256;
+#X obj 96 55 nbx 3 14 -1e+37 1e+37 0 0 empty \$0-ir-y ir-y 0 -6 0 10
+-204786 -1 -1 0 256;
+#X obj 54 107 nbx 7 14 -1e+37 1e+37 0 0 empty \$0-acc acc -20 6 0 10
+-203904 -1 -1 0 256;
+#X obj 54 83 nbx 3 14 -1e+37 1e+37 0 0 empty \$0-acc-x acc-x 0 -6 0
+10 -203904 -1 -1 0 256;
+#X obj 96 84 nbx 3 14 -1e+37 1e+37 0 0 empty \$0-acc-y acc-y 0 -6 0
+10 -203904 -1 -1 0 256;
+#X obj 11 82 nbx 3 14 -1e+37 1e+37 0 0 empty \$0-acc-z acc-z 0 -6 0
+10 -203904 -1 -1 0 256;
+#X obj 54 147 nbx 7 14 -1e+37 1e+37 0 0 empty \$0-acc-pitch pitch -35
+6 0 10 -203904 -1 -1 0 256;
+#X obj 54 127 nbx 7 14 -1e+37 1e+37 0 0 empty \$0-acc-roll roll -25
+6 0 10 -203904 -1 -1 0 256;
+#N canvas 20 132 450 300 ir 0;
+#X obj 46 66 unpack f f f;
+#X obj 46 22 inlet;
+#X text 96 22 sends to gui and named sends;
+#X obj 46 114 s \$0-ir;
+#X obj 106 122 s \$0-ir-x;
+#X obj 146 96 s \$0-ir-y;
+#X obj 66 48 outlet;
+#X connect 0 0 3 0;
+#X connect 0 1 4 0;
+#X connect 0 2 5 0;
+#X connect 1 0 0 0;
+#X connect 1 0 6 0;
+#X restore 131 308 pd ir;
+#N canvas 12 90 450 300 acc 0;
+#X obj 80 50 inlet;
+#X obj 80 97 unpack f f f f f f;
+#X obj 35 145 s \$0-acc-x;
+#X obj 101 203 s \$0-acc-y;
+#X obj 122 142 s \$0-acc-z;
+#X obj 188 180 s \$0-acc;
+#X obj 255 166 s \$0-acc-roll;
+#X obj 271 116 s \$0-acc-pitch;
+#X text 21 15 unpack acc list and send to gui / named sends;
+#X obj 108 72 outlet;
+#X connect 0 0 1 0;
+#X connect 0 0 9 0;
+#X connect 1 0 2 0;
+#X connect 1 1 3 0;
+#X connect 1 2 4 0;
+#X connect 1 3 5 0;
+#X connect 1 4 6 0;
+#X connect 1 5 7 0;
+#X restore 221 307 pd acc;
+#N canvas 12 90 407 221 button 0;
+#X obj 62 38 inlet;
+#X text 27 13 unpack button messages and send to gui / named sends
+;
+#X obj 96 70 unpack s f;
+#X obj 96 145 s \$0-button_name;
+#X obj 153 99 s \$0-button_val;
+#X obj 96 117 symbol;
+#X obj 62 176 outlet;
+#X connect 0 0 2 0;
+#X connect 0 0 6 0;
+#X connect 2 0 5 0;
+#X connect 2 1 4 0;
+#X connect 5 0 3 0;
+#X restore 48 304 pd button;
+#X symbolatom 54 27 5 0 0 0 button #0-button_name -;
+#X text 128 266 events;
+#X obj 285 306 outlet;
+#X text 290 242 ex: /wm0;
+#X obj 68 225 unit-wiimote \$1;
+#X text 296 290 external events aka Classic \, Nunchuck \, etc;
+#X connect 1 0 31 0;
+#X connect 24 0 0 0;
+#X connect 25 0 2 0;
+#X connect 26 0 7 0;
+#X connect 31 0 26 0;
+#X connect 31 1 24 0;
+#X connect 31 2 25 0;
+#X connect 31 3 29 0;
+#X coords 0 -1 1 1 140 170 1 0 0;
