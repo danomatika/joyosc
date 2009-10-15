@@ -1,0 +1,10 @@
+#
+#	playlist text file
+#
+#	'#' lines are comments
+#
+
+/home/dano/Creative/robotcowboy_pd/RunningMan.pd
+/home/dano/Creative/robotcowboy_pd/Velocipede.pd
+/home/dano/Creative/robotcowboy_pd/ArpeggiateNow.pd
+

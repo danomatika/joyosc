@@ -1,0 +1,54 @@
+# depslib dependency file v1.0
+1183759624 source:/home/dano/src/unit/classes/Joystick_Device.cpp
+	"Joystick_Device.h"
+
+1183759789 /home/dano/src/unit/classes/Joystick_Device.h
+	<sys/ioctl.h>
+	<sys/time.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<stdlib.h>
+	<fcntl.h>
+	<unistd.h>
+	<stdio.h>
+	<errno.h>
+	<string.h>
+	<stdlib.h>
+	<stdint.h>
+	<iostream>
+	<string>
+	<linux/input.h>
+	<linux/joystick.h>
+	<lo/lo.h>
+
+1197399828 source:/home/dano/src/unit/lsjs/main.cpp
+	<unistd.h>
+	<iostream>
+	<sstream>
+	"Joystick_Device.h"
+
+1209170057 source:/home/dano/src/rc-unitd/src/lsjs/main.cpp
+	<unistd.h>
+	<iostream>
+	<sstream>
+	"Joystick_Device.h"
+
+1211949691 /home/dano/src/rc-unitd/src/lib/Joystick_Device.h
+	<sys/ioctl.h>
+	<sys/time.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<stdlib.h>
+	<fcntl.h>
+	<unistd.h>
+	<stdio.h>
+	<errno.h>
+	<string.h>
+	<stdlib.h>
+	<stdint.h>
+	<iostream>
+	<string>
+	<linux/input.h>
+	<linux/joystick.h>
+	<lo/lo.h>
+

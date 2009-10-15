@@ -1,0 +1,49 @@
+#N canvas 400 513 467 288 10;
+#X obj 17 98 inlet;
+#X text 139 30 parses incoming OSC data for OSC from unit_joysticks
+;
+#X text 113 98 incoming OSC messages;
+#X text 111 144 creation arg : address for the device;
+#X text 219 202 events are sent out in lists;
+#X text 248 247 button # 0 is down aka '1';
+#X text 221 224 ex: /button "0 1";
+#X obj 29 56 nbx 2 14 -1e+37 1e+37 0 0 empty \$0-button btn -20 6 0
+10 -261234 -1 -1 6 256;
+#X obj 64 56 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-button-value empty
+0 -6 0 10 -228856 -1 -1 0 256;
+#X obj 29 32 nbx 2 14 -1e+37 1e+37 0 0 empty \$0-axis axis -25 6 0
+10 -204786 -1 -1 3 256;
+#X obj 64 33 nbx 6 14 -1e+37 1e+37 0 0 empty \$0-axis-value values
+0 -6 0 10 -228856 -1 -1 0 256;
+#X text 215 164 ex: /joy1;
+#X obj 17 170 unit-joystick \$1;
+#X obj 17 232 outlet axis;
+#X obj 110 221 outlet button;
+#N canvas 8 69 407 221 button 0;
+#X obj 63 43 inlet;
+#X text 27 13 unpack button messages and send to gui / named sends
+;
+#X obj 96 145 s \$0-button;
+#X obj 153 99 s \$0-button-value;
+#X obj 96 70 unpack f f;
+#X connect 0 0 4 0;
+#X connect 4 0 2 0;
+#X connect 4 1 3 0;
+#X restore 122 198 pd button;
+#N canvas 12 90 407 221 axis 0;
+#X obj 63 43 inlet;
+#X text 27 13 unpack button messages and send to gui / named sends
+;
+#X obj 96 70 unpack f f;
+#X obj 153 99 s \$0-axis-value;
+#X obj 96 145 s \$0-axis;
+#X connect 0 0 2 0;
+#X connect 2 0 4 0;
+#X connect 2 1 3 0;
+#X restore 30 201 pd axis;
+#X connect 0 0 12 0;
+#X connect 12 0 13 0;
+#X connect 12 0 16 0;
+#X connect 12 1 14 0;
+#X connect 12 1 15 0;
+#X coords 0 -1 1 1 130 75 1 0 0;
