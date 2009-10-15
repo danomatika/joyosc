@@ -1,0 +1,132 @@
+# depslib dependency file v1.0
+1197311330 source:/home/dano/src/classes/dbus_class/main.cpp
+	<unistd.h>
+	<cstdlib>
+	<iostream>
+	<dbus/dbus.h>
+	"DBus.h"
+
+1246979971 /usr/include/dbus-1.0//dbus/dbus.h
+	<dbus/dbus-arch-deps.h>
+	<dbus/dbus-address.h>
+	<dbus/dbus-bus.h>
+	<dbus/dbus-connection.h>
+	<dbus/dbus-errors.h>
+	<dbus/dbus-macros.h>
+	<dbus/dbus-message.h>
+	<dbus/dbus-misc.h>
+	<dbus/dbus-pending-call.h>
+	<dbus/dbus-protocol.h>
+	<dbus/dbus-server.h>
+	<dbus/dbus-shared.h>
+	<dbus/dbus-signature.h>
+	<dbus/dbus-threads.h>
+	<dbus/dbus-types.h>
+
+1246979971 /usr/lib/dbus-1.0/include//dbus/dbus-arch-deps.h
+	<dbus/dbus-macros.h>
+
+1246979971 /usr/include/dbus-1.0//dbus/dbus-macros.h
+
+1246979971 /usr/include/dbus-1.0//dbus/dbus-address.h
+	<dbus/dbus-types.h>
+	<dbus/dbus-errors.h>
+
+1246979971 /usr/include/dbus-1.0//dbus/dbus-types.h
+	<stddef.h>
+	<dbus/dbus-arch-deps.h>
+
+1246979971 /usr/include/dbus-1.0//dbus/dbus-errors.h
+	<dbus/dbus-macros.h>
+	<dbus/dbus-types.h>
+
+1246979971 /usr/include/dbus-1.0//dbus/dbus-bus.h
+	<dbus/dbus-connection.h>
+
+1246979971 /usr/include/dbus-1.0//dbus/dbus-connection.h
+	<dbus/dbus-errors.h>
+	<dbus/dbus-memory.h>
+	<dbus/dbus-message.h>
+	<dbus/dbus-shared.h>
+
+1246979971 /usr/include/dbus-1.0//dbus/dbus-memory.h
+	<dbus/dbus-macros.h>
+	<stddef.h>
+
+1246979971 /usr/include/dbus-1.0//dbus/dbus-message.h
+	<dbus/dbus-macros.h>
+	<dbus/dbus-types.h>
+	<dbus/dbus-arch-deps.h>
+	<dbus/dbus-memory.h>
+	<dbus/dbus-errors.h>
+	<stdarg.h>
+
+1246979971 /usr/include/dbus-1.0//dbus/dbus-shared.h
+
+1246979971 /usr/include/dbus-1.0//dbus/dbus-misc.h
+	<dbus/dbus-types.h>
+	<dbus/dbus-errors.h>
+
+1246979971 /usr/include/dbus-1.0//dbus/dbus-pending-call.h
+	<dbus/dbus-macros.h>
+	<dbus/dbus-types.h>
+	<dbus/dbus-connection.h>
+
+1246979971 /usr/include/dbus-1.0//dbus/dbus-protocol.h
+
+1246979971 /usr/include/dbus-1.0//dbus/dbus-server.h
+	<dbus/dbus-errors.h>
+	<dbus/dbus-message.h>
+	<dbus/dbus-connection.h>
+	<dbus/dbus-protocol.h>
+
+1246979971 /usr/include/dbus-1.0//dbus/dbus-signature.h
+	<dbus/dbus-macros.h>
+	<dbus/dbus-types.h>
+	<dbus/dbus-errors.h>
+
+1246979971 /usr/include/dbus-1.0//dbus/dbus-threads.h
+	<dbus/dbus-macros.h>
+	<dbus/dbus-types.h>
+
+1197312232 source:/home/dano/src/classes/dbus_class/src/DBus.cpp
+	"DBus.h"
+
+1197311282 /home/dano/src/classes/dbus_class/include/DBus.h
+	<unistd.h>
+	<cstdlib>
+	<iostream>
+	<dbus/dbus.h>
+
+1208903529 source:/home/dano/src/unit/classes/tests/dbus_class/main.cpp
+	<unistd.h>
+	<cstdlib>
+	<iostream>
+	<dbus/dbus.h>
+	"../../DBus.h"
+
+1208903566 source:/home/dano/src/unit/classes/DBus.cpp
+	"DBus.h"
+
+1208903514 /home/dano/src/unit/classes/DBus.h
+	<unistd.h>
+	<cstdlib>
+	<iostream>
+	<dbus/dbus.h>
+
+1208903566 source:/home/dano/src/rc-unitd/tags/rc-unitd-0.1.0-orig/classes/DBus.cpp
+	"DBus.h"
+
+1208903514 /home/dano/src/rc-unitd/tags/rc-unitd-0.1.0-orig/classes/DBus.h
+	<unistd.h>
+	<cstdlib>
+	<iostream>
+	<dbus/dbus.h>
+
+1255581090 source:/home/dano/src/rc-unitd/tags/rc-unitd-0.1.0-orig/classes/tests/dbus_class/main.cpp
+	<cstdlib>
+	<cstring>
+	<iostream>
+	<dbus/dbus.h>
+	"../../DBus.h"
+

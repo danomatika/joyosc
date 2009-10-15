@@ -1,0 +1,81 @@
+This is written to the file
+OSC send to : /unit 127.0.0.1 4000
+
+Number of joysticks found: 2
+Create Joystick object
+OSC Addr: /unit/drumpad
+  Id: 0
+  Name: WiseGroup.,Ltd MP-8866 Dual USB Joypad
+  Num Axes: 6
+  Num Balls: 0
+  Num Buttons: 12
+  Num Hats: 0
+OSC Addr: /unit/gamepad
+  Id: 1
+  Name: WiseGroup.,Ltd MP-8866 Dual USB Joypad
+  Num Axes: 6
+  Num Balls: 0
+  Num Buttons: 12
+  Num Hats: 0
+Listening Loop Started
+ Joy: 0 Button: 0 State: 0
+ Joy: 0 Button: 0 State: 0
+ Joy: 0 Button: 1 State: 0
+ Joy: 0 Button: 1 State: 0
+ Joy: 0 Button: 2 State: 0
+ Joy: 0 Button: 2 State: 0
+ Joy: 0 Button: 3 State: 0
+ Joy: 0 Button: 3 State: 0
+ Joy: 0 Button: 4 State: 0
+ Joy: 0 Button: 4 State: 0
+ Joy: 0 Button: 5 State: 0
+ Joy: 0 Button: 5 State: 0
+ Joy: 0 Button: 6 State: 0
+ Joy: 0 Button: 6 State: 0
+ Joy: 0 Button: 7 State: 0
+ Joy: 0 Button: 7 State: 0
+ Joy: 0 Button: 8 State: 0
+ Joy: 0 Button: 8 State: 0
+ Joy: 0 Button: 9 State: 0
+ Joy: 0 Button: 9 State: 0
+ Joy: 0 Button: 10 State: 0
+ Joy: 0 Button: 10 State: 0
+ Joy: 0 Button: 11 State: 0
+ Joy: 0 Button: 11 State: 0
+ Joy: 0 Axis: 0 Value: 0
+ Joy: 0 Axis: 1 Value: 0
+ Joy: 0 Axis: 2 Value: 0
+ Joy: 0 Axis: 3 Value: 0
+ Joy: 0 Axis: 4 Value: 0
+ Joy: 0 Axis: 5 Value: 0
+ Joy: 1 Button: 0 State: 0
+ Joy: 1 Button: 0 State: 0
+ Joy: 1 Button: 1 State: 0
+ Joy: 1 Button: 1 State: 0
+ Joy: 1 Button: 2 State: 0
+ Joy: 1 Button: 2 State: 0
+ Joy: 1 Button: 3 State: 0
+ Joy: 1 Button: 3 State: 0
+ Joy: 1 Button: 4 State: 0
+ Joy: 1 Button: 4 State: 0
+ Joy: 1 Button: 5 State: 0
+ Joy: 1 Button: 5 State: 0
+ Joy: 1 Button: 6 State: 0
+ Joy: 1 Button: 6 State: 0
+ Joy: 1 Button: 7 State: 0
+ Joy: 1 Button: 7 State: 0
+ Joy: 1 Button: 8 State: 0
+ Joy: 1 Button: 8 State: 0
+ Joy: 1 Button: 9 State: 0
+ Joy: 1 Button: 9 State: 0
+ Joy: 1 Button: 10 State: 0
+ Joy: 1 Button: 10 State: 0
+ Joy: 1 Button: 11 State: 0
+ Joy: 1 Button: 11 State: 0
+ Joy: 1 Axis: 0 Value: 0
+ Joy: 1 Axis: 1 Value: 0
+ Joy: 1 Axis: 2 Value: 0
+ Joy: 1 Axis: 3 Value: 0
+ Joy: 1 Axis: 4 Value: 0
+ Joy: 1 Axis: 5 Value: 0
+Exited cleanly

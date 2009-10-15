@@ -1,0 +1,291 @@
+# depslib dependency file v1.0
+1197365462 source:/home/dano/src/unit/classes/tests/class_tests/Test_Application.cpp
+	"Test_Application.h"
+
+1197316417 /home/dano/src/unit/classes/tests/class_tests/Test_Application.h
+	<iostream>
+	<termios.h>
+	<signal.h>
+	<cstring>
+	"../../Application.h"
+
+1183761331 /home/dano/src/unit/classes/Application.h
+	<unistd.h>
+	<iostream>
+	<fstream>
+	<string>
+	<signal.h>
+	<errno.h>
+
+1197364186 source:/home/dano/src/unit/classes/tests/class_tests/Test_Config.cpp
+	"Test_Config.h"
+
+1197316426 /home/dano/src/unit/classes/tests/class_tests/Test_Config.h
+	<iostream>
+	"../../Config.h"
+
+1183760985 /home/dano/src/unit/classes/Config.h
+	<iostream>
+	<fstream>
+	<sstream>
+	<string>
+	<map>
+
+1179316575 source:/home/dano/src/unit/classes/tests/class_tests/Test_Joystick.cpp
+	"Test_Joystick.h"
+
+1197316434 /home/dano/src/unit/classes/tests/class_tests/Test_Joystick.h
+	<iostream>
+	<vector>
+	<unistd.h>
+	<signal.h>
+	"../../Joystick_Device.h"
+
+1183759789 /home/dano/src/unit/classes/Joystick_Device.h
+	<sys/ioctl.h>
+	<sys/time.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<stdlib.h>
+	<fcntl.h>
+	<unistd.h>
+	<stdio.h>
+	<errno.h>
+	<string.h>
+	<stdlib.h>
+	<stdint.h>
+	<iostream>
+	<string>
+	<linux/input.h>
+	<linux/joystick.h>
+	<lo/lo.h>
+
+1178162264 source:/home/dano/src/unit/classes/tests/class_tests/Test_Osc.cpp
+	"Test_Osc.h"
+
+1197316442 /home/dano/src/unit/classes/tests/class_tests/Test_Osc.h
+	<cstdio>
+	<cstdlib>
+	<unistd.h>
+	<string>
+	<iostream>
+	"lo/lo.h"
+	"../../Osc_Server.h"
+
+1183759551 /home/dano/src/unit/classes/Osc_Server.h
+	"lo/lo.h"
+
+1197364182 source:/home/dano/src/unit/classes/tests/class_tests/Test_Playlist.cpp
+	"Test_Playlist.h"
+
+1197316449 /home/dano/src/unit/classes/tests/class_tests/Test_Playlist.h
+	<iostream>
+	"../../Playlist.h"
+
+1183759397 /home/dano/src/unit/classes/Playlist.h
+	<iostream>
+	<fstream>
+	<string>
+	<vector>
+
+1184073891 source:/home/dano/src/unit/classes/tests/class_tests/Test_Serial_Device.cpp
+	"Test_Serial_Device.h"
+
+1197316509 /home/dano/src/unit/classes/tests/class_tests/Test_Serial_Device.h
+	<iostream>
+	<termios.h>
+	<signal.h>
+	<string>
+	"../../Serial_Device.h"
+
+1183758638 /home/dano/src/unit/classes/Serial_Device.h
+	<unistd.h>
+	<fcntl.h>
+	<termios.h>
+	<errno.h>
+	<iostream>
+	<string>
+	<errno.h>
+	<lo/lo.h>
+
+1178114017 source:/home/dano/src/unit/classes/tests/class_tests/Test_Sound_Feedback.cpp
+	"Test_Sound_Feedback.h"
+
+1197316517 /home/dano/src/unit/classes/tests/class_tests/Test_Sound_Feedback.h
+	<iostream>
+	<string>
+	"../../Application.h"
+	"../../Sound_Feedback.h"
+
+1183758512 /home/dano/src/unit/classes/Sound_Feedback.h
+	<string>
+	"Application.h"
+
+1178964547 source:/home/dano/src/unit/classes/tests/class_tests/Test_Unit.cpp
+	"Test_Unit.h"
+
+1197316530 /home/dano/src/unit/classes/tests/class_tests/Test_Unit.h
+	<iostream>
+	"../../Unit.h"
+	"../../Devices.h"
+	"../../Button_Box.h"
+	"../../Playlist.h"
+	"../../Config.h"
+
+1197316542 /home/dano/src/unit/classes/Unit.h
+	<string>
+	<iostream>
+	<sstream>
+	<signal.h>
+	<vector>
+	<sys/types.h>
+	<sys/wait.h>
+	<lo/lo.h>
+	<time.h>
+	<sys/time.h>
+	"Application.h"
+	"Osc_Server.h"
+	"Serial_Device.h"
+	"Sound_Feedback.h"
+
+1183760778 /home/dano/src/unit/classes/Devices.h
+	<string>
+	<sstream>
+	<map>
+	<vector>
+	"Config.h"
+	"Joystick_Device.h"
+	"Serial_Device.h"
+
+1183761158 /home/dano/src/unit/classes/Button_Box.h
+	<time.h>
+	<sys/time.h>
+	"Serial_Device.h"
+
+1197321954 source:/home/dano/src/unit/classes/tests/class_tests/main.cpp
+	"Tests.h"
+
+1197321959 /home/dano/src/unit/classes/tests/class_tests/Tests.h
+	<cstdio>
+	<cstdlib>
+	<unistd.h>
+	<string>
+	<iostream>
+	"lo/lo.h"
+	"Test_Application.h"
+	"Test_Sound_Feedback.h"
+	"Test_Playlist.h"
+	"Test_Config.h"
+
+1183761213 source:/home/dano/src/unit/classes/Application.cpp
+	"Application.h"
+
+1184083634 source:/home/dano/src/unit/classes/Button_Box.cpp
+	"Button_Box.h"
+
+1183760804 source:/home/dano/src/unit/classes/Config.cpp
+	"Config.h"
+
+1184083755 source:/home/dano/src/unit/classes/Devices.cpp
+	"Devices.h"
+
+1183759624 source:/home/dano/src/unit/classes/Joystick_Device.cpp
+	"Joystick_Device.h"
+
+1183759455 source:/home/dano/src/unit/classes/Osc_Server.cpp
+	"Osc_Server.h"
+
+1183758904 source:/home/dano/src/unit/classes/Playlist.cpp
+	"Playlist.h"
+
+1184084192 source:/home/dano/src/unit/classes/Serial_Device.cpp
+	"Serial_Device.h"
+
+1183758359 source:/home/dano/src/unit/classes/Sound_Feedback.cpp
+	"Sound_Feedback.h"
+
+1187519640 source:/home/dano/src/unit/classes/Unit.cpp
+	"Unit.h"
+
+1183761213 source:/home/dano/src/rc-unitd/tags/rc-unitd-0.1.0-orig/classes/Application.cpp
+	"Application.h"
+
+1183761331 /home/dano/src/rc-unitd/tags/rc-unitd-0.1.0-orig/classes/Application.h
+	<unistd.h>
+	<iostream>
+	<fstream>
+	<string>
+	<signal.h>
+	<errno.h>
+
+1183758904 source:/home/dano/src/rc-unitd/tags/rc-unitd-0.1.0-orig/classes/Playlist.cpp
+	"Playlist.h"
+
+1183759397 /home/dano/src/rc-unitd/tags/rc-unitd-0.1.0-orig/classes/Playlist.h
+	<iostream>
+	<fstream>
+	<string>
+	<vector>
+
+1183758359 source:/home/dano/src/rc-unitd/tags/rc-unitd-0.1.0-orig/classes/Sound_Feedback.cpp
+	"Sound_Feedback.h"
+
+1183758512 /home/dano/src/rc-unitd/tags/rc-unitd-0.1.0-orig/classes/Sound_Feedback.h
+	<string>
+	"Application.h"
+
+1197365462 source:/home/dano/src/rc-unitd/tags/rc-unitd-0.1.0-orig/classes/tests/class_tests/Test_Application.cpp
+	"Test_Application.h"
+
+1197316417 /home/dano/src/rc-unitd/tags/rc-unitd-0.1.0-orig/classes/tests/class_tests/Test_Application.h
+	<iostream>
+	<termios.h>
+	<signal.h>
+	<cstring>
+	"../../Application.h"
+
+1197364186 source:/home/dano/src/rc-unitd/tags/rc-unitd-0.1.0-orig/classes/tests/class_tests/Test_Config.cpp
+	"Test_Config.h"
+
+1197316426 /home/dano/src/rc-unitd/tags/rc-unitd-0.1.0-orig/classes/tests/class_tests/Test_Config.h
+	<iostream>
+	"../../Config.h"
+
+1197368624 /home/dano/src/rc-unitd/tags/rc-unitd-0.1.0-orig/classes/Config.h
+	<iostream>
+	<fstream>
+	<sstream>
+	<string>
+	<map>
+
+1197364182 source:/home/dano/src/rc-unitd/tags/rc-unitd-0.1.0-orig/classes/tests/class_tests/Test_Playlist.cpp
+	"Test_Playlist.h"
+
+1197316449 /home/dano/src/rc-unitd/tags/rc-unitd-0.1.0-orig/classes/tests/class_tests/Test_Playlist.h
+	<iostream>
+	"../../Playlist.h"
+
+1197365848 source:/home/dano/src/rc-unitd/tags/rc-unitd-0.1.0-orig/classes/tests/class_tests/Test_Sound_Feedback.cpp
+	"Test_Sound_Feedback.h"
+
+1197316517 /home/dano/src/rc-unitd/tags/rc-unitd-0.1.0-orig/classes/tests/class_tests/Test_Sound_Feedback.h
+	<iostream>
+	<string>
+	"../../Application.h"
+	"../../Sound_Feedback.h"
+
+1197321954 source:/home/dano/src/rc-unitd/tags/rc-unitd-0.1.0-orig/classes/tests/class_tests/main.cpp
+	"Tests.h"
+
+1197321959 /home/dano/src/rc-unitd/tags/rc-unitd-0.1.0-orig/classes/tests/class_tests/Tests.h
+	<cstdio>
+	<cstdlib>
+	<unistd.h>
+	<string>
+	<iostream>
+	"lo/lo.h"
+	"Test_Application.h"
+	"Test_Sound_Feedback.h"
+	"Test_Playlist.h"
+	"Test_Config.h"
+

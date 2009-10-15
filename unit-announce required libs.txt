@@ -1,0 +1,9 @@
+Run Time
+- dbus
+- dbus-glib
+- libglib2.0-0 
+
+Build
+- libdbus-1-dev
+- libdbus-glib-1-dev
+- libglib2.0-dev 

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="unitd" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../bin/unitd" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../bin" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="../bin/unitd" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../bin" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add directory="/usr/include/dbus-1.0/" />
+			<Add directory="/usr/lib/dbus-1.0/include/" />
+			<Add directory="../classes" />
+		</Compiler>
+		<Linker>
+			<Add library="dbus-1" />
+			<Add library="dbus-glib-1" />
+			<Add library="liblo" />
+			<Add library="cwiid" />
+		</Linker>
+		<Unit filename="../bin/config.txt" />
+		<Unit filename="../bin/joy_names.txt" />
+		<Unit filename="../bin/log.txt" />
+		<Unit filename="../bin/playlist.txt" />
+		<Unit filename="../classes/Config.cpp" />
+		<Unit filename="../classes/Config.h" />
+		<Unit filename="../classes/DBus.cpp" />
+		<Unit filename="../classes/DBus.h" />
+		<Unit filename="../classes/Devices.cpp" />
+		<Unit filename="../classes/Devices.h" />
+		<Unit filename="../classes/Joystick_Device.cpp" />
+		<Unit filename="../classes/Joystick_Device.h" />
+		<Unit filename="../classes/Led_Mask.cpp" />
+		<Unit filename="../classes/Led_Mask.h" />
+		<Unit filename="../classes/Osc_Server.cpp" />
+		<Unit filename="../classes/Osc_Server.h" />
+		<Unit filename="../classes/Serial_Device.cpp" />
+		<Unit filename="../classes/Serial_Device.h" />
+		<Unit filename="../classes/Wiimote.cpp" />
+		<Unit filename="../classes/Wiimote.h" />
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<envvars />
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

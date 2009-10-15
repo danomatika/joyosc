@@ -1,0 +1,56 @@
+# depslib dependency file v1.0
+1197336195 source:/home/dano/src/unit/classes/tests/joystick_class/main.cpp
+	<iostream>
+	<vector>
+	<unistd.h>
+	<signal.h>
+	"../../Joystick_Device.h"
+
+1183759789 /home/dano/src/unit/classes/Joystick_Device.h
+	<sys/ioctl.h>
+	<sys/time.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<stdlib.h>
+	<fcntl.h>
+	<unistd.h>
+	<stdio.h>
+	<errno.h>
+	<string.h>
+	<stdlib.h>
+	<stdint.h>
+	<iostream>
+	<string>
+	<linux/input.h>
+	<linux/joystick.h>
+	<lo/lo.h>
+
+1183759624 source:/home/dano/src/unit/classes/Joystick_Device.cpp
+	"Joystick_Device.h"
+
+1197336195 source:/home/dano/src/rc-unitd/tags/rc-unitd-0.1.0-orig/classes/tests/joystick_class/main.cpp
+	<iostream>
+	<vector>
+	<unistd.h>
+	<signal.h>
+	"../../Joystick_Device.h"
+
+1197400023 /home/dano/src/rc-unitd/tags/rc-unitd-0.1.0-orig/classes/Joystick_Device.h
+	<sys/ioctl.h>
+	<sys/time.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<stdlib.h>
+	<fcntl.h>
+	<unistd.h>
+	<stdio.h>
+	<errno.h>
+	<string.h>
+	<stdlib.h>
+	<stdint.h>
+	<iostream>
+	<string>
+	<linux/input.h>
+	<linux/joystick.h>
+	<lo/lo.h>
+
