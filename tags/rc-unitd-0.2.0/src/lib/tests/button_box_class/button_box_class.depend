@@ -1,0 +1,29 @@
+# depslib dependency file v1.0
+1197318960 source:/home/dano/src/unit/classes/Button_Box.cpp
+	"Button_Box.h"
+
+1183761158 /home/dano/src/unit/classes/Button_Box.h
+	<time.h>
+	<sys/time.h>
+	"Serial_Device.h"
+
+1183758638 /home/dano/src/unit/classes/Serial_Device.h
+	<unistd.h>
+	<fcntl.h>
+	<termios.h>
+	<errno.h>
+	<iostream>
+	<string>
+	<errno.h>
+	<lo/lo.h>
+
+1184084192 source:/home/dano/src/unit/classes/Serial_Device.cpp
+	"Serial_Device.h"
+
+1197319302 source:/home/dano/src/unit/classes/tests/button_box_class/main.cpp
+	<iostream>
+	<termios.h>
+	<signal.h>
+	<string>
+	"../../Button_Box.h"
+

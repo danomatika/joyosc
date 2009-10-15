@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="libunit" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="lib/libunit" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Debug/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="lib/libunit" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Release/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add directory="/usr/include/dbus-1.0" />
+			<Add directory="/usr/lib/dbus-1.0/include" />
+		</Compiler>
+		<Linker>
+			<Add library="dbus-1" />
+			<Add library="liblo" />
+			<Add library="cwiid" />
+		</Linker>
+		<Unit filename="../src/lib/Config.cpp" />
+		<Unit filename="../src/lib/Config.h" />
+		<Unit filename="../src/lib/DBus.cpp" />
+		<Unit filename="../src/lib/DBus.h" />
+		<Unit filename="../src/lib/Devices.cpp" />
+		<Unit filename="../src/lib/Devices.h" />
+		<Unit filename="../src/lib/Joystick_Device.cpp" />
+		<Unit filename="../src/lib/Joystick_Device.h" />
+		<Unit filename="../src/lib/Osc_Server.cpp" />
+		<Unit filename="../src/lib/Osc_Server.h" />
+		<Unit filename="../src/lib/Serial_Device.cpp" />
+		<Unit filename="../src/lib/Serial_Device.h" />
+		<Unit filename="../src/lib/Unit.cpp" />
+		<Unit filename="../src/lib/Unit.h" />
+		<Unit filename="../src/lib/Wiimote.cpp" />
+		<Unit filename="../src/lib/Wiimote.h" />
+		<Extensions>
+			<envvars />
+			<code_completion />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

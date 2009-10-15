@@ -1,0 +1,272 @@
+*** robotcowboy unit underway ***
+
+start jack
+jackd 0.103.0
+Copyright 2001-2005 Paul Davis and others.
+jackd comes with ABSOLUTELY NO WARRANTY
+This is free software, and you are welcome to redistribute it
+under certain conditions; see the file COPYING for details
+
+
+start pd
+
+alsa midi connect UA-25 -> Pure Data
+
+changed w dir /home/dano/src/unit/bin
+
+start unitd device daemon
+*** unitd begin ***
+
+dbus listener initializing ...
+   signal: com.unit.notify
+... dbus ready
+
+osc send initializing ...
+   ip: 127.0.0.1
+   port: 8880
+   base osc_addr: /pd/unitd
+   unit event sends (bools):
+       /pd/unitd/insert
+       /pd/unitd/removal
+       /pd/unitd/ready
+       /pd/unitd/shutdown
+       /pd/unitd/wii
+... send ready
+
+osc server starting up ...
+   port: 7770
+ ... server running
+
+setting up existing devices ...
+Joystick name -> osc_addr mappings:
+   0 LuenKeung Co.,Ltd USB  Joystick = /ps2black
+   1 Saitek P990 Dual Analog Pad = /bbox
+   2 WiseGroup.,Ltd MP-8866 Dual USB Joypad = /ps2purple
+Joystick registered: "js0"
+OSC Addr: /pd/devices/bbox
+   Dev Name: js0
+   Name: Saitek P990 Dual Analog Pad
+   Num Axes: 6
+   Num Buttons: 14
+... devices ready
+
+initialize wiimote ...
+   ip: 127.0.0.1
+   port: 8880
+   base osc_addr: /pd/devices/wii
+... ready for connection
+
+*** start listening ***
+
+   Signal Caught.  Exiting ...
+
+*** listening stopped ***
+
+shutting down devices ... devices shut down
+
+stopping osc server ... server stopped
+
+*** unitd sucessfully shutdown ***
+shutdown pd
+<init> : Avifile RELEASE-0.7.47-070916-12:47-4.1.3
+<init> : Available CPU flags: fpu vme de pse tsc msr mce cx8 sep mtrr pge mca cmov pat clflush dts acpi mmx fxsr sse sse2 tm pbe up est tm2
+<init> : 1500.00 MHz Intel(R) Pentium(R) M processor 1500MHz detected
+
+
+*** robotcowboy unit exited successfully ***
+*** robotcowboy unit underway ***
+
+start jack
+jackd 0.103.0
+Copyright 2001-2005 Paul Davis and others.
+jackd comes with ABSOLUTELY NO WARRANTY
+This is free software, and you are welcome to redistribute it
+under certain conditions; see the file COPYING for details
+
+
+start pd
+
+alsa midi connect UA-25 -> Pure Data
+
+changed w dir /home/dano/src/unit/bin
+
+start unitd device daemon
+*** unitd begin ***
+
+dbus listener initializing ...
+   signal: com.unit.notify
+... dbus ready
+
+osc send initializing ...
+   ip: 127.0.0.1
+   port: 8880
+   base osc_addr: /pd/unitd
+   unit event sends (bools):
+       /pd/unitd/insert
+       /pd/unitd/removal
+       /pd/unitd/ready
+       /pd/unitd/shutdown
+       /pd/unitd/wii
+... send ready
+
+osc server starting up ...
+   port: 7770
+ ... server running
+
+setting up existing devices ...
+Joystick name -> osc_addr mappings:
+   0 LuenKeung Co.,Ltd USB  Joystick = /ps2black
+   1 Saitek P990 Dual Analog Pad = /bbox
+   2 WiseGroup.,Ltd MP-8866 Dual USB Joypad = /ps2purple
+Joystick registered: "js0"
+OSC Addr: /pd/devices/bbox
+   Dev Name: js0
+   Name: Saitek P990 Dual Analog Pad
+   Num Axes: 6
+   Num Buttons: 14
+... devices ready
+
+initialize wiimote ...
+   ip: 127.0.0.1
+   port: 8880
+   base osc_addr: /pd/devices/wii
+... ready for connection
+
+*** start listening ***
+
+Put Wiimote in discoverable mode now (press 1+2)...
+Wiimote 0: connected
+OSC Addr: /pd/devices/wii
+  Wiimote Id: 0
+  Bt Addr: 00:19:1D:C2:E6:C4
+Wiimote 0: thread listening
+Wiimote 0: disconnected
+Wiimote 0: thread stopped
+Put Wiimote in discoverable mode now (press 1+2)...
+Wiimote 1: connected
+OSC Addr: /pd/devices/wii
+  Wiimote Id: 1
+  Bt Addr: 00:19:1D:C2:E6:C4
+Wiimote 1: thread listening
+Wiimote 1: disconnected
+Wiimote 1: thread stopped
+Put Wiimote in discoverable mode now (press 1+2)...
+Wiimote 2: connected
+OSC Addr: /pd/devices/wii
+  Wiimote Id: 2
+  Bt Addr: 00:19:1D:C2:E6:C4
+Wiimote 2: thread listening
+Wiimote connected, ignoring connection request
+Wiimote 2: disconnected
+Wiimote 2: thread stopped
+Put Wiimote in discoverable mode now (press 1+2)...
+Wiimote 3: connected
+OSC Addr: /pd/devices/wii
+  Wiimote Id: 3
+  Bt Addr: 00:19:1D:C2:E6:C4
+Wiimote 3: thread listening
+Wiimote 3: disconnected
+Wiimote 3: thread stopped
+Put Wiimote in discoverable mode now (press 1+2)...
+Wiimote 4: connected
+OSC Addr: /pd/devices/wii
+  Wiimote Id: 4
+  Bt Addr: 00:19:1D:C2:E6:C4
+Wiimote 4: thread listening
+   Signal Caught.  Exiting ...
+
+*** listening stopped ***
+
+disconnecting from wiimote ...
+Wiimote 4: disconnected
+Wiimote 4: thread stopped
+... wiimote connection shut down
+
+shutting down devices ... devices shut down
+
+stopping osc server ... server stopped
+
+*** unitd sucessfully shutdown ***
+shutdown pd
+
+
+*** robotcowboy unit exited successfully ***
+<init> : Avifile RELEASE-0.7.47-070916-12:47-4.1.3
+<init> : Available CPU flags: fpu vme de pse tsc msr mce cx8 sep mtrr pge mca cmov pat clflush dts acpi mmx fxsr sse sse2 tm pbe up est tm2
+<init> : 1500.00 MHz Intel(R) Pentium(R) M processor 1500MHz detected
+*** robotcowboy unit underway ***
+
+start jack
+jackd 0.103.0
+Copyright 2001-2005 Paul Davis and others.
+jackd comes with ABSOLUTELY NO WARRANTY
+This is free software, and you are welcome to redistribute it
+under certain conditions; see the file COPYING for details
+
+
+start pd
+
+alsa midi connect UA-25 -> Pure Data
+
+changed w dir /home/dano/src/unit/bin
+
+start unitd device daemon
+*** unitd begin ***
+
+dbus listener initializing ...
+   signal: com.unit.notify
+... dbus ready
+
+osc send initializing ...
+   ip: 127.0.0.1
+   port: 8880
+   base osc_addr: /pd/unitd
+   unit event sends (bools):
+       /pd/unitd/insert
+       /pd/unitd/removal
+       /pd/unitd/ready
+       /pd/unitd/shutdown
+       /pd/unitd/wii
+... send ready
+
+osc server starting up ...
+   port: 7770
+ ... server running
+
+setting up existing devices ...
+Joystick name -> osc_addr mappings:
+   0 LuenKeung Co.,Ltd USB  Joystick = /ps2black
+   1 Saitek P990 Dual Analog Pad = /bbox
+   2 WiseGroup.,Ltd MP-8866 Dual USB Joypad = /ps2purple
+Joystick registered: "js0"
+OSC Addr: /pd/devices/bbox
+   Dev Name: js0
+   Name: Saitek P990 Dual Analog Pad
+   Num Axes: 6
+   Num Buttons: 14
+... devices ready
+
+initialize wiimote ...
+   ip: 127.0.0.1
+   port: 8880
+   base osc_addr: /pd/devices/wii
+... ready for connection
+
+*** start listening ***
+
+   Signal Caught.  Exiting ...
+
+*** listening stopped ***
+
+shutting down devices ... devices shut down
+
+stopping osc server ... server stopped
+
+*** unitd sucessfully shutdown ***
+shutdown pd
+
+
+*** robotcowboy unit exited successfully ***
+<init> : Avifile RELEASE-0.7.47-070916-12:47-4.1.3
+<init> : Available CPU flags: fpu vme de pse tsc msr mce cx8 sep mtrr pge mca cmov pat clflush dts acpi mmx fxsr sse sse2 tm pbe up est tm2
+<init> : 1500.00 MHz Intel(R) Pentium(R) M processor 1500MHz detected

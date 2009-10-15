@@ -1,0 +1,17 @@
+Required libs for each class:
+
+Joystick
+- Run Time: liblo0
+- Build: liblo0-dev
+
+DBus
+- Run Time: dbus, dbus-glib, libglib2.0-0
+- Build: libdbus-1-dev, libdbus-glib-1-dev, libglib2.0-dev
+
+Osc_Server
+- Run Time: liblo0
+- Build: liblo0-dev
+
+Wiimote
+- Run Time: cwiid 0.6, liblo0
+- Build: cwiid 0.6, liblo0-dev

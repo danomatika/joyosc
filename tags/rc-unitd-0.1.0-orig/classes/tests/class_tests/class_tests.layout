@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="../../Application.h" open="0" top="0" tabpos="0">
+		<Cursor position="0" topLine="36" />
+	</File>
+	<File name="Test_Application.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="696" topLine="0" />
+	</File>
+	<File name="Test_Config.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="114" topLine="0" />
+	</File>
+	<File name="Test_Playlist.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="120" topLine="0" />
+	</File>
+	<File name="Test_Sound_Feedback.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="167" topLine="0" />
+	</File>
+	<File name="Tests.h" open="0" top="0" tabpos="0">
+		<Cursor position="212" topLine="0" />
+	</File>
+	<File name="main.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="154" topLine="0" />
+	</File>
+</CodeBlocks_layout_file>
