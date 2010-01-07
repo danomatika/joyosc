@@ -15,7 +15,7 @@ if [ ! -e "/usr/bin/checkinstall" ] ; then
 fi
 
 # build the package
-checkinstall -D -y --install=no --pkgname="$NAME" --pkgversion="0.1.0" \
+checkinstall -D -y --install=no --pkgname="$NAME" --pkgversion="0.3.0" \
 --requires="$DEPENDS" --maintainer="danomatika@gmail.com" --deldoc=yes \
 --strip=no --stripso=no --deldesc=yes --delspec=yes
 
