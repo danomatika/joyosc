@@ -1,0 +1,33 @@
+# depslib dependency file v1.0
+1200304420 source:/home/dano/src/unit/classes/Led_Mask.cpp
+	"Led_Mask.h"
+
+1183761158 /home/dano/src/unit/classes/Button_Box.h
+	<time.h>
+	<sys/time.h>
+	"Serial_Device.h"
+
+1197555636 /home/dano/src/unit/classes/Serial_Device.h
+	<unistd.h>
+	<fcntl.h>
+	<termios.h>
+	<errno.h>
+	<iostream>
+	<string>
+	<errno.h>
+	<lo/lo.h>
+
+1200306875 source:/home/dano/src/unit/classes/Serial_Device.cpp
+	"Serial_Device.h"
+
+1200305609 source:/home/dano/src/unit/classes/tests/led_mask/main.cpp
+	<iostream>
+	<string>
+	"../../Led_Mask.h"
+
+1200308882 /home/dano/src/unit/classes/Led_Mask.h
+	<time.h>
+	<sys/time.h>
+	<queue>
+	"Serial_Device.h"
+

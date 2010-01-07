@@ -1,0 +1,16 @@
+#
+#	joystick name mappings
+#	'#' lines are comments
+#
+#	format: key value
+#	must be a space between!
+
+#"LuenKeung Co.,Ltd USB  Joystick" /ps2black
+
+"Logitech Logitech Dual Action"	/ps2black
+
+"Saitek P990 Dual Analog Pad" /bbox
+
+#"WiseGroup.,Ltd MP-8866 Dual USB Joypad" /ps2purple
+
+"Logitech Logitech RumblePad 2 USB" /ps2purple

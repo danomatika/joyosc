@@ -1,0 +1,356 @@
+# depslib dependency file v1.0
+1183761213 source:/home/dano/src/unit/classes/Application.cpp
+	"Application.h"
+
+1183761331 /home/dano/src/unit/classes/Application.h
+	<unistd.h>
+	<iostream>
+	<fstream>
+	<string>
+	<signal.h>
+	<errno.h>
+
+1197318960 source:/home/dano/src/unit/classes/Button_Box.cpp
+	"Button_Box.h"
+
+1183761158 /home/dano/src/unit/classes/Button_Box.h
+	<time.h>
+	<sys/time.h>
+	"Serial_Device.h"
+
+1209170057 /home/dano/src/unit/classes/Serial_Device.h
+	<unistd.h>
+	<fcntl.h>
+	<termios.h>
+	<errno.h>
+	<iostream>
+	<string>
+	<errno.h>
+	<lo/lo.h>
+
+1209170057 source:/home/dano/src/unit/classes/Config.cpp
+	"Config.h"
+
+1209170057 /home/dano/src/unit/classes/Config.h
+	<iostream>
+	<fstream>
+	<sstream>
+	<string>
+	<map>
+
+1209170057 source:/home/dano/src/unit/classes/DBus.cpp
+	"DBus.h"
+
+1209170057 /home/dano/src/unit/classes/DBus.h
+	<unistd.h>
+	<cstdlib>
+	<iostream>
+	<dbus/dbus.h>
+
+1223389398 /usr/include/dbus-1.0//dbus/dbus.h
+	<dbus/dbus-arch-deps.h>
+	<dbus/dbus-address.h>
+	<dbus/dbus-bus.h>
+	<dbus/dbus-connection.h>
+	<dbus/dbus-errors.h>
+	<dbus/dbus-macros.h>
+	<dbus/dbus-message.h>
+	<dbus/dbus-misc.h>
+	<dbus/dbus-pending-call.h>
+	<dbus/dbus-protocol.h>
+	<dbus/dbus-server.h>
+	<dbus/dbus-shared.h>
+	<dbus/dbus-signature.h>
+	<dbus/dbus-threads.h>
+	<dbus/dbus-types.h>
+
+1223389398 /usr/lib/dbus-1.0/include//dbus/dbus-arch-deps.h
+	<dbus/dbus-macros.h>
+
+1223389398 /usr/include/dbus-1.0//dbus/dbus-macros.h
+
+1223389398 /usr/include/dbus-1.0//dbus/dbus-address.h
+	<dbus/dbus-types.h>
+	<dbus/dbus-errors.h>
+
+1223389398 /usr/include/dbus-1.0//dbus/dbus-types.h
+	<stddef.h>
+	<dbus/dbus-arch-deps.h>
+
+1223389398 /usr/include/dbus-1.0//dbus/dbus-errors.h
+	<dbus/dbus-macros.h>
+	<dbus/dbus-types.h>
+
+1223389398 /usr/include/dbus-1.0//dbus/dbus-bus.h
+	<dbus/dbus-connection.h>
+
+1223389398 /usr/include/dbus-1.0//dbus/dbus-connection.h
+	<dbus/dbus-errors.h>
+	<dbus/dbus-memory.h>
+	<dbus/dbus-message.h>
+	<dbus/dbus-shared.h>
+
+1223389398 /usr/include/dbus-1.0//dbus/dbus-memory.h
+	<dbus/dbus-macros.h>
+	<stddef.h>
+
+1223389398 /usr/include/dbus-1.0//dbus/dbus-message.h
+	<dbus/dbus-macros.h>
+	<dbus/dbus-types.h>
+	<dbus/dbus-arch-deps.h>
+	<dbus/dbus-memory.h>
+	<dbus/dbus-errors.h>
+	<stdarg.h>
+
+1223389398 /usr/include/dbus-1.0//dbus/dbus-shared.h
+
+1223389398 /usr/include/dbus-1.0//dbus/dbus-misc.h
+	<dbus/dbus-types.h>
+	<dbus/dbus-errors.h>
+
+1223389398 /usr/include/dbus-1.0//dbus/dbus-pending-call.h
+	<dbus/dbus-macros.h>
+	<dbus/dbus-types.h>
+	<dbus/dbus-connection.h>
+
+1223389398 /usr/include/dbus-1.0//dbus/dbus-protocol.h
+
+1223389398 /usr/include/dbus-1.0//dbus/dbus-server.h
+	<dbus/dbus-errors.h>
+	<dbus/dbus-message.h>
+	<dbus/dbus-connection.h>
+	<dbus/dbus-protocol.h>
+
+1223389398 /usr/include/dbus-1.0//dbus/dbus-signature.h
+	<dbus/dbus-macros.h>
+	<dbus/dbus-types.h>
+	<dbus/dbus-errors.h>
+
+1223389398 /usr/include/dbus-1.0//dbus/dbus-threads.h
+	<dbus/dbus-macros.h>
+	<dbus/dbus-types.h>
+
+1209170057 source:/home/dano/src/unit/classes/Devices.cpp
+	"Devices.h"
+
+1209170057 /home/dano/src/unit/classes/Devices.h
+	<string>
+	<sstream>
+	<map>
+	<vector>
+	"Config.h"
+	"Joystick_Device.h"
+	"Serial_Device.h"
+
+1210013378 /home/dano/src/unit/classes/Joystick_Device.h
+	<sys/ioctl.h>
+	<sys/time.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<stdlib.h>
+	<fcntl.h>
+	<unistd.h>
+	<stdio.h>
+	<errno.h>
+	<string.h>
+	<stdlib.h>
+	<stdint.h>
+	<iostream>
+	<string>
+	<linux/input.h>
+	<linux/joystick.h>
+	<lo/lo.h>
+
+1210013055 source:/home/dano/src/unit/classes/Joystick_Device.cpp
+	"Joystick_Device.h"
+
+1209170057 source:/home/dano/src/unit/classes/Osc_Server.cpp
+	"Osc_Server.h"
+
+1209170057 /home/dano/src/unit/classes/Osc_Server.h
+	"lo/lo.h"
+
+1183758904 source:/home/dano/src/unit/classes/Playlist.cpp
+	"Playlist.h"
+
+1183759397 /home/dano/src/unit/classes/Playlist.h
+	<iostream>
+	<fstream>
+	<string>
+	<vector>
+
+1209170057 source:/home/dano/src/unit/classes/Serial_Device.cpp
+	"Serial_Device.h"
+
+1183758359 source:/home/dano/src/unit/classes/Sound_Feedback.cpp
+	"Sound_Feedback.h"
+
+1183758512 /home/dano/src/unit/classes/Sound_Feedback.h
+	<string>
+	"Application.h"
+
+1187519640 source:/home/dano/src/unit/classes/Unit.cpp
+	"Unit.h"
+
+1197366651 /home/dano/src/unit/classes/Unit.h
+	<string>
+	<iostream>
+	<sstream>
+	<signal.h>
+	<vector>
+	<sys/types.h>
+	<sys/wait.h>
+	<lo/lo.h>
+	<time.h>
+	<sys/time.h>
+	"Application.h"
+	"Osc_Server.h"
+	"Serial_Device.h"
+
+1209170057 source:/home/dano/src/unit/classes/Wiimote.cpp
+	"Wiimote.h"
+
+1209170057 /home/dano/src/unit/classes/Wiimote.h
+	<iostream>
+	<unistd.h>
+	<string>
+	<cmath>
+	<pthread.h>
+	<lo/lo.h>
+	<cwiid.h>
+
+1209170057 source:/home/dano/src/unit/unitd/main.cpp
+	<iostream>
+	<signal.h>
+	"DBus.h"
+	"Osc_Server.h"
+	"Config.h"
+	"Devices.h"
+	"Wiimote.h"
+	"Led_Mask.h"
+
+1209170057 /home/dano/src/unit/classes/Led_Mask.h
+	<time.h>
+	<sys/time.h>
+	<queue>
+	"Serial_Device.h"
+
+1209170057 source:/home/dano/src/unit/classes/Led_Mask.cpp
+	"Led_Mask.h"
+
+1211949089 source:/home/dano/src/rc-unitd/src/lib/Config.cpp
+	"Config.h"
+
+1211949390 /home/dano/src/rc-unitd/src/lib/Config.h
+	<iostream>
+	<fstream>
+	<sstream>
+	<string>
+	<map>
+
+1211950075 source:/home/dano/src/rc-unitd/src/lib/DBus.cpp
+	"DBus.h"
+
+1211950072 /home/dano/src/rc-unitd/src/lib/DBus.h
+	<unistd.h>
+	<cstdlib>
+	<iostream>
+	<dbus/dbus.h>
+
+1211949249 source:/home/dano/src/rc-unitd/src/lib/Devices.cpp
+	"Devices.h"
+
+1211949239 /home/dano/src/rc-unitd/src/lib/Devices.h
+	<string>
+	<sstream>
+	<map>
+	<vector>
+	"Config.h"
+	"Joystick_Device.h"
+	"Serial_Device.h"
+
+1211949691 /home/dano/src/rc-unitd/src/lib/Joystick_Device.h
+	<sys/ioctl.h>
+	<sys/time.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<stdlib.h>
+	<fcntl.h>
+	<unistd.h>
+	<stdio.h>
+	<errno.h>
+	<string.h>
+	<stdlib.h>
+	<stdint.h>
+	<iostream>
+	<string>
+	<linux/input.h>
+	<linux/joystick.h>
+	<lo/lo.h>
+
+1225997844 /home/dano/src/rc-unitd/src/lib/Serial_Device.h
+	<unistd.h>
+	<fcntl.h>
+	<termios.h>
+	<errno.h>
+	<iostream>
+	<cstring>
+	<string>
+	<lo/lo.h>
+
+1210013055 source:/home/dano/src/rc-unitd/src/lib/Joystick_Device.cpp
+	"Joystick_Device.h"
+
+1209170057 source:/home/dano/src/rc-unitd/src/lib/Osc_Server.cpp
+	"Osc_Server.h"
+
+1209170057 /home/dano/src/rc-unitd/src/lib/Osc_Server.h
+	"lo/lo.h"
+
+1209170057 source:/home/dano/src/rc-unitd/src/lib/Unit.cpp
+	"Unit.h"
+
+1209170057 /home/dano/src/rc-unitd/src/lib/Unit.h
+	<string>
+	<iostream>
+	<sstream>
+	<signal.h>
+	<vector>
+	<sys/types.h>
+	<sys/wait.h>
+	<lo/lo.h>
+	<time.h>
+	<sys/time.h>
+	"Application.h"
+	"Osc_Server.h"
+	"Serial_Device.h"
+
+1209170057 /home/dano/src/rc-unitd/src/lib/Application.h
+	<unistd.h>
+	<iostream>
+	<fstream>
+	<string>
+	<signal.h>
+	<errno.h>
+
+1226054138 source:/home/dano/src/rc-unitd/src/rc-unitd/main.cpp
+	<iostream>
+	<signal.h>
+	"config.h"
+	"DBus.h"
+	"Osc_Server.h"
+	"Config.h"
+	"Devices.h"
+	"Wiimote.h"
+
+1226881744 /home/dano/src/rc-unitd/src/config.h
+
+1227147044 /home/dano/src/rc-unitd/src/lib/Wiimote.h
+	<iostream>
+	<unistd.h>
+	<string>
+	<cmath>
+	<pthread.h>
+	<lo/lo.h>
+	<cwiid.h>
+
