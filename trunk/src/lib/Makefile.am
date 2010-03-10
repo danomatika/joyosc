@@ -1,29 +1,40 @@
 # unitd lib of classes
 
+# load externals variables
+include $(top_srcdir)/externals/externals.mk
+
 # the library to build, dont install just link to execs
 noinst_LIBRARIES = libunit.a
 
 # libs sources, headers here because we dont want to install them
-libunit_a_SOURCES =	Config.h Config.cpp \
-							DBus.h DBus.cpp \
-							Devices.h Devices.cpp \
-							Joystick_Device.h Joystick_Device.cpp \
-							Osc_Server.h Osc_Server.cpp \
-							Serial_Device.h Serial_Device.cpp
+dist_libunit_a_SOURCES =	Common.h Log.h \
+					Config.h Config.cpp \
+					Device.h \
+					JoystickDevice.h JoystickDevice.cpp \
+					JoystickManager.h JoystickManager.cpp
 
 # optionally build with wiimote classes
-if ENABLE_CWIID
-libunit_a_SOURCES += Wiimote.h Wiimote.cpp
-endif
+#if ENABLE_CWIID
+#libunit_a_SOURCES += Wiimote.h Wiimote.cpp
+#endif
 
 # include paths
-AM_CPPFLAGS = $(CXXFLAGS) $(DBUS_CFLAGS) $(GLIB2_CFLAGS) $(LIBLO_CFLAGS)
+AM_CPPFLAGS = $(CXXFLAGS) $(SDL_FLAGS) $(LO_CFLAGS) $(EXTERNALS_CFLAGS)
+#		-I$(top_srcdir)/../externals/xmlframework/src \
+#		-I$(top_srcdir)/../externals/oscframework/src \
+#		-I$(top_srcddir)/externals/
+
+#$(EXTERNALS_CFLAGS)
 
 # libs to link
-AM_LDFLAGS = $(DBUS_LIBS) $(GLIB2_LIBS) $(LIBLO_LIBS)
+AM_LDFLAGS = $(SDL_LIBS) $(LO_LIBS) $(EXTERNALS_LIBS)
+#			-L$(top_srcdir)/../externals/xmlframework/src/xmlframework \
+#    	     -L$(top_srcdir)/../externals/oscframework/src/oscframework \
+#		     -lxmlframework -loscframework
+#$(EXTERNALS_LIBS)
 
 # optionally link with cwiid
-if ENABLE_CWIID
-AM_LDFLAGS += $(CWIID_LIBS)
-endif
+#if ENABLE_CWIID
+#AM_LDFLAGS += $(CWIID_LIBS)
+#endif
 

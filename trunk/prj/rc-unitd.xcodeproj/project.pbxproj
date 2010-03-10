@@ -1,0 +1,328 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3C8B6AF44BB4001267805982 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 691E3A6A1EAA001267805982 /* main.cpp */; };
+		56D5784476BA001267805982 /* App.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50E447A40435001267805982 /* App.cpp */; };
+		6D0255CA00C7001267805982 /* libunit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CA27F911786001267805982 /* libunit.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2E6162F42FF4001267805982 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C8F628058DA001267805982 /* unit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 28AC4488608C001267805982;
+			remoteInfo = libunit.a;
+		};
+		65007DF85471001267805982 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C8F628058DA001267805982 /* unit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 3830093702C5001267805982;
+			remoteInfo = libunit.a;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		31F378067ECF001267805982 /* App.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = App.h; sourceTree = "<group>"; };
+		4C8F628058DA001267805982 /* unit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = unit.xcodeproj; sourceTree = SOURCE_ROOT; };
+		50E447A40435001267805982 /* App.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = App.cpp; sourceTree = "<group>"; };
+		67C02AF21881001267805982 /* rc-unitd */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "rc-unitd"; sourceTree = BUILT_PRODUCTS_DIR; };
+		691E3A6A1EAA001267805982 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5C5247236A9B001267805982 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6D0255CA00C7001267805982 /* libunit.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		030007450422001267805982 /* rc-unitd */ = {
+			isa = PBXGroup;
+			children = (
+				0CD71DB8221D001267805982 /* src */,
+				1D94019C3B2E001267805982 /* Products */,
+				055115573883001267805982 /* Projects */,
+			);
+			name = "rc-unitd";
+			sourceTree = "<group>";
+		};
+		055115573883001267805982 /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				4C8F628058DA001267805982 /* unit.xcodeproj */,
+			);
+			name = Projects;
+			sourceTree = "<group>";
+		};
+		0CD71DB8221D001267805982 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				5D131A2B11F6001267805982 /* rc-unitd */,
+			);
+			name = src;
+			path = ../src;
+			sourceTree = "<group>";
+		};
+		12E92A933EBF001267805982 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0CA27F911786001267805982 /* libunit.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1D94019C3B2E001267805982 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				67C02AF21881001267805982 /* rc-unitd */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5D131A2B11F6001267805982 /* rc-unitd */ = {
+			isa = PBXGroup;
+			children = (
+				50E447A40435001267805982 /* App.cpp */,
+				31F378067ECF001267805982 /* App.h */,
+				691E3A6A1EAA001267805982 /* main.cpp */,
+			);
+			path = "rc-unitd";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6F9D48A6118B001267805982 /* rc-unitd */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2DA1425C3BFD001267805982 /* Build configuration list for PBXNativeTarget "rc-unitd" */;
+			buildPhases = (
+				6C847B5C559F001267805982 /* Resources */,
+				75CB11B478F4001267805982 /* Sources */,
+				5C5247236A9B001267805982 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7E105EB9586D001267805982 /* PBXTargetDependency */,
+			);
+			name = "rc-unitd";
+			productInstallPath = "$(HOME)/bin";
+			productName = "rc-unitd";
+			productReference = 67C02AF21881001267805982 /* rc-unitd */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "rc-unitd" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 030007450422001267805982 /* rc-unitd */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 12E92A933EBF001267805982 /* Products */;
+					ProjectRef = 4C8F628058DA001267805982 /* unit.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				6F9D48A6118B001267805982 /* rc-unitd */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		0CA27F911786001267805982 /* libunit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libunit.a;
+			remoteRef = 2E6162F42FF4001267805982 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6C847B5C559F001267805982 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		75CB11B478F4001267805982 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				56D5784476BA001267805982 /* App.cpp in Sources */,
+				3C8B6AF44BB4001267805982 /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7E105EB9586D001267805982 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libunit.a;
+			targetProxy = 65007DF85471001267805982 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0D036B8432E0001267805982 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					../src,
+					../src/lib,
+					../externals/include,
+					../../../../../opt/local/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					../externals/lib,
+					../../../../../opt/local/lib,
+				);
+				OBJROOT = "../obj/Debug/rc-unitd";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"-loscframework",
+					"-lxmlframework",
+					"-llo",
+					"-lpthread",
+					"-lSDLmain",
+					"-lSDL",
+					"-Wl,-framework,Cocoa",
+					"-Wl,-framework,OpenGL",
+					"-Wl,-framework,ApplicationServices",
+					"-Wl,-framework,Carbon",
+					"-Wl,-framework,AudioToolbox",
+					"-Wl,-framework,AudioUnit",
+					"-Wl,-framework,IOKit",
+				);
+				PREBINDING = NO;
+				SYMROOT = ../bin;
+			};
+			name = Debug;
+		};
+		1F75712C3F72001267805982 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					../src,
+					../src/lib,
+					../externals/include,
+					../../../../../opt/local/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					../externals/lib,
+					../../../../../opt/local/lib,
+				);
+				OBJROOT = "../obj/Release/rc-unitd";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"-loscframework",
+					"-lxmlframework",
+					"-llo",
+					"-lpthread",
+					"-lSDLmain",
+					"-lSDL",
+					"-Wl,-framework,Cocoa",
+					"-Wl,-framework,OpenGL",
+					"-Wl,-framework,ApplicationServices",
+					"-Wl,-framework,Carbon",
+					"-Wl,-framework,AudioToolbox",
+					"-Wl,-framework,AudioUnit",
+					"-Wl,-framework,IOKit",
+				);
+				PREBINDING = NO;
+				SYMROOT = ../bin;
+			};
+			name = Release;
+		};
+		32E44FAA2BF0001267805982 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../bin;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = "rc-unitd";
+			};
+			name = Release;
+		};
+		478662E344E8001267805982 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../bin;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = "rc-unitd";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "rc-unitd" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0D036B8432E0001267805982 /* Debug */,
+				1F75712C3F72001267805982 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		2DA1425C3BFD001267805982 /* Build configuration list for PBXNativeTarget "rc-unitd" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				478662E344E8001267805982 /* Debug */,
+				32E44FAA2BF0001267805982 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}

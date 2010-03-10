@@ -1,16 +1,16 @@
 
+# load externals variables
+include $(top_srcdir)/externals/externals.mk
+
 # program to build
 bin_PROGRAMS = lsjs
 
 # program's sources
 lsjs_SOURCES = main.cpp
 
-# local library needed to build
-lsjs_LDADD = -L../lib -lunit
-
 # include paths
-AM_CPPFLAGS = $(CXXFLAGS) -I$(top_srcdir)/src/lib $(LIBLO_CFLAGS)
+AM_CPPFLAGS = $(CXXFLAGS) $(SDL_CFLAGS) $(LO_CFLAGS) $(EXTERNALS_CFLAGS)
 
 # libs to link
-AM_LDFLAGS = $(LIBLO_LIBS)
+AM_LDFLAGS = $(SDL_LIBS) $(LO_LIBS)
 

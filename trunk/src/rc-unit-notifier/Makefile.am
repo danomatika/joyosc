@@ -1,16 +1,20 @@
 
+# load externals variables
+include $(top_srcdir)/externals/externals.mk
+
 # program to build
 bin_PROGRAMS = rc-unit-notifier
 
 # program's sources
 rc_unit_notifier_SOURCES = main.cpp
 
-# local library needed to build
-rc_unit_notifier_LDADD = -L../lib -lunit
+# local libraries needed to build (builddir)
+rc_unit_notifier_LDADD = -L$(top_builddir)/src/lib -lunit
 
 # include paths
-AM_CPPFLAGS = $(CXXFLAGS) -I$(top_srcdir)/src/lib $(DBUS_CFLAGS) $(GLIB2_CFLAGS)
+AM_CPPFLAGS = $(CXXFLAGS) $(SDL_CFLAGS) $(LO_CFLAGS) $(EXTERNALS_CFLAGS) 
 
 # libs to link
-AM_LDFLAGS = $(DBUS_LIBS) $(GLIB2_LIBS)
+AM_LDFLAGS = $(SDL_LIBS) $(LO_LIBS) $(EXTERNALS_LIBS) \
+		     -loscframework -lxmlframework
 

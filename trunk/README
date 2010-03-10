@@ -1,118 +1,83 @@
-Copyright (C) 2008 Dan Wilcox <danomatika@gmail.com>
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
---------------------------------------------------------------------------------
 
 rc-unitd: the robotcowboy unit daemon
 
-a linux osc joystick and wiimote event deamon and associated tools
+a device event to osc bridge deamon and associated tools
+
+Dan Wilcox <danomatika@robotcowboy.com>
 
 ##### DESCRIPTION #####
 
 The rc-unitd package contains the following parts:
 1. rc-unitd - device event daemon
-2. rc-unit-notifier - insert/removal notification tool, called by udev rules
+2. rc-unit-notifier - insert/removal notification tool
 3. lsjs - joystick info tool
-4. libunit - rc-unitd class lib, installed to lib dir
 
-Basically, this group of tools allows any osc-capable program to recieve joystick
-event data aka button presses, axis movements, etc.  Specific joystick names, as reported
-by the kernel, can be mapped to specific osc send addresses.  Using udev rules and
-dbus communication, reading is started or stopped automatically.
+This group of tools allows any osc-capable program to receive joystick event data aka button presses, axis movements, etc.  Specific joysticks can be mapped by name to specific osc send addresses.  A notification tool can control the runing daemon.
+
+A udev rules set is provided for GNU/Linux to enable automatic notificaiton when devices are plugged in.
 
 These tools were originally developed for the robotcowboy project, a wearable computer
-music system using Pure Data in linux. See http://robotcowboy.com.
+music system using Pure Data in GNU/Linux. See http://robotcowboy.com.
 
-##### REQUIREMENTS #####
+##### BUILD REQUIREMENTS #####
 
-udev, dbus, liblo, glib2.0, libcwiid(optional)
+The following libraries are required:
+	- SDL
+	- liblo (lightweight osc)
 
+On Max OS X, they can be installed using macports: http://macports.org
+    - install the macport binary and setup the macports environment
+    - go to the Terminal and install the libs:
+        sudo port install libsdl liblo
 
-##### INSTALLATION #####
+##### BUILD AND INSTALLATION #####
  
 ./configure
 make
 sudo make install
 
-Configure flags: --with-cwiid, compile with experimental wiimote support
-						             requires libcwiid to be installed
-
-Config files are installed to /etc/rc-unitd
-Udev rules are installed to /etc/udev/rules.d
-A DBus configuration file is installed to /etc/dbus-1/system.d
-
-You may need to force udev and dbus to reload their config directories for the
-rules to be used.  The easiest way to do this is to reboot or if you are on a
-Debian-based system try:
-	%sudo /etc/init.d/udev reload
-	%sudo /etc/init.d/dbus reload
-
-NOTE: This readme and the example pd files are also installed to your
-doc dir, something like prefix/share/doc/rc-unitd
+This readme, example config files, and the pd library are also installed to your doc dir, something like $(prefix)/share/doc/rc-unitd.
 
 ##### USAGE #####
 
-%rc-unitd
-starts device daemon, config settings are stored in /etc/rc-unitd/unitd.conf
-and joystick name mappings are kept in /etc/rc-unitd/joy_names.conf
+All applications have a full help usage printout, use -h or --help.
 
-The config formats is super simple right now: one key, one value per line separated by a
-space.  There is little to none error checking on missing key/value pairs.
+% rc-unitd config_file.xml
 
-rc-unitd.conf contains the global osc send to address, ports, etc settings
-
-The joy_names.conf file is where you map specific joystick names to osc send addresses. The lsjs
-tool allows you to see the names of currently plugged in joysticks, which you can then use as a 
-key in joy_names.conf.
-
-rc-unitd sends all events over osc to a single global address which is by default
-(for now) /pd/devices/.
-
-There are a few extra specific functional addresses to control rc-unitd, but they
-are subject to change for the forseable future.
-
-Right now, wiimote support is limited to one wiimote buuuut it does work. Try
-it out.  Pitch and roll are calculated.  You have to send an osc message to 
-tell rc-unitd to try and connect to the wiimote whose address can be set in /etc/rc-unitd/unitd.conf.
+Starts device daemon using the given config file.  The config file sets the osc connection information as well as device to osc address mappings. Look at the example_config.xml file installed to the doc folder for details.
 
 See the pd patches in the pd folder on how to communicate with rc-unitd.
 
 ----
 
-%lsjs
-prints out currently connected joystick info, useful for retrieving joy names to use as matching
-keys in the joy_names.conf file.  See above.
+% lsjs
+
+The lsjs tool lists the names of currently plugged in joysticks, which you can then use to create your device mappings.
 
 ----
 
-%rc-unit-notifier [OPTION...] devname (ie joystick device name "js*")
-called by the rc-unitd udev rules in /etc/udev/rules.d/85-rc-unitd.rules to notifiy
-rc-unitd over dbus of joystick insertions/removals
+% rc-unit-notifier 
 
-This does not need to be called manually if dbus and udev are working correctly.
+Used to control a running rc-unitd.  Can be used to signal device add or removals as well as send a quit command.
 
+There is a udev rule file for Linux installed to the doc dir that can be used to automatically call rc-unit-notifier when a joystick device is plugged/unplugged.
+
+##### DEVELOPING #####
+
+A Premake4 script and IDE files can be found in the prj folder.  Premake4 can generate the IDE files from a given lua script.  Download Premake4 from http://industriousone.com/premake.
+
+Make sure the externals are built using make in the externals dir.
+
+You can enable a debug build using ./configure --enable-debug.
+
+I develop using an IDE, then update the autotools files when the sources are finished.  I run make dist-check to make sure the distributable package can be built successfully.
 
 ##### FUTURE IDEAS/IMPROVEMENTS #####
 
 Ok, lots of ideas to pursue ...
 
-1. update the config format to xml
-2. get wiimote support beyond experimental stages as well as multiple wiimote support
-3. add HAL support so you can assign addresses based on joy name and usb port id
-4. multiple osc send addresses for event forwarding between multiple machines
-5. user based config settings as well as config "profiles"
-6. make a systray applet for gui control of rc-unitd ala qtjackctl->jackd
-7. add built in osc -> MIDI and other mapping capability aka a Linux version of STEIM's JunXion or osculator
+ - re-add wiimote support using a cross platform library
+ - multiple osc send addresses for event forwarding between multiple machines
+ - make a systray applet for gui control of rc-unitd ala qtjackctl->jackd
+ - add built in osc -> MIDI and other mapping capability (ala junXion or Osculator)
 

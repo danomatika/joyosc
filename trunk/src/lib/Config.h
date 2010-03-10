@@ -1,102 +1,103 @@
-/*  Config.h
+/*==============================================================================
 
-  Copyright (C) 2007 Dan Wilcox
+	Config.h
 
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 2 of the License, or
-  (at your option) any later version.
+	rc-unitd: a device event to osc bridge
+  
+	Copyright (C) 2007, 2010  Dan Wilcox <danomatika@gmail.com>
 
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-*/
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+==============================================================================*/
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
 #include <string>
 #include <map>
 
+#include <xmlframework/xmlframework.h>
+#include <oscframework/oscframework.h>
+
 using namespace std;
 
-/** \class  Config
-    \brief  Class to read config file and retrieve config keys */
-class Config
+/**
+    \class  Config
+    \brief  global, per-application instance state variable container class
+
+    implemented as a singleton class following:
+    http://en.wikipedia.org/wiki/Singleton_pattern
+
+    no initialization is needed, just use equt::Config::instance() to access
+    member functions, data
+**/
+class Config : public xml::XmlObject
 {
     public:
 
-        /** \brief Constructor
+        /**
+            \brief singleton data access
+            \return a reference to itself
 
-            \param  filename    filename of the configfile to open, including path
+            creates a new object on the first call
+        **/
+        static Config& instance();
+        
+        /* ***** VARIABLES ***** */
+        
+        unsigned int listeningPort;		///< the listening port
+        string listeningAddress;		///< base listening address
+        
+        string sendingIp;				///< ip to send to
+        unsigned int sendingPort;		///< port to send to
+        
+        string notificationAddress;		///< base osc sending address for notifications
+        string deviceAddress;			///< base osc sending addess for devices
+        
+        bool bPrintEvents; 				///< print lots of events?
+        
+        float sleepMS;			///< how long to sleep in the run loop
+
+        /// get a reference to the OscSender
+        inline osc::OscSender& getOscSender() {return m_oscSender;}
+        inline osc::OscReceiver& getOscReceiver() {return m_oscReceiver;}
+
+		/**
+        	\brief	retreive the osc address for a given device name
+            \param	deviceName	device name as a string ie "Logitech Logitech Dual Action"
+            \return	mapped device addr on success, empty string "" on failure
         */
-        Config(const char *filename_);
+       	string getDeviceAddress(string deviceName);
 
-        virtual ~Config();
-
-        /**  \brief  Load configuration from file
-
-            Ignores lines beginning with '#',
-            format is 'key' 'value' with a
-            space in between
-
-            ex.
-            # server address comment
-            server_addr 127.0.0.1
-
-            returns 0 on success or -1 if the file cannot be loaded (i.e. found)
-
-            Note: very dumb, does not check for bad keys/vals so config file
-            must be correct
-        */
-        int load();
-
-        /** \brief  Loads joystick name mapping configuration
-
-            Ignores lines beginning with '#',
-            format is 'usb dev name' 'OSC device address' with a
-            space in between
-
-            ex.
-            # saitek events sent to "/target address/saitek"
-            "Saitek P990 Dual Analog Pad" saitek
-
-            returns 0 on success or -1 if the file cannot be loaded (i.e. found)
-
-            Note: very dumb, does not check for bad keys/vals so config file
-            must be correct
-        */
-        int loadJoy();
-
-        /** \brief  Get a configuration value
-
-            \param  key key to fetch value for
-
-            ex. get("server_addr"); returns the value for the server_addr
-
-            returns value or "" (empty string) if key was not found
-
-            Note: see configuration for keys / values
-
-        */
-        string get(const char* key);
-
-        /** \brief  Prints the current configuration keys and values */
+        /// print the current config values
         void print();
 
-        /** \brief  Returns the config file filename */
-        inline const char *name() {return filename;};
-
     protected:
+    
+    	// XMLObject callback
+    	bool readXml(TiXmlElement* e);
 
     private:
 
-        const char *filename;                     // Config filename
-        map<string, string> config_map;     // map of config values
+        map<string, string> m_deviceAddresses;	///< device osc address mappings
+        
+        osc::OscSender m_oscSender;       	///< global osc sender
+        osc::OscReceiver m_oscReceiver;		///< global osc receiver
+        
+        // hide all the constructors, copy functions here
+        Config(); 							// singleton constructor
+        Config(Config const&);    			// not defined, not copyable
+        Config& operator = (Config const&);	// not defined, not assignable
 };
 
 #endif // CONFIG_H

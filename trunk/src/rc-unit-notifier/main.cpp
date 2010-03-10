@@ -1,103 +1,117 @@
-/*  main.cpp
+/*==============================================================================
 
-    unit-notifier
+	main.cpp
 
-  Copyright (C) 2007 Dan Wilcox
+	rc-unitd-notifier: send control OSC messages to rc-unitd
+  
+	Copyright (C) 2007, 2010  Dan Wilcox <danomatika@gmail.com>
 
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 2 of the License, or
-  (at your option) any later version.
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-*/
-#include <unistd.h>
-#include <cstring>	// for strcmp()
-#include <iostream>
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "DBus.h"
-#include <glib.h> // for GOptions commandline parsing
-// http://www.eikke.com/articles/goption-parsing.html
+==============================================================================*/
+#include <config.h>		// automake config defines
+
+#include <tclap/tclap.h>
+#include <oscframework/oscframework.h>
 
 using namespace std;
 
+#define DEFAULT_IP	"127.0.0.1"
+#define DEFAULT_PORT 7770
+
+#define NUM_ACTIONS 3
+#define NUM_TYPES 1
+
+string actions[NUM_ACTIONS] = { "open", "close", "quit" };
+string types[NUM_TYPES] = { "joystick" };
+
 int main(int argc, char *argv[])
 {
-    // args to grab
-    gchar *devname = NULL;
-    gchar *action = NULL;
-    gchar *type = NULL;
+	try {
 
-    // which commandline options?
-    GOptionEntry options[] = {
-            // long, short. flags(usually 0), arg, arg_data, description (short), arg_description (long)
-            { "action", 'a', 0, G_OPTION_ARG_STRING, &action, "stop or start the device", "'stop' or 'start'" },
-            { "type", 't', 0, G_OPTION_ARG_STRING, &type, "device type, default is js", "'js' or 'tty'" },
-            { NULL }
-    };
+	// the commandline parser
+    TCLAP::CommandLine cmd("send control OSC messages to rc-unitd", VERSION);
+    
+    // constraints    
+    vector<string> allowedActions;
+    for(int i = 0; i < NUM_ACTIONS; ++i)
+        allowedActions.push_back(actions[i]);
+    TCLAP::ValuesConstraint<string> actionConstraint(allowedActions);
+    
+    vector<string> allowedTypes;
+    for(int i = 0; i < NUM_TYPES; ++i)
+        allowedTypes.push_back(types[i]);
+    TCLAP::ValuesConstraint<string> typeConstraint(allowedTypes);
+    
+    stringstream itoa;
+    itoa << DEFAULT_PORT;
+    
+    // options to parse
+    // short id, long id, description, required?, default value, short usage type description
+    TCLAP::ValueArg<string> ipOpt("i","ip",(string) "IP address to send to; default is '"+DEFAULT_IP+"'", false, DEFAULT_IP, "string");
+    TCLAP::ValueArg<int> 	portOpt("p","port",(string) "Port to send to; default is '"+itoa.str()+"'", false, DEFAULT_PORT, "int");
+    TCLAP::ValueArg<string> typeOpt("t", "type", "Device type to perform the action on", false, "joystick", &typeConstraint); 
+    
+    // commands to parse
+    // name, description, required?, default value, short usage type description
+    TCLAP::UnlabeledValueArg<string> actionCmd("action", "Action to perform", true, "", &actionConstraint);
+    TCLAP::UnlabeledValueArg<string> devCmd("dev", "Device to perform the action on", false, "", "dev");
 
-    // create context
-    GOptionContext *ctx;
-    ctx = g_option_context_new("devname (ie joystick device name \"js*\")");
-    g_option_context_add_main_entries(ctx, options, "unit-notifier");
-    g_option_context_parse(ctx, &argc, &argv, NULL);
+    // add args to parser
+    cmd.add(ipOpt);
+    cmd.add(portOpt);
+    cmd.add(typeOpt);
+    cmd.add(actionCmd);
+    cmd.add(devCmd);
 
-    // are there enough args?
-    if(argc <= 1)
+    // parse the commandline
+    cmd.parse(argc, argv);
+    
+    // setup the osc sender
+    osc::OscSender sender(ipOpt.getValue(), portOpt.getValue());
+
+    // compose the message
+    string address = "/rc-unitd/" + actionCmd.getValue();
+    if(actionCmd.getValue() != "quit")
     {
-        cout << g_option_context_get_help(ctx, TRUE, NULL);
-        return 0;
+		// device message
+        address += "/" + typeOpt.getValue();
+        sender << osc::BeginMessage(address);
+        if(devCmd.getValue() != "")
+        {
+            sender << devCmd.getValue();
+        }
     }
-
-    // grab devname, assume its the last argument
-    devname = argv[argc-1];
-
-    // is there an associated action?
-    if(!action)
+    else
     {
-        cout << g_option_context_get_help(ctx, TRUE, NULL);
-        return 0;
+    	// quit
+        sender << osc::BeginMessage(address);
     }
+    sender << osc::MessageTerminator();
 
-    // send using DBus class
-    DBus db;
-
-    // connect and register name on system dbus
-    if(db.setupSystem("com.unit.notify") < 0)
-        exit(1);
-
-    // setup the signal to send depending on the action
-    if(strcmp(action, "start") == 0)
-        db.createSignal("/com/unit/notify", // object name of the signal
-                        "com.unit.notify",  // interface name of the signal
-                        "start");           // name of the signal
-    else if(strcmp(action, "stop") == 0)
-        db.createSignal("/com/unit/notify", // object name of the signal
-                        "com.unit.notify",  // interface name of the signal
-                        "stop");            // name of the signal
-
-    // set default type to js
-    if(type == NULL)    type = (gchar*) "js";
-
-    // append arguments onto signal
-    if(db.addArgString((char*) devname) < 0)
-        exit(1);
-    if(db.addArgString((char*) type) < 0)
-        exit(1);
-
-    // send the signal
-    if(db.sendSignal() < 0)
-        exit(1);
-
+    // send the message
+    sender.send();
+    
     // feedback
-    cout << "Sent signal: devname = " << devname << ", type = " << type << ", action = "<< action << endl;
+	cout << "Target ip: " << ipOpt.getValue() << " port: " << portOpt.getValue() << endl;
+    cout << "Sent message " << address << " " << devCmd.getValue() << endl;
+    
+    } catch(TCLAP::ArgException &e)  // catch any exceptions
+	{
+	    cerr << "CommandLine error: " << e.error() << " for arg " << e.argId() << endl;
+        return EXIT_FAILURE;
+    }
 
-    // free the GOptions
-    g_option_context_free(ctx);
-
-    return 0;
+    return EXIT_SUCCESS;
 }

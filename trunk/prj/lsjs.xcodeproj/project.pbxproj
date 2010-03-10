@@ -1,0 +1,246 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3C3B5DCC1CFC001267805982 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41AD71B76291001267805982 /* main.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		41AD71B76291001267805982 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		6709405254ED001267805982 /* lsjs */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = lsjs; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		29B81F4B18D5001267805982 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		02A3495637DB001267805982 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6709405254ED001267805982 /* lsjs */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		07CE16616952001267805982 /* lsjs */ = {
+			isa = PBXGroup;
+			children = (
+				20F432C417CA001267805982 /* src */,
+				02A3495637DB001267805982 /* Products */,
+			);
+			name = lsjs;
+			sourceTree = "<group>";
+		};
+		20F432C417CA001267805982 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				644E601A5276001267805982 /* lsjs */,
+			);
+			name = src;
+			path = ../src;
+			sourceTree = "<group>";
+		};
+		644E601A5276001267805982 /* lsjs */ = {
+			isa = PBXGroup;
+			children = (
+				41AD71B76291001267805982 /* main.cpp */,
+			);
+			path = lsjs;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1FA3238842BB001267805982 /* lsjs */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 170D5F787FB7001267805982 /* Build configuration list for PBXNativeTarget "lsjs" */;
+			buildPhases = (
+				7F8C5AAF1B14001267805982 /* Resources */,
+				498B4CEE223A001267805982 /* Sources */,
+				29B81F4B18D5001267805982 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = lsjs;
+			productInstallPath = "$(HOME)/bin";
+			productName = lsjs;
+			productReference = 6709405254ED001267805982 /* lsjs */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "lsjs" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 07CE16616952001267805982 /* lsjs */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1FA3238842BB001267805982 /* lsjs */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7F8C5AAF1B14001267805982 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		498B4CEE223A001267805982 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3C3B5DCC1CFC001267805982 /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		15AE642D5FC9001267805982 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					../src,
+					../src/lib,
+					../externals/include,
+					../../../../../opt/local/include,
+				);
+				LIBRARY_SEARCH_PATHS = ../../../../../opt/local/lib;
+				OBJROOT = ../obj/Release/lsjs;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"-lSDLmain",
+					"-lSDL",
+					"-Wl,-framework,Cocoa",
+					"-Wl,-framework,OpenGL",
+					"-Wl,-framework,ApplicationServices",
+					"-Wl,-framework,Carbon",
+					"-Wl,-framework,AudioToolbox",
+					"-Wl,-framework,AudioUnit",
+					"-Wl,-framework,IOKit",
+				);
+				PREBINDING = NO;
+				SYMROOT = ../bin;
+			};
+			name = Release;
+		};
+		1D9931AD7F72001267805982 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../bin;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = lsjs;
+			};
+			name = Release;
+		};
+		72826A320780001267805982 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					../src,
+					../src/lib,
+					../externals/include,
+					../../../../../opt/local/include,
+				);
+				LIBRARY_SEARCH_PATHS = ../../../../../opt/local/lib;
+				OBJROOT = ../obj/Debug/lsjs;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"-lSDLmain",
+					"-lSDL",
+					"-Wl,-framework,Cocoa",
+					"-Wl,-framework,OpenGL",
+					"-Wl,-framework,ApplicationServices",
+					"-Wl,-framework,Carbon",
+					"-Wl,-framework,AudioToolbox",
+					"-Wl,-framework,AudioUnit",
+					"-Wl,-framework,IOKit",
+				);
+				PREBINDING = NO;
+				SYMROOT = ../bin;
+			};
+			name = Debug;
+		};
+		7E192B7D2BDF001267805982 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../bin;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = lsjs;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		170D5F787FB7001267805982 /* Build configuration list for PBXNativeTarget "lsjs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7E192B7D2BDF001267805982 /* Debug */,
+				1D9931AD7F72001267805982 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "lsjs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				72826A320780001267805982 /* Debug */,
+				15AE642D5FC9001267805982 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}

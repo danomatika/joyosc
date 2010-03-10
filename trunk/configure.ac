@@ -1,10 +1,20 @@
+#########################################
 ##### Prelude #####
-AC_INIT([rc-unitd], [0.2.0], [danomatika@gmail.com])
+
+AC_INIT([rc-unitd], [0.3.0], [danomatika@gmail.com])
 AC_CONFIG_SRCDIR([src/rc-unitd/main.cpp])
 AC_CONFIG_AUX_DIR([config])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
+#########################################
+##### Build Options #####
+
+DEBUG_CXXFLAGS="-g -Wall -Werror -Wno-uninitialized -O0"
+RELEASE_CXXFLAGS="-g -O2"
+
+#########################################
 ##### Check for programs/libs #####
+
 # check progs
 AC_PROG_CXX
 AC_PROG_RANLIB
@@ -14,69 +24,70 @@ AC_LANG_CPLUSPLUS
 
 # check for headers
 AC_HEADER_STDC
-AC_CHECK_HEADER([linux/input.h],[],
-	AC_MSG_ERROR([linux/input.h not found]))
-AC_CHECK_HEADER([lo/lo.h],[],
-	AC_MSG_ERROR([lo/lo.h not found]))
+AC_CHECK_HEADERS(sstream) # needed for tclap
 
 # check for headers & libs
-PKG_CHECK_MODULES(GLIB2, glib-2.0 >= 2.14,[],
-	AC_MSG_ERROR([glib-2.0 library not found]))
-PKG_CHECK_MODULES(DBUS, dbus-1 >= 0.60,[],
-	AC_MSG_ERROR([dbus-1 library not found]))
-#PKG_CHECK_MODULES(LIBLO, liblo0 >= 0.22,[],
-#	AC_MSG_ERROR([liblo0 library not found]))
-AC_CHECK_LIB([lo], [lo_arg_pp],
-	AC_SUBST([LIBLO_LIBS], ["-llo"]),
-	AC_MSG_ERROR([liblo library not found]))
+PKG_CHECK_MODULES(SDL, sdl >= 1.2,[],
+	AC_MSG_ERROR([SDL library >= 1.2 not found]))
+	
+PKG_CHECK_MODULES(LO, liblo >= 0.25,[],
+	AC_MSG_ERROR([lo library >= 0.25 not found]))
 
-# check for optional libs,
-# from http://www.gnu.org/software/autoconf/manual/html_node/External-Software.html
+#########################################
+##### Options #####
 
-# check for configure option and set makefile conditional
-AC_ARG_ENABLE([cwiid],
-	[AS_HELP_STRING([--enable-cwiid],
-		[enable experimental wiimote support using libcwiid])],
-	[enable_cwiid=yes],
-	[enable_cwiid=no])
-AM_CONDITIONAL([ENABLE_CWIID], [test "x$enable_cwiid" = xyes])
+# debug build switch
+# from http://www.bioinf.uni-freiburg.de/~mmann/HowTo/automake.html#debug
+AC_MSG_CHECKING([whether to enable the debug build])
+AC_ARG_ENABLE([debug],
+    [AS_HELP_STRING([--enable-debug],
+        [enable debug build (def=no)])],
+    [enable_debug="$enableval"],
+    [enable_debug=no])
+AC_MSG_RESULT([$enable_debug])
 
-# check for lib and set link flags and defines, fail if lib not installed
-CWIID_LIBS=
-AS_IF([test "x$enable_cwiid" = xyes],
-	[AC_CHECK_LIB([cwiid], [cwiid_open],
-		[AC_SUBST([CWIID_LIBS], ["-lcwiid"])
-			AC_DEFINE([HAVE_CWIID], [1],
-				[Define if you have libcwiid])
-			],
-			[AC_MSG_FAILURE([--with-cwiid was given but libcwiid not found])],
-			[])])
+if test x"$enable_debug" = x"yes"; then
+    AC_DEFINE([DEBUG],[],[Debug Mode])
+    CXXFLAGS="$DEBUG_CXXFLAGS"
+else
+    AC_DEFINE([NDEBUG],[],[Release Mode])
+    CXXFLAGS="$RELEASE_CXXFLAGS"
+fi
 
-# arg to disable installation of config files, need to disable this for distcheck
-AC_ARG_ENABLE([config],
-  [AS_HELP_STRING([--disable-config],
-    [disable installation of config files])])
-AM_CONDITIONAL([ENABLE_CONFIG], [test "x$enable_config" != xno]) 
+#########################################
+##### Externals #####
 
+# externals with configure scripts
+AC_CONFIG_SUBDIRS(
+	[externals/oscframework]
+	[externals/xmlframework]
+)
+
+#########################################
 ##### Output files #####
+
 AC_CONFIG_HEADERS([src/config.h])
 AC_CONFIG_FILES([
 	Makefile
+	data/Makefile
+	externals/Makefile
+	externals/tclap/Makefile
 	src/Makefile
 	src/lib/Makefile
-	src/lsjs/Makefile
 	src/rc-unitd/Makefile
 	src/rc-unit-notifier/Makefile
+	src/lsjs/Makefile
 ])
 AC_OUTPUT
 
-# Print a summary for the user
+#########################################
+##### Print a summary for the user #####
+
 AC_MSG_RESULT([
 	rc-unitd $VERSION is now configured
 
 	Source directory:     $srcdir
 	Installation prefix:  $prefix
 	C++ compiler:         $CXX $CXXFLAGS
-
-	cwiid wiimote support: $enable_cwiid
+	Debug build:          $enable_debug
 ])
