@@ -13,8 +13,7 @@ configfilesdir = $(docdir)
 # is used 
 #
 all-local:
-	sed 's:BINDIR:$(bindir):' $(thisdir)/85-rc-unitd.rules.source > \
-	85-rc-unitd.rules
+	sed 's:BINDIR:$(bindir):' $(thisdir)/85-rc-unitd.rules.source > 85-rc-unitd.rules
 
 clean-local:
 	rm -f 85-rc-unitd.rules
