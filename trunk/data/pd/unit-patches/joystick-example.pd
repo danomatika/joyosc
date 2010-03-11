@@ -25,7 +25,7 @@
 #X obj 115 176 unit-joystick /js0;
 #X obj 115 260 unpack;
 #X floatatom 115 287 5 0 0 0 num - -;
-#X floatatom 178 289 5 0 0 0 val - -;
+#X floatatom 178 289 6 0 0 0 val - -;
 #X floatatom 249 291 5 0 0 0 num - -;
 #X floatatom 313 292 5 0 0 0 val - -;
 #X obj 249 264 unpack;
