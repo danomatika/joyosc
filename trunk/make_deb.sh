@@ -1,11 +1,11 @@
 #! /bin/bash
 
-# make a Debian package
+# make an Ubuntu Debian package
 
 NAME="rc-unitd"
 
 # library/build depenencies
-DEPENDS="liblo0ldbl"
+DEPENDS="libsdl1.2debian, liblo0ldbl"
 
 # exit if checkinstall is not installed
 if [ ! -e "/usr/bin/checkinstall" ] ; then
