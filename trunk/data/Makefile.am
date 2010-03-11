@@ -12,12 +12,13 @@ configfilesdir = $(docdir)
 # is replaced by $(bindir), which means it should work regardless of what prefix 
 # is used 
 #
-install-data-local:
+all-local:
 	sed 's:BINDIR:$(bindir):' $(thisdir)/85-rc-unitd.rules.source > \
 	85-rc-unitd.rules
 
-uninstall-local:
+clean-local:
 	rm -f 85-rc-unitd.rules
+	touch 85-rc-unitd.rules
 
 # include pd files
 dist_pd_readme_DATA = $(thisdir)/pd/README

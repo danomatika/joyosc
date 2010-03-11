@@ -18,6 +18,9 @@ dist_libunit_a_SOURCES =	Common.h Log.h \
 #libunit_a_SOURCES += Wiimote.h Wiimote.cpp
 #endif
 
+# local libraries needed to build (builddir)
+libunit_a_LIBADD = $(EXTERNALS_LIBS) -lxmlframework -loscframework
+
 # include paths
 AM_CPPFLAGS = $(CXXFLAGS) $(SDL_FLAGS) $(LO_CFLAGS) $(EXTERNALS_CFLAGS)
 #		-I$(top_srcdir)/../externals/xmlframework/src \
@@ -27,7 +30,8 @@ AM_CPPFLAGS = $(CXXFLAGS) $(SDL_FLAGS) $(LO_CFLAGS) $(EXTERNALS_CFLAGS)
 #$(EXTERNALS_CFLAGS)
 
 # libs to link
-AM_LDFLAGS = $(SDL_LIBS) $(LO_LIBS) $(EXTERNALS_LIBS)
+AM_LDFLAGS = $(SDL_LIBS) $(LO_LIBS)
+#$(EXTERNALS_LIBS) -lxmlframework -loscframework
 #			-L$(top_srcdir)/../externals/xmlframework/src/xmlframework \
 #    	     -L$(top_srcdir)/../externals/oscframework/src/oscframework \
 #		     -lxmlframework -loscframework

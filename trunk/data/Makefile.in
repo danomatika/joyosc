@@ -316,7 +316,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(DATA)
+all-am: Makefile $(DATA) all-local
 installdirs:
 	for dir in "$(DESTDIR)$(configfilesdir)" "$(DESTDIR)$(pd_readmedir)" "$(DESTDIR)$(rcpatchesdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
@@ -348,7 +348,7 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic mostlyclean-am
+clean-am: clean-generic clean-local mostlyclean-am
 
 distclean: distclean-am
 	-rm -f Makefile
@@ -366,7 +366,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-data-local install-dist_configfilesDATA \
+install-data-am: install-dist_configfilesDATA \
 	install-dist_pd_readmeDATA install-dist_rcpatchesDATA
 
 install-dvi: install-dvi-am
@@ -412,15 +412,14 @@ ps: ps-am
 ps-am:
 
 uninstall-am: uninstall-dist_configfilesDATA \
-	uninstall-dist_pd_readmeDATA uninstall-dist_rcpatchesDATA \
-	uninstall-local
+	uninstall-dist_pd_readmeDATA uninstall-dist_rcpatchesDATA
 
 .MAKE: install-am install-strip
 
-.PHONY: all all-am check check-am clean clean-generic distclean \
-	distclean-generic distdir dvi dvi-am html html-am info info-am \
-	install install-am install-data install-data-am \
-	install-data-local install-dist_configfilesDATA \
+.PHONY: all all-am all-local check check-am clean clean-generic \
+	clean-local distclean distclean-generic distdir dvi dvi-am \
+	html html-am info info-am install install-am install-data \
+	install-data-am install-dist_configfilesDATA \
 	install-dist_pd_readmeDATA install-dist_rcpatchesDATA \
 	install-dvi install-dvi-am install-exec install-exec-am \
 	install-html install-html-am install-info install-info-am \
@@ -429,8 +428,7 @@ uninstall-am: uninstall-dist_configfilesDATA \
 	installdirs maintainer-clean maintainer-clean-generic \
 	mostlyclean mostlyclean-generic pdf pdf-am ps ps-am uninstall \
 	uninstall-am uninstall-dist_configfilesDATA \
-	uninstall-dist_pd_readmeDATA uninstall-dist_rcpatchesDATA \
-	uninstall-local
+	uninstall-dist_pd_readmeDATA uninstall-dist_rcpatchesDATA
 
 
 # need to process the udev config file to insert the proper bin path
@@ -439,12 +437,13 @@ uninstall-am: uninstall-dist_configfilesDATA \
 # is replaced by $(bindir), which means it should work regardless of what prefix 
 # is used 
 #
-install-data-local:
+all-local:
 	sed 's:BINDIR:$(bindir):' $(thisdir)/85-rc-unitd.rules.source > \
 	85-rc-unitd.rules
 
-uninstall-local:
+clean-local:
 	rm -f 85-rc-unitd.rules
+	touch 85-rc-unitd.rules
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

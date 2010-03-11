@@ -57,9 +57,11 @@ void App::setup()
     m_config.print();
     
     // setup osc interface
+	LOG << "setting up osc receiver" << endl;
     m_oscReceiver.setup(m_config.listeningPort);
     m_oscSender.setup(m_config.sendingIp, m_config.sendingPort);
 	m_oscReceiver.addOscObject(this);
+	LOG << "osc is setup" << endl;
 /*
     m_oscSender << BeginMessage(m_config.notificationAddress + "/startup")
     			<< true << MessageTerminator();
@@ -67,9 +69,7 @@ void App::setup()
 */
     // open existing devices
     m_joystickManager.open();
-    LOG << endl;
     m_joystickManager.print();
-    LOG << endl;
 
 	// set signal handling
     signal(SIGTERM, signalExit);    // terminate

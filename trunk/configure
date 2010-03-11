@@ -3829,10 +3829,11 @@ pkg_failed=no
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for SDL" >&5
 $as_echo_n "checking for SDL... " >&6; }
 
-if test -n "$SDL_CFLAGS"; then
-    pkg_cv_SDL_CFLAGS="$SDL_CFLAGS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
+if test -n "$PKG_CONFIG"; then
+    if test -n "$SDL_CFLAGS"; then
+        pkg_cv_SDL_CFLAGS="$SDL_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
     { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"sdl >= 1.2\""; } >&5
   ($PKG_CONFIG --exists --print-errors "sdl >= 1.2") 2>&5
   ac_status=$?
@@ -3842,13 +3843,15 @@ if test -n "$SDL_CFLAGS"; then
 else
   pkg_failed=yes
 fi
- else
-    pkg_failed=untried
+    fi
+else
+	pkg_failed=untried
 fi
-if test -n "$SDL_LIBS"; then
-    pkg_cv_SDL_LIBS="$SDL_LIBS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
+if test -n "$PKG_CONFIG"; then
+    if test -n "$SDL_LIBS"; then
+        pkg_cv_SDL_LIBS="$SDL_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
     { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"sdl >= 1.2\""; } >&5
   ($PKG_CONFIG --exists --print-errors "sdl >= 1.2") 2>&5
   ac_status=$?
@@ -3858,8 +3861,9 @@ if test -n "$SDL_LIBS"; then
 else
   pkg_failed=yes
 fi
- else
-    pkg_failed=untried
+    fi
+else
+	pkg_failed=untried
 fi
 
 
@@ -3872,9 +3876,9 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        SDL_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "sdl >= 1.2" 2>&1`
+	        SDL_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "sdl >= 1.2"`
         else
-	        SDL_PKG_ERRORS=`$PKG_CONFIG --print-errors "sdl >= 1.2" 2>&1`
+	        SDL_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "sdl >= 1.2"`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$SDL_PKG_ERRORS" >&5
@@ -3897,37 +3901,41 @@ pkg_failed=no
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for LO" >&5
 $as_echo_n "checking for LO... " >&6; }
 
-if test -n "$LO_CFLAGS"; then
-    pkg_cv_LO_CFLAGS="$LO_CFLAGS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"liblo >= 0.25\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "liblo >= 0.25") 2>&5
+if test -n "$PKG_CONFIG"; then
+    if test -n "$LO_CFLAGS"; then
+        pkg_cv_LO_CFLAGS="$LO_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"liblo >= 0.23\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "liblo >= 0.23") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_LO_CFLAGS=`$PKG_CONFIG --cflags "liblo >= 0.25" 2>/dev/null`
+  pkg_cv_LO_CFLAGS=`$PKG_CONFIG --cflags "liblo >= 0.23" 2>/dev/null`
 else
   pkg_failed=yes
 fi
- else
-    pkg_failed=untried
+    fi
+else
+	pkg_failed=untried
 fi
-if test -n "$LO_LIBS"; then
-    pkg_cv_LO_LIBS="$LO_LIBS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"liblo >= 0.25\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "liblo >= 0.25") 2>&5
+if test -n "$PKG_CONFIG"; then
+    if test -n "$LO_LIBS"; then
+        pkg_cv_LO_LIBS="$LO_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"liblo >= 0.23\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "liblo >= 0.23") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_LO_LIBS=`$PKG_CONFIG --libs "liblo >= 0.25" 2>/dev/null`
+  pkg_cv_LO_LIBS=`$PKG_CONFIG --libs "liblo >= 0.23" 2>/dev/null`
 else
   pkg_failed=yes
 fi
- else
-    pkg_failed=untried
+    fi
+else
+	pkg_failed=untried
 fi
 
 
@@ -3940,18 +3948,18 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        LO_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "liblo >= 0.25" 2>&1`
+	        LO_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "liblo >= 0.23"`
         else
-	        LO_PKG_ERRORS=`$PKG_CONFIG --print-errors "liblo >= 0.25" 2>&1`
+	        LO_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "liblo >= 0.23"`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$LO_PKG_ERRORS" >&5
 
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
-                as_fn_error "lo library >= 0.25 not found" "$LINENO" 5
+                as_fn_error "lo library >= 0.23 not found" "$LINENO" 5
 elif test $pkg_failed = untried; then
-	as_fn_error "lo library >= 0.25 not found" "$LINENO" 5
+	as_fn_error "lo library >= 0.23 not found" "$LINENO" 5
 else
 	LO_CFLAGS=$pkg_cv_LO_CFLAGS
 	LO_LIBS=$pkg_cv_LO_LIBS

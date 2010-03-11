@@ -62,7 +62,6 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	cout << endl;
 	for(int i = 0; i < SDL_NumJoysticks(); ++i)
     {
     	cout << i << " \"" << SDL_JoystickName(i) << "\"" << endl;
@@ -81,9 +80,6 @@ int main(int argc, char **argv)
             }
         }
 	}
-    
-    if(!bPrintDetails)
-    	cout << endl;
     
 	// cleanup SDL
 	SDL_Quit();

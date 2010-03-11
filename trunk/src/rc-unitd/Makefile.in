@@ -50,7 +50,8 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_rc_unitd_OBJECTS = main.$(OBJEXT) App.$(OBJEXT)
 rc_unitd_OBJECTS = $(am_rc_unitd_OBJECTS)
-rc_unitd_DEPENDENCIES =
+am__DEPENDENCIES_1 =
+rc_unitd_DEPENDENCIES = $(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/src
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
 am__depfiles_maybe = depfiles
@@ -183,7 +184,9 @@ EXTERNALS_LIBS = \
 rc_unitd_SOURCES = main.cpp App.h App.cpp
 
 # local libraries needed to build (builddir)
-rc_unitd_LDADD = -L$(top_builddir)/src/lib -lunit
+rc_unitd_LDADD = -L$(top_builddir)/src/lib -lunit \
+				 $(EXTERNALS_LIBS) -loscframework -lxmlframework
+
 
 # include paths
 AM_CPPFLAGS = $(CXXFLAGS) $(SDL_CFLAGS) $(LO_CFLAGS) $(EXTERNALS_CFLAGS) \
@@ -191,9 +194,7 @@ AM_CPPFLAGS = $(CXXFLAGS) $(SDL_CFLAGS) $(LO_CFLAGS) $(EXTERNALS_CFLAGS) \
 
 
 # libs to link
-AM_LDFLAGS = $(SDL_LIBS) $(LO_LIBS) $(EXTERNALS_LIBS) \
-			 -loscframework -lxmlframework
-
+AM_LDFLAGS = $(SDL_LIBS) $(LO_LIBS)
 all: all-am
 
 .SUFFIXES:

@@ -30,8 +30,8 @@ AC_CHECK_HEADERS(sstream) # needed for tclap
 PKG_CHECK_MODULES(SDL, sdl >= 1.2,[],
 	AC_MSG_ERROR([SDL library >= 1.2 not found]))
 	
-PKG_CHECK_MODULES(LO, liblo >= 0.25,[],
-	AC_MSG_ERROR([lo library >= 0.25 not found]))
+PKG_CHECK_MODULES(LO, liblo >= 0.23,[],
+	AC_MSG_ERROR([lo library >= 0.23 not found]))
 
 #########################################
 ##### Options #####
