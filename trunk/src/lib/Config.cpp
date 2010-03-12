@@ -110,7 +110,7 @@ Config::Config() :
 	listeningPort(7770),
     sendingIp("127.0.0.1"), sendingPort(8880),
     notificationAddress("/rc-unitd/notifications"), deviceAddress("/rc-unitd/devices"),
-    bPrintEvents(true), sleepMS(1.0f)
+    bPrintEvents(false), sleepMS(1.0f)
 {
 	// attach config values to xml attributes
 	addXmlAttribute("port", "listening", XML_TYPE_UINT, &listeningPort);
