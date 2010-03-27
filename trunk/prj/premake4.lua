@@ -18,8 +18,12 @@ project "unit"
 	targetdir "../lib"
 	files { "../src/lib/**.h", "../src/lib/**.cpp" }
 	
-	includedirs { "../src", "../externals/include" }
-	libdirs { "../externals/lib" }
+	includedirs { "../src",
+			 	  "../externals/xmlframework/src",
+			  	  "../externals/oscframework/src",
+			  	  "../externals/" }
+	libdirs { "../externals/xmlframework/src/xmlframework",
+      		  "../externals/oscframework/src/oscframework" }
 	
 	configuration "linux"
 		buildoptions { "`pkg-config --cflags sdl`", "`pkg-config --cflags liblo`" }
@@ -45,8 +49,12 @@ project "rc-unitd"
 	targetdir "../bin"
 	files { "../src/rc-unitd/**.h", "../src/rc-unitd/**.cpp" }
 	
-	includedirs { "../src", "../src/lib", "../externals/include" }
-	libdirs { "../externals/lib" }
+	includedirs { "../src", "../src/lib",
+			 	  "../externals/xmlframework/src",
+			  	  "../externals/oscframework/src",
+			  	  "../externals/" }
+	libdirs { "../externals/xmlframework/src/xmlframework",
+      		  "../externals/oscframework/src/oscframework" }
 	links { "unit", "oscframework", "xmlframework" }
 
 	configuration "linux"
@@ -78,7 +86,10 @@ project "lsjs"
 	targetdir "../bin"
 	files { "../src/lsjs/**.h", "../src/lsjs/**.cpp" }
 
-	includedirs { "../src", "../src/lib", "../externals/include" }
+	includedirs { "../src", "../src/lib",
+			 	  "../externals/xmlframework/src",
+			  	  "../externals/oscframework/src",
+			  	  "../externals/" }
 
 	configuration "linux"
 		buildoptions { "`pkg-config --cflags sdl`" }
@@ -109,8 +120,12 @@ project "rc-unit-notifier"
 	targetdir "../bin"
 	files { "../src/rc-unit-notifier/**.h", "../src/rc-unit-notifier/**.cpp" }
 	
-	includedirs { "../src", "../src/lib", "../externals/include" }
-	libdirs { "../externals/lib" }
+	includedirs { "../src", "../src/lib",
+			 	  "../externals/xmlframework/src",
+			  	  "../externals/oscframework/src",
+			  	  "../externals/" }
+	libdirs { "../externals/xmlframework/src/xmlframework",
+      		  "../externals/oscframework/src/oscframework" }
 	links { "oscframework" }
 
 	configuration "linux"

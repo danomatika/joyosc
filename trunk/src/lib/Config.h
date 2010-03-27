@@ -66,7 +66,7 @@ class Config : public xml::XmlObject
         
         bool bPrintEvents; 				///< print lots of events?
         
-        float sleepMS;			///< how long to sleep in the run loop
+        int sleepUS;					///< how long to sleep in the run loop
 
         /// get a reference to the OscSender
         inline osc::OscSender& getOscSender() {return m_oscSender;}

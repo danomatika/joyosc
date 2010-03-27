@@ -1,4 +1,4 @@
-2010-09-10 Dan Wilcox <danomatika@gmail.com>
+2010-03-27 Dan Wilcox <danomatika@gmail.com>
 
 	v0.3.0: Cross platform rewrite
 	
@@ -11,6 +11,7 @@
 	* legacy tests and classes removed
 	* new classes rewritten using xml and osc frameworks
 	* goptions replaced by TCLAP, glib dependency now gone 
+	* added commandline options for event printing and sleep time
 
 2008-05-28 Dan Wilcox <danomatika@gmail.com>
 	

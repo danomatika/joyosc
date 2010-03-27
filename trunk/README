@@ -48,6 +48,8 @@ Starts device daemon using the given config file.  The config file sets the osc 
 
 See the pd patches in the pd folder on how to communicate with rc-unitd.
 
+Note: Values set on the commandline override those in the config file.
+
 ----
 
 % lsjs

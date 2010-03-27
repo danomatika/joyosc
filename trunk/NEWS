@@ -8,7 +8,8 @@ v0.3.0: Cross platform rewrite 2010-09-10
 	- dbus notifications replaced by osc mesages
 	- legacy tests and classes removed
 	- new classes rewritten using xml and osc frameworks
-	- goptions replaced by TCLAP, glib dependency now gone 
+	- goptions replaced by TCLAP, glib dependency now gone
+	- added commandline options for event printing and sleep time
 
 v0.2.0: Partial rewrite for autotools 2008-05-28
 

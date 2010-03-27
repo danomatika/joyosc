@@ -7,26 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		50D43E581294001267805982 /* JoystickManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52E1409E6874001267805982 /* JoystickManager.cpp */; };
-		787F5C835911001267805982 /* JoystickDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18D441053962001267805982 /* JoystickDevice.cpp */; };
-		7E4912CE2D5F001267805982 /* Config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7891216A65F9001267805982 /* Config.cpp */; };
+		02DA6BBD6FFA001269700090 /* Config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2C14041F3A1A001269700090 /* Config.cpp */; };
+		0DA236A530B9001269700090 /* JoystickDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 61086E8A5A05001269700090 /* JoystickDevice.cpp */; };
+		61AF2A0539C3001269700090 /* JoystickManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37A028E3753C001269700090 /* JoystickManager.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		08A266B656AA001267805982 /* JoystickDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JoystickDevice.h; sourceTree = "<group>"; };
-		117B35420547001267805982 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
-		18D441053962001267805982 /* JoystickDevice.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = JoystickDevice.cpp; sourceTree = "<group>"; };
-		1B8B7BF93809001267805982 /* Log.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Log.h; sourceTree = "<group>"; };
-		28AC4488608C001267805982 /* libunit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libunit.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		43A0487C058D001267805982 /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
-		52E1409E6874001267805982 /* JoystickManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = JoystickManager.cpp; sourceTree = "<group>"; };
-		5C9C3B630D3E001267805982 /* JoystickManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JoystickManager.h; sourceTree = "<group>"; };
-		7891216A65F9001267805982 /* Config.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Config.cpp; sourceTree = "<group>"; };
-		7CBE1E6C599C001267805982 /* Device.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Device.h; sourceTree = "<group>"; };
+		0F9135CD634E001269700090 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		122438CD4C39001269700090 /* libunit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libunit.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		1DCD2A8C517A001269700090 /* Log.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Log.h; sourceTree = "<group>"; };
+		2C14041F3A1A001269700090 /* Config.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Config.cpp; sourceTree = "<group>"; };
+		37A028E3753C001269700090 /* JoystickManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = JoystickManager.cpp; sourceTree = "<group>"; };
+		478D2D357FA4001269700090 /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
+		5ECB081B505B001269700090 /* JoystickManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JoystickManager.h; sourceTree = "<group>"; };
+		61086E8A5A05001269700090 /* JoystickDevice.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = JoystickDevice.cpp; sourceTree = "<group>"; };
+		630E65CA3C84001269700090 /* JoystickDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JoystickDevice.h; sourceTree = "<group>"; };
+		69B43E3111A8001269700090 /* Device.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Device.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		4BD730AB5C95001267805982 /* Frameworks */ = {
+		773777ED014C001269700090 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -36,58 +36,58 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		16EC17146328001267805982 /* unit */ = {
+		0CE723E26AF4001269700090 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				6B135A153F6D001267805982 /* src */,
-				7F694A1F4048001267805982 /* Products */,
-			);
-			name = unit;
-			sourceTree = "<group>";
-		};
-		2AE534F9670F001267805982 /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				117B35420547001267805982 /* Common.h */,
-				7891216A65F9001267805982 /* Config.cpp */,
-				43A0487C058D001267805982 /* Config.h */,
-				7CBE1E6C599C001267805982 /* Device.h */,
-				18D441053962001267805982 /* JoystickDevice.cpp */,
-				08A266B656AA001267805982 /* JoystickDevice.h */,
-				52E1409E6874001267805982 /* JoystickManager.cpp */,
-				5C9C3B630D3E001267805982 /* JoystickManager.h */,
-				1B8B7BF93809001267805982 /* Log.h */,
-			);
-			path = lib;
-			sourceTree = "<group>";
-		};
-		6B135A153F6D001267805982 /* src */ = {
-			isa = PBXGroup;
-			children = (
-				2AE534F9670F001267805982 /* lib */,
+				73BC3D940029001269700090 /* lib */,
 			);
 			name = src;
 			path = ../src;
 			sourceTree = "<group>";
 		};
-		7F694A1F4048001267805982 /* Products */ = {
+		4AC90B734D8F001269700090 /* unit */ = {
 			isa = PBXGroup;
 			children = (
-				28AC4488608C001267805982 /* libunit.a */,
+				0CE723E26AF4001269700090 /* src */,
+				573E5E107130001269700090 /* Products */,
+			);
+			name = unit;
+			sourceTree = "<group>";
+		};
+		573E5E107130001269700090 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				122438CD4C39001269700090 /* libunit.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		73BC3D940029001269700090 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				0F9135CD634E001269700090 /* Common.h */,
+				2C14041F3A1A001269700090 /* Config.cpp */,
+				478D2D357FA4001269700090 /* Config.h */,
+				69B43E3111A8001269700090 /* Device.h */,
+				61086E8A5A05001269700090 /* JoystickDevice.cpp */,
+				630E65CA3C84001269700090 /* JoystickDevice.h */,
+				37A028E3753C001269700090 /* JoystickManager.cpp */,
+				5ECB081B505B001269700090 /* JoystickManager.h */,
+				1DCD2A8C517A001269700090 /* Log.h */,
+			);
+			path = lib;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3830093702C5001267805982 /* unit */ = {
+		640F25484B26001269700090 /* unit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 501F405F4CD6001267805982 /* Build configuration list for PBXNativeTarget "unit" */;
+			buildConfigurationList = 2A8D2DA60A18001269700090 /* Build configuration list for PBXNativeTarget "unit" */;
 			buildPhases = (
-				28CD5F2302A3001267805982 /* Resources */,
-				4EE949B0708D001267805982 /* Sources */,
-				4BD730AB5C95001267805982 /* Frameworks */,
+				5B5B741752E6001269700090 /* Resources */,
+				113741A60287001269700090 /* Sources */,
+				773777ED014C001269700090 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -95,7 +95,7 @@
 			);
 			name = unit;
 			productName = unit;
-			productReference = 28AC4488608C001267805982 /* libunit.a */;
+			productReference = 122438CD4C39001269700090 /* libunit.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -106,17 +106,17 @@
 			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "unit" */;
 			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
-			mainGroup = 16EC17146328001267805982 /* unit */;
+			mainGroup = 4AC90B734D8F001269700090 /* unit */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3830093702C5001267805982 /* unit */,
+				640F25484B26001269700090 /* unit */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		28CD5F2302A3001267805982 /* Resources */ = {
+		5B5B741752E6001269700090 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -126,47 +126,32 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		4EE949B0708D001267805982 /* Sources */ = {
+		113741A60287001269700090 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E4912CE2D5F001267805982 /* Config.cpp in Sources */,
-				787F5C835911001267805982 /* JoystickDevice.cpp in Sources */,
-				50D43E581294001267805982 /* JoystickManager.cpp in Sources */,
+				02DA6BBD6FFA001269700090 /* Config.cpp in Sources */,
+				0DA236A530B9001269700090 /* JoystickDevice.cpp in Sources */,
+				61AF2A0539C3001269700090 /* JoystickManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		2E91643B073E001267805982 /* Release */ = {
+		04522991092D001269700090 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
-				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
-				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					../src,
-					../externals/include,
-					../../../../../opt/local/include,
-				);
-				LIBRARY_SEARCH_PATHS = (
-					../externals/lib,
-					../../../../../opt/local/lib,
-				);
-				OBJROOT = ../obj/Release/unit;
-				ONLY_ACTIVE_ARCH = NO;
-				PREBINDING = NO;
-				SYMROOT = ../lib;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../lib;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/lib;
+				PRODUCT_NAME = unit;
 			};
-			name = Release;
+			name = Debug;
 		};
-		3EF35A9A3A99001267805982 /* Debug */ = {
+		244B6AB46FCD001269700090 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
@@ -181,11 +166,14 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					../src,
-					../externals/include,
+					../externals/xmlframework/src,
+					../externals/oscframework/src,
+					../externals,
 					../../../../../opt/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
-					../externals/lib,
+					../externals/xmlframework/src/xmlframework,
+					../externals/oscframework/src/oscframework,
 					../../../../../opt/local/lib,
 				);
 				OBJROOT = ../obj/Debug/unit;
@@ -195,7 +183,37 @@
 			};
 			name = Debug;
 		};
-		430735B90CA5001267805982 /* Release */ = {
+		29C80D7D3AAD001269700090 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					../src,
+					../externals/xmlframework/src,
+					../externals/oscframework/src,
+					../externals,
+					../../../../../opt/local/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					../externals/xmlframework/src/xmlframework,
+					../externals/oscframework/src/oscframework,
+					../../../../../opt/local/lib,
+				);
+				OBJROOT = ../obj/Release/unit;
+				ONLY_ACTIVE_ARCH = NO;
+				PREBINDING = NO;
+				SYMROOT = ../lib;
+			};
+			name = Release;
+		};
+		33674B11568C001269700090 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -208,35 +226,23 @@
 			};
 			name = Release;
 		};
-		5B00647345B0001267805982 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CONFIGURATION_BUILD_DIR = ../lib;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_MODEL_TUNING = G5;
-				INSTALL_PATH = /usr/local/lib;
-				PRODUCT_NAME = unit;
-			};
-			name = Debug;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
 		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "unit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3EF35A9A3A99001267805982 /* Debug */,
-				2E91643B073E001267805982 /* Release */,
+				244B6AB46FCD001269700090 /* Debug */,
+				29C80D7D3AAD001269700090 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		501F405F4CD6001267805982 /* Build configuration list for PBXNativeTarget "unit" */ = {
+		2A8D2DA60A18001269700090 /* Build configuration list for PBXNativeTarget "unit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				5B00647345B0001267805982 /* Debug */,
-				430735B90CA5001267805982 /* Release */,
+				04522991092D001269700090 /* Debug */,
+				33674B11568C001269700090 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

@@ -53,7 +53,8 @@ void Config::print()
         << "sending port:	" << sendingPort << endl
         << "sending address for notifications: " << notificationAddress << endl
         << "sending address for devices:       " << deviceAddress << endl
-        << "print events: 	" << bPrintEvents << endl;
+        << "print events: 	" << bPrintEvents << endl
+        << "sleep us:		" << sleepUS << endl;
 
     int index = 0;
     map<string, string>::iterator iter;
@@ -69,10 +70,6 @@ void Config::print()
 
 bool Config::readXml(TiXmlElement* e)
 {
-	// clip sleepMS
-    if(sleepMS < 0)
-    	sleepMS = 0.0f;
-
 	// load the device mappings
 	TiXmlElement* child = Xml::getElement(e, "mappings");
 	if(child != NULL)
@@ -110,7 +107,7 @@ Config::Config() :
 	listeningPort(7770),
     sendingIp("127.0.0.1"), sendingPort(8880),
     notificationAddress("/rc-unitd/notifications"), deviceAddress("/rc-unitd/devices"),
-    bPrintEvents(false), sleepMS(1.0f)
+    bPrintEvents(false), sleepUS(1000)
 {
 	// attach config values to xml attributes
 	addXmlAttribute("port", "listening", XML_TYPE_UINT, &listeningPort);
@@ -122,5 +119,5 @@ Config::Config() :
     addXmlAttribute("deviceAddress", "osc", XML_TYPE_STRING, &deviceAddress);
     
     addXmlAttribute("bPrintEvents", "config", XML_TYPE_BOOL, &bPrintEvents);
-    addXmlAttribute("sleepMS", "config", XML_TYPE_FLOAT, &sleepMS);
+    addXmlAttribute("sleepUS", "config", XML_TYPE_UINT, &sleepUS);
 }

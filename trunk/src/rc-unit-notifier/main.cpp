@@ -68,10 +68,12 @@ int main(int argc, char *argv[])
     TCLAP::UnlabeledValueArg<string> actionCmd("action", "Action to perform", true, "", &actionConstraint);
     TCLAP::UnlabeledValueArg<string> devCmd("dev", "Device to perform the action on", false, "", "dev");
 
-    // add args to parser
-    cmd.add(ipOpt);
-    cmd.add(portOpt);
+    // add args to parser (in reverse order)
     cmd.add(typeOpt);
+    cmd.add(portOpt);
+    cmd.add(ipOpt);
+    
+    // add commands
     cmd.add(actionCmd);
     cmd.add(devCmd);
 

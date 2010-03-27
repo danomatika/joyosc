@@ -42,41 +42,63 @@ int main(int argc, char **argv)
         // short id, long id, description, required?, default value, short usage type description
         TCLAP::ValueArg<string> ipOpt("i", "ip", (string) "IP address to send to; default is '"+config.sendingIp+"'", false, config.sendingIp, "string");
         TCLAP::ValueArg<int> 	portOpt("p","port", (string) "Port to send to; default is '"+itoa.str()+"'", false, config.sendingPort, "int");
-        
+     
         itoa.str("");
         itoa << config.listeningPort;
-        TCLAP::ValueArg<int>	inputPortOpt("", "input_port", "Listening port; default is '"+itoa.str()+"'", false, config.listeningPort, "int");
+        TCLAP::ValueArg<int>	inputPortOpt("", "listening_port", "Listening port; default is '"+itoa.str()+"'", false, config.listeningPort, "int");
+              
+        itoa.str("");
+        itoa << config.bPrintEvents;
+        TCLAP::ValueArg<bool>	eventsOpt("e", "events", (string) "Print events; default is '"+itoa.str()+"'", false, config.bPrintEvents, "bool");
         
+        itoa.str("");
+        itoa << config.sleepUS;
+        TCLAP::ValueArg<int>	sleepOpt("s", "sleep", (string) "Sleep time in usecs; default is '"+itoa.str()+"'", false, config.sleepUS, "int");
+        
+
         // commands to parse
         // name, description, required?, default value, short usage type description
         TCLAP::UnlabeledValueArg<string> configCmd("config", "Config file to load", false, "", "config");
 
-        // add args to parser
-        cmd.add(ipOpt);
-        cmd.add(portOpt);
+        // add args to parser (in reverse order)
+        cmd.add(sleepOpt);
+        cmd.add(eventsOpt);
         cmd.add(inputPortOpt);
+        cmd.add(portOpt);
+        cmd.add(ipOpt);
+        
+        // add commands
         cmd.add(configCmd);
 
         // parse the commandline
         cmd.parse(argc, argv);
 
-        // set the config file (if one exists)
+        // load the config file (if one exists)
         if(configCmd.getValue() != "")
         {
             config.setXmlFilename(configCmd.getValue());
+            LOG << "loading \"" << config.getXmlFilename() << "\"" << endl;
+    		config.loadXmlFile();
+    		config.closeXmlFile();
         }
-
+        
+        // set the variables
+        config.sendingIp = ipOpt.getValue();
+        config.sendingPort = portOpt.getValue();
+        config.listeningPort = inputPortOpt.getValue();
+        config.bPrintEvents = eventsOpt.getValue();
+        config.sleepUS = sleepOpt.getValue();
 	}
     catch(TCLAP::ArgException &e)  // catch any exceptions
 	{
-	    cerr << "CommandLine error: " << e.error() << " for arg " << e.argId() << endl;
+	    LOG_ERROR << "CommandLine: " << e.error() << " for arg " << e.argId() << endl;
         return EXIT_FAILURE;
     }
 
 	// init SDL
-	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0 )
+	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)
     {
-		LOG_ERROR << "rc-unitd: Couldn't initialize SDL: " << SDL_GetError() << endl;
+		LOG_ERROR << "Couldn't initialize SDL: " << SDL_GetError() << endl;
 		return EXIT_FAILURE;
 	}
 

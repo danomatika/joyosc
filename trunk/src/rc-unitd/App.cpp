@@ -24,6 +24,8 @@
 
 #include <signal.h>     // signal handling
 
+#include "TimeUtil.h"	// sleeps
+
 using namespace osc;
 
 App* appPtr;
@@ -48,12 +50,6 @@ void App::go()
 
 void App::setup()
 {
-	// load config
-    if(m_config.getXmlFilename() != "")
-    {
-    	m_config.loadXmlFile();
-    	m_config.closeXmlFile();
-    }
     m_config.print();
     
     // setup osc interface
@@ -105,12 +101,7 @@ void App::run()
         }
      
      	// and 2 cents for the scheduler ...
-        //SDL_Delay(m_config.sleepMS);
-        #ifdef _WIN32
-        	Sleep(m_config.sleepMS);
-        #else
-        	usleep(m_config.sleepMS * 1000);
-    	#endif
+        usleep(m_config.sleepUS);
     }
 }
         

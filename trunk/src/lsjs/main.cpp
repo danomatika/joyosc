@@ -40,7 +40,7 @@ int main(int argc, char **argv)
         // short id, long id, description, required?, default value, short usage type description
         TCLAP::SwitchArg detailOpt("d","details","Print joystick details", false);
 
-        // add args to parser
+        // add args to parser (in reverse order)
         cmd.add(detailOpt);
 
         // parse the commandline
