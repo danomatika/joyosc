@@ -1,10 +1,4 @@
-1999-11-21  Tom Tromey  <tromey@cygnus.com>
+2007-06-10 Dan Wilcox <danomatika@gmail.com>
 
-        * automake.in (finish_languages): Only generate suffix rule
-        when not doing dependency tracking.
+	v0.1.0: 	Initial thesis release
 
-        * m4/init.m4 (AM_INIT_AUTOMAKE): Use AM_MISSING_INSTALL_SH.
-        * m4/missing.m4 (AM_MISSING_INSTALL_SH): New macro.
-
-        * depend2.am: Use @SOURCE@, @OBJ@, @LTOBJ@, @OBJOBJ@,
-        and @BASE@.  Always use -o.
