@@ -1,2 +1,8 @@
-0.1.0
-	- Initial Release
+v0.2.0: Partial rewrite for autotools 2008-05-28
+
+	- reorganized build structure using autotools
+	- removed excess classes and class tests
+	- udev and dbus rules now installed
+	- added pd library and examples
+
+v0.1.0: 	Initial thesis release 2007-06-10
