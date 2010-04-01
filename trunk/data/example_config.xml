@@ -5,6 +5,7 @@
 	<osc notificationAddress="/pd/unitd" deviceAddress="/pd/devices"/>
 	<config bPrintEvents="1" sleepUS="100"/>
 	<mappings>
+		<joystick name="PLAYSTATION(R)3 Controller" address="/ps2black"/>
 		<joystick name="Logitech Dual Action" address="/ps2black"/>
 		<joystick name="Saitek P990 Dual Analog Pad" address="/bbox"/>
 	</mappings>

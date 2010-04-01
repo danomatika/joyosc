@@ -25,6 +25,8 @@
 #include "Log.h"
 #include "../config.h"	// autotools generated header
 
+#include <tclap/tclap.h>
+
 using namespace xml;
 
 Config& Config::instance()
@@ -45,6 +47,76 @@ string Config::getDeviceAddress(string deviceName)
     return "";
 }
 
+bool Config::parseCommandLine(int argc, char **argv)
+{
+	try
+    {
+        // the commandline parser
+        TCLAP::CommandLine cmd("a device event to osc bridge", VERSION);
+        
+        stringstream itoa;
+        itoa << sendingPort;
+        
+        // options to parse
+        // short id, long id, description, required?, default value, short usage type description
+        TCLAP::ValueArg<string> ipOpt("i", "ip", (string) "IP address to send to; default is '"+sendingIp+"'", false, sendingIp, "string");
+        TCLAP::ValueArg<int> 	portOpt("p","port", (string) "Port to send to; default is '"+itoa.str()+"'", false, sendingPort, "int");
+     
+        itoa.str("");
+        itoa << listeningPort;
+        TCLAP::ValueArg<int>	inputPortOpt("", "listening_port", "Listening port; default is '"+itoa.str()+"'", false, listeningPort, "int");
+              
+        itoa.str("");
+        itoa << bPrintEvents;
+        TCLAP::ValueArg<bool>	eventsOpt("e", "events", (string) "Print events; default is '"+itoa.str()+"'", false, bPrintEvents, "bool");
+        
+        itoa.str("");
+        itoa << sleepUS;
+        TCLAP::ValueArg<int>	sleepOpt("s", "sleep", (string) "Sleep time in usecs; default is '"+itoa.str()+"'", false, sleepUS, "int");
+
+        // commands to parse
+        // name, description, required?, default value, short usage type description
+        TCLAP::UnlabeledValueArg<string> configCmd("config", "Config file to load", false, "", "config");
+
+        // add args to parser (in reverse order)
+        cmd.add(sleepOpt);
+        cmd.add(eventsOpt);
+        cmd.add(inputPortOpt);
+        cmd.add(portOpt);
+        cmd.add(ipOpt);
+        
+        // add commands
+        cmd.add(configCmd);
+
+        // parse the commandline
+        cmd.parse(argc, argv);
+
+        // load the config file (if one exists)
+        if(configCmd.getValue() != "")
+        {
+            setXmlFilename(configCmd.getValue());
+            LOG << "loading \"" << getXmlFilename() << "\"" << endl;
+    		if(!loadXmlFile())
+            	LOG_ERROR << "Something bad happened" << endl;
+    		closeXmlFile();
+        }
+        
+        // set the variables
+        if(ipOpt.isSet())		 sendingIp = ipOpt.getValue();
+        if(portOpt.isSet()) 	 sendingPort = portOpt.getValue();
+        if(inputPortOpt.isSet()) listeningPort = inputPortOpt.getValue();
+        if(eventsOpt.isSet()) 	 bPrintEvents = eventsOpt.getValue();
+        if(sleepOpt.isSet())		 sleepUS = sleepOpt.getValue();
+    }
+    catch(TCLAP::ArgException &e)  // catch any exceptions
+	{
+	    LOG_ERROR << "CommandLine: " << e.error() << " for arg " << e.argId() << endl;
+        return false;
+    }
+
+	return true;
+}
+
 void Config::print()
 {
 	LOG << "listening port:	" << listeningPort << endl
@@ -54,7 +126,7 @@ void Config::print()
         << "sending address for notifications: " << notificationAddress << endl
         << "sending address for devices:       " << deviceAddress << endl
         << "print events: 	" << bPrintEvents << endl
-        << "sleep us:		" << sleepUS << endl;
+        << "sleep us:       " << sleepUS << endl;
 
     int index = 0;
     map<string, string>::iterator iter;

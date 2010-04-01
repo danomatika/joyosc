@@ -61,6 +61,7 @@ class Config : public xml::XmlObject
         string sendingIp;				///< ip to send to
         unsigned int sendingPort;		///< port to send to
         
+        string baseAddress;				///< base osc sending address
         string notificationAddress;		///< base osc sending address for notifications
         string deviceAddress;			///< base osc sending addess for devices
         
@@ -78,6 +79,11 @@ class Config : public xml::XmlObject
             \return	mapped device addr on success, empty string "" on failure
         */
        	string getDeviceAddress(string deviceName);
+        
+        /**
+        	\brief	parse the commandline options
+        */
+        bool parseCommandLine(int argc, char **argv);
 
         /// print the current config values
         void print();

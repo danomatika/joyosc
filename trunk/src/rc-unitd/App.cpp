@@ -24,8 +24,6 @@
 
 #include <signal.h>     // signal handling
 
-#include "TimeUtil.h"	// sleeps
-
 using namespace osc;
 
 App* appPtr;

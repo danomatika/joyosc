@@ -25,6 +25,8 @@
 
 #include "Common.h"
 
+#include <vector>
+
 #include "Device.h"
 
 /** \class  Joystick_Device
@@ -77,8 +79,10 @@ class JoystickDevice : public Device
 
     protected:
 
-		SDL_Joystick*	m_joystick;
+		SDL_Joystick	*m_joystick;
         int				m_joyIndex;
+        
+        std::vector<int16_t>	m_prevAxisValues;
 };
 
 #endif // JOYSTICK_DEVICE_H

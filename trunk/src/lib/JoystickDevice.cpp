@@ -22,6 +22,8 @@
 ==============================================================================*/
 #include "JoystickDevice.h"
 
+#define JOYSTICK_AXIS_DEAD_ZONE	3200	// used to set an ignore threshold around 0
+
 JoystickDevice::JoystickDevice(string oscAddress) :
 	Device(oscAddress), m_joystick(NULL), m_joyIndex(-1)
 {}
@@ -63,6 +65,10 @@ bool JoystickDevice::open()
     
     m_devName = SDL_JoystickName(m_joyIndex);
             
+    // create prev axis values
+    for(int i = 0; i < SDL_JoystickNumAxes(m_joystick); ++i)
+    	m_prevAxisValues.push_back(0);
+    
     LOG_DEBUG << "JoystickDevice: opened " << m_joyIndex
               << " \"" << m_devName << "\" with address "
               << m_oscAddress << endl;
@@ -75,8 +81,11 @@ void JoystickDevice::close()
 	{
     	SDL_JoystickClose(m_joystick);
     }
-    m_joyIndex = -1;	// reset index
-    m_devName = "";		// reset name
+    
+    // reset variables
+    m_joyIndex = -1;
+    m_devName = "";
+    m_prevAxisValues.clear();
 }
 
 bool JoystickDevice::handleEvents(void* data)
@@ -128,16 +137,31 @@ bool JoystickDevice::handleEvents(void* data)
         {
         	if(event->jaxis.which != m_joyIndex)
             	break;
-                
+             
+            int value = (int) event->jaxis.value;
+             
+            // handle jitter by creating a dead zone
+            if(abs(value) < JOYSTICK_AXIS_DEAD_ZONE)
+                value = 0;
+                   
+            // make sure we don't report a value more then once
+            if(m_prevAxisValues[event->jaxis.axis] == value)
+            {
+            	return true;
+            }
+            
             sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/axis")
-                   << event->jaxis.axis << event->jaxis.value
+                   << event->jaxis.axis << value
                    << osc::MessageTerminator();
             sender.send();
+            
+            // store value
+            m_prevAxisValues[event->jaxis.axis] = value;
 
             if(m_config.bPrintEvents)
                 LOG << m_oscAddress << " \"" << m_devName << "\""
                     << " Axis: " << (int) event->jaxis.axis
-                    << " Value: " << (int) event->jaxis.value << endl;
+                    << " Value: " << value << endl;
             return true;
         }
         
