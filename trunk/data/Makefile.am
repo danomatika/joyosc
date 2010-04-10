@@ -22,9 +22,10 @@ clean-local:
 # include pd files
 dist_pd_readme_DATA = $(thisdir)/pd/README
 pd_readmedir = $(docdir)/pd
-dist_rcpatches_DATA = $(thisdir)/pd/unit-patches/joystick-example.pd \
-					  $(thisdir)/pd/unit-patches/unit-joystick.pd \
-				 	  $(thisdir)/pd/unit-patches/unit-joystick-gui.pd \
+dist_rcpatches_DATA = $(thisdir)/pd/unit-patches/Example-rc-unitd.pd \
+					  $(thisdir)/pd/unit-patches/unit-joystick_.pd \
+					  $(thisdir)/pd/unit-patches/unit-joystick_-help.pd \
+				 	  $(thisdir)/pd/unit-patches/unit-joystick.pd \
 				 	  $(thisdir)/pd/unit-patches/unit-joystick-help.pd
 #				 	  $(thisdir)/pd/unit-patches/unit-wiimote.pd \
 #				 	  $(thisdir)/pd/unit-patches/unit-wiimote-help.pd
