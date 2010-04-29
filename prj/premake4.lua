@@ -19,11 +19,11 @@ project "unit"
 	files { "../src/lib/**.h", "../src/lib/**.cpp" }
 	
 	includedirs { "../src",
-			 	  "../externals/xmlframework/src",
-			  	  "../externals/oscframework/src",
-			  	  "../externals/" }
-	libdirs { "../externals/xmlframework/src/xmlframework",
-      		  "../externals/oscframework/src/oscframework" }
+				  "../externals/",
+			 	  "../externals/xmlframework",
+			  	  "../externals/oscframework" }
+	libdirs { "../externals/xmlframework",
+      		  "../externals/oscframework" }
 	
 	configuration "linux"
 		buildoptions { "`pkg-config --cflags sdl`", "`pkg-config --cflags liblo`" }
@@ -50,11 +50,11 @@ project "rc-unitd"
 	files { "../src/rc-unitd/**.h", "../src/rc-unitd/**.cpp" }
 	
 	includedirs { "../src", "../src/lib",
-			 	  "../externals/xmlframework/src",
-			  	  "../externals/oscframework/src",
-			  	  "../externals/" }
-	libdirs { "../externals/xmlframework/src/xmlframework",
-      		  "../externals/oscframework/src/oscframework" }
+				  "../externals/",
+			 	  "../externals/xmlframework",
+			  	  "../externals/oscframework" }
+	libdirs { "../externals/xmlframework",
+      		  "../externals/oscframework" }
 	links { "unit", "oscframework", "xmlframework" }
 
 	configuration "linux"
@@ -87,9 +87,9 @@ project "lsjs"
 	files { "../src/lsjs/**.h", "../src/lsjs/**.cpp" }
 
 	includedirs { "../src", "../src/lib",
-			 	  "../externals/xmlframework/src",
-			  	  "../externals/oscframework/src",
-			  	  "../externals/" }
+			 	  "../externals/",
+			 	  "../externals/xmlframework",
+			  	  "../externals/oscframework" }
 
 	configuration "linux"
 		buildoptions { "`pkg-config --cflags sdl`" }
@@ -121,11 +121,11 @@ project "rc-unit-notifier"
 	files { "../src/rc-unit-notifier/**.h", "../src/rc-unit-notifier/**.cpp" }
 	
 	includedirs { "../src", "../src/lib",
-			 	  "../externals/xmlframework/src",
-			  	  "../externals/oscframework/src",
-			  	  "../externals/" }
-	libdirs { "../externals/xmlframework/src/xmlframework",
-      		  "../externals/oscframework/src/oscframework" }
+			 	  "../externals/",
+			 	  "../externals/xmlframework",
+			  	  "../externals/oscframework" }
+	libdirs { "../externals/xmlframework",
+      		  "../externals/oscframework" }
 	links { "oscframework" }
 
 	configuration "linux"

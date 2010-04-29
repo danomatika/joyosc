@@ -7,121 +7,121 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3EFE1F274DFA001269700090 /* libunit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 010056AE4738001269700090 /* libunit.a */; };
-		557877B403DD001269700090 /* App.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 102047242116001269700090 /* App.cpp */; };
-		77051EFA663A001269700090 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24F976292268001269700090 /* main.cpp */; };
+		0148316314B4001272557532 /* libunit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 35AC646E05A2001272557532 /* libunit.a */; };
+		1D8745536439001272557532 /* App.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4EF4052C3DB8001272557532 /* App.cpp */; };
+		2423029E12C3001272557532 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35D53D94671D001272557532 /* main.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		1A800402209B001269700090 /* PBXContainerItemProxy */ = {
+		2764542006F1001272557532 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 7FD65CDD639B001269700090 /* unit.xcodeproj */;
+			containerPortal = 6DA4315C2F71001272557532 /* unit.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 122438CD4C39001269700090;
+			remoteGlobalIDString = 40A874D21C8A001272557532;
 			remoteInfo = libunit.a;
 		};
-		3A4C6573618C001269700090 /* PBXContainerItemProxy */ = {
+		383C270A0408001272557532 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 7FD65CDD639B001269700090 /* unit.xcodeproj */;
+			containerPortal = 6DA4315C2F71001272557532 /* unit.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 640F25484B26001269700090;
+			remoteGlobalIDString = 3C961E94458F001272557532;
 			remoteInfo = libunit.a;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		102047242116001269700090 /* App.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = App.cpp; sourceTree = "<group>"; };
-		24F976292268001269700090 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		386C76664A3F001269700090 /* App.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = App.h; sourceTree = "<group>"; };
-		38840D81504F001269700090 /* rc-unitd */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "rc-unitd"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7FD65CDD639B001269700090 /* unit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = unit.xcodeproj; sourceTree = SOURCE_ROOT; };
+		35D53D94671D001272557532 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		4EF4052C3DB8001272557532 /* App.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = App.cpp; sourceTree = "<group>"; };
+		54107D9003A9001272557532 /* rc-unitd */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "rc-unitd"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5BA13866375E001272557532 /* App.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = App.h; sourceTree = "<group>"; };
+		6DA4315C2F71001272557532 /* unit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = unit.xcodeproj; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		7ABB15A91B02001269700090 /* Frameworks */ = {
+		43FF3ADC598B001272557532 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3EFE1F274DFA001269700090 /* libunit.a in Frameworks */,
+				0148316314B4001272557532 /* libunit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		21F257CA48AF001269700090 /* Products */ = {
+		142B2F6864A3001272557532 /* rc-unitd */ = {
 			isa = PBXGroup;
 			children = (
-				38840D81504F001269700090 /* rc-unitd */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		3372019773B3001269700090 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				010056AE4738001269700090 /* libunit.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		38B435A05ACA001269700090 /* rc-unitd */ = {
-			isa = PBXGroup;
-			children = (
-				102047242116001269700090 /* App.cpp */,
-				386C76664A3F001269700090 /* App.h */,
-				24F976292268001269700090 /* main.cpp */,
-			);
-			path = "rc-unitd";
-			sourceTree = "<group>";
-		};
-		51CB782A4D3E001269700090 /* rc-unitd */ = {
-			isa = PBXGroup;
-			children = (
-				59786DA1790E001269700090 /* src */,
-				21F257CA48AF001269700090 /* Products */,
-				5BBD07FF1F7D001269700090 /* Projects */,
+				20B622C946C9001272557532 /* src */,
+				485632A51943001272557532 /* Products */,
+				2F1332645FCA001272557532 /* Projects */,
 			);
 			name = "rc-unitd";
 			sourceTree = "<group>";
 		};
-		59786DA1790E001269700090 /* src */ = {
+		20B622C946C9001272557532 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				38B435A05ACA001269700090 /* rc-unitd */,
+				51ED31C70C46001272557532 /* rc-unitd */,
 			);
 			name = src;
 			path = ../src;
 			sourceTree = "<group>";
 		};
-		5BBD07FF1F7D001269700090 /* Projects */ = {
+		252D45697461001272557532 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7FD65CDD639B001269700090 /* unit.xcodeproj */,
+				35AC646E05A2001272557532 /* libunit.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2F1332645FCA001272557532 /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				6DA4315C2F71001272557532 /* unit.xcodeproj */,
 			);
 			name = Projects;
+			sourceTree = "<group>";
+		};
+		485632A51943001272557532 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				54107D9003A9001272557532 /* rc-unitd */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		51ED31C70C46001272557532 /* rc-unitd */ = {
+			isa = PBXGroup;
+			children = (
+				4EF4052C3DB8001272557532 /* App.cpp */,
+				5BA13866375E001272557532 /* App.h */,
+				35D53D94671D001272557532 /* main.cpp */,
+			);
+			path = "rc-unitd";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		0C9926EB2E5B001269700090 /* rc-unitd */ = {
+		736A6E937FF8001272557532 /* rc-unitd */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 12A469651E0C001269700090 /* Build configuration list for PBXNativeTarget "rc-unitd" */;
+			buildConfigurationList = 6CCE03360053001272557532 /* Build configuration list for PBXNativeTarget "rc-unitd" */;
 			buildPhases = (
-				2905203F2D7C001269700090 /* Resources */,
-				67A65D092149001269700090 /* Sources */,
-				7ABB15A91B02001269700090 /* Frameworks */,
+				4BA20BB8618A001272557532 /* Resources */,
+				513375EC7D73001272557532 /* Sources */,
+				43FF3ADC598B001272557532 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				459E293F1219001269700090 /* PBXTargetDependency */,
+				38FD718C2C6A001272557532 /* PBXTargetDependency */,
 			);
 			name = "rc-unitd";
 			productInstallPath = "$(HOME)/bin";
 			productName = "rc-unitd";
-			productReference = 38840D81504F001269700090 /* rc-unitd */;
+			productReference = 54107D9003A9001272557532 /* rc-unitd */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -132,33 +132,33 @@
 			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "rc-unitd" */;
 			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
-			mainGroup = 51CB782A4D3E001269700090 /* rc-unitd */;
+			mainGroup = 142B2F6864A3001272557532 /* rc-unitd */;
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 3372019773B3001269700090 /* Products */;
-					ProjectRef = 7FD65CDD639B001269700090 /* unit.xcodeproj */;
+					ProductGroup = 252D45697461001272557532 /* Products */;
+					ProjectRef = 6DA4315C2F71001272557532 /* unit.xcodeproj */;
 				},
 			);
 			projectRoot = "";
 			targets = (
-				0C9926EB2E5B001269700090 /* rc-unitd */,
+				736A6E937FF8001272557532 /* rc-unitd */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		010056AE4738001269700090 /* libunit.a */ = {
+		35AC646E05A2001272557532 /* libunit.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libunit.a;
-			remoteRef = 1A800402209B001269700090 /* PBXContainerItemProxy */;
+			remoteRef = 2764542006F1001272557532 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
-		2905203F2D7C001269700090 /* Resources */ = {
+		4BA20BB8618A001272557532 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -168,85 +168,40 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		67A65D092149001269700090 /* Sources */ = {
+		513375EC7D73001272557532 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				557877B403DD001269700090 /* App.cpp in Sources */,
-				77051EFA663A001269700090 /* main.cpp in Sources */,
+				1D8745536439001272557532 /* App.cpp in Sources */,
+				2423029E12C3001272557532 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		459E293F1219001269700090 /* PBXTargetDependency */ = {
+		38FD718C2C6A001272557532 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = libunit.a;
-			targetProxy = 3A4C6573618C001269700090 /* PBXContainerItemProxy */;
+			targetProxy = 383C270A0408001272557532 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		3A3E52FD675E001269700090 /* Debug */ = {
+		2BB24FDF400C001272557532 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CONFIGURATION_BUILD_DIR = ../bin;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
 				INSTALL_PATH = /usr/local/bin;
 				PRODUCT_NAME = "rc-unitd";
 			};
-			name = Debug;
-		};
-		6249658C7465001269700090 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
-				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
-				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					../src,
-					../src/lib,
-					../externals/xmlframework/src,
-					../externals/oscframework/src,
-					../externals,
-					../../../../../opt/local/include,
-				);
-				LIBRARY_SEARCH_PATHS = (
-					../externals/xmlframework/src/xmlframework,
-					../externals/oscframework/src/oscframework,
-					../../../../../opt/local/lib,
-				);
-				OBJROOT = "../obj/Release/rc-unitd";
-				ONLY_ACTIVE_ARCH = NO;
-				OTHER_LDFLAGS = (
-					"-loscframework",
-					"-lxmlframework",
-					"-llo",
-					"-lpthread",
-					"-lSDLmain",
-					"-lSDL",
-					"-Wl,-framework,Cocoa",
-					"-Wl,-framework,OpenGL",
-					"-Wl,-framework,ApplicationServices",
-					"-Wl,-framework,Carbon",
-					"-Wl,-framework,AudioToolbox",
-					"-Wl,-framework,AudioUnit",
-					"-Wl,-framework,IOKit",
-				);
-				PREBINDING = NO;
-				SYMROOT = ../bin;
-			};
 			name = Release;
 		};
-		640B116272BD001269700090 /* Debug */ = {
+		319345C515BB001272557532 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
@@ -262,15 +217,15 @@
 				HEADER_SEARCH_PATHS = (
 					../src,
 					../src/lib,
-					../externals/xmlframework/src,
-					../externals/oscframework/src,
 					../externals,
-					../../../../../opt/local/include,
+					../externals/xmlframework,
+					../externals/oscframework,
+					../../../../../../../opt/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
-					../externals/xmlframework/src/xmlframework,
-					../externals/oscframework/src/oscframework,
-					../../../../../opt/local/lib,
+					../externals/xmlframework,
+					../externals/oscframework,
+					../../../../../../../opt/local/lib,
 				);
 				OBJROOT = "../obj/Debug/rc-unitd";
 				ONLY_ACTIVE_ARCH = NO;
@@ -294,36 +249,81 @@
 			};
 			name = Debug;
 		};
-		77BA5D9C5E1F001269700090 /* Release */ = {
+		54C3687D07F9001272557532 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					../src,
+					../src/lib,
+					../externals,
+					../externals/xmlframework,
+					../externals/oscframework,
+					../../../../../../../opt/local/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					../externals/xmlframework,
+					../externals/oscframework,
+					../../../../../../../opt/local/lib,
+				);
+				OBJROOT = "../obj/Release/rc-unitd";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"-loscframework",
+					"-lxmlframework",
+					"-llo",
+					"-lpthread",
+					"-lSDLmain",
+					"-lSDL",
+					"-Wl,-framework,Cocoa",
+					"-Wl,-framework,OpenGL",
+					"-Wl,-framework,ApplicationServices",
+					"-Wl,-framework,Carbon",
+					"-Wl,-framework,AudioToolbox",
+					"-Wl,-framework,AudioUnit",
+					"-Wl,-framework,IOKit",
+				);
+				PREBINDING = NO;
+				SYMROOT = ../bin;
+			};
+			name = Release;
+		};
+		78D8536202FB001272557532 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CONFIGURATION_BUILD_DIR = ../bin;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
 				INSTALL_PATH = /usr/local/bin;
 				PRODUCT_NAME = "rc-unitd";
 			};
-			name = Release;
+			name = Debug;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		12A469651E0C001269700090 /* Build configuration list for PBXNativeTarget "rc-unitd" */ = {
+		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "rc-unitd" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3A3E52FD675E001269700090 /* Debug */,
-				77BA5D9C5E1F001269700090 /* Release */,
+				319345C515BB001272557532 /* Debug */,
+				54C3687D07F9001272557532 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "rc-unitd" */ = {
+		6CCE03360053001272557532 /* Build configuration list for PBXNativeTarget "rc-unitd" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				640B116272BD001269700090 /* Debug */,
-				6249658C7465001269700090 /* Release */,
+				78D8536202FB001272557532 /* Debug */,
+				2BB24FDF400C001272557532 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
