@@ -58,10 +58,7 @@ fi
 ##### Externals #####
 
 # externals with configure scripts
-AC_CONFIG_SUBDIRS(
-	[externals/oscframework]
-	[externals/xmlframework]
-)
+AC_CONFIG_SUBDIRS()
 
 #########################################
 ##### Output files #####
@@ -71,6 +68,8 @@ AC_CONFIG_FILES([
 	Makefile
 	data/Makefile
 	externals/Makefile
+	externals/oscframework/Makefile
+	externals/xmlframework/Makefile
 	externals/tclap/Makefile
 	src/Makefile
 	src/lib/Makefile

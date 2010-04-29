@@ -106,7 +106,7 @@ bool JoystickDevice::handleEvents(void* data)
                             
         	sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/button")
                    << event->jbutton.button << event->jbutton.state
-                   << osc::MessageTerminator();
+                   << osc::EndMessage();
             sender.send();
 
             if(m_config.bPrintEvents)
@@ -123,7 +123,7 @@ bool JoystickDevice::handleEvents(void* data)
                             
         	sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/button")
                    << event->jbutton.button << event->jbutton.state
-                   << osc::MessageTerminator();
+                   << osc::EndMessage();
             sender.send();
 
             if(m_config.bPrintEvents)
@@ -152,7 +152,7 @@ bool JoystickDevice::handleEvents(void* data)
             
             sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/axis")
                    << event->jaxis.axis << value
-                   << osc::MessageTerminator();
+                   << osc::EndMessage();
             sender.send();
             
             // store value
@@ -172,7 +172,7 @@ bool JoystickDevice::handleEvents(void* data)
                 
         	sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/ball")
                    << event->jball.ball << event->jball.xrel << event->jball.yrel
-                   << osc::MessageTerminator();
+                   << osc::EndMessage();
             sender.send();
 
             if(m_config.bPrintEvents)
@@ -190,7 +190,7 @@ bool JoystickDevice::handleEvents(void* data)
                 
         	sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/hat")
                    << event->jhat.hat << event->jhat.value
-                   << osc::MessageTerminator();
+                   << osc::EndMessage();
             sender.send();
 
             if(m_config.bPrintEvents)

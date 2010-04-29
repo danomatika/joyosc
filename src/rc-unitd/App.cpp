@@ -58,7 +58,7 @@ void App::setup()
 	LOG << "osc is setup" << endl;
 /*
     m_oscSender << BeginMessage(m_config.notificationAddress + "/startup")
-    			<< true << MessageTerminator();
+    			<< true << EndMessage();
     m_oscSender.send();
 */
     // open existing devices
@@ -74,7 +74,7 @@ void App::setup()
 void App::run()
 {
 	m_oscSender << BeginMessage(m_config.notificationAddress + "/ready")
-    			<< true << MessageTerminator();
+    			<< true << EndMessage();
     m_oscSender.send();
 	
 	m_bRun = true;
@@ -109,7 +109,7 @@ void App::cleanup()
 	m_joystickManager.close();
     
     m_oscSender << BeginMessage(m_config.notificationAddress + "/shutdown")
-    			<< true << MessageTerminator();
+    			<< true << EndMessage();
     m_oscSender.send();
 }
 

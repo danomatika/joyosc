@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
     	// quit
         sender << osc::BeginMessage(address);
     }
-    sender << osc::MessageTerminator();
+    sender << osc::EndMessage();
 
     // send the message
     sender.send();
