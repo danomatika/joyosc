@@ -1,9 +1,0 @@
-
-unit-patches: pure data abstractions for use with rc-unitd event forwarding
-
-unit-joystick - for recieving and parsing joystick events
-unit-wiimote - for receiving and parsing wiimote events
-
-Place the unit-patches folder in a good location and add it to your pd path.
-
-See rc-unitd-pdrecv for a pure data example of communication with rc-unitd.
