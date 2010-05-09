@@ -95,10 +95,8 @@ bool Config::parseCommandLine(int argc, char **argv)
         if(configCmd.getValue() != "")
         {
             setXmlFilename(configCmd.getValue());
-            LOG << "loading \"" << getXmlFilename() << "\"" << endl;
-    		if(!loadXmlFile())
-            	LOG_ERROR << "Something bad happened" << endl;
-    		closeXmlFile();
+            LOG << "Config: loading \"" << getXmlFilename() << "\"" << endl;
+    			closeXmlFile();
         }
         
         // set the variables
@@ -175,7 +173,7 @@ bool Config::readXml(TiXmlElement* e)
 /* ***** PRIVATE ***** */
 
 Config::Config() :
-	XmlObject("rc-unitd"),
+	XmlObject(PACKAGE),
 	listeningPort(7770),
     sendingIp("127.0.0.1"), sendingPort(8880),
     notificationAddress("/rc-unitd/notifications"), deviceAddress("/rc-unitd/devices"),

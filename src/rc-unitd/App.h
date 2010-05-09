@@ -45,7 +45,7 @@ class App : public osc::OscObject
         
         void cleanup();
         
-        void stop() {m_bRun = false;}
+        inline void stop() {m_bRun = false;}
 
     protected:
 

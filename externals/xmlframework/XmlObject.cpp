@@ -1,5 +1,24 @@
 /*==============================================================================
-    Dan Wilcox <Daniel.Wilcox@aec.at>, 2009
+
+	XmlObject.cpp
+    
+    xmlframework: object based xml classes for TinyXml
+  
+	Copyright (C) 2009, 2010  Dan Wilcox <danomatika@gmail.com>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 ==============================================================================*/
 #include "XmlObject.h"
 
@@ -103,32 +122,43 @@ bool XmlObject::loadXml(TiXmlElement* e)
         }
         else // exists
         {
-            // try to find element name in map
-            std::map<std::string, int>::iterator iter = elementMap.find((*objectIter)->getXmlName());
-            if(iter == elementMap.end())
+        	TiXmlElement* elementToLoad = NULL;
+        
+        	// check the parent element
+            if((*objectIter)->getXmlName() == e->ValueStr())
             {
-                // not found, so add element name to map
-                elementMap.insert(make_pair((*objectIter)->getXmlName(), 0));
-                iter = elementMap.find((*objectIter)->getXmlName());
+            	elementToLoad = e;
             }
-            else
-                iter->second++; // found another
-
-            #ifdef DEBUG_XML_OBJECT
-            LOG_DEBUG << "object: " << (*objectIter)->getXmlName() << " " << iter->second << std::endl;
-            #endif
-
-            // try to find an element with same name as the object by index (if multiples)
-            child = Xml::getElement(e, (*objectIter)->getXmlName(), iter->second);
-            if(child != NULL)
+            else // find element in list using xml name
             {
-                (*objectIter)->loadXml(child);  // found element
-            }
-            else
+                // try to find element name in map
+                std::map<std::string, int>::iterator iter = elementMap.find((*objectIter)->getXmlName());
+                if(iter == elementMap.end())
+                {
+                    // not found, so add element name to map
+                    elementMap.insert(make_pair((*objectIter)->getXmlName(), 0));
+                    iter = elementMap.find((*objectIter)->getXmlName());
+                }
+                else
+                    iter->second++; // found another
+                    
+                // try to find an element with same name as the object by index (if multiples)
+                elementToLoad = Xml::getElement(e, (*objectIter)->getXmlName(), iter->second);
+			}
+                
+            // load the element
+            if(elementToLoad != NULL)
             {
                 #ifdef DEBUG_XML_OBJECT
-                LOG_DEBUG << "  element not found for object" << std::endl;
-                #endif
+            	LOG_DEBUG << "object: " << (*objectIter)->getXmlName() << " " << e->ValueStr() << std::endl;
+            	#endif
+                
+                (*objectIter)->loadXml(elementToLoad);  // found element
+            }
+            else
+            {
+                LOG_WARN << "XmlObject: element not found for \""
+                         << (*objectIter)->getXmlName() << "\" object" << std::endl;
             }
 
             ++objectIter; // increment iter

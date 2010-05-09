@@ -160,5 +160,5 @@ bool App::processOscMessage(const ReceivedMessage& message,
 void App::signalExit(int signal)
 {
 	appPtr->stop();
-    LOG << endl << "    rc-unitd: Signal caught.  Exiting ..." << endl;
+    LOG << endl << "    " << PACKAGE << ": Signal caught.  Exiting ..." << endl;
 }

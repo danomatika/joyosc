@@ -61,7 +61,6 @@ class Config : public xml::XmlObject
         string sendingIp;				///< ip to send to
         unsigned int sendingPort;		///< port to send to
         
-        string baseAddress;				///< base osc sending address
         string notificationAddress;		///< base osc sending address for notifications
         string deviceAddress;			///< base osc sending addess for devices
         
@@ -69,7 +68,7 @@ class Config : public xml::XmlObject
         
         int sleepUS;					///< how long to sleep in the run loop
 
-        /// get a reference to the OscSender
+        /// get a reference to the OscSender and OscReceiver
         inline osc::OscSender& getOscSender() {return m_oscSender;}
         inline osc::OscReceiver& getOscReceiver() {return m_oscReceiver;}
 
