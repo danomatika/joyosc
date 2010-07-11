@@ -15,7 +15,7 @@ solution "rc-unitd"
 project "unit"
 	kind "StaticLib"
 	language "C++"
-	targetdir "../lib"
+	targetdir "../src/lib"
 	files { "../src/lib/**.h", "../src/lib/**.cpp" }
 	
 	includedirs { "../src",
@@ -46,7 +46,7 @@ project "unit"
 project "rc-unitd"
 	kind "ConsoleApp"
 	language "C++"
-	targetdir "../bin"
+	targetdir "../src/rc-unitd"
 	files { "../src/rc-unitd/**.h", "../src/rc-unitd/**.cpp" }
 	
 	includedirs { "../src", "../src/lib",
@@ -83,7 +83,7 @@ project "rc-unitd"
 project "lsjs"
 	kind "ConsoleApp"
 	language "C++"
-	targetdir "../bin"
+	targetdir "../src/lsjs"
 	files { "../src/lsjs/**.h", "../src/lsjs/**.cpp" }
 
 	includedirs { "../src", "../src/lib",
@@ -117,7 +117,7 @@ project "lsjs"
 project "rc-unit-notifier"
 	kind "ConsoleApp"
 	language "C++"
-	targetdir "../bin"
+	targetdir "../src/rc-unit-notifier"
 	files { "../src/rc-unit-notifier/**.h", "../src/rc-unit-notifier/**.cpp" }
 	
 	includedirs { "../src", "../src/lib",
