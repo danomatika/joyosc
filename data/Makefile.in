@@ -170,7 +170,7 @@ top_srcdir = @top_srcdir@
 thisdir = $(srcdir)
 
 # include files
-dist_configfiles_DATA = example_config.xml 85-rc-unitd.rules
+dist_configfiles_DATA = example_config.xml 85-rc-unitd.rules 85-rc-unitd.rules.source
 configfilesdir = $(docdir)
 
 # include pd files
@@ -443,7 +443,7 @@ all-local:
 
 clean-local:
 	rm -f 85-rc-unitd.rules
-	touch 85-rc-unitd.rules
+	touch $(thisdir)/85-rc-unitd.rules
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

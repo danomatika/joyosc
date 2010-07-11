@@ -5,7 +5,7 @@ noinst_LIBRARIES = libxmlframework.a
 
 # libs sources, headers here because we dont want to install them
 libxmlframework_a_SOURCES = \
-		Config.h Log.h \
+	Log.h \
         xmlframework.h \
         Xml.h Xml.cpp \
         XmlObject.h XmlObject.cpp \

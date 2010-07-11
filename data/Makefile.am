@@ -3,7 +3,7 @@
 thisdir = $(srcdir)
 
 # include files
-dist_configfiles_DATA = example_config.xml 85-rc-unitd.rules
+dist_configfiles_DATA = example_config.xml 85-rc-unitd.rules 85-rc-unitd.rules.source
 configfilesdir = $(docdir)
 
 # need to process the udev config file to insert the proper bin path
@@ -17,7 +17,7 @@ all-local:
 
 clean-local:
 	rm -f 85-rc-unitd.rules
-	touch 85-rc-unitd.rules
+	touch $(thisdir)/85-rc-unitd.rules
 
 # include pd files
 dist_pd_readme_DATA = $(thisdir)/pd/README

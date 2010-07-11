@@ -54,7 +54,8 @@ class OscReceiver
         /* ***** SETUP ***** */
 
         /// setup the udp socket using the given port
-        void setup(unsigned int port);
+        /// returns false if socket cannot be setup
+        bool setup(unsigned int port);
 
         /* ***** THREAD CONTROL ***** */
 

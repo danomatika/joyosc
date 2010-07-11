@@ -54,41 +54,27 @@ OscReceiver::~OscReceiver()
 
 /* ***** SETUP ***** */
 
-void OscReceiver::setup(unsigned int port)
+bool OscReceiver::setup(unsigned int port)
 {
 
     if(m_serverThread)
     {
         LOG_WARN << "OscReceiver: Cannot set port while thread is running" << std::endl;
-        return;
+        return false;
     }
 
 	std::stringstream stream;
 	stream << port;
     m_serverThread = lo_server_thread_new(stream.str().c_str(), &errorCB);    
+    if(!m_serverThread)
+    	{
+    		LOG_ERROR << "OscReceiver: Could not create server" << std::endl;
+    		return false;
+    	}
+    	
     lo_server_thread_add_method(m_serverThread, NULL, NULL, &messageCB, this);
-    /*
-    try
-    {
-    
-        // clear old socket before trying to create a new one
-        if(_socket != NULL)
-        {
-            delete _socket;
-        }
 
-        // create the new socket
-        _socket = new UdpListeningReceiveSocket(
-            IpEndpointName(IpEndpointName::ANY_ADDRESS, _uiPort), this);
-    
-    }
-    catch(std::exception& e)
-    {
-        LOG_ERROR << "OscReceiver: Could not open socket on port "
-                  << _uiPort<< ": " << e.what() << std::endl;
-        return;
-    }
-*/
+	return true;
 }
 
 /* ***** THREAD CONTROL ***** */
@@ -183,43 +169,30 @@ bool OscReceiver::processMessage(const ReceivedMessage& message, const MessageSo
     // ignore any incoming messages?
     if(m_bIgnoreMessages)
         return false;
-//
-//    try
-//    {
-        // call any attached objects
-        std::vector<OscObject*>::iterator iter;
-        for(iter = _objectList.begin(); iter != _objectList.end();)
-        {
-            // try to process message
-            if((*iter) != NULL)
-            {
-                if((*iter)->processOsc(message, source))
-                    return true;
-
-                iter++; // increment iter
-            }
-            else    // bad object, so erase it
-            {
-                iter = _objectList.erase(iter);
-                LOG_WARN << "OscReceiver: removed NULL object" <<std::endl;
-            }
-        }
-
-        // user callback
-        if(process(message, source))
-        	return true;
-
-        //LOG_DEBUG << "OscReceiver: unhandled message \"" << m.AddressPattern()
-        //    << "\" with type tag \"" << m.TypeTags() << "\"" << std::endl;
-/*
-    }
-    catch(osc::Exception& e)
+        
+    // call any attached objects
+    std::vector<OscObject*>::iterator iter;
+    for(iter = _objectList.begin(); iter != _objectList.end();)
     {
-        //LOG_ERROR << "OscReceiver: error while parsing message: "
-        //          << "\"" << m.AddressPattern() << "\" on port "
-        //          << _uiPort << ": \"" << e.what()<< "\"" << std::endl;
+        // try to process message
+        if((*iter) != NULL)
+        {
+            if((*iter)->processOsc(message, source))
+                return true;
+
+            iter++; // increment iter
+        }
+        else    // bad object, so erase it
+        {
+            iter = _objectList.erase(iter);
+            LOG_WARN << "OscReceiver: removed NULL object" <<std::endl;
+        }
     }
-    */
+
+    // user callback
+    if(process(message, source))
+    	return true;
+
     return false;
 }
 
