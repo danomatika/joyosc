@@ -3,7 +3,7 @@ rc-unitd
 
 the robotcowboy unit daemon
 
-a device event to osc bridge deamon and associated tools
+a device event to osc bridge daemon and associated tools
 
 Copyright (c) [Dan Wilcox](danomatika.com) 2007, 2010
 
