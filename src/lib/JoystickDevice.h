@@ -29,17 +29,18 @@
 
 #include "Device.h"
 
-/** \class  Joystick_Device
+class JoystickRemapping;
+
+/** \class  JoystickDevice
     \brief  Handles a Joystick device
 
-    Uses the Linux joystick event system to open, read, and close a joystick
+    Uses SDL to open, read, and close a joystick
 */
 class JoystickDevice : public Device
 {
      public:
 
         JoystickDevice(string oscAddress="/joystick");
-        virtual ~JoystickDevice();
 
  		/**
             \brief  open the device
@@ -66,6 +67,9 @@ class JoystickDevice : public Device
 
         /// print device info
         void print();
+		
+		/// print remapping
+		void printRemapping();
 
 		///  returns true if device is open
         bool isOpen();
@@ -73,16 +77,56 @@ class JoystickDevice : public Device
         /// set/get SDL joystick index
         inline void setIndex(int index) {m_joyIndex = index;}
         inline int getIndex() 			{return m_joyIndex;}
+		
+		/// set/get joystick axis dead zone, used to set an ignore threshold around 0
+        void setAxisDeadZone(unsigned int zone);
+        inline int getAxisDeadZone() {return m_axisDeadZone;}
+		
+		/// set/get joystick remapping
+		void setRemapping(JoystickRemapping* remapping);
+		inline JoystickRemapping* getRemapping() {return m_remapping;}
         
         /// restart the SDL Joystick subsystem
         static void restartJoystickSubSystem();
 
     protected:
+	
+		friend class JoystickRemapping;
 
 		SDL_Joystick	*m_joystick;
         int				m_joyIndex;
-        
+    
+		unsigned int m_axisDeadZone;
         std::vector<int16_t>	m_prevAxisValues;
+		
+		JoystickRemapping *m_remapping;
+};
+
+/** \class  Joystick_Device
+    \brief	Defines button, axis, ball, & hat remappings
+*/
+class JoystickRemapping : public xml::XmlObject
+{
+	public:
+	
+		JoystickRemapping() : xml::XmlObject("remap") {}
+		
+		// mappings from -> to
+		// with key: from & value: to
+		std::map<int,int> buttons;
+		std::map<int,int> axes;
+		std::map<int,int> balls;
+		std::map<int,int> hats;
+		
+		// check mapping indexs & toss out any bad values
+		void check(JoystickDevice* joystick);
+		
+		void print();
+		
+	protected:
+    
+    	// XMLObject callback
+    	bool readXml(TiXmlElement* e);
 };
 
 #endif // JOYSTICK_DEVICE_H

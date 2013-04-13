@@ -33,12 +33,26 @@ void JoystickManager::open()
 	// create and open a new joystick for each index
     for(int i = 0; i < SDL_NumJoysticks(); ++i)
 	{
-    		JoystickDevice* j = new JoystickDevice();
+		JoystickDevice* j = new JoystickDevice();
         j->setIndex(i);
-        
+		
         // only add if the joystick was opened ok
         if(j->open())
         {
+			// set remapping if one exists
+			JoystickRemapping* remap = Config::instance().getJoystickRemapping(j->getDevName());
+			if(remap)
+			{
+				j->setRemapping(remap);
+				j->printRemapping();
+			}
+			
+			// set axis dead zone if one exists
+			int axisDeadZone = Config::instance().getJoystickAxisDeadZone(j->getDevName());
+			if(axisDeadZone > 0) {
+				j->setAxisDeadZone(axisDeadZone);
+			}
+			
 			m_joysticks.push_back(j);
         }
     }

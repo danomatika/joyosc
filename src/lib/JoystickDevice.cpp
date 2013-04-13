@@ -22,13 +22,11 @@
 ==============================================================================*/
 #include "JoystickDevice.h"
 
-#define JOYSTICK_AXIS_DEAD_ZONE	3200	// used to set an ignore threshold around 0
+using namespace xml;
 
 JoystickDevice::JoystickDevice(string oscAddress) :
-	Device(oscAddress), m_joystick(NULL), m_joyIndex(-1)
-{}
-
-JoystickDevice::~JoystickDevice()
+	Device(oscAddress), m_joystick(NULL), m_joyIndex(-1),
+	m_axisDeadZone(0), m_remapping(NULL)
 {}
 
 bool JoystickDevice::open()
@@ -69,9 +67,9 @@ bool JoystickDevice::open()
     for(int i = 0; i < SDL_JoystickNumAxes(m_joystick); ++i)
     	m_prevAxisValues.push_back(0);
     
-    LOG_DEBUG << "JoystickDevice: opened " << m_joyIndex
-              << " \"" << m_devName << "\" with address "
-              << m_oscAddress << endl;
+    LOG << "JoystickDevice: opened " << m_joyIndex
+		<< " \"" << m_devName << "\" with address "
+		<< m_oscAddress << endl;
     return true;
 }
 
@@ -103,7 +101,16 @@ bool JoystickDevice::handleEvents(void* data)
         {	
         	if(event->jbutton.which != m_joyIndex)
             	break;
-                            
+            
+			// remap?
+			if(m_remapping)
+			{				
+				map<int,int>::iterator iter = m_remapping->buttons.find(event->jbutton.button);
+				if(iter != m_remapping->buttons.end()) {
+					event->jbutton.button = iter->second;
+				}
+			}
+							
         	sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/button")
                    << event->jbutton.button << event->jbutton.state
                    << osc::EndMessage();
@@ -120,6 +127,15 @@ bool JoystickDevice::handleEvents(void* data)
         {	
         	if(event->jbutton.which != m_joyIndex)
             	break;
+				
+			// remap?
+			if(m_remapping)
+			{
+				map<int,int>::iterator iter = m_remapping->buttons.find(event->jbutton.button);
+				if(iter != m_remapping->buttons.end()) {
+					event->jbutton.button = iter->second;
+				}
+			}
                             
         	sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/button")
                    << event->jbutton.button << event->jbutton.state
@@ -137,11 +153,20 @@ bool JoystickDevice::handleEvents(void* data)
         {
         	if(event->jaxis.which != m_joyIndex)
             	break;
-             
+			
+			// remap?
+			if(m_remapping)
+			{
+				map<int,int>::iterator iter = m_remapping->axes.find(event->jaxis.axis);
+				if(iter != m_remapping->axes.end()) {
+					event->jaxis.axis = iter->second;
+				}
+			}
+			
             int value = (int) event->jaxis.value;
              
             // handle jitter by creating a dead zone
-            if(abs(value) < JOYSTICK_AXIS_DEAD_ZONE)
+            if(abs(value) < m_axisDeadZone)
                 value = 0;
                    
             // make sure we don't report a value more then once
@@ -169,7 +194,16 @@ bool JoystickDevice::handleEvents(void* data)
         {
         	if(event->jball.which != m_joyIndex)
             	break;
-                
+            
+			// remap?
+			if(m_remapping)
+			{
+				map<int,int>::iterator iter = m_remapping->balls.find(event->jball.ball);
+				if(iter != m_remapping->balls.end()) {
+					event->jball.ball = iter->second;
+				}
+			}
+				
         	sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/ball")
                    << event->jball.ball << event->jball.xrel << event->jball.yrel
                    << osc::EndMessage();
@@ -187,7 +221,16 @@ bool JoystickDevice::handleEvents(void* data)
         {
         	if(event->jhat.which != m_joyIndex)
             	break;
-                
+            
+			// remap?
+			if(m_remapping)
+			{
+				map<int,int>::iterator iter = m_remapping->hats.find(event->jhat.hat);
+				if(iter != m_remapping->hats.end()) {
+					event->jhat.hat = iter->second;
+				}
+			}
+				
         	sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/hat")
                    << event->jhat.hat << event->jhat.value
                    << osc::EndMessage();
@@ -212,11 +255,18 @@ void JoystickDevice::print()
         
 	if(m_joystick)
     {
-        LOG << "	num axes: " << SDL_JoystickNumAxes(m_joystick) << endl
-            << "	num buttons: " << SDL_JoystickNumButtons(m_joystick) << endl
+        LOG << "	num buttons: " << SDL_JoystickNumButtons(m_joystick) << endl
+			<< "	num axes: " << SDL_JoystickNumAxes(m_joystick) << endl
             << "	num balls: " << SDL_JoystickNumBalls(m_joystick) << endl
             << "	num hats: " << SDL_JoystickNumHats(m_joystick) << endl;
-    }
+	}
+}
+	
+void JoystickDevice::printRemapping() {
+	if(m_joystick && m_remapping)
+    {
+		m_remapping->print();
+	}
 }
 
 bool JoystickDevice::isOpen()
@@ -224,8 +274,199 @@ bool JoystickDevice::isOpen()
 	return SDL_JoystickOpened(m_joyIndex);
 }
 
+void JoystickDevice::setAxisDeadZone(unsigned int zone)
+{
+	m_axisDeadZone = zone;
+	LOG_DEBUG << "JoystickDevice \"" << getDevName() << "\": "
+			  << " set axis dead zone to " << zone << endl;
+}
+
+void JoystickDevice::setRemapping(JoystickRemapping* remapping)
+{
+	m_remapping = remapping;
+	if(m_remapping)
+	{
+		m_remapping->check(this);
+	}
+}
+
 void JoystickDevice::restartJoystickSubSystem()
 {
 	SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
 	SDL_InitSubSystem(SDL_INIT_JOYSTICK);
+}
+
+/* ***** JoystickRemapping ***** */
+
+void JoystickRemapping::check(JoystickDevice* joystick)
+{
+	if(!joystick)	return;
+
+	map<int,int>::iterator iter;
+	int numButtons = SDL_JoystickNumButtons(joystick->m_joystick);
+	for(iter = buttons.begin(); iter != buttons.end(); ++iter)
+	{
+		if(iter->first > numButtons || iter->second > numButtons) {
+			LOG_WARN << "JoystickRemapping for \"" << joystick->getDevName() << "\"name \": "
+					 << "removing invalid button remap: "
+					 << iter->first << " -> " << iter->second;
+		}
+	}
+	
+	int numAxes = SDL_JoystickNumAxes(joystick->m_joystick);
+	for(iter = axes.begin(); iter != axes.end(); ++iter)
+	{
+		if(iter->first > numAxes || iter->second > numAxes) {
+			LOG_WARN << "JoystickRemapping for \"" << joystick->getDevName() << "\"name \": "
+					 << "removing invalid axis remap: "
+					 << iter->first << " -> " << iter->second;
+		}
+	}
+	
+	int numBalls = SDL_JoystickNumBalls(joystick->m_joystick);
+	for(iter = balls.begin(); iter != balls.end(); ++iter)
+	{
+		if(iter->first > numBalls || iter->second > numBalls) {
+			LOG_WARN << "JoystickRemapping for \"" << joystick->getDevName() << "\"name \": "
+					 << "removing invalid ball remap: "
+					 << iter->first << " -> " << iter->second;
+		}
+	}
+	
+	int numHats = SDL_JoystickNumButtons(joystick->m_joystick);
+	for(iter = hats.begin(); iter != hats.end(); ++iter)
+	{
+		if(iter->first > numHats || iter->second > numHats) {
+			LOG_WARN << "JoystickRemapping for \"" << joystick->getDevName() << "\"name \": "
+					 << "removing invalid hat remap: "
+					 << iter->first << " -> " << iter->second;
+		}
+	}
+}
+
+void JoystickRemapping::print()
+{
+	if(!buttons.empty())
+	{
+		map<int,int>::iterator iter = buttons.begin();
+		for(; iter != buttons.end(); ++iter)
+		{
+			LOG << "	button remap: " << iter->first
+				<< " -> " << iter->second << endl;
+		}
+	}
+	
+	if(!axes.empty())
+	{
+		map<int,int>::iterator iter = axes.begin();
+		for(; iter != axes.end(); ++iter)
+		{
+			LOG << "	axis remap: " << iter->first
+				<< " -> " << iter->second << endl;
+		}
+	}
+	
+	if(!balls.empty())
+	{
+		map<int,int>::iterator iter = balls.begin();
+		for(; iter != balls.end(); ++iter)
+		{
+			LOG << "	ball remap: " << iter->first
+				<< " -> " << iter->second << endl;
+		}
+	}
+	
+	if(!hats.empty())
+	{
+		
+		map<int,int>::iterator iter = hats.begin();
+		for(; iter != hats.end(); ++iter)
+		{
+			LOG << "	hat remap: " << iter->first
+				<< " -> " << iter->second << endl;
+		}
+	}
+}
+
+bool JoystickRemapping::readXml(TiXmlElement* e)
+{
+	bool loaded = false;
+	string devName = Xml::getAttrString(e->Parent()->ToElement(), "name", "unknown");
+	
+	// load the device mappings
+	TiXmlElement* child = e->FirstChildElement();
+	while(child != NULL)
+	{
+		int from  = Xml::getAttrInt(child, "from", -1);
+		int to = Xml::getAttrInt(child, "to", -1);
+		
+		if(from > -1 && to > -1)
+		{
+			if(child->ValueStr() == "button")
+			{
+				pair<map<int,int>::iterator, bool> ret;
+				ret = buttons.insert(make_pair(from, to));
+				if(!ret.second)
+				{
+					LOG_WARN << "Joystick \"" << devName << "\"n ame \": "
+							 << "mapping for button " << from
+							 << " already exists" << endl;
+				}
+				LOG_DEBUG << "Joystick \"" << devName << "\" name \": "
+						  << "remapped button " << from << " to " << to << endl;
+				loaded = true;
+			}
+			else if(child->ValueStr() == "axis")
+			{
+				pair<map<int,int>::iterator, bool> ret;
+				ret = axes.insert(make_pair(from, to));
+				if(!ret.second)
+				{
+					LOG_WARN << "Joystick \"" << devName << "\" name \": "
+							 << "mapping for axis " << from
+							 << " already exists" << endl;
+				}
+				LOG_DEBUG << "Joystick \"" << devName << "\" name \": "
+						  << "remapped axis " << from << " to " << to << endl;
+				loaded = true;
+			}
+			else if(child->ValueStr() == "ball")
+			{
+				pair<map<int,int>::iterator, bool> ret;
+				ret = balls.insert(make_pair(from, to));
+				if(!ret.second)
+				{
+					LOG_WARN << "Joystick \"" << devName << "\" name \": "
+							 << "mapping for ball " << from
+							 << " already exists" << endl;
+				}
+				LOG_DEBUG << "Joystick \"" << devName << "\" name \": "
+						  << "remapped ball " << from << " to " << to << endl;
+				loaded = true;
+			}
+			else if(child->ValueStr() == "hat")
+			{
+				pair<map<int,int>::iterator, bool> ret;
+				ret = balls.insert(make_pair(from, to));
+				if(!ret.second)
+				{
+					LOG_WARN << "Joystick \"" << devName << "\" name \": "
+							 << "mapping for hat " << from
+							 << " already exists" << endl;
+				}
+				LOG_DEBUG << "Joystick \"" << devName << "\" name \": "
+						  << "remapped hat " << from << " to " << to << endl;
+				loaded = true;
+			}
+		}
+		else
+		{
+			LOG_WARN << "Joystick \"" << devName << "\" name \": "
+					 << "ignoring invalid map";
+		}
+
+		child = child->NextSiblingElement();
+	}
+    
+    return loaded;
 }

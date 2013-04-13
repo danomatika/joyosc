@@ -2,12 +2,15 @@
 <rc-unitd>
 	<listening port="7770"/>
 	<sending ip="127.0.0.1" port="8880"/>
-	<osc notificationAddress="/pd/unitd" deviceAddress="/pd/devices"/>
-	<config bPrintEvents="1" sleepUS="100"/>
+	<config bPrintEvents="1" sleepUS="20000"/>
 	<mappings>
-		<joystick name="PLAYSTATION(R)3 Controller" address="/ps2black"/>
-		<joystick name="Logitech Dual Action" address="/ps2black"/>
 		<joystick name="Saitek P990 Dual Analog Pad" address="/bbox"/>
+		<joystick name="Logitech Dual Action" address="/ps2black"/>
+		<joystick name="PLAYSTATION(R)3 Controller" address="/js0">
+			<thresholds axisDeadZone="3000"/>
+				<button from="1" to="2"/>
+				<axis from="1" to="2"/>
+		</joystick>
 	</mappings>
 </rc-unitd>
 

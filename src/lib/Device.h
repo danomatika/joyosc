@@ -33,7 +33,7 @@ class Device
      public:
 
         Device(string oscAddress="/device") :
-        	m_devName(""), m_oscAddress(oscAddress),
+			m_devName(""), m_oscAddress(oscAddress),
             m_config(Config::instance()) {}
         virtual ~Device() {}
 

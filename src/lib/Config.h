@@ -31,6 +31,8 @@
 
 using namespace std;
 
+class JoystickRemapping;
+
 /**
     \class  Config
     \brief  global, per-application instance state variable container class
@@ -78,6 +80,20 @@ class Config : public xml::XmlObject
             \return	mapped device addr on success, empty string "" on failure
         */
        	string getDeviceAddress(string deviceName);
+		
+		/**
+        	\brief	retreive the axis dead zone threshold for a given joystick device name
+            \param	deviceName	device name as a string ie "Logitech Logitech Dual Action"
+            \return	dead zone value on success, 0 on failure
+        */
+		unsigned int getJoystickAxisDeadZone(string deviceName);
+		
+		/**
+        	\brief	retreive the remapping for a given joystick device name
+            \param	deviceName	device name as a string ie "Logitech Logitech Dual Action"
+            \return	joystick remapping on success, NULL on failure
+        */
+		JoystickRemapping* getJoystickRemapping(string deviceName);
         
         /**
         	\brief	parse the commandline options
@@ -86,6 +102,10 @@ class Config : public xml::XmlObject
 
         /// print the current config values
         void print();
+		
+		// convert a given reletive path to an absolute path using the current dir,
+		// passes through existing absolute paths
+		static string absolutePath(string path);
 
     protected:
     
@@ -94,7 +114,9 @@ class Config : public xml::XmlObject
 
     private:
 
-        map<string, string> m_deviceAddresses;	///< device osc address mappings
+        map<string,string> m_deviceAddresses;	///< device osc address mappings
+		map<string,unsigned int> m_joystickAxisDeadZones; ///< zeroing threshold
+		map<string,JoystickRemapping*> m_joystickRemappings; ///< joystick remappings
         
         osc::OscSender m_oscSender;       	///< global osc sender
         osc::OscReceiver m_oscReceiver;		///< global osc receiver

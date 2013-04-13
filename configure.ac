@@ -1,7 +1,7 @@
 #########################################
 ##### Prelude #####
 
-AC_INIT([rc-unitd], [0.3.0], [danomatika@gmail.com])
+AC_INIT([rc-unitd], [0.3.1], [danomatika@gmail.com], [rc-unitd], [http://github.com/danomatika/rc-unitd])
 AC_CONFIG_SRCDIR([src/rc-unitd/main.cpp])
 AC_CONFIG_AUX_DIR([config])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
@@ -53,6 +53,9 @@ else
     AC_DEFINE([NDEBUG],[],[Release Mode])
     CXXFLAGS="$RELEASE_CXXFLAGS"
 fi
+
+# allow linking of non-POSIX libs
+AM_PROG_AR
 
 #########################################
 ##### Externals #####

@@ -1,4 +1,4 @@
-/*==============================================================================
+	/*==============================================================================
 
 	App.cpp
 
@@ -47,20 +47,18 @@ void App::go()
 }
 
 void App::setup()
-{
+{	
     m_config.print();
     
     // setup osc interface
-	LOG << "setting up osc receiver" << endl;
     m_oscReceiver.setup(m_config.listeningPort);
     m_oscSender.setup(m_config.sendingIp, m_config.sendingPort);
 	m_oscReceiver.addOscObject(this);
-	LOG << "osc is setup" << endl;
-/*
+
     m_oscSender << BeginMessage(m_config.notificationAddress + "/startup")
-    			<< true << EndMessage();
+    			<< EndMessage();
     m_oscSender.send();
-*/
+
     // open existing devices
     m_joystickManager.open();
     m_joystickManager.print();
@@ -73,9 +71,9 @@ void App::setup()
         
 void App::run()
 {
-	m_oscSender << BeginMessage(m_config.notificationAddress + "/ready")
-    			<< true << EndMessage();
-    m_oscSender.send();
+ 	m_oscSender << BeginMessage(m_config.notificationAddress + "/ready")
+     			<< EndMessage();
+	m_oscSender.send();
 	
 	m_bRun = true;
 	while(m_bRun)
@@ -97,7 +95,7 @@ void App::run()
                 }
 			}
         }
-     
+		     
      	// and 2 cents for the scheduler ...
         usleep(m_config.sleepUS);
     }
@@ -109,7 +107,7 @@ void App::cleanup()
 	m_joystickManager.close();
     
     m_oscSender << BeginMessage(m_config.notificationAddress + "/shutdown")
-    			<< true << EndMessage();
+    			<< EndMessage();
     m_oscSender.send();
 }
 

@@ -1,0 +1,43 @@
+#
+#	unit daemon udev rules
+#
+#	Put me in "/etc/udev/rules.d", I am named based on the debian udev rules format
+#
+#	launches rc-unitd-notifier to send dbus notification of device insert/removal to unitd
+#	- rc-unitd is the device handling daemon the reads events for open devices
+#	- rc-unitf-notifier tells unitd to open or close a device by kernel name
+#
+#	"add" actions are device insertions and device attributes are used to match the device
+#
+#	"remove" actions are matched using ENV variables since the SYSFS node for the device is gone
+#	and thus the attributes have been deleted
+#
+#	rules built using:
+#	- udevinfo -a -p $(udevinfo -q path -n /dev/*device*) : attributes
+#	- sudo udevmonitor --env /dev/*device* : events and env vars
+#
+#	Documentation is your friend: http://reactivated.net/writing_udev_rules.html
+#
+################################################################################################
+
+
+#	joystick devices
+#
+KERNEL=="js[0-9]*", ACTION=="add", SUBSYSTEM=="input", RUN="/usr/local/bin/rc-unit-notifier -t joystick open"
+
+KERNEL=="js[0-9]*", ACTION=="remove", SUBSYSTEM=="input", RUN="/usr/local/bin/rc-unit-notifier -t joystick close"
+
+
+#	USB tty serial devices
+#
+#KERNEL=="ttyUSB[0-9]*", ACTION=="add", SUBSYSTEMS=="tty", RUN="/usr/local/bin/rc-unit-notifier -t tty open %k"
+
+#KERNEL=="ttyUSB[0-9]*", ACTION=="remove", SUBSYSTEMS=="tty", RUN="/usr/local/bin/rc-unit-notifier -t tty close %k"
+
+
+#	Video 4 Linux devices aka webcams, etc
+#
+#KERNEL=="video[0-0]*", ACTION=="add", SUBSYTEM=="video4linux", RUN="/usr/local/bin/rc-unit-notifier -t v4l open  %k"
+
+#KERNEL=="video[0-9]*", ACTION=="remove", SUBSYSTEM=="video4linux",  RUN="/usr/local/bin/rc-unit-notifier -t v4l close %k"
+

@@ -25,7 +25,13 @@
 #include "Log.h"
 #include "../config.h"	// autotools generated header
 
+#include "JoystickDevice.h"
+
 #include <tclap/tclap.h>
+
+#if defined( __WIN32__ ) || defined( _WIN32 )
+	#include <windows.h>
+#endif
 
 using namespace xml;
 
@@ -37,14 +43,32 @@ Config& Config::instance()
 
 string Config::getDeviceAddress(string deviceName)
 {
-    map<string, string>::iterator iter = m_deviceAddresses.find(deviceName);
-    
+    map<string,string>::iterator iter = m_deviceAddresses.find(deviceName);
     if(iter != m_deviceAddresses.end())
     {
     	return iter->second;
     }
-    
     return "";
+}
+
+unsigned int Config::getJoystickAxisDeadZone(string deviceName)
+{
+    map<string,unsigned int>::iterator iter = m_joystickAxisDeadZones.find(deviceName);
+    if(iter != m_joystickAxisDeadZones.end())
+    {
+    	return iter->second;
+    }
+    return 0;
+}
+
+JoystickRemapping* Config::getJoystickRemapping(string deviceName)
+{
+    map<string,JoystickRemapping*>::iterator iter = m_joystickRemappings.find(deviceName);
+    if(iter != m_joystickRemappings.end())
+    {
+    	return iter->second;
+    }
+    return NULL;
 }
 
 bool Config::parseCommandLine(int argc, char **argv)
@@ -60,19 +84,19 @@ bool Config::parseCommandLine(int argc, char **argv)
         // options to parse
         // short id, long id, description, required?, default value, short usage type description
         TCLAP::ValueArg<string> ipOpt("i", "ip", (string) "IP address to send to; default is '"+sendingIp+"'", false, sendingIp, "string");
-        TCLAP::ValueArg<int> 	portOpt("p","port", (string) "Port to send to; default is '"+itoa.str()+"'", false, sendingPort, "int");
+        TCLAP::ValueArg<int> portOpt("p","port", (string) "Port to send to; default is '"+itoa.str()+"'", false, sendingPort, "int");
      
         itoa.str("");
         itoa << listeningPort;
-        TCLAP::ValueArg<int>	inputPortOpt("", "listening_port", "Listening port; default is '"+itoa.str()+"'", false, listeningPort, "int");
+        TCLAP::ValueArg<int> inputPortOpt("", "listening_port", "Listening port; default is '"+itoa.str()+"'", false, listeningPort, "int");
               
         itoa.str("");
         itoa << bPrintEvents;
-        TCLAP::ValueArg<bool>	eventsOpt("e", "events", (string) "Print events; default is '"+itoa.str()+"'", false, bPrintEvents, "bool");
+        TCLAP::ValueArg<bool> eventsOpt("e", "events", (string) "Print events; default is '"+itoa.str()+"'", false, bPrintEvents, "bool");
         
         itoa.str("");
         itoa << sleepUS;
-        TCLAP::ValueArg<int>	sleepOpt("s", "sleep", (string) "Sleep time in usecs; default is '"+itoa.str()+"'", false, sleepUS, "int");
+        TCLAP::ValueArg<unsigned int> sleepOpt("s", "sleep", (string) "Sleep time in usecs; default is '"+itoa.str()+"'", false, sleepUS, "uint");
 
         // commands to parse
         // name, description, required?, default value, short usage type description
@@ -94,17 +118,18 @@ bool Config::parseCommandLine(int argc, char **argv)
         // load the config file (if one exists)
         if(configCmd.getValue() != "")
         {
-            setXmlFilename(configCmd.getValue());
+            setXmlFilename(Config::absolutePath(configCmd.getValue()));
             LOG << "Config: loading \"" << getXmlFilename() << "\"" << endl;
-    			closeXmlFile();
+            loadXmlFile();
+    		closeXmlFile();
         }
         
         // set the variables
-        if(ipOpt.isSet())		 sendingIp = ipOpt.getValue();
-        if(portOpt.isSet()) 	 sendingPort = portOpt.getValue();
-        if(inputPortOpt.isSet()) listeningPort = inputPortOpt.getValue();
-        if(eventsOpt.isSet()) 	 bPrintEvents = eventsOpt.getValue();
-        if(sleepOpt.isSet())		 sleepUS = sleepOpt.getValue();
+        if(ipOpt.isSet())			sendingIp = ipOpt.getValue();
+        if(portOpt.isSet())			sendingPort = portOpt.getValue();
+        if(inputPortOpt.isSet())	listeningPort = inputPortOpt.getValue();
+        if(eventsOpt.isSet())		bPrintEvents = eventsOpt.getValue();
+        if(sleepOpt.isSet())		sleepUS = sleepOpt.getValue();
     }
     catch(TCLAP::ArgException &e)  // catch any exceptions
 	{
@@ -136,6 +161,30 @@ void Config::print()
     }
 }
 
+// adapted from openframeworks ofToDataPath():
+// https://github.com/openframeworks/openFrameworks/blob/master/libs/openFrameworks/utils/ofUtils.cpp
+string Config::absolutePath(string path)
+{
+	// check for absolute path, 
+	if(path.length() != 0 && (path.substr(0, 1) == "/" || path.substr(1, 1) == ":"))
+	{
+		return path; // is absolute, so pass through
+	}
+
+	// relative path, so append current dir
+	#if defined( __WIN32__ ) || defined( _WIN32 )
+		char currDir[1024];
+		path = "\\" + path;
+		path = _getcwd(currDir, 1024) + path;
+		std::replace(path.begin(), path.end(), '/', '\\'); // fix any unixy paths...
+	#else // Mac / Linux
+		char currDir[1024];
+		path = "/" + path;
+		path = getcwd(currDir, 1024) + path;
+	#endif
+	return path;
+}
+
 /* ***** PROTECTED ***** */
 
 bool Config::readXml(TiXmlElement* e)
@@ -159,6 +208,39 @@ bool Config::readXml(TiXmlElement* e)
                     LOG_WARN << "Config: joystick name \"" << name
                              << "\" already exists" << endl;
                 }
+				
+				TiXmlElement* thresholdsChild = Xml::getElement(child2, "thresholds");
+				if(thresholdsChild)
+				{
+					unsigned int deadZone = Xml::getAttrUInt(thresholdsChild, "axisDeadZone", 0);
+					if(deadZone > 0) {
+						pair<map<string,unsigned int>::iterator, bool> threshRet;
+						threshRet= m_joystickAxisDeadZones.insert(make_pair(name, deadZone));
+						if(!threshRet.second)
+						{
+							LOG_WARN << "Config: joystick axis deadzone for name \""
+									 << name << "\" already exists" << endl;
+						}
+					}
+				}
+				
+				TiXmlElement* remapChild = Xml::getElement(child2, "remap");
+				if(remapChild)
+				{
+					JoystickRemapping *remap = new JoystickRemapping;
+					if(!remap->loadXml(remapChild))
+					{
+						LOG_WARN << "Config: ignoring empty remap for \""
+								 << name << "\""<< endl;
+					}
+					pair<map<string,JoystickRemapping*>::iterator, bool> remapRet;
+					remapRet = m_joystickRemappings.insert(make_pair(name, remap));
+					if(!remapRet.second)
+					{
+						LOG_WARN << "Config: joystick remapping for name \""
+								 << name << "\" already exists" << endl;
+					}
+				}
             }
 
         	child2 = child2->NextSiblingElement();
@@ -176,8 +258,9 @@ Config::Config() :
 	XmlObject(PACKAGE),
 	listeningPort(7770),
     sendingIp("127.0.0.1"), sendingPort(8880),
-    notificationAddress("/rc-unitd/notifications"), deviceAddress("/rc-unitd/devices"),
-    bPrintEvents(false), sleepUS(1000)
+    notificationAddress((string) "/"+PACKAGE+"/notifications"),
+	deviceAddress((string) "/"+PACKAGE+"/devices"),
+    bPrintEvents(false), sleepUS(10000)
 {
 	// attach config values to xml attributes
 	addXmlAttribute("port", "listening", XML_TYPE_UINT, &listeningPort);

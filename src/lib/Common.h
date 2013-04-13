@@ -28,8 +28,6 @@
 #include <SDL/SDL.h>
 #include <lo/lo.h>
 
-#include <oscframework/oscframework.h>
-
 #include "Log.h"
 #include "Config.h"
 
