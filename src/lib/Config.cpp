@@ -88,7 +88,7 @@ bool Config::parseCommandLine(int argc, char **argv)
      
         itoa.str("");
         itoa << listeningPort;
-        TCLAP::ValueArg<int> inputPortOpt("", "listening_port", "Listening port; default is '"+itoa.str()+"'", false, listeningPort, "int");
+        TCLAP::ValueArg<int> inputPortOpt("", "listeningPort", "Listening port; default is '"+itoa.str()+"'", false, listeningPort, "int");
               
         itoa.str("");
         itoa << bPrintEvents;

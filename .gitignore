@@ -1,7 +1,7 @@
 
 # folders
 bin
-lib
+#lib
 obj
 
 # autotools files
