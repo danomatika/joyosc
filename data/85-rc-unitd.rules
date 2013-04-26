@@ -3,9 +3,9 @@
 #
 #	Put me in "/etc/udev/rules.d", I am named based on the debian udev rules format
 #
-#	launches rc-unitd-notifier to send dbus notification of device insert/removal to unitd
+#	launches rc-unit-notifier to send OSC notification of device insert/removal to rc-unitd
 #	- rc-unitd is the device handling daemon the reads events for open devices
-#	- rc-unitf-notifier tells unitd to open or close a device by kernel name
+#	- rc-unit-notifier tells unitd to open or close a device by kernel name
 #
 #	"add" actions are device insertions and device attributes are used to match the device
 #
