@@ -20,24 +20,8 @@
 #
 ################################################################################################
 
-
 #	joystick devices
 #
 KERNEL=="js[0-9]*", ACTION=="add", SUBSYSTEM=="input", RUN="BINDIR/rc-unit-notifier -t joystick open"
 
 KERNEL=="js[0-9]*", ACTION=="remove", SUBSYSTEM=="input", RUN="BINDIR/rc-unit-notifier -t joystick close"
-
-
-#	USB tty serial devices
-#
-#KERNEL=="ttyUSB[0-9]*", ACTION=="add", SUBSYSTEMS=="tty", RUN="BINDIR/rc-unit-notifier -t tty open %k"
-
-#KERNEL=="ttyUSB[0-9]*", ACTION=="remove", SUBSYSTEMS=="tty", RUN="BINDIR/rc-unit-notifier -t tty close %k"
-
-
-#	Video 4 Linux devices aka webcams, etc
-#
-#KERNEL=="video[0-0]*", ACTION=="add", SUBSYTEM=="video4linux", RUN="BINDIR/rc-unit-notifier -t v4l open  %k"
-
-#KERNEL=="video[0-9]*", ACTION=="remove", SUBSYSTEM=="video4linux",  RUN="BINDIR/rc-unit-notifier -t v4l close %k"
-
