@@ -225,14 +225,14 @@ You can also print detailed info using the -d or --details flags.
 
 Used to control a running rc-unitd.  Can be used to signal device add or removals as well as send a quit command.
 
-Open HID joystick device 1:
+A new joystick was added, reload current joysticks:
 <pre>
-% rc-unit-notifier open 1
+% rc-unit-notifier -t joystick open
 </pre>
 
-Close HID joystick device 1:
+A joystick was removed, reload current joysticks:
 <pre>
-% rc-unit-notifier close 1
+% rc-unit-notifier -t joystick close
 </pre>
 
 Tell rc-unitd to shutdown:
