@@ -78,6 +78,7 @@ void JoystickDevice::close()
 	if(m_joystick)
 	{
     	SDL_JoystickClose(m_joystick);
+    	m_joystick = NULL;
     }
     
     // reset variables
