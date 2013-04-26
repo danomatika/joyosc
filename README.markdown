@@ -62,10 +62,15 @@ On Max OS, they can be installed easily using [Macports](http://macports.org) or
 
 #### Macports
 
-* install the Macport binary and setup the Macports environment
+* install the Macports binary and setup the Macports environment
 * go to the Terminal and install the libs:
 <pre>
 sudo port install libsdl liblo
+</pre>
+
+If you use the default Macports install location of `/opt/local`, you will need to set the Macports include and lib dirs before running ./configure:
+<pre>
+export CPPFLAGS=-I/opt/local/include && export LDFLAGS=-L/opt/local/lib
 </pre>
 
 #### Homebrew
@@ -83,7 +88,7 @@ Windows support should work, but hasn't been tested. I'd recommend installing bi
 BUILD AND INSTALLATION
 ----------------------
 
-As this is an GNU autotools project, simply run the following on the commandline:
+As this is an GNU autotools project, simply run the following on the command line:
 <pre>
 ./configure
 make
@@ -92,7 +97,7 @@ sudo make install
 
 This readme, example config files, and the pd library are also installed to your doc dir, something like `$(prefix)/share/doc/rc-unitd`.
 
-By default, the configure script installs to `/usr/local`.  To change this behavior, specify a new dir before building the project:
+By default, the configure script installs to `/usr/local`. To change this behavior, specify a new dir before building the project:
 
 <pre>
 ./configure --prefix=/path/to/install/dir
@@ -113,11 +118,11 @@ All applications have a full help usage printout, use -h or --help.
 
 Starts device daemon with the default settings.
 
+#### Config File
+
     % rc-unitd config_file.xml
 
 Starts device daemon using the given config file.
-
-#### Config File
 
 The config file sets the OSC connection information as well as device to OSC address mappings. Look at the `example_config.xml` file installed to the doc folder or in the `data` folder of the source distribution for details.
 
@@ -240,7 +245,7 @@ Tell rc-unitd to shutdown:
 % rc-unit-notifier quit
 </pre>
 
-### Options
+#### Options
 
 rc-unit-notifier has ip and port setting options similar to rc-unitd:
 <pre>
@@ -254,6 +259,7 @@ Example, tell rc-unitd running on machine at 10.0.0.100 using port 10100 to shut
 % rc-unit-notifier -i 10.0.0.100 -p 10100 quit
 </pre>
 
+----
 ### UDEV Rules
 
 There is a udev rule file for Linux installed to the doc dir that can be used to automatically call rc-unit-notifier when a joystick device is plugged/unplugged: `85-rc-unitd.rules`.
@@ -269,6 +275,7 @@ See the comments in the rules file itself for more info: `data/85-rc-unitd.rules
 
 Note: This file in generated while running `make`, so it will not exist until you build the project.
 
+----
 ### Console Error
 
 As rc-unitd & lsjs use SDL, they will not work over a SSH connection and you'll get the following error:
