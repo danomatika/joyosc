@@ -25,4 +25,3 @@ SUBDIRS = oscframework xmlframework tclap
 #	@echo "  ==== cleaning include and lib dirs ===="
 #	rm -fR include
 #	rm -fR lib
-

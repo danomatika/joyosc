@@ -3,5 +3,4 @@
 SUBDIRS = externals src data
 
 # include the readme as well
-dist_doc_DATA = README.markdown
-
+dist_doc_DATA = README.md

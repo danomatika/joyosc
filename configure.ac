@@ -40,18 +40,18 @@ PKG_CHECK_MODULES(LO, liblo >= 0.23,[],
 # from http://www.bioinf.uni-freiburg.de/~mmann/HowTo/automake.html#debug
 AC_MSG_CHECKING([whether to enable the debug build])
 AC_ARG_ENABLE([debug],
-    [AS_HELP_STRING([--enable-debug],
-        [enable debug build (def=no)])],
-    [enable_debug="$enableval"],
-    [enable_debug=no])
+	[AS_HELP_STRING([--enable-debug],
+		[enable debug build (def=no)])],
+	[enable_debug="$enableval"],
+	[enable_debug=no])
 AC_MSG_RESULT([$enable_debug])
 
 if test x"$enable_debug" = x"yes"; then
-    AC_DEFINE([DEBUG],[],[Debug Mode])
-    CXXFLAGS="$DEBUG_CXXFLAGS"
+	AC_DEFINE([DEBUG],[],[Debug Mode])
+	CXXFLAGS="$DEBUG_CXXFLAGS"
 else
-    AC_DEFINE([NDEBUG],[],[Release Mode])
-    CXXFLAGS="$RELEASE_CXXFLAGS"
+	AC_DEFINE([NDEBUG],[],[Release Mode])
+	CXXFLAGS="$RELEASE_CXXFLAGS"
 fi
 
 # allow linking of non-POSIX libs

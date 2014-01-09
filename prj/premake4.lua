@@ -20,10 +20,10 @@ project "unit"
 	
 	includedirs { "../src",
 				  "../externals/",
-			 	  "../externals/xmlframework",
-			  	  "../externals/oscframework" }
+				  "../externals/xmlframework",
+				  "../externals/oscframework" }
 	libdirs { "../externals/xmlframework",
-      		  "../externals/oscframework" }
+			  "../externals/oscframework" }
 	
 	configuration "linux"
 		buildoptions { "`pkg-config --cflags sdl`", "`pkg-config --cflags liblo`" }
@@ -51,10 +51,10 @@ project "rc-unitd"
 	
 	includedirs { "../src", "../src/lib",
 				  "../externals/",
-			 	  "../externals/xmlframework",
-			  	  "../externals/oscframework" }
+				  "../externals/xmlframework",
+				  "../externals/oscframework" }
 	libdirs { "../externals/xmlframework",
-      		  "../externals/oscframework" }
+			  "../externals/oscframework" }
 	links { "unit", "oscframework", "xmlframework" }
 
 	configuration "linux"
@@ -87,9 +87,9 @@ project "lsjs"
 	files { "../src/lsjs/**.h", "../src/lsjs/**.cpp" }
 
 	includedirs { "../src", "../src/lib",
-			 	  "../externals/",
-			 	  "../externals/xmlframework",
-			  	  "../externals/oscframework" }
+				  "../externals/",
+				  "../externals/xmlframework",
+				  "../externals/oscframework" }
 
 	configuration "linux"
 		buildoptions { "`pkg-config --cflags sdl`" }
@@ -121,11 +121,11 @@ project "rc-unit-notifier"
 	files { "../src/rc-unit-notifier/**.h", "../src/rc-unit-notifier/**.cpp" }
 	
 	includedirs { "../src", "../src/lib",
-			 	  "../externals/",
-			 	  "../externals/xmlframework",
-			  	  "../externals/oscframework" }
+				  "../externals/",
+				  "../externals/xmlframework",
+				  "../externals/oscframework" }
 	libdirs { "../externals/xmlframework",
-      		  "../externals/oscframework" }
+			  "../externals/oscframework" }
 	links { "oscframework" }
 
 	configuration "linux"
@@ -149,4 +149,3 @@ project "rc-unit-notifier"
 	configuration "Release"
 		defines { "NDEBUG" }
 		flags { "Optimize" }
-		

@@ -4219,12 +4219,12 @@ if test x"$enable_debug" = x"yes"; then
 
 $as_echo "#define DEBUG /**/" >>confdefs.h
 
-    CXXFLAGS="$DEBUG_CXXFLAGS"
+	CXXFLAGS="$DEBUG_CXXFLAGS"
 else
 
 $as_echo "#define NDEBUG /**/" >>confdefs.h
 
-    CXXFLAGS="$RELEASE_CXXFLAGS"
+	CXXFLAGS="$RELEASE_CXXFLAGS"
 fi
 
 # allow linking of non-POSIX libs

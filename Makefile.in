@@ -327,7 +327,7 @@ top_srcdir = @top_srcdir@
 SUBDIRS = externals src data
 
 # include the readme as well
-dist_doc_DATA = README.markdown
+dist_doc_DATA = README.md
 all: all-recursive
 
 .SUFFIXES:

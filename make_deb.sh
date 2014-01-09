@@ -18,4 +18,3 @@ fi
 checkinstall -D -y --install=no --pkgname="$NAME" --pkgversion="0.3.0" \
 --requires="$DEPENDS" --maintainer="danomatika@gmail.com" --deldoc=yes \
 --strip=no --stripso=no --deldesc=yes --delspec=yes
-

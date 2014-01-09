@@ -1,4 +1,3 @@
 #!/bin/bash
 premake4 clean
 premake4 xcode3
-

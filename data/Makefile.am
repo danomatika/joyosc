@@ -29,4 +29,3 @@ dist_rcpatches_DATA = $(thisdir)/pd/unit-patches/Example-rc-unitd.pd \
 #				 	  $(thisdir)/pd/unit-patches/unit-wiimote-help.pd \
 #				 	  $(thisdir)/pd/unit-patches/unit-classic.pd
 rcpatchesdir = $(docdir)/pd/unit-patches
-
