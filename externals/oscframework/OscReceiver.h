@@ -6,18 +6,18 @@
   
 	Copyright (C) 2009, 2010  Dan Wilcox <danomatika@gmail.com>
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ==============================================================================*/
 #ifndef OSC_OSC_RECEIVER_H
@@ -30,98 +30,98 @@ namespace osc {
 class ReceiveException : public Exception
 {
 	public:
-    	ReceiveException(
-        	const char* w="liblo receive error")
-            : Exception(w) {}
+		ReceiveException(
+			const char* w="liblo receive error")
+			: Exception(w) {}
 };
 
 /**
-    \class  OscReceiver
-    \brief  a threaded osc receiver
+	\class  OscReceiver
+	\brief  a threaded osc receiver
 
-    set the processing function to match messages or add OscObjects
+	set the processing function to match messages or add OscObjects
 **/
 class OscReceiver
 {
-    public:
+	public:
 
-        OscReceiver(std::string rootAddress="");
-        virtual ~OscReceiver();
+		OscReceiver(std::string rootAddress="");
+		virtual ~OscReceiver();
 
-        /// calls setup automatically
-        OscReceiver(unsigned int port, std::string rootAddress="");
+		/// calls setup automatically
+		OscReceiver(unsigned int port, std::string rootAddress="");
 
-        /* ***** SETUP ***** */
+		/* ***** SETUP ***** */
 
-        /// setup the udp socket using the given port
-        /// returns false if socket cannot be setup
-        bool setup(unsigned int port);
+		/// setup the udp socket using the given port
+		/// returns false if socket cannot be setup
+		bool setup(unsigned int port);
 
-        /* ***** THREAD CONTROL ***** */
+		/* ***** THREAD CONTROL ***** */
 
-        /// start the listening thread, opens connection
-        void start();
+		/// start the listening thread, opens connection
+		void start();
 
-        /// stop the listening thread, closes connection
-        void stop();
-        
-        /* ***** MANUAL POLLING ***** */
-        
-        /**
-        	\brief	manually check for incoming messages, nonblocking
-            \param	timeoutMS	number of milliseconds to wait for a message, 0 returns immediately
-            \return	number of bytes received
-            
-            note: the address must be set using setup(), this cannot be called
-            while the thread is running
-        */
-        int handleMessages(int timeoutMS=0);
+		/// stop the listening thread, closes connection
+		void stop();
+		
+		/* ***** MANUAL POLLING ***** */
+		
+		/**
+			\brief	manually check for incoming messages, nonblocking
+			\param	timeoutMS	number of milliseconds to wait for a message, 0 returns immediately
+			\return	number of bytes received
+			
+			note: the address must be set using setup(), this cannot be called
+			while the thread is running
+		*/
+		int handleMessages(int timeoutMS=0);
 
-        /* ***** ATTACH OSC OBJECTS ***** */
+		/* ***** ATTACH OSC OBJECTS ***** */
 
-        void addOscObject(OscObject* object);
-        void removeOscObject(OscObject* object);
+		void addOscObject(OscObject* object);
+		void removeOscObject(OscObject* object);
 
-        /* ***** UTIL ***** */
+		/* ***** UTIL ***** */
 
-        /// is the thread running?
-        bool isListening() {return true;}
+		/// is the thread running?
+		bool isListening() {return true;}
 
-        /// get port num
-        unsigned int getPort();
+		/// get port num
+		unsigned int getPort();
 
-        /// get/set the root address of this object
-        inline void setOscRootAddress(std::string rootAddress)	{m_oscRootAddress = rootAddress;}
-        inline std::string& getOscRootAddress()	{return m_oscRootAddress;}
+		/// get/set the root address of this object
+		inline void setOscRootAddress(std::string rootAddress)	{m_oscRootAddress = rootAddress;}
+		inline std::string& getOscRootAddress()	{return m_oscRootAddress;}
 
-        // ignore incoming messages?
-        inline void ignoreMessages(bool yesno) {m_bIgnoreMessages = yesno;}
+		// ignore incoming messages?
+		inline void ignoreMessages(bool yesno) {m_bIgnoreMessages = yesno;}
 
-    protected:
+	protected:
 
-        /// callback, returns true if message handled
-        virtual bool process(const ReceivedMessage& message, const MessageSource& source) {return false;}
+		/// callback, returns true if message handled
+		virtual bool process(const ReceivedMessage& message, const MessageSource& source) {return false;}
 
-        /// the root address of this object, aka something like "/root/test1/string2"
-        std::string m_oscRootAddress;
+		/// the root address of this object, aka something like "/root/test1/string2"
+		std::string m_oscRootAddress;
 
-    private:
+	private:
 
 		// virtual callback from oscpack
-        bool processMessage(const ReceivedMessage& message, const MessageSource& source);
+		bool processMessage(const ReceivedMessage& message, const MessageSource& source);
 
 		/* ***** STATIC CALLBACKS ***** */
-        
-        static void errorCB(int num, const char* msg, const char* where);
+		
+		static void errorCB(int num, const char* msg, const char* where);
 
-        static int messageCB(const char* path, const char* types, lo_arg** argv,
-        					 int argc, lo_message msg, void* user_data);
-        
-        lo_server_thread m_serverThread;
+		static int messageCB(const char* path, const char* types, lo_arg** argv,
+							 int argc, lo_message msg, void* user_data);
+		
+		lo_server_thread m_serverThread;
 
-        bool m_bIsRunning, m_bIgnoreMessages;
+		bool m_bIsRunning, m_bIgnoreMessages;
 
-        std::vector<OscObject*> _objectList;    /// list of osc objects
+		std::vector<OscObject*> _objectList;    /// list of osc objects
 };
 
 } // namespace

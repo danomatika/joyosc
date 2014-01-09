@@ -32,6 +32,7 @@
 #if defined( __WIN32__ ) || defined( _WIN32 )
 	#include <windows.h>
 #endif
+#include <unistd.h>
 
 using namespace xml;
 

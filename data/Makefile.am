@@ -3,7 +3,7 @@
 thisdir = $(srcdir)
 
 # include files
-dist_configfiles_DATA = example_config.xml 85-rc-unitd.rules 85-rc-unitd.rules.source
+dist_configfiles_DATA = example_config.xml 85-rc-unitd.rules
 configfilesdir = $(docdir)
 
 # need to process the udev config file to insert the proper bin path

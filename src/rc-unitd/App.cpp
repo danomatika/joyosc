@@ -23,6 +23,7 @@
 #include "App.h"
 
 #include <signal.h>     // signal handling
+#include <unistd.h>
 
 using namespace osc;
 
