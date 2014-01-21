@@ -30,9 +30,9 @@ project "unit"
 		linkoptions { "`pkg-config --libs sdl`", "`pkg-config --libs liblo`" }
 	
 	configuration "macosx"
-		-- MacPorts
-		includedirs { "/opt/local/include" }
-		libdirs { "/opt/local/lib" }
+		-- Homebrew
+		includedirs { "/usr/local/include" }
+		libdirs { "/usr/local/lib" }
 
 	configuration "Debug"
 		defines { "DEBUG" }
@@ -62,9 +62,9 @@ project "rc-unitd"
 		linkoptions { "`pkg-config --libs sdl`", "`pkg-config --libs liblo`" }
 
 	configuration 'macosx'
-		-- MacPorts
-		includedirs { "/opt/local/include"}
-		libdirs { "/opt/local/lib" }
+		-- Homebrew
+		includedirs { "/usr/local/include"}
+		libdirs { "/usr/local/lib" }
 		links { "lo", "pthread", "SDLmain", "SDL" }
 		linkoptions { "-Wl,-framework,Cocoa", "-Wl,-framework,OpenGL",
 					  "-Wl,-framework,ApplicationServices",
@@ -96,9 +96,9 @@ project "lsjs"
 		linkoptions { "`pkg-config --libs sdl`" }
 
 	configuration 'macosx'
-		-- MacPorts
-		includedirs { "/opt/local/include"}
-		libdirs { "/opt/local/lib" }
+		-- Homebrew
+		includedirs { "/usr/local/include"}
+		libdirs { "/usr/local/lib" }
 		links { "SDLmain", "SDL" }
 		linkoptions { "-Wl,-framework,Cocoa", "-Wl,-framework,OpenGL",
 					  "-Wl,-framework,ApplicationServices",
@@ -133,9 +133,9 @@ project "rc-unit-notifier"
 		linkoptions { "`pkg-config --libs sdl`" }
 
 	configuration 'macosx'
-		-- MacPorts
-		includedirs { "/opt/local/include"}
-		libdirs { "/opt/local/lib" }
+		-- Homebrew
+		includedirs { "/usr/local/include"}
+		libdirs { "/usr/local/lib" }
 		links { "lo", "pthread", "SDLmain", "SDL" }
 		linkoptions { "-Wl,-framework,Cocoa", "-Wl,-framework,OpenGL",
 					  "-Wl,-framework,ApplicationServices",

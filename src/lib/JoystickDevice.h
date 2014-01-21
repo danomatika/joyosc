@@ -70,6 +70,9 @@ class JoystickDevice : public Device
 		
 		/// print remapping
 		void printRemapping();
+		
+		/// print button, axis, etc ignores
+		void printIgnores();
 
 		///  returns true if device is open
 		bool isOpen();
@@ -86,12 +89,17 @@ class JoystickDevice : public Device
 		void setRemapping(JoystickRemapping* remapping);
 		inline JoystickRemapping* getRemapping() {return m_remapping;}
 		
+		/// set/get joystick button, axis, etc ignores
+		void setIgnore(JoystickIgnore* ignore);
+		inline JoystickIgnore* getIgnore() {return m_ignore;}
+		
 		/// restart the SDL Joystick subsystem
 		static void restartJoystickSubSystem();
 
 	protected:
 	
 		friend class JoystickRemapping;
+		friend class JoystickIgnore;
 
 		SDL_Joystick	*m_joystick;
 		int				m_joyIndex;
@@ -100,9 +108,10 @@ class JoystickDevice : public Device
 		std::vector<int16_t>	m_prevAxisValues;
 		
 		JoystickRemapping *m_remapping;
+		JoystickIgnore *m_ignore;
 };
 
-/** \class  Joystick_Device
+/** \class  JoystickRemapping
 	\brief	Defines button, axis, ball, & hat remappings
 */
 class JoystickRemapping : public xml::XmlObject
@@ -117,6 +126,33 @@ class JoystickRemapping : public xml::XmlObject
 		std::map<int,int> axes;
 		std::map<int,int> balls;
 		std::map<int,int> hats;
+		
+		// check mapping indices & toss out any bad values
+		void check(JoystickDevice* joystick);
+		
+		void print();
+		
+	protected:
+	
+		// XMLObject callback
+		bool readXml(TiXmlElement* e);
+};
+
+/** \class  JoystickIgnore
+	\brief	Defines which buttons, axes, balls, or hats to ignore
+*/
+class JoystickIgnore : public xml::XmlObject
+{
+	public:
+	
+		JoystickIgnore() : xml::XmlObject("ignore") {}
+		
+		// ids to ignore
+		// with key: id & value: void
+		std::map<int,bool> buttons;
+		std::map<int,bool> axes;
+		std::map<int,bool> balls;
+		std::map<int,bool> hats;
 		
 		// check mapping indexs & toss out any bad values
 		void check(JoystickDevice* joystick);

@@ -26,7 +26,7 @@ using namespace xml;
 
 JoystickDevice::JoystickDevice(string oscAddress) :
 	Device(oscAddress), m_joystick(NULL), m_joyIndex(-1),
-	m_axisDeadZone(0), m_remapping(NULL)
+	m_axisDeadZone(0), m_remapping(NULL), m_ignore(NULL)
 {}
 
 bool JoystickDevice::open()
@@ -106,6 +106,15 @@ bool JoystickDevice::handleEvents(void* data)
 			if(event->jbutton.which != m_joyIndex)
 				break;
 			
+			// ignore?
+			if(m_ignore)
+			{
+				map<int,bool>::iterator iter = m_ignore->buttons.find(event->jbutton.button);
+				if(iter != m_ignore->buttons.end()) {
+					break;
+				}
+			}
+			
 			// remap?
 			if(m_remapping)
 			{				
@@ -132,6 +141,15 @@ bool JoystickDevice::handleEvents(void* data)
 			if(event->jbutton.which != m_joyIndex)
 				break;
 				
+			// ignore?
+			if(m_ignore)
+			{
+				map<int,bool>::iterator iter = m_ignore->buttons.find(event->jbutton.button);
+				if(iter != m_ignore->buttons.end()) {
+					break;
+				}
+			}
+				
 			// remap?
 			if(m_remapping)
 			{
@@ -157,6 +175,15 @@ bool JoystickDevice::handleEvents(void* data)
 		{
 			if(event->jaxis.which != m_joyIndex)
 				break;
+			
+			// ignore?
+			if(m_ignore)
+			{
+				map<int,bool>::iterator iter = m_ignore->axes.find(event->jaxis.axis);
+				if(iter != m_ignore->axes.end()) {
+					break;
+				}
+			}
 			
 			// remap?
 			if(m_remapping)
@@ -199,6 +226,15 @@ bool JoystickDevice::handleEvents(void* data)
 			if(event->jball.which != m_joyIndex)
 				break;
 			
+			// ignore?
+			if(m_ignore)
+			{
+				map<int,bool>::iterator iter = m_ignore->balls.find(event->jball.ball);
+				if(iter != m_ignore->balls.end()) {
+					break;
+				}
+			}
+			
 			// remap?
 			if(m_remapping)
 			{
@@ -225,6 +261,15 @@ bool JoystickDevice::handleEvents(void* data)
 		{
 			if(event->jhat.which != m_joyIndex)
 				break;
+			
+			// ignore?
+			if(m_ignore)
+			{
+				map<int,bool>::iterator iter = m_ignore->hats.find(event->jhat.hat);
+				if(iter != m_ignore->hats.end()) {
+					break;
+				}
+			}
 			
 			// remap?
 			if(m_remapping)
@@ -266,10 +311,19 @@ void JoystickDevice::print()
 	}
 }
 	
-void JoystickDevice::printRemapping() {
+void JoystickDevice::printRemapping()
+{
 	if(m_joystick && m_remapping)
 	{
 		m_remapping->print();
+	}
+}
+
+void JoystickDevice::printIgnores()
+{
+	if(m_joystick && m_ignore)
+	{
+		m_ignore->print();
 	}
 }
 
@@ -282,7 +336,7 @@ void JoystickDevice::setAxisDeadZone(unsigned int zone)
 {
 	m_axisDeadZone = zone;
 	LOG_DEBUG << "JoystickDevice \"" << getDevName() << "\": "
-			  << " set axis dead zone to " << zone << endl;
+			  << "set axis dead zone to " << zone << endl;
 }
 
 void JoystickDevice::setRemapping(JoystickRemapping* remapping)
@@ -291,6 +345,15 @@ void JoystickDevice::setRemapping(JoystickRemapping* remapping)
 	if(m_remapping)
 	{
 		m_remapping->check(this);
+	}
+}
+
+void JoystickDevice::setIgnore(JoystickIgnore* ignore)
+{
+	m_ignore = ignore;
+	if(m_ignore)
+	{
+		m_ignore->check(this);
 	}
 }
 
@@ -311,7 +374,7 @@ void JoystickRemapping::check(JoystickDevice* joystick)
 	for(iter = buttons.begin(); iter != buttons.end(); ++iter)
 	{
 		if(iter->first > numButtons || iter->second > numButtons) {
-			LOG_WARN << "JoystickRemapping for \"" << joystick->getDevName() << "\"name \": "
+			LOG_WARN << "JoystickRemapping for \"" << joystick->getDevName() << "\": "
 					 << "removing invalid button remap: "
 					 << iter->first << " -> " << iter->second;
 		}
@@ -321,7 +384,7 @@ void JoystickRemapping::check(JoystickDevice* joystick)
 	for(iter = axes.begin(); iter != axes.end(); ++iter)
 	{
 		if(iter->first > numAxes || iter->second > numAxes) {
-			LOG_WARN << "JoystickRemapping for \"" << joystick->getDevName() << "\"name \": "
+			LOG_WARN << "JoystickRemapping for \"" << joystick->getDevName() << "\": "
 					 << "removing invalid axis remap: "
 					 << iter->first << " -> " << iter->second;
 		}
@@ -331,7 +394,7 @@ void JoystickRemapping::check(JoystickDevice* joystick)
 	for(iter = balls.begin(); iter != balls.end(); ++iter)
 	{
 		if(iter->first > numBalls || iter->second > numBalls) {
-			LOG_WARN << "JoystickRemapping for \"" << joystick->getDevName() << "\"name \": "
+			LOG_WARN << "JoystickRemapping for \"" << joystick->getDevName() << "\": "
 					 << "removing invalid ball remap: "
 					 << iter->first << " -> " << iter->second;
 		}
@@ -341,7 +404,7 @@ void JoystickRemapping::check(JoystickDevice* joystick)
 	for(iter = hats.begin(); iter != hats.end(); ++iter)
 	{
 		if(iter->first > numHats || iter->second > numHats) {
-			LOG_WARN << "JoystickRemapping for \"" << joystick->getDevName() << "\"name \": "
+			LOG_WARN << "JoystickRemapping for \"" << joystick->getDevName() << "\": "
 					 << "removing invalid hat remap: "
 					 << iter->first << " -> " << iter->second;
 		}
@@ -412,11 +475,11 @@ bool JoystickRemapping::readXml(TiXmlElement* e)
 				ret = buttons.insert(make_pair(from, to));
 				if(!ret.second)
 				{
-					LOG_WARN << "Joystick \"" << devName << "\"n ame \": "
+					LOG_WARN << "Joystick \"" << devName << "\": "
 							 << "mapping for button " << from
 							 << " already exists" << endl;
 				}
-				LOG_DEBUG << "Joystick \"" << devName << "\" name \": "
+				LOG_DEBUG << "Joystick \"" << devName << "\": "
 						  << "remapped button " << from << " to " << to << endl;
 				loaded = true;
 			}
@@ -426,11 +489,11 @@ bool JoystickRemapping::readXml(TiXmlElement* e)
 				ret = axes.insert(make_pair(from, to));
 				if(!ret.second)
 				{
-					LOG_WARN << "Joystick \"" << devName << "\" name \": "
+					LOG_WARN << "Joystick \"" << devName << "\": "
 							 << "mapping for axis " << from
 							 << " already exists" << endl;
 				}
-				LOG_DEBUG << "Joystick \"" << devName << "\" name \": "
+				LOG_DEBUG << "Joystick \"" << devName << "\": "
 						  << "remapped axis " << from << " to " << to << endl;
 				loaded = true;
 			}
@@ -440,11 +503,11 @@ bool JoystickRemapping::readXml(TiXmlElement* e)
 				ret = balls.insert(make_pair(from, to));
 				if(!ret.second)
 				{
-					LOG_WARN << "Joystick \"" << devName << "\" name \": "
+					LOG_WARN << "Joystick \"" << devName << "\": "
 							 << "mapping for ball " << from
 							 << " already exists" << endl;
 				}
-				LOG_DEBUG << "Joystick \"" << devName << "\" name \": "
+				LOG_DEBUG << "Joystick \"" << devName << "\": "
 						  << "remapped ball " << from << " to " << to << endl;
 				loaded = true;
 			}
@@ -454,19 +517,181 @@ bool JoystickRemapping::readXml(TiXmlElement* e)
 				ret = balls.insert(make_pair(from, to));
 				if(!ret.second)
 				{
-					LOG_WARN << "Joystick \"" << devName << "\" name \": "
+					LOG_WARN << "Joystick \"" << devName << "\": "
 							 << "mapping for hat " << from
 							 << " already exists" << endl;
 				}
-				LOG_DEBUG << "Joystick \"" << devName << "\" name \": "
+				LOG_DEBUG << "Joystick \"" << devName << "\": "
 						  << "remapped hat " << from << " to " << to << endl;
 				loaded = true;
 			}
 		}
 		else
 		{
-			LOG_WARN << "Joystick \"" << devName << "\" name \": "
-					 << "ignoring invalid map";
+			LOG_WARN << "Joystick \"" << devName << "\": "
+					 << "ignoring invalid remapping";
+		}
+
+		child = child->NextSiblingElement();
+	}
+	
+	return loaded;
+}
+
+/* ***** JoystickIgnore ***** */
+
+void JoystickIgnore::check(JoystickDevice* joystick)
+{
+	if(!joystick)	return;
+
+	map<int,bool>::iterator iter;
+	int numButtons = SDL_JoystickNumButtons(joystick->m_joystick);
+	for(iter = buttons.begin(); iter != buttons.end(); ++iter)
+	{
+		if(iter->first > numButtons) {
+			LOG_WARN << "JoystickIgnore for \"" << joystick->getDevName() << "\": "
+					 << "removing invalid button: " << iter->first;
+		}
+	}
+	
+	int numAxes = SDL_JoystickNumAxes(joystick->m_joystick);
+	for(iter = axes.begin(); iter != axes.end(); ++iter)
+	{
+		if(iter->first > numAxes ) {
+			LOG_WARN << "JoystickIgnore for \"" << joystick->getDevName() << "\": "
+					 << "removing invalid axis: " << iter->first;
+		}
+	}
+	
+	int numBalls = SDL_JoystickNumBalls(joystick->m_joystick);
+	for(iter = balls.begin(); iter != balls.end(); ++iter)
+	{
+		if(iter->first > numBalls) {
+			LOG_WARN << "JoystickIgnore for \"" << joystick->getDevName() << "\": "
+					 << "removing invalid ball: " << iter->first;
+		}
+	}
+	
+	int numHats = SDL_JoystickNumButtons(joystick->m_joystick);
+	for(iter = hats.begin(); iter != hats.end(); ++iter)
+	{
+		if(iter->first > numHats) {
+			LOG_WARN << "JoystickIgnore for \"" << joystick->getDevName() << "\": "
+					 << "removing invalid hat: " << iter->first;
+		}
+	}
+}
+
+void JoystickIgnore::print()
+{
+	if(!buttons.empty())
+	{
+		map<int,bool>::iterator iter = buttons.begin();
+		for(; iter != buttons.end(); ++iter)
+		{
+			LOG << "	ignore button: " << iter->first << endl;
+		}
+	}
+	
+	if(!axes.empty())
+	{
+		map<int,bool>::iterator iter = axes.begin();
+		for(; iter != axes.end(); ++iter)
+		{
+			LOG << "	ignore axis: " << iter->first << endl;
+		}
+	}
+	
+	if(!balls.empty())
+	{
+		map<int,bool>::iterator iter = balls.begin();
+		for(; iter != balls.end(); ++iter)
+		{
+			LOG << "	ignore ball: " << iter->first << endl;
+		}
+	}
+	
+	if(!hats.empty())
+	{
+		
+		map<int,bool>::iterator iter = hats.begin();
+		for(; iter != hats.end(); ++iter)
+		{
+			LOG << "	ignore hat: " << iter->first << endl;
+		}
+	}
+}
+
+bool JoystickIgnore::readXml(TiXmlElement* e)
+{
+	bool loaded = false;
+	string devName = Xml::getAttrString(e->Parent()->ToElement(), "name", "unknown");
+	
+	// load the device mappings
+	TiXmlElement* child = e->FirstChildElement();
+	while(child != NULL)
+	{
+		int which  = Xml::getAttrInt(child, "id", -1);
+		
+		if(which > -1)
+		{
+			if(child->ValueStr() == "button")
+			{
+				pair<map<int,bool>::iterator, bool> ret;
+				ret = buttons.insert(make_pair(which,true));
+				if(!ret.second)
+				{
+					LOG_WARN << "Joystick \"" << devName << "\": "
+							 << "already ignoring button " << which << endl;
+				}
+				LOG_DEBUG << "Joystick \"" << devName << "\": "
+						  << "ignoring button " << which << endl;
+				loaded = true;
+			}
+			else if(child->ValueStr() == "axis")
+			{
+				pair<map<int,bool>::iterator, bool> ret;
+				ret = axes.insert(make_pair(which, true));
+				if(!ret.second)
+				{
+					LOG_WARN << "Joystick \"" << devName << "\": "
+							 << "already ignoring axis " << which << endl;
+				}
+				LOG_DEBUG << "Joystick \"" << devName << "\": "
+						  << "ignoring axis " << which << endl;
+				loaded = true;
+			}
+			else if(child->ValueStr() == "ball")
+			{
+				pair<map<int,bool>::iterator, bool> ret;
+				ret = balls.insert(make_pair(which, true));
+				if(!ret.second)
+				{
+					LOG_WARN << "Joystick \"" << devName << "\": "
+							 << "already ignoring ball " << which << endl;
+				}
+				LOG_DEBUG << "Joystick \"" << devName << "\": "
+						  << "ignoring ball " << which << endl;
+				loaded = true;
+			}
+			else if(child->ValueStr() == "hat")
+			{
+				pair<map<int,bool>::iterator, bool> ret;
+				ret = balls.insert(make_pair(which, true));
+				if(!ret.second)
+				{
+					LOG_WARN << "Joystick \"" << devName << "\": "
+							 << "already ignoring hat " << which << endl;
+				}
+				LOG_DEBUG << "Joystick \"" << devName << "\": "
+						  << "ignoring hat " << which << endl;
+				loaded = true;
+			}
+		}
+		else
+		{
+			LOG_WARN << "Joystick \"" << devName << "\": "
+					 << "ignoring invalid ignore";
 		}
 
 		child = child->NextSiblingElement();

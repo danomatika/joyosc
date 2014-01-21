@@ -16,7 +16,7 @@ The rc-unitd package contains the following parts:
 2. rc-unit-notifier - insert/removal notification tool
 3. lsjs - joystick info tool
 
-This group of tools allows any OSC-capable program to receive joystick event data aka button presses, axis movements, etc.  Specific joysticks can be mapped by name to specific OSC send addresses and button, axis, etc ids can be remapped.  A notification tool can control the running daemon.
+This group of tools allows any OSC-capable program to receive joystick event data aka button presses, axis movements, etc.  Specific joysticks can be mapped by name to specific OSC send addresses and button, axis, etc ids can be remapped or ignored.  A notification tool can control the running daemon.
 
 A udev rules set is provided for GNU/Linux to enable automatic notification when devices are plugged in.
 

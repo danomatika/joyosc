@@ -53,6 +53,14 @@ void JoystickManager::open()
 				j->setAxisDeadZone(axisDeadZone);
 			}
 			
+			// set ignore if one exists
+			JoystickIgnore *ignore = Config::instance().getJoystickIgnore(j->getDevName());
+			if(ignore)
+			{
+				j->setIgnore(ignore);
+				j->printIgnores();
+			}
+			
 			m_joysticks.push_back(j);
 		}
 	}

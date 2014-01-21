@@ -1,3 +1,24 @@
+2014-01-21 Dan Wilcox <danomatika@gmail.com>
+
+	v0.3.3: Ignoring events
+
+	* added ability to ignore button, axis, ball, & hat events by id
+
+2013-04-26 Dan Wilcox <danomatika@gmail.com>
+
+    v0.3.2: Event remapping
+
+    * added axis deadzone setting
+    * added button, axis, ball, & hat id remapping
+    * config file relative path handling now works
+
+2010-12-23 Dan Wilcox <danomatika@gmail.com>
+
+	v0.3.1: Updated externals & project files
+
+	* some reorganization
+	* rebuilding of project files
+
 2010-03-27 Dan Wilcox <danomatika@gmail.com>
 
 	v0.3.0: Cross platform rewrite

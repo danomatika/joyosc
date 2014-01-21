@@ -38,6 +38,18 @@
 				<!-- send axis 1 as axis 2 -->
 				<axis from="1" to="2"/>
 			</remap>
+
+			<!-- ignore buttons, axes, etc; useful if you want to save bandwidth
+			     by not sending uneeded events
+
+			     types: button, axis, hat, ball
+			-->
+			<ignore>
+				<!-- ignore button 1 -->
+				<button id="1"/>
+				<!-- ignore axis  1 -->
+				<axis id="1"/>
+			</ignore>
 		</joystick>
 	</mappings>
 </rc-unitd>

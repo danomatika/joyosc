@@ -129,6 +129,8 @@
 /* Begin PBXProject section */
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+			};
 			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "rc-unitd" */;
 			compatibilityVersion = "Xcode 3.1";
 			developmentRegion = English;
@@ -245,7 +247,20 @@
 				CONFIGURATION_BUILD_DIR = "../src/rc-unitd";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
+				HEADER_SEARCH_PATHS = (
+					../src,
+					../src/lib,
+					../externals,
+					../externals/xmlframework,
+					../externals/oscframework,
+					/usr/local/include,
+				);
 				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					../externals/xmlframework,
+					../externals/oscframework,
+					/usr/local/lib,
+				);
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
@@ -311,7 +326,20 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
+				HEADER_SEARCH_PATHS = (
+					../src,
+					../src/lib,
+					../externals,
+					../externals/xmlframework,
+					../externals/oscframework,
+					/usr/local/include,
+				);
 				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					../externals/xmlframework,
+					../externals/oscframework,
+					/usr/local/lib,
+				);
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "rc-unitd";
 			};

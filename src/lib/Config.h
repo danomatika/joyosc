@@ -32,6 +32,7 @@
 using namespace std;
 
 class JoystickRemapping;
+class JoystickIgnore;
 
 /**
 	\class  Config
@@ -77,23 +78,30 @@ class Config : public xml::XmlObject
 		/**
 			\brief	retreive the osc address for a given device name
 			\param	deviceName	device name as a string ie "Logitech Logitech Dual Action"
-			\return	mapped device addr on success, empty string "" on failure
+			\return	mapped device addr on success, empty string "" if not found
 		*/
 		string getDeviceAddress(string deviceName);
 		
 		/**
 			\brief	retreive the axis dead zone threshold for a given joystick device name
 			\param	deviceName	device name as a string ie "Logitech Logitech Dual Action"
-			\return	dead zone value on success, 0 on failure
+			\return	dead zone value on success, 0 if not found
 		*/
 		unsigned int getJoystickAxisDeadZone(string deviceName);
 		
 		/**
 			\brief	retreive the remapping for a given joystick device name
 			\param	deviceName	device name as a string ie "Logitech Logitech Dual Action"
-			\return	joystick remapping on success, NULL on failure
+			\return	joystick remapping on success, NULL if not found
 		*/
 		JoystickRemapping* getJoystickRemapping(string deviceName);
+		
+		/**
+			\brief	retrieve the button, axis, etc ignores for a given joystick device name
+			\param	deviceName	device name as a string ie "Logitech Logitech Dual Action"
+			\return	joystick ignore on success, NULL if not found
+		*/
+		JoystickIgnore* getJoystickIgnore(string deviceName);
 		
 		/**
 			\brief	parse the commandline options
@@ -117,6 +125,7 @@ class Config : public xml::XmlObject
 		map<string,string> m_deviceAddresses;	///< device osc address mappings
 		map<string,unsigned int> m_joystickAxisDeadZones; ///< zeroing threshold
 		map<string,JoystickRemapping*> m_joystickRemappings; ///< joystick remappings
+		map<string,JoystickIgnore*> m_joystickIgnores; ///< joystick button, axis, etc ignores
 		
 		osc::OscSender m_oscSender;       	///< global osc sender
 		osc::OscReceiver m_oscReceiver;		///< global osc receiver

@@ -11,8 +11,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7B7D6A6879DD001278888155 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "main.cpp"; path = "main.cpp"; sourceTree = "<group>"; };
-		189568784E6D001278888155 /* rc-unit-notifier */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = "rc-unit-notifier"; path = "rc-unit-notifier"; sourceTree = BUILT_PRODUCTS_DIR; };
+		189568784E6D001278888155 /* rc-unit-notifier */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "rc-unit-notifier"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B7D6A6879DD001278888155 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,13 +26,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		79BD6CA62781001278888155 /* rc-unit-notifier */ = {
+		0B7B5948330A001278888155 /* rc-unit-notifier */ = {
 			isa = PBXGroup;
 			children = (
-				259040540841001278888155 /* src */,
-				17A84630280F001278888155 /* Products */,
+				7B7D6A6879DD001278888155 /* main.cpp */,
 			);
-			name = rc-unit-notifier;
+			path = "rc-unit-notifier";
+			sourceTree = "<group>";
+		};
+		17A84630280F001278888155 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				189568784E6D001278888155 /* rc-unit-notifier */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		259040540841001278888155 /* src */ = {
@@ -44,21 +51,13 @@
 			path = ../src;
 			sourceTree = "<group>";
 		};
-		0B7B5948330A001278888155 /* rc-unit-notifier */ = {
+		79BD6CA62781001278888155 /* rc-unit-notifier */ = {
 			isa = PBXGroup;
 			children = (
-				7B7D6A6879DD001278888155 /* main.cpp */,
+				259040540841001278888155 /* src */,
+				17A84630280F001278888155 /* Products */,
 			);
-			name = rc-unit-notifier;
-			path = rc-unit-notifier;
-			sourceTree = "<group>";
-		};
-		17A84630280F001278888155 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				189568784E6D001278888155 /* rc-unit-notifier */,
-			);
-			name = Products;
+			name = "rc-unit-notifier";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -76,9 +75,9 @@
 			);
 			dependencies = (
 			);
-			name = rc-unit-notifier;
+			name = "rc-unit-notifier";
 			productInstallPath = "$(HOME)/bin";
-			productName = rc-unit-notifier;
+			productName = "rc-unit-notifier";
 			productReference = 189568784E6D001278888155 /* rc-unit-notifier */;
 			productType = "com.apple.product-type.tool";
 		};
@@ -87,9 +86,15 @@
 /* Begin PBXProject section */
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+			};
 			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "rc-unit-notifier" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 79BD6CA62781001278888155 /* rc-unit-notifier */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -120,34 +125,57 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXVariantGroup section */
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
-		45D676F71236001278888155 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CONFIGURATION_BUILD_DIR = ../src/rc-unit-notifier;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_MODEL_TUNING = G5;
-				INSTALL_PATH = /usr/local/bin;
-				PRODUCT_NAME = "rc-unit-notifier";
-			};
-			name = "Debug";
-		};
 		0D6365E526DE001278888155 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = "../src/rc-unit-notifier";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				CONFIGURATION_BUILD_DIR = ../src/rc-unit-notifier;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
+				HEADER_SEARCH_PATHS = (
+					../src,
+					../src/lib,
+					../externals,
+					../externals/xmlframework,
+					../externals/oscframework,
+					/usr/local/include,
+				);
 				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					../externals/xmlframework,
+					../externals/oscframework,
+					/usr/local/lib,
+				);
 				PRODUCT_NAME = "rc-unit-notifier";
 			};
-			name = "Release";
+			name = Release;
+		};
+		45D676F71236001278888155 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = "../src/rc-unit-notifier";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				HEADER_SEARCH_PATHS = (
+					../src,
+					../src/lib,
+					../externals,
+					../externals/xmlframework,
+					../externals/oscframework,
+					/usr/local/include,
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					../externals/xmlframework,
+					../externals/oscframework,
+					/usr/local/lib,
+				);
+				PRODUCT_NAME = "rc-unit-notifier";
+			};
+			name = Debug;
 		};
 		51770F417675001278888155 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -159,23 +187,21 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"../src",
-					"../src/lib",
-					"../externals",
-					"../externals/xmlframework",
-					"../externals/oscframework",
-					"../../../../../../../opt/local/include",
+					../src,
+					../src/lib,
+					../externals,
+					../externals/xmlframework,
+					../externals/oscframework,
+					../../../../../../../opt/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
-					"../externals/xmlframework",
-					"../externals/oscframework",
-					"../../../../../../../opt/local/lib",
+					../externals/xmlframework,
+					../externals/oscframework,
+					../../../../../../../opt/local/lib,
 				);
 				OBJROOT = "../obj/Debug/rc-unit-notifier";
 				ONLY_ACTIVE_ARCH = NO;
@@ -196,7 +222,7 @@
 				PREBINDING = NO;
 				SYMROOT = "../src/rc-unit-notifier";
 			};
-			name = "Debug";
+			name = Debug;
 		};
 		5CA56F10321C001278888155 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -206,23 +232,21 @@
 				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"NDEBUG",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"../src",
-					"../src/lib",
-					"../externals",
-					"../externals/xmlframework",
-					"../externals/oscframework",
-					"../../../../../../../opt/local/include",
+					../src,
+					../src/lib,
+					../externals,
+					../externals/xmlframework,
+					../externals/oscframework,
+					../../../../../../../opt/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
-					"../externals/xmlframework",
-					"../externals/oscframework",
-					"../../../../../../../opt/local/lib",
+					../externals/xmlframework,
+					../externals/oscframework,
+					../../../../../../../opt/local/lib,
 				);
 				OBJROOT = "../obj/Release/rc-unit-notifier";
 				ONLY_ACTIVE_ARCH = NO;
@@ -243,20 +267,11 @@
 				PREBINDING = NO;
 				SYMROOT = "../src/rc-unit-notifier";
 			};
-			name = "Release";
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		283F7DB3130C001278888155 /* Build configuration list for PBXNativeTarget "rc-unit-notifier" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				45D676F71236001278888155 /* Debug */,
-				0D6365E526DE001278888155 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Debug";
-		};
 		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "rc-unit-notifier" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -264,10 +279,18 @@
 				5CA56F10321C001278888155 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Debug";
+			defaultConfigurationName = Debug;
+		};
+		283F7DB3130C001278888155 /* Build configuration list for PBXNativeTarget "rc-unit-notifier" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				45D676F71236001278888155 /* Debug */,
+				0D6365E526DE001278888155 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
-
 	};
 	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
 }

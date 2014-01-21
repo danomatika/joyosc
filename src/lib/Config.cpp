@@ -72,6 +72,15 @@ JoystickRemapping* Config::getJoystickRemapping(string deviceName)
 	return NULL;
 }
 
+JoystickIgnore* Config::getJoystickIgnore(string deviceName) {
+	map<string,JoystickIgnore*>::iterator iter = m_joystickIgnores.find(deviceName);
+	if(iter != m_joystickIgnores.end())
+	{
+		return iter->second;
+	}
+	return NULL;
+}
+
 bool Config::parseCommandLine(int argc, char **argv)
 {
 	try
@@ -219,7 +228,7 @@ bool Config::readXml(TiXmlElement* e)
 						threshRet= m_joystickAxisDeadZones.insert(make_pair(name, deadZone));
 						if(!threshRet.second)
 						{
-							LOG_WARN << "Config: joystick axis deadzone for name \""
+							LOG_WARN << "Config: joystick axis deadzone for \""
 									 << name << "\" already exists" << endl;
 						}
 					}
@@ -238,7 +247,25 @@ bool Config::readXml(TiXmlElement* e)
 					remapRet = m_joystickRemappings.insert(make_pair(name, remap));
 					if(!remapRet.second)
 					{
-						LOG_WARN << "Config: joystick remapping for name \""
+						LOG_WARN << "Config: joystick remapping for \""
+								 << name << "\" already exists" << endl;
+					}
+				}
+				
+				TiXmlElement* ignoreChild = Xml::getElement(child2, "ignore");
+				if(ignoreChild)
+				{
+					JoystickIgnore *ignore = new JoystickIgnore;
+					if(!ignore->loadXml(ignoreChild))
+					{
+						LOG_WARN << "Config: ignoring empty ignore for \""
+								 << name << "\""<< endl;
+					}
+					pair<map<string,JoystickIgnore*>::iterator, bool> ignoreRet;
+					ignoreRet = m_joystickIgnores.insert(make_pair(name, ignore));
+					if(!ignoreRet.second)
+					{
+						LOG_WARN << "Config: joystick ignore for \""
 								 << name << "\" already exists" << endl;
 					}
 				}
