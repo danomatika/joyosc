@@ -29,7 +29,7 @@ using namespace osc;
 
 App* appPtr;
 
-App::App() : OscObject(PACKAGE), m_bRun(false),
+App::App() : OscObject((string)"/"+PACKAGE), m_bRun(false),
 	m_config(Config::instance()),
 	m_oscReceiver(Config::instance().getOscReceiver()),
 	m_oscSender(Config::instance().getOscSender())
