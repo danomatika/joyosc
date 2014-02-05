@@ -269,7 +269,7 @@ If you want to enable hot plug support, simply copy it to the udev rules folder:
 sudo cp data/85-rc-unitd.rules /etc/udev/rules.d
 </pre>
 
-Whenever a js* device is plugged in or unplugged, rc-unit-notifier is automatically called to send an add or remove event to rc-unitd if it is running.
+Whenever a joystick device is plugged in or unplugged, rc-unit-notifier is automatically called to send an add or remove event to rc-unitd if it is running.
 
 See the comments in the rules file itself for more info: `data/85-rc-unitd.rules`
 

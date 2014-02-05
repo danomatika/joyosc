@@ -1,3 +1,10 @@
+2014-02-05 Dan Wilcox <danomatika@gmail.com>
+
+	v0.3.4
+
+	* fixed bad osc root name which kept notifications from being recognized
+	* added udev rules for new event devices
+
 2014-01-21 Dan Wilcox <danomatika@gmail.com>
 
 	v0.3.3: Ignoring events
