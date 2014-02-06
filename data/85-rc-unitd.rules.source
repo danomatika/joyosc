@@ -25,5 +25,5 @@ KERNEL=="js[0-9]*", ACTION=="add", SUBSYSTEM=="input", RUN="BINDIR/rc-unit-notif
 KERNEL=="js[0-9]*", ACTION=="remove", SUBSYSTEM=="input", RUN="BINDIR/rc-unit-notifier -t joystick close"
 
 # /dev/input/event* joystick devices
-ENV{ID_INPUT_JOYSTICK}=="?*", ACTION=="add", SUBSYSTEM=="input", ATTRS{name}=="*", RUN="/usr/bin/rc-unit-notifier -t joystick open"
-ENV{ID_INPUT_JOYSTICK}=="?*", ACTION=="remove", SUBSYSTEM=="input", ATTRS{name}=="*", RUN="/usr/bin/rc-unit-notifier -t joystick close"
+ENV{ID_INPUT_JOYSTICK}=="?*", ACTION=="add", SUBSYSTEM=="input", ATTRS{name}=="*", RUN="BINDIR/rc-unit-notifier -t joystick open"
+ENV{ID_INPUT_JOYSTICK}=="?*", ACTION=="remove", SUBSYSTEM=="input", ATTRS{name}=="*", RUN="BINDIR/rc-unit-notifier -t joystick close"
