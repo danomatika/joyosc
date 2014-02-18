@@ -4,6 +4,7 @@
 
 	* re-added "open" & "close" event notifications which were somehow lost in
 	the previous refactoring (they were "insert" & "removal" before)
+	* fixed udev event device double open notification
 
 2014-02-05 Dan Wilcox <danomatika@gmail.com>
 
