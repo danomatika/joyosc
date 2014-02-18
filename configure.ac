@@ -57,6 +57,11 @@ fi
 # allow linking of non-POSIX libs
 AM_PROG_AR
 
+# add linker flags for GCC (needed by Linaro/udoo)
+if test "x$GCC" = xyes; then
+	LDFLAGS+="-Wl,--no-as-needed"
+fi
+
 #########################################
 ##### Externals #####
 
