@@ -260,8 +260,6 @@ thisdir = $(srcdir)
 dist_configfiles_DATA = example_config.xml 85-rc-unitd.rules.source
 configfilesdir = $(docdir)
 
-#touch $(thisdir)/85-rc-unitd.rules
-
 # include pd files
 dist_pd_readme_DATA = $(thisdir)/pd/README
 pd_readmedir = $(docdir)/pd
