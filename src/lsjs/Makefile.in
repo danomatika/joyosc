@@ -288,7 +288,7 @@ lsjs_SOURCES = main.cpp
 AM_CPPFLAGS = $(CXXFLAGS) $(SDL_CFLAGS) $(LO_CFLAGS) $(EXTERNALS_CFLAGS)
 
 # libs to link
-AM_LDFLAGS = $(SDL_LIBS) $(LO_LIBS)
+AM_LDFLAGS = $(LDFLAGS) $(SDL_LIBS) $(LO_LIBS)
 all: all-am
 
 .SUFFIXES:

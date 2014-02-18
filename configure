@@ -5211,15 +5211,13 @@ esac
 
 
 # add linker flags for GCC (needed by Linaro/udoo)
-if test "x$GCC" = xyes; then
-    case "$host_os" in
-    	darwin*|mingw*)
-        	;;
-    	*)
-        	LDFLAGS+="-Wl,--no-as-needed"
-        	;;
-    esac
-fi
+case "$host_os" in
+	*linux*)
+       		LDFLAGS="$LDFLAGS -Wl,--no-as-needed"
+       		;;
+	*)
+		;;
+esac
 
 #########################################
 ##### Externals #####
@@ -6860,7 +6858,7 @@ fi
 
 	Source directory:     $srcdir
 	Installation prefix:  $prefix
-	C++ compiler:         $CXX $CXXFLAGS
+	C++ compiler:         $CXX $CXXFLAGS $LDFLAGS
 	Debug build:          $enable_debug
 " >&5
 $as_echo "
@@ -6868,6 +6866,6 @@ $as_echo "
 
 	Source directory:     $srcdir
 	Installation prefix:  $prefix
-	C++ compiler:         $CXX $CXXFLAGS
+	C++ compiler:         $CXX $CXXFLAGS $LDFLAGS
 	Debug build:          $enable_debug
 " >&6; }
