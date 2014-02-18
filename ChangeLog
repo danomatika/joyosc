@@ -1,3 +1,10 @@
+2014-02-18 Dan Wilcox <danomatika@gmail.com>
+
+	v0.3.5
+
+	* re-added "open" & "close" event notifications which were somehow lost in
+	the previous refactoring (they were "insert" & "removal" before)
+
 2014-02-05 Dan Wilcox <danomatika@gmail.com>
 
 	v0.3.4

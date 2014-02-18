@@ -5,7 +5,7 @@ the robotcowboy unit daemon
 
 a device event to Open Sound Control bridge daemon and associated tools
 
-Copyright (c) [Dan Wilcox](danomatika.com) 2007 - 2013
+Copyright (c) [Dan Wilcox](danomatika.com) 2007 - 2014
 
 DESCRIPTION
 -----------
@@ -184,6 +184,7 @@ Example messages:
 /rc-unitd/devices/js2/button 2 1/rc-unitd/devices/js2/button 2 0/rc-unitd/devices/js2/axis 0 32767</pre> 
 #### Notifications 
 rc-unitd also sends status notification messages:<pre>/rc-unitd/notifications/startup/rc-unitd/notifications/ready
+/rc-unitd/notifications/open devtype/rc-unitd/notifications/close devtype
 /rc-unitd/notifications/shutdown
 </pre>
 
@@ -303,9 +304,8 @@ FUTURE IDEAS/IMPROVEMENTS
 -------------------------
 
 * add automatic device add/remove support on OSX (via [IOKIT](http://stackoverflow.com/questions/10843559/cocoa-detecting-usb-devices-by-vendor-id?rq=1))
+* update the SDL 2.0 which fixes the above issue as well
 * add multicast support
-* re-add wiimote support using a cross platform library
 * multiple osc send addresses for event forwarding between multiple machines
-* make a systray applet for gui control of rc-unitd on Linux ala qtjackctl->jackd
 * add built in osc -> MIDI and other mapping capability (ala junXion or Osculator)
 

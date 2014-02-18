@@ -126,6 +126,10 @@ bool App::processOscMessage(const ReceivedMessage& message,
 		m_joystickManager.open();
 		m_joystickManager.print();
 		LOG << endl;
+
+		m_oscSender << BeginMessage(m_config.notificationAddress + "/open")
+					<< "joystick" << EndMessage();
+		m_oscSender.send();
 		
 		return true;
 	}
@@ -139,6 +143,10 @@ bool App::processOscMessage(const ReceivedMessage& message,
 		m_joystickManager.open();
 		m_joystickManager.print();
 		LOG << endl;
+
+		m_oscSender << BeginMessage(m_config.notificationAddress + "/close")
+					<< "joystick" << EndMessage();
+		m_oscSender.send();
 		
 		return true;
 	}
