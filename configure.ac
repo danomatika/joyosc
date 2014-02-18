@@ -5,6 +5,7 @@ AC_INIT([rc-unitd], [0.3.5], [danomatika@gmail.com], [rc-unitd], [http://github.
 AC_CONFIG_SRCDIR([src/rc-unitd/main.cpp])
 AC_CONFIG_AUX_DIR([config])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+AC_CANONICAL_HOST
 
 #########################################
 ##### Build Options #####
@@ -59,7 +60,13 @@ AM_PROG_AR
 
 # add linker flags for GCC (needed by Linaro/udoo)
 if test "x$GCC" = xyes; then
-	LDFLAGS+="-Wl,--no-as-needed"
+    case "$host_os" in
+    	darwin*|mingw*)
+        	;;
+    	*)
+        	LDFLAGS+="-Wl,--no-as-needed"
+        	;;
+    esac
 fi
 
 #########################################

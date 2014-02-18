@@ -3,7 +3,7 @@
 thisdir = $(srcdir)
 
 # include files
-dist_configfiles_DATA = example_config.xml 85-rc-unitd.rules
+dist_configfiles_DATA = example_config.xml 85-rc-unitd.rules.source
 configfilesdir = $(docdir)
 
 # need to process the udev config file to insert the proper bin path
@@ -17,15 +17,11 @@ all-local:
 
 clean-local:
 	rm -f 85-rc-unitd.rules
-	touch $(thisdir)/85-rc-unitd.rules
 
 # include pd files
 dist_pd_readme_DATA = $(thisdir)/pd/README
 pd_readmedir = $(docdir)/pd
-dist_rcpatches_DATA = $(thisdir)/pd/unit-patches/Example-rc-unitd.pd \
+dist_unit_patches_DATA = $(thisdir)/pd/unit-patches/Example-rc-unitd.pd \
 				 	  $(thisdir)/pd/unit-patches/unit-joystick.pd \
 				 	  $(thisdir)/pd/unit-patches/unit-joystick-help.pd
-#				 	  $(thisdir)/pd/unit-patches/unit-wiimote.pd \
-#				 	  $(thisdir)/pd/unit-patches/unit-wiimote-help.pd \
-#				 	  $(thisdir)/pd/unit-patches/unit-classic.pd
-rcpatchesdir = $(docdir)/pd/unit-patches
+unit_patchesdir = $(docdir)/pd/unit-patches
