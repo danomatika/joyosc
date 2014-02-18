@@ -17,8 +17,5 @@ AM_CPPFLAGS = $(CXXFLAGS) $(SDL_CFLAGS) $(LO_CFLAGS) $(EXTERNALS_CFLAGS) \
 			  -I$(top_srcdir)/src/lib
 
 # libs to link
-AM_LDFLAGS = $(SDL_LIBS) $(LO_LIBS)
+AM_LDFLAGS = $(LDFLAGS) $(SDL_LIBS) $(LO_LIBS)
 
-#if ENABLE_CWIID
-#AM_LDFLAGS += $(CWIID_LIBS)
-#endif

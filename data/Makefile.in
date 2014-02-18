@@ -76,10 +76,12 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
+build_triplet = @build@
+host_triplet = @host@
 subdir = data
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(dist_configfiles_DATA) $(dist_pd_readme_DATA) \
-	$(dist_rcpatches_DATA)
+	$(dist_unit_patches_DATA)
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -135,9 +137,9 @@ am__uninstall_files_from_dir = { \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
 am__installdirs = "$(DESTDIR)$(configfilesdir)" \
-	"$(DESTDIR)$(pd_readmedir)" "$(DESTDIR)$(rcpatchesdir)"
+	"$(DESTDIR)$(pd_readmedir)" "$(DESTDIR)$(unit_patchesdir)"
 DATA = $(dist_configfiles_DATA) $(dist_pd_readme_DATA) \
-	$(dist_rcpatches_DATA)
+	$(dist_unit_patches_DATA)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
@@ -210,14 +212,22 @@ am__quote = @am__quote@
 am__tar = @am__tar@
 am__untar = @am__untar@
 bindir = @bindir@
+build = @build@
 build_alias = @build_alias@
+build_cpu = @build_cpu@
+build_os = @build_os@
+build_vendor = @build_vendor@
 builddir = @builddir@
 datadir = @datadir@
 datarootdir = @datarootdir@
 docdir = @docdir@
 dvidir = @dvidir@
 exec_prefix = @exec_prefix@
+host = @host@
 host_alias = @host_alias@
+host_cpu = @host_cpu@
+host_os = @host_os@
+host_vendor = @host_vendor@
 htmldir = @htmldir@
 includedir = @includedir@
 infodir = @infodir@
@@ -247,20 +257,19 @@ top_srcdir = @top_srcdir@
 thisdir = $(srcdir)
 
 # include files
-dist_configfiles_DATA = example_config.xml 85-rc-unitd.rules
+dist_configfiles_DATA = example_config.xml 85-rc-unitd.rules.source
 configfilesdir = $(docdir)
+
+#touch $(thisdir)/85-rc-unitd.rules
 
 # include pd files
 dist_pd_readme_DATA = $(thisdir)/pd/README
 pd_readmedir = $(docdir)/pd
-dist_rcpatches_DATA = $(thisdir)/pd/unit-patches/Example-rc-unitd.pd \
+dist_unit_patches_DATA = $(thisdir)/pd/unit-patches/Example-rc-unitd.pd \
 				 	  $(thisdir)/pd/unit-patches/unit-joystick.pd \
 				 	  $(thisdir)/pd/unit-patches/unit-joystick-help.pd
 
-#				 	  $(thisdir)/pd/unit-patches/unit-wiimote.pd \
-#				 	  $(thisdir)/pd/unit-patches/unit-wiimote-help.pd \
-#				 	  $(thisdir)/pd/unit-patches/unit-classic.pd
-rcpatchesdir = $(docdir)/pd/unit-patches
+unit_patchesdir = $(docdir)/pd/unit-patches
 all: all-am
 
 .SUFFIXES:
@@ -336,27 +345,27 @@ uninstall-dist_pd_readmeDATA:
 	@list='$(dist_pd_readme_DATA)'; test -n "$(pd_readmedir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	dir='$(DESTDIR)$(pd_readmedir)'; $(am__uninstall_files_from_dir)
-install-dist_rcpatchesDATA: $(dist_rcpatches_DATA)
+install-dist_unit_patchesDATA: $(dist_unit_patches_DATA)
 	@$(NORMAL_INSTALL)
-	@list='$(dist_rcpatches_DATA)'; test -n "$(rcpatchesdir)" || list=; \
+	@list='$(dist_unit_patches_DATA)'; test -n "$(unit_patchesdir)" || list=; \
 	if test -n "$$list"; then \
-	  echo " $(MKDIR_P) '$(DESTDIR)$(rcpatchesdir)'"; \
-	  $(MKDIR_P) "$(DESTDIR)$(rcpatchesdir)" || exit 1; \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(unit_patchesdir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(unit_patchesdir)" || exit 1; \
 	fi; \
 	for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  echo "$$d$$p"; \
 	done | $(am__base_list) | \
 	while read files; do \
-	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(rcpatchesdir)'"; \
-	  $(INSTALL_DATA) $$files "$(DESTDIR)$(rcpatchesdir)" || exit $$?; \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(unit_patchesdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(unit_patchesdir)" || exit $$?; \
 	done
 
-uninstall-dist_rcpatchesDATA:
+uninstall-dist_unit_patchesDATA:
 	@$(NORMAL_UNINSTALL)
-	@list='$(dist_rcpatches_DATA)'; test -n "$(rcpatchesdir)" || list=; \
+	@list='$(dist_unit_patches_DATA)'; test -n "$(unit_patchesdir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	dir='$(DESTDIR)$(rcpatchesdir)'; $(am__uninstall_files_from_dir)
+	dir='$(DESTDIR)$(unit_patchesdir)'; $(am__uninstall_files_from_dir)
 tags TAGS:
 
 ctags CTAGS:
@@ -398,7 +407,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(DATA) all-local
 installdirs:
-	for dir in "$(DESTDIR)$(configfilesdir)" "$(DESTDIR)$(pd_readmedir)" "$(DESTDIR)$(rcpatchesdir)"; do \
+	for dir in "$(DESTDIR)$(configfilesdir)" "$(DESTDIR)$(pd_readmedir)" "$(DESTDIR)$(unit_patchesdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -452,7 +461,7 @@ info: info-am
 info-am:
 
 install-data-am: install-dist_configfilesDATA \
-	install-dist_pd_readmeDATA install-dist_rcpatchesDATA
+	install-dist_pd_readmeDATA install-dist_unit_patchesDATA
 
 install-dvi: install-dvi-am
 
@@ -497,7 +506,7 @@ ps: ps-am
 ps-am:
 
 uninstall-am: uninstall-dist_configfilesDATA \
-	uninstall-dist_pd_readmeDATA uninstall-dist_rcpatchesDATA
+	uninstall-dist_pd_readmeDATA uninstall-dist_unit_patchesDATA
 
 .MAKE: install-am install-strip
 
@@ -506,7 +515,7 @@ uninstall-am: uninstall-dist_configfilesDATA \
 	distdir dvi dvi-am html html-am info info-am install \
 	install-am install-data install-data-am \
 	install-dist_configfilesDATA install-dist_pd_readmeDATA \
-	install-dist_rcpatchesDATA install-dvi install-dvi-am \
+	install-dist_unit_patchesDATA install-dvi install-dvi-am \
 	install-exec install-exec-am install-html install-html-am \
 	install-info install-info-am install-man install-pdf \
 	install-pdf-am install-ps install-ps-am install-strip \
@@ -514,7 +523,7 @@ uninstall-am: uninstall-dist_configfilesDATA \
 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
 	pdf-am ps ps-am tags-am uninstall uninstall-am \
 	uninstall-dist_configfilesDATA uninstall-dist_pd_readmeDATA \
-	uninstall-dist_rcpatchesDATA
+	uninstall-dist_unit_patchesDATA
 
 
 # need to process the udev config file to insert the proper bin path
@@ -528,7 +537,6 @@ all-local:
 
 clean-local:
 	rm -f 85-rc-unitd.rules
-	touch $(thisdir)/85-rc-unitd.rules
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
