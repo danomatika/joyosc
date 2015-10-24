@@ -26,14 +26,14 @@
 #include <sstream>
 
 // convenience defines
-#define LOG        Log(Log::NORMAL_LOG)
-#define LOG_DEBUG  Log(Log::DEBUG_LOG)
-#define LOG_WARN   Log(Log::WARN_LOG)
-#define LOG_ERROR  Log(Log::ERROR_LOG)
+#define LOG        Log(Log::LOG_LEVEL_NORMAL)
+#define LOG_DEBUG  Log(Log::LOG_LEVEL_DEBUG)
+#define LOG_WARN   Log(Log::LOG_LEVEL_WARN)
+#define LOG_ERROR  Log(Log::LOG_LEVEL_ERROR)
 
 /**
 	\class  Log
-	\brief  a simple logger
+	\brief  a simple stream-based logger
 
 	class idea from:
 		http://www.gamedev.net/community/forums/topic.asp?topic_id=525405&whichpage=1&#3406418
@@ -44,39 +44,40 @@ class Log {
 
 	public:
 
-		enum Type {
-			NORMAL_LOG,
-			DEBUG_LOG,
-			WARN_LOG,
-			ERROR_LOG
+		/// log level
+		enum Level {
+			LOG_LEVEL_NORMAL,
+			LOG_LEVEL_DEBUG,
+			LOG_LEVEL_WARN,
+			LOG_LEVEL_ERROR
 		};
 
 		/**
-			\brief  select log type
-			\param  type    log type to log to
+			\brief  select log level
+			\param  type log level to log at
 		**/
-		Log(Type type=NORMAL_LOG) : m_type(type) {}
+		Log(Level level=LOG_LEVEL_NORMAL) : m_level(level) {}
 
 		/// does the actual printing on exit
 		~Log() {
-			switch(m_type) {
+			switch(m_level) {
 
-				case NORMAL_LOG:
+				case LOG_LEVEL_NORMAL:
 					// must flush or we wont get any output until *after* the mainLoop
 					std::cout << m_line.str();
 					break;
 
-				case DEBUG_LOG:
+				case LOG_LEVEL_DEBUG:
 					#ifdef DEBUG
 					std::cout << "Debug: " << m_line.str();
 					#endif
 					break;
 
-				case WARN_LOG:
+				case LOG_LEVEL_WARN:
 					std::cerr << "Warn: " << m_line.str();
 					break;
 
-				case ERROR_LOG:
+				case LOG_LEVEL_ERROR:
 					std::cerr << "Error: " << m_line.str();
 					break;
 			}
@@ -99,6 +100,6 @@ class Log {
 		Log(Log const&);              // not defined, not copyable
 		Log& operator = (Log const&); // not defined, not assignable
 
-		Type m_type;                  ///< log type
+		Level m_level;                ///< log level
 		std::ostringstream m_line;    ///< temp buffer
 };

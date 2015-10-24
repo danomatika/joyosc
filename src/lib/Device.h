@@ -40,7 +40,7 @@ class Device {
 			\brief  open the device
 			\return	false on failure
 		*/
-		virtual bool open() = 0;
+		virtual bool open(void* data=NULL) = 0;
 
 		/// close the device
 		virtual void close() = 0;

@@ -42,7 +42,9 @@ int main(int argc, char **argv) {
 
 	// run the application
 	App app;
-	app.go();
+	app.setup();
+	app.run();
+	app.cleanup();
 	
 	// cleanup SDL
 	SDL_Quit();

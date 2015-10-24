@@ -27,11 +27,15 @@ JoystickManager::JoystickManager() {}
 JoystickManager::~JoystickManager() {}
 
 void JoystickManager::open(unsigned int index) {
+	
 	JoystickDevice* j = new JoystickDevice();
-	j->setIndex(index);
+	JoystickIndices indices;
+	indices.deviceIndex = firstAvailableIndex();
+	indices.sdlIndex = index;
 	
 	// only add if the joystick was opened ok
-	if(j->open()) {
+	if(j->open(&indices)) {
+	
 		// set remapping if one exists
 		JoystickRemapping* remap = Config::instance().getJoystickRemapping(j->getDevName());
 		if(remap) {
@@ -53,6 +57,7 @@ void JoystickManager::open(unsigned int index) {
 		}
 		
 		m_joysticks.push_back(j);
+		resort();
 	}
 }
 
@@ -63,6 +68,7 @@ void JoystickManager::close(SDL_JoystickID instanceID) {
 			j->close();
 			delete j;
 			m_joysticks.erase(m_joysticks.begin()+i);
+			resort();
 			return;
 		}
 	}
@@ -89,13 +95,11 @@ bool JoystickManager::handleEvents(SDL_Event* event) {
 	switch(event->type) {
 		
 		case SDL_JOYDEVICEADDED:
-			LOG << "ADD" << endl;
 			open(event->jdevice.which);
 			print();
 			return true;
 			
 		case SDL_JOYDEVICEREMOVED:
-			LOG << "REMOVE" << endl;
 			close(event->jdevice.which);
 			print();
 			return true;
@@ -121,4 +125,23 @@ void JoystickManager::print(bool details) {
 				<< m_joysticks[i]->getOscAddress() << endl;
 		}
 	}
+}
+
+// joystick device comparison function for std::sort ascending order
+bool compareJoystickDevices(JoystickDevice *js1, JoystickDevice *js2) {
+	return js1->getIndex() < js2->getIndex();
+}
+
+void JoystickManager::resort() {
+	std::sort(m_joysticks.begin(), m_joysticks.end(), compareJoystickDevices);
+}
+
+// brute force search for first available index, assumes vector is sorted
+int JoystickManager::firstAvailableIndex() {
+	for(int i = 0; i < m_joysticks.size(); ++i) {
+		if(m_joysticks[i]->getIndex() != i) {
+			return i;
+		}
+	}
+	return m_joysticks.size();
 }

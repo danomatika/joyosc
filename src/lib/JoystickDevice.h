@@ -27,10 +27,11 @@
 
 #include "Device.h"
 
+class JoystickIndices;
 class JoystickRemapping;
 
 /** \class  JoystickDevice
-	\brief  Handles a Joystick device
+	\brief  Handles a joystick device
 
 	Uses SDL to open, read, and close a joystick
 */
@@ -49,7 +50,7 @@ class JoystickDevice : public Device {
 			the program is running, otherwise recently added joysticks will
 			not appear
 		*/
-		bool open();
+		bool open(void *data=NULL);
 
 		/// close the device, resets joystick index
 		void close();
@@ -75,9 +76,8 @@ class JoystickDevice : public Device {
 		///  returns true if device is open
 		bool isOpen();
 		
-		/// set/get SDL joystick index
-		inline void setIndex(unsigned int index) {m_joyIndex = index;}
-		inline int getIndex()                    {return m_joyIndex;}
+		/// get joystick index in the devices list
+		inline int getIndex() {return m_joyIndex;}
 	
 		/// get the SDL instance ID, different from index
 		SDL_JoystickID getInstanceID();
@@ -99,15 +99,32 @@ class JoystickDevice : public Device {
 		friend class JoystickRemapping;
 		friend class JoystickIgnore;
 
-		SDL_Joystick  *m_joystick;
-		int            m_joyIndex; // device list id
-		SDL_JoystickID m_instanceID; // unique ID
+		SDL_Joystick  *m_joystick;   //< SDL joystick handle
+		int            m_joyIndex;   //< device list index, *not* SDL index
+		SDL_JoystickID m_instanceID; //< unique SDL instance ID, *not* SDL index
 	
-		unsigned int m_axisDeadZone;
-		std::vector<int16_t> m_prevAxisValues;
+		unsigned int m_axisDeadZone; //< axis dead zone amount +/- center pos
+		std::vector<int16_t> m_prevAxisValues; //< prev axis valus to cancel repeats
 		
-		JoystickRemapping *m_remapping;
-		JoystickIgnore *m_ignore;
+		JoystickRemapping *m_remapping; //< current remapping values, if set
+		JoystickIgnore *m_ignore; //< current ignore values, if set
+};
+
+/** \class index struct for opening a JoystickDevice
+
+    Since hot plugging was added to SDL 2, the index of a joystick in a
+    JoystickManager device list may not == the joystick's SDL index.
+    In this case we open the device using the SDL index but set the name
+    and the index using the device list id.
+
+    This way, if there are two joysticks plugged in, js0 & js1, and js0 is
+    unplugged then replugged, js0 will be given index 0 even though it's SDL
+    index is actually 1 since it's now the second joystick as far as SDL is
+    concerned.
+*/
+struct JoystickIndices {
+	int deviceIndex; //< device list id
+	int sdlIndex;    //< SDL index
 };
 
 /** \class  JoystickRemapping

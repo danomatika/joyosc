@@ -27,6 +27,10 @@
 
 #include "JoystickDevice.h"
 
+/**
+	\class JoystickManager
+	\brief Manages a list of the currently active joystick devices
+*/
 class JoystickManager {
 
 	public:
@@ -34,10 +38,10 @@ class JoystickManager {
 		JoystickManager();
 		virtual ~JoystickManager();
 
-		/// open joystick at index
+		/// open joystick at SDL index
 		void open(unsigned int index);
 	
-		/// close joystick with instance ID (different from index)
+		/// close joystick with SDL instance ID (different from index)
 		void close(SDL_JoystickID instanceID);
 
 		/// opens all current joysticks
@@ -56,6 +60,12 @@ class JoystickManager {
 		inline unsigned int getNumJoysticks() {return m_joysticks.size();}
 
 	protected:
+	
+		/// resort the curreny joysticks by index in ascending order
+		void resort();
+	
+		/// return the first available index in the active joysticks list
+		int firstAvailableIndex();
 
-		vector<JoystickDevice*> m_joysticks; // active joystick list
+		vector<JoystickDevice*> m_joysticks; //< active joystick list
 };

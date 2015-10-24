@@ -27,7 +27,7 @@
 #include <JoystickManager.h>
 
 /** \class  App
-	\brief  the main rc-unitd application class
+	\brief  the main application class
 */
 class App : public osc::OscObject {
 
@@ -35,15 +35,17 @@ class App : public osc::OscObject {
 
 		App();
 		virtual ~App();
-		
-		void go();
-		
+	
+		/// setup resources
 		void setup();
-		
+	
+		/// run the main loop
 		void run();
-		
+	
+		/// clean up resources
 		void cleanup();
-		
+	
+		/// stop the main loop
 		inline void stop() {m_bRun = false;}
 
 	protected:
@@ -55,11 +57,11 @@ class App : public osc::OscObject {
 		/// signal callback
 		static void signalExit(int signal);
 
-		bool m_bRun;
+		bool m_bRun; //< is the main loop running?
 		
-		JoystickManager m_joystickManager;
+		JoystickManager m_joystickManager; //< joystick device manager
 		
-		Config& m_config;
-		osc::OscReceiver& m_oscReceiver;
-		osc::OscSender& m_oscSender;
+		Config& m_config; //< reference to global config
+		osc::OscReceiver& m_oscReceiver; //< reference to global osc receiver
+		osc::OscSender& m_oscSender;     //< reference to global osc sender
 };

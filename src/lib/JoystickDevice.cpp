@@ -28,11 +28,14 @@ JoystickDevice::JoystickDevice(string oscAddress) :
 	Device(oscAddress), m_joystick(NULL), m_joyIndex(-1), m_instanceID(-1),
 	m_axisDeadZone(0), m_remapping(NULL), m_ignore(NULL) {}
 
-bool JoystickDevice::open() {
-	if(m_joyIndex == -1) {
+bool JoystickDevice::open(void *data) {
+	if(data == NULL) {
 		LOG_WARN << "JoystickDevice: cannot open, index not set" << endl;
 		return false;
 	}
+	
+	JoystickIndices *indices = (JoystickIndices *)data;
+	m_joyIndex = indices->deviceIndex;
 
 	if(isOpen()) {
 		LOG_WARN << "JoystickDevice: joystick with index "
@@ -40,7 +43,7 @@ bool JoystickDevice::open() {
 		return false;
 	}
 
-	m_joystick = SDL_JoystickOpen(m_joyIndex);
+	m_joystick = SDL_JoystickOpen(indices->sdlIndex);
 	if(!m_joystick) {
 		LOG_WARN << "JoystickDevice: open failed for index " << m_joyIndex << endl;
 		return false;

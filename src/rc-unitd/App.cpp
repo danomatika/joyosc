@@ -38,12 +38,6 @@ App::App() : OscObject((string)"/"+PACKAGE), m_bRun(false),
 
 App::~App() {}
 
-void App::go() {
-	setup();
-	run();
-	cleanup();
-}
-
 void App::setup() {
 
 	m_config.print();
@@ -82,7 +76,6 @@ void App::run() {
 					case SDL_QUIT:
 						m_bRun = false;
 						break;
-						
 					default:
 						LOG_WARN << "Unhandled event type: " << event.type << endl;
 						break;
@@ -123,7 +116,6 @@ bool App::processOscMessage(const ReceivedMessage& message,
 		
 		return true;
 	}
-	
 	else if(message.path() == oscRootAddress + "/close/joystick") {
 		LOG << endl << "	" << PACKAGE << ": Close joystick message received." << endl;
 		

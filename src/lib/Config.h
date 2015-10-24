@@ -110,8 +110,8 @@ class Config : public xml::XmlObject {
 		/// print the current config values
 		void print();
 		
-		// convert a given reletive path to an absolute path using the current dir,
-		// passes through existing absolute paths
+		/// convert a given reletive path to an absolute path using the current dir,
+		/// passes through existing absolute paths
 		static string absolutePath(string path);
 
 	protected:
