@@ -17,22 +17,21 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ==============================================================================*/
-#include <config.h>		// automake config defines
+#include <config.h>  // automake config defines
 
 #include <SDL.h>
 #include <tclap/tclap.h>
 
 using namespace std;
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
+
 	bool bPrintDetails = false;
 
-	try
-	{
+	try {
 		// the commandline parser
 		TCLAP::CommandLine cmd("print the available joysticks", VERSION);
 		
@@ -49,30 +48,24 @@ int main(int argc, char **argv)
 		// set options
 		bPrintDetails = detailOpt.getValue();
 	}
-	catch(TCLAP::ArgException &e)  // catch any exceptions
-	{
+	catch(TCLAP::ArgException &e) { // catch any exceptions
 		cerr << "CommandLine error: " << e.error() << " for arg " << e.argId() << endl;
 		return EXIT_FAILURE;
 	}
 
 	// init SDL
 	SDL_Init(0);
-	if(SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0 )
-	{
+	if(SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0 ) {
 		cerr << "lsjs: Couldn't initialize SDL: " << SDL_GetError() << endl;
 		return EXIT_FAILURE;
 	}
 
 	int num = SDL_NumJoysticks();
-	for(int i = 0; i < num; ++i)
-	{
+	for(int i = 0; i < num; ++i) {
 		cout << i << " \"" << SDL_JoystickNameForIndex(i) << "\"" << endl;
-		
-		if(bPrintDetails)
-		{
+		if(bPrintDetails) {
 			SDL_Joystick* joystick = SDL_JoystickOpen(i);
-			if(joystick)
-			{        	
+			if(joystick) {        	
 				cout << "   num axes: " << SDL_JoystickNumAxes(joystick) << endl
 					 << "   num buttons: " << SDL_JoystickNumButtons(joystick) << endl
 					 << "   num balls: " << SDL_JoystickNumBalls(joystick) << endl

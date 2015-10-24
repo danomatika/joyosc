@@ -1,6 +1,6 @@
 /*==============================================================================
 
-	JoystickDeviceManager.h
+	JoystickDevice.h
 
 	rc-unitd: a device event to osc bridge
   
@@ -17,14 +17,12 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ==============================================================================*/
-#ifndef JOYSTICK_DEVICE_H
-#define JOYSTICK_DEVICE_H
+#pragma once
 
 #include "Common.h"
-
 #include <vector>
 
 #include "Device.h"
@@ -36,9 +34,9 @@ class JoystickRemapping;
 
 	Uses SDL to open, read, and close a joystick
 */
-class JoystickDevice : public Device
-{
-	 public:
+class JoystickDevice : public Device {
+
+	public:
 
 		JoystickDevice(string oscAddress="/joystick");
 
@@ -79,7 +77,7 @@ class JoystickDevice : public Device
 		
 		/// set/get SDL joystick index
 		inline void setIndex(unsigned int index) {m_joyIndex = index;}
-		inline int getIndex() 			{return m_joyIndex;}
+		inline int getIndex()                    {return m_joyIndex;}
 	
 		/// get the SDL instance ID, different from index
 		SDL_JoystickID getInstanceID();
@@ -101,12 +99,12 @@ class JoystickDevice : public Device
 		friend class JoystickRemapping;
 		friend class JoystickIgnore;
 
-		SDL_Joystick	*m_joystick;
-		int				m_joyIndex; // device list id
-		SDL_JoystickID  m_instanceID; // unique ID
+		SDL_Joystick  *m_joystick;
+		int            m_joyIndex; // device list id
+		SDL_JoystickID m_instanceID; // unique ID
 	
 		unsigned int m_axisDeadZone;
-		std::vector<int16_t>	m_prevAxisValues;
+		std::vector<int16_t> m_prevAxisValues;
 		
 		JoystickRemapping *m_remapping;
 		JoystickIgnore *m_ignore;
@@ -115,8 +113,8 @@ class JoystickDevice : public Device
 /** \class  JoystickRemapping
 	\brief	Defines button, axis, ball, & hat remappings
 */
-class JoystickRemapping : public xml::XmlObject
-{
+class JoystickRemapping : public xml::XmlObject {
+
 	public:
 	
 		JoystickRemapping() : xml::XmlObject("remap") {}
@@ -142,8 +140,8 @@ class JoystickRemapping : public xml::XmlObject
 /** \class  JoystickIgnore
 	\brief	Defines which buttons, axes, balls, or hats to ignore
 */
-class JoystickIgnore : public xml::XmlObject
-{
+class JoystickIgnore : public xml::XmlObject {
+
 	public:
 	
 		JoystickIgnore() : xml::XmlObject("ignore") {}
@@ -165,5 +163,3 @@ class JoystickIgnore : public xml::XmlObject
 		// XMLObject callback
 		bool readXml(TiXmlElement* e);
 };
-
-#endif // JOYSTICK_DEVICE_H

@@ -17,7 +17,7 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ==============================================================================*/
 #include "App.h"
@@ -32,23 +32,20 @@ App* appPtr;
 App::App() : OscObject((string)"/"+PACKAGE), m_bRun(false),
 	m_config(Config::instance()),
 	m_oscReceiver(Config::instance().getOscReceiver()),
-	m_oscSender(Config::instance().getOscSender())
-{
+	m_oscSender(Config::instance().getOscSender()) {
 	appPtr = this;
 }
 
-App::~App()
-{}
+App::~App() {}
 
-void App::go()
-{
+void App::go() {
 	setup();
 	run();
 	cleanup();
 }
 
-void App::setup()
-{	
+void App::setup() {
+
 	m_config.print();
 	
 	// setup osc interface
@@ -66,26 +63,22 @@ void App::setup()
 	signal(SIGINT,  signalExit);	// interrupt
 }
 		
-void App::run()
-{
+void App::run() {
 	m_oscSender << BeginMessage(m_config.notificationAddress + "/ready")
 				<< EndMessage();
 	m_oscSender.send();
 	
 	m_bRun = true;
-	while(m_bRun)
-	{
+	while(m_bRun) {
+
 		// handle any incoming osc messages
 		m_config.getOscReceiver().handleMessages();
 		
 		// handle any joystick events
 		SDL_Event event;
-		while(SDL_PollEvent(&event))
-		{
-			if(!m_joystickManager.handleEvents(&event))
-			{
-				switch(event.type)
-				{
+		while(SDL_PollEvent(&event)) {
+			if(!m_joystickManager.handleEvents(&event)) {
+				switch(event.type) {
 					case SDL_QUIT:
 						m_bRun = false;
 						break;
@@ -102,8 +95,7 @@ void App::run()
 	}
 }
 		
-void App::cleanup()
-{
+void App::cleanup() {
 	// close devices
 	m_joystickManager.closeAll();
 	
@@ -115,10 +107,9 @@ void App::cleanup()
 /* ***** PROTECTED ***** */
 
 bool App::processOscMessage(const ReceivedMessage& message,
-							const MessageSource& source)
-{
-	if(message.path() == oscRootAddress + "/open/joystick")
-	{
+							const MessageSource& source) {
+
+	if(message.path() == oscRootAddress + "/open/joystick") {
 		LOG << endl << "	" << PACKAGE << ": Open joystick message received." << endl;
 		
 		m_joystickManager.closeAll();
@@ -133,8 +124,7 @@ bool App::processOscMessage(const ReceivedMessage& message,
 		return true;
 	}
 	
-	else if(message.path() == oscRootAddress + "/close/joystick")
-	{
+	else if(message.path() == oscRootAddress + "/close/joystick") {
 		LOG << endl << "	" << PACKAGE << ": Close joystick message received." << endl;
 		
 		m_joystickManager.closeAll();
@@ -148,9 +138,7 @@ bool App::processOscMessage(const ReceivedMessage& message,
 		
 		return true;
 	}
-	
-	else if(message.path() == oscRootAddress + "/quit")
-	{
+	else if(message.path() == oscRootAddress + "/quit") {
 		stop();
 		LOG << endl << "	" << PACKAGE << ": Quit message received. Exiting ..." << endl;
 		return true;
@@ -162,8 +150,7 @@ bool App::processOscMessage(const ReceivedMessage& message,
 	return false;
 }
 
-void App::signalExit(int signal)
-{
+void App::signalExit(int signal) {
 	appPtr->stop();
 	LOG << endl << "	" << PACKAGE << ": Signal caught. Exiting ..." << endl;
 }

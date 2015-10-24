@@ -17,29 +17,24 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ==============================================================================*/
 #include "JoystickManager.h"
 
-JoystickManager::JoystickManager()
-{}
+JoystickManager::JoystickManager() {}
 
-JoystickManager::~JoystickManager()
-{}
+JoystickManager::~JoystickManager() {}
 
-void JoystickManager::open(unsigned int index)
-{
+void JoystickManager::open(unsigned int index) {
 	JoystickDevice* j = new JoystickDevice();
 	j->setIndex(index);
 	
 	// only add if the joystick was opened ok
-	if(j->open())
-	{
+	if(j->open()) {
 		// set remapping if one exists
 		JoystickRemapping* remap = Config::instance().getJoystickRemapping(j->getDevName());
-		if(remap)
-		{
+		if(remap) {
 			j->setRemapping(remap);
 			j->printRemapping();
 		}
@@ -52,8 +47,7 @@ void JoystickManager::open(unsigned int index)
 		
 		// set ignore if one exists
 		JoystickIgnore *ignore = Config::instance().getJoystickIgnore(j->getDevName());
-		if(ignore)
-		{
+		if(ignore) {
 			j->setIgnore(ignore);
 			j->printIgnores();
 		}
@@ -62,10 +56,8 @@ void JoystickManager::open(unsigned int index)
 	}
 }
 
-void JoystickManager::close(SDL_JoystickID instanceID)
-{
-	for(int i = 0; i < m_joysticks.size(); ++i)
-	{
+void JoystickManager::close(SDL_JoystickID instanceID) {
+	for(int i = 0; i < m_joysticks.size(); ++i) {
 		if(m_joysticks[i]->getInstanceID() == instanceID) {
 			JoystickDevice* j = m_joysticks[i];
 			j->close();
@@ -76,20 +68,16 @@ void JoystickManager::close(SDL_JoystickID instanceID)
 	}
 }
 
-void JoystickManager::openAll()
-{
+void JoystickManager::openAll() {
 	// create and open a new joystick for each index
-	for(int i = 0; i < SDL_NumJoysticks(); ++i)
-	{
+	for(int i = 0; i < SDL_NumJoysticks(); ++i) {
 		open(i);
 	}
 }
 
-void JoystickManager::closeAll()
-{
+void JoystickManager::closeAll() {
 	// close and erase all joysticks
-	for(unsigned int i = 0; i < m_joysticks.size(); ++i)
-	{
+	for(unsigned int i = 0; i < m_joysticks.size(); ++i) {
 		JoystickDevice* j = m_joysticks[i];
 		j->close();
 		delete j;
@@ -97,11 +85,9 @@ void JoystickManager::closeAll()
 	m_joysticks.clear();	
 }
 
-bool JoystickManager::handleEvents(SDL_Event* event)
-{
-
-	switch(event->type)
-	{
+bool JoystickManager::handleEvents(SDL_Event* event) {
+	switch(event->type) {
+		
 		case SDL_JOYDEVICEADDED:
 			LOG << "ADD" << endl;
 			open(event->jdevice.which);
@@ -115,10 +101,8 @@ bool JoystickManager::handleEvents(SDL_Event* event)
 			return true;
 			
 		default:
-	
 			// pass event to each joystick and stop when one handles it
-			for(unsigned int i = 0; i < m_joysticks.size(); ++i)
-			{
+			for(unsigned int i = 0; i < m_joysticks.size(); ++i) {
 				if(m_joysticks[i]->handleEvents(event))
 					return true;
 			}
@@ -126,15 +110,15 @@ bool JoystickManager::handleEvents(SDL_Event* event)
 	}
 }
 
-void JoystickManager::print(bool details)
-{
-	for(unsigned int i = 0; i < m_joysticks.size(); ++i)
-	{
-		if(details)
+void JoystickManager::print(bool details) {
+	for(unsigned int i = 0; i < m_joysticks.size(); ++i) {
+		if(details) {
 			m_joysticks[i]->print();
-		else
+		}
+		else {
 			LOG << m_joysticks[i]->getIndex() << " "
 				<< m_joysticks[i]->getDevName() << " "
 				<< m_joysticks[i]->getOscAddress() << endl;
+		}
 	}
 }

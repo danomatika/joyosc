@@ -96,7 +96,7 @@ AC_OUTPUT
 ##### Print a summary for the user #####
 
 AC_MSG_RESULT([
-	rc-unitd $VERSION is now configured
+	$PACKAGE $VERSION is now configured
 
 	Source directory:     $srcdir
 	Installation prefix:  $prefix

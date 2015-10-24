@@ -17,11 +17,10 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ==============================================================================*/
-#ifndef CONFIG_H
-#define CONFIG_H
+#pragma once
 
 #include <string>
 #include <map>
@@ -44,8 +43,8 @@ class JoystickIgnore;
 	no initialization is needed, just use equt::Config::instance() to access
 	member functions, data
 **/
-class Config : public xml::XmlObject
-{
+class Config : public xml::XmlObject {
+	
 	public:
 
 		/**
@@ -58,18 +57,18 @@ class Config : public xml::XmlObject
 		
 		/* ***** VARIABLES ***** */
 		
-		unsigned int listeningPort;		///< the listening port
-		string listeningAddress;		///< base listening address
+		unsigned int listeningPort;     ///< the listening port
+		string listeningAddress;        ///< base listening address
 		
-		string sendingIp;				///< ip to send to
-		unsigned int sendingPort;		///< port to send to
+		string sendingIp;               ///< ip to send to
+		unsigned int sendingPort;       ///< port to send to
 		
-		string notificationAddress;		///< base osc sending address for notifications
-		string deviceAddress;			///< base osc sending addess for devices
+		string notificationAddress;     ///< base osc sending address for notifications
+		string deviceAddress;           ///< base osc sending addess for devices
 		
-		bool bPrintEvents; 				///< print lots of events?
+		bool bPrintEvents;              ///< print lots of events?
 		
-		int sleepUS;					///< how long to sleep in the run loop
+		int sleepUS;                    ///< how long to sleep in the run loop
 
 		/// get a reference to the OscSender and OscReceiver
 		inline osc::OscSender& getOscSender() {return m_oscSender;}
@@ -122,18 +121,16 @@ class Config : public xml::XmlObject
 
 	private:
 
-		map<string,string> m_deviceAddresses;	///< device osc address mappings
+		map<string,string> m_deviceAddresses; ///< device osc address mappings
 		map<string,unsigned int> m_joystickAxisDeadZones; ///< zeroing threshold
 		map<string,JoystickRemapping*> m_joystickRemappings; ///< joystick remappings
 		map<string,JoystickIgnore*> m_joystickIgnores; ///< joystick button, axis, etc ignores
 		
-		osc::OscSender m_oscSender;       	///< global osc sender
-		osc::OscReceiver m_oscReceiver;		///< global osc receiver
+		osc::OscSender m_oscSender;         ///< global osc sender
+		osc::OscReceiver m_oscReceiver;     ///< global osc receiver
 		
 		// hide all the constructors, copy functions here
-		Config(); 							// singleton constructor
-		Config(Config const&);    			// not defined, not copyable
-		Config& operator = (Config const&);	// not defined, not assignable
+		Config();                           // singleton constructor
+		Config(Config const&);              // not defined, not copyable
+		Config& operator = (Config const&); // not defined, not assignable
 };
-
-#endif // CONFIG_H

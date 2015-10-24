@@ -17,20 +17,19 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ==============================================================================*/
-#ifndef DEVICE_H
-#define DEVICE_H
+#pragma once
 
 #include "Common.h"
 
 /** \class  Device
 	\brief  a baseclass for devices
 */
-class Device
-{
-	 public:
+class Device {
+
+	public:
 
 		Device(string oscAddress="/device") :
 			m_devName(""), m_oscAddress(oscAddress),
@@ -58,22 +57,20 @@ class Device
 		/// print device info
 		virtual void print() = 0;
 
-		///  returns true if device is open
+		/// returns true if device is open
 		virtual bool isOpen() = 0;
 
 		/// get device name i.e. "/dev/input/js0"
-		inline string getDevName()     {return m_devName;}
+		inline string getDevName() {return m_devName;}
 		
-		/// set/get the osc addrss of this device ie "/js0" etc
+		/// set/get the osc address of this device ie "/js0" etc
 		inline void setOscAddress(string oscAddress) {m_oscAddress = oscAddress;}
 		inline string getOscAddress() {return m_oscAddress;}
 
 	protected:
 
-		string	m_devName;		///< the device name
-		string	m_oscAddress;	///< osc address to send to
+		string	m_devName;      ///< the device name
+		string	m_oscAddress;   ///< osc address to send to
 		
-		Config& m_config;		///< global config access
+		Config& m_config;       ///< global config access
 };
-
-#endif // DEVICE_H

@@ -17,20 +17,18 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ==============================================================================*/
-#ifndef JOYSTICK_MANAGER_H
-#define JOYSTICK_MANAGER_H
+#pragma once
 
 #include "Common.h"
-
 #include <vector>
 
 #include "JoystickDevice.h"
 
-class JoystickManager
-{
+class JoystickManager {
+
 	public:
 
 		JoystickManager();
@@ -59,7 +57,5 @@ class JoystickManager
 
 	protected:
 
-		vector<JoystickDevice*> m_joysticks;   // active joystick list
+		vector<JoystickDevice*> m_joysticks; // active joystick list
 };
-
-#endif // JOYSTICK_MANAGER_H

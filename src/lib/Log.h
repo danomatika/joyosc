@@ -17,20 +17,19 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ==============================================================================*/
-#ifndef LOG_LOG_H
-#define LOG_LOG_H
+#pragma once
 
 #include <iostream>
 #include <sstream>
 
 // convenience defines
-#define LOG 		Log(Log::NORMAL_LOG)
-#define LOG_DEBUG 	Log(Log::DEBUG_LOG)
-#define LOG_WARN	Log(Log::WARN_LOG)
-#define LOG_ERROR	Log(Log::ERROR_LOG)
+#define LOG        Log(Log::NORMAL_LOG)
+#define LOG_DEBUG  Log(Log::DEBUG_LOG)
+#define LOG_WARN   Log(Log::WARN_LOG)
+#define LOG_ERROR  Log(Log::ERROR_LOG)
 
 /**
 	\class  Log
@@ -41,12 +40,11 @@
 	how to catch std::endl (which is actually a func pointer):
 		http://yvan.seth.id.au/Entries/Technology/Code/std__endl.html
 **/
-class Log
-{
+class Log {
+
 	public:
 
-		enum Type
-		{
+		enum Type {
 			NORMAL_LOG,
 			DEBUG_LOG,
 			WARN_LOG,
@@ -60,10 +58,9 @@ class Log
 		Log(Type type=NORMAL_LOG) : m_type(type) {}
 
 		/// does the actual printing on exit
-		~Log()
-		{
-			switch(m_type)
-			{
+		~Log() {
+			switch(m_type) {
+
 				case NORMAL_LOG:
 					// must flush or we wont get any output until *after* the mainLoop
 					std::cout << m_line.str();
@@ -86,26 +83,22 @@ class Log
 		}
 
 		/// catch << with a template class to read any type of data
-		template <class T> Log& operator<<(const T& value)
-		{
+		template <class T> Log& operator<<(const T& value) {
 			m_line << value;
 			return *this;
 		}
 
 		/// catch << ostream function pointers such as std::endl and std::hex
-		Log& operator<<(std::ostream& (*func)(std::ostream&))
-		{
+		Log& operator<<(std::ostream& (*func)(std::ostream&)) {
 			func(m_line);
 			return *this;
 		}
 
 	private:
 
-		Log(Log const&);                // not defined, not copyable
-		Log& operator = (Log const&);   // not defined, not assignable
+		Log(Log const&);              // not defined, not copyable
+		Log& operator = (Log const&); // not defined, not assignable
 
-		Type m_type;                 ///< log type
-		std::ostringstream m_line;   ///< temp buffer
+		Type m_type;                  ///< log type
+		std::ostringstream m_line;    ///< temp buffer
 };
-
-#endif // LOG_LOG_H

@@ -17,11 +17,10 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ==============================================================================*/
-#ifndef APP_H
-#define APP_H
+#pragma once
 
 #include <Common.h>
 
@@ -30,9 +29,9 @@
 /** \class  App
 	\brief  the main rc-unitd application class
 */
-class App : public osc::OscObject
-{
-	 public:
+class App : public osc::OscObject {
+
+	public:
 
 		App();
 		virtual ~App();
@@ -64,5 +63,3 @@ class App : public osc::OscObject
 		osc::OscReceiver& m_oscReceiver;
 		osc::OscSender& m_oscSender;
 };
-
-#endif // APP_H

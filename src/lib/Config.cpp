@@ -17,13 +17,13 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ==============================================================================*/
 #include "Config.h"
 
 #include "Log.h"
-#include "../config.h"	// autotools generated header
+#include "../config.h" // autotools generated header
 
 #include "JoystickDevice.h"
 
@@ -36,37 +36,30 @@
 
 using namespace xml;
 
-Config& Config::instance()
-{
+Config& Config::instance() {
 	static Config * pointerToTheSingletonInstance = new Config;
 	return *pointerToTheSingletonInstance;
 }
 
-string Config::getDeviceAddress(string deviceName)
-{
+string Config::getDeviceAddress(string deviceName) {
 	map<string,string>::iterator iter = m_deviceAddresses.find(deviceName);
-	if(iter != m_deviceAddresses.end())
-	{
+	if(iter != m_deviceAddresses.end()) {
 		return iter->second;
 	}
 	return "";
 }
 
-unsigned int Config::getJoystickAxisDeadZone(string deviceName)
-{
+unsigned int Config::getJoystickAxisDeadZone(string deviceName) {
 	map<string,unsigned int>::iterator iter = m_joystickAxisDeadZones.find(deviceName);
-	if(iter != m_joystickAxisDeadZones.end())
-	{
+	if(iter != m_joystickAxisDeadZones.end()) {
 		return iter->second;
 	}
 	return 0;
 }
 
-JoystickRemapping* Config::getJoystickRemapping(string deviceName)
-{
+JoystickRemapping* Config::getJoystickRemapping(string deviceName) {
 	map<string,JoystickRemapping*>::iterator iter = m_joystickRemappings.find(deviceName);
-	if(iter != m_joystickRemappings.end())
-	{
+	if(iter != m_joystickRemappings.end()) {
 		return iter->second;
 	}
 	return NULL;
@@ -74,17 +67,14 @@ JoystickRemapping* Config::getJoystickRemapping(string deviceName)
 
 JoystickIgnore* Config::getJoystickIgnore(string deviceName) {
 	map<string,JoystickIgnore*>::iterator iter = m_joystickIgnores.find(deviceName);
-	if(iter != m_joystickIgnores.end())
-	{
+	if(iter != m_joystickIgnores.end()) {
 		return iter->second;
 	}
 	return NULL;
 }
 
-bool Config::parseCommandLine(int argc, char **argv)
-{
-	try
-	{
+bool Config::parseCommandLine(int argc, char **argv) {
+	try {
 		// the commandline parser
 		TCLAP::CommandLine cmd("a device event to osc bridge", VERSION);
 		
@@ -126,8 +116,7 @@ bool Config::parseCommandLine(int argc, char **argv)
 		cmd.parse(argc, argv);
 
 		// load the config file (if one exists)
-		if(configCmd.getValue() != "")
-		{
+		if(configCmd.getValue() != "") {
 			setXmlFilename(Config::absolutePath(configCmd.getValue()));
 			LOG << "Config: loading \"" << getXmlFilename() << "\"" << endl;
 			loadXmlFile();
@@ -135,14 +124,13 @@ bool Config::parseCommandLine(int argc, char **argv)
 		}
 		
 		// set the variables
-		if(ipOpt.isSet())			sendingIp = ipOpt.getValue();
-		if(portOpt.isSet())			sendingPort = portOpt.getValue();
-		if(inputPortOpt.isSet())	listeningPort = inputPortOpt.getValue();
-		if(eventsOpt.isSet())		bPrintEvents = eventsOpt.getValue();
-		if(sleepOpt.isSet())		sleepUS = sleepOpt.getValue();
+		if(ipOpt.isSet())        {sendingIp = ipOpt.getValue();}
+		if(portOpt.isSet())      {sendingPort = portOpt.getValue();}
+		if(inputPortOpt.isSet()) {listeningPort = inputPortOpt.getValue();}
+		if(eventsOpt.isSet())    {bPrintEvents = eventsOpt.getValue();}
+		if(sleepOpt.isSet())     {sleepUS = sleepOpt.getValue();}
 	}
-	catch(TCLAP::ArgException &e)  // catch any exceptions
-	{
+	catch(TCLAP::ArgException &e) {  // catch any exceptions
 		LOG_ERROR << "CommandLine: " << e.error() << " for arg " << e.argId() << endl;
 		return false;
 	}
@@ -150,21 +138,19 @@ bool Config::parseCommandLine(int argc, char **argv)
 	return true;
 }
 
-void Config::print()
-{
+void Config::print() {
 	LOG << "listening port:	" << listeningPort << endl
 		<< "listening address: " << "/" << PACKAGE << endl
 		<< "sending ip:     " << sendingIp << endl
-		<< "sending port:	" << sendingPort << endl
+		<< "sending port:   " << sendingPort << endl
 		<< "sending address for notifications: " << notificationAddress << endl
 		<< "sending address for devices:       " << deviceAddress << endl
-		<< "print events: 	" << bPrintEvents << endl
+		<< "print events:   " << bPrintEvents << endl
 		<< "sleep us:       " << sleepUS << endl;
 
 	int index = 0;
 	map<string, string>::iterator iter;
-	for(iter = m_deviceAddresses.begin(); iter != m_deviceAddresses.end(); iter++)
-	{
+	for(iter = m_deviceAddresses.begin(); iter != m_deviceAddresses.end(); iter++) {
 		LOG << "	" << index << " \"" << iter->first
 			<< "\" : \"" << iter->second << "\"" << endl;
 		++index;
@@ -173,11 +159,9 @@ void Config::print()
 
 // adapted from openframeworks ofToDataPath():
 // https://github.com/openframeworks/openFrameworks/blob/master/libs/openFrameworks/utils/ofUtils.cpp
-string Config::absolutePath(string path)
-{
+string Config::absolutePath(string path) {
 	// check for absolute path, 
-	if(path.length() != 0 && (path.substr(0, 1) == "/" || path.substr(1, 1) == ":"))
-	{
+	if(path.length() != 0 && (path.substr(0, 1) == "/" || path.substr(1, 1) == ":")) {
 		return path; // is absolute, so pass through
 	}
 
@@ -197,31 +181,25 @@ string Config::absolutePath(string path)
 
 /* ***** PROTECTED ***** */
 
-bool Config::readXml(TiXmlElement* e)
-{
+bool Config::readXml(TiXmlElement* e) {
 	// load the device mappings
 	TiXmlElement* child = Xml::getElement(e, "mappings");
-	if(child != NULL)
-	{
+	if(child != NULL) {
 		TiXmlElement* child2 = child->FirstChildElement();
-		while(child2 != NULL)
-		{
-			if(child2->ValueStr() == "joystick")
-			{
+		while(child2 != NULL) {
+			if(child2->ValueStr() == "joystick") {
 				string name = Xml::getAttrString(child2, "name");
 				string addr = Xml::getAttrString(child2, "address");
 				
 				pair<map<string,string>::iterator, bool> ret;
 				ret = m_deviceAddresses.insert(make_pair(name, addr));
-				if(!ret.second)
-				{
+				if(!ret.second) {
 					LOG_WARN << "Config: joystick name \"" << name
 							 << "\" already exists" << endl;
 				}
 				
 				TiXmlElement* thresholdsChild = Xml::getElement(child2, "thresholds");
-				if(thresholdsChild)
-				{
+				if(thresholdsChild) {
 					unsigned int deadZone = Xml::getAttrUInt(thresholdsChild, "axisDeadZone", 0);
 					if(deadZone > 0) {
 						pair<map<string,unsigned int>::iterator, bool> threshRet;
@@ -235,48 +213,39 @@ bool Config::readXml(TiXmlElement* e)
 				}
 				
 				TiXmlElement* remapChild = Xml::getElement(child2, "remap");
-				if(remapChild)
-				{
+				if(remapChild) {
 					JoystickRemapping *remap = new JoystickRemapping;
-					if(!remap->loadXml(remapChild))
-					{
+					if(!remap->loadXml(remapChild)) {
 						LOG_WARN << "Config: ignoring empty remap for \""
 								 << name << "\""<< endl;
 					}
 					pair<map<string,JoystickRemapping*>::iterator, bool> remapRet;
 					remapRet = m_joystickRemappings.insert(make_pair(name, remap));
-					if(!remapRet.second)
-					{
+					if(!remapRet.second) {
 						LOG_WARN << "Config: joystick remapping for \""
 								 << name << "\" already exists" << endl;
 					}
 				}
 				
 				TiXmlElement* ignoreChild = Xml::getElement(child2, "ignore");
-				if(ignoreChild)
-				{
+				if(ignoreChild) {
 					JoystickIgnore *ignore = new JoystickIgnore;
-					if(!ignore->loadXml(ignoreChild))
-					{
+					if(!ignore->loadXml(ignoreChild)) {
 						LOG_WARN << "Config: ignoring empty ignore for \""
 								 << name << "\""<< endl;
 					}
 					pair<map<string,JoystickIgnore*>::iterator, bool> ignoreRet;
 					ignoreRet = m_joystickIgnores.insert(make_pair(name, ignore));
-					if(!ignoreRet.second)
-					{
+					if(!ignoreRet.second) {
 						LOG_WARN << "Config: joystick ignore for \""
 								 << name << "\" already exists" << endl;
 					}
 				}
 			}
-
 			child2 = child2->NextSiblingElement();
-		}
-		
+		}	
 		return true;
 	}
-	
 	return false;
 }
 
@@ -288,8 +257,8 @@ Config::Config() :
 	sendingIp("127.0.0.1"), sendingPort(8880),
 	notificationAddress((string) "/"+PACKAGE+"/notifications"),
 	deviceAddress((string) "/"+PACKAGE+"/devices"),
-	bPrintEvents(false), sleepUS(10000)
-{
+	bPrintEvents(false), sleepUS(10000) {
+
 	// attach config values to xml attributes
 	addXmlAttribute("port", "listening", XML_TYPE_UINT, &listeningPort);
 	

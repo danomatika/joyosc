@@ -17,27 +17,27 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ==============================================================================*/
-#include <config.h>		// automake config defines
+#include <config.h> // automake config defines
 
 #include <tclap/tclap.h>
 #include <oscframework/oscframework.h>
 
 using namespace std;
 
-#define DEFAULT_IP	"127.0.0.1"
-#define DEFAULT_PORT 7770
+#define DEFAULT_IP   "127.0.0.1"
+#define DEFAULT_PORT  7770
 
 #define NUM_ACTIONS 3
-#define NUM_TYPES 1
+#define NUM_TYPES   1
 
 string actions[NUM_ACTIONS] = { "open", "close", "quit" };
 string types[NUM_TYPES] = { "joystick" };
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
+	
 	try {
 
 	// the commandline parser
@@ -45,13 +45,15 @@ int main(int argc, char *argv[])
 	
 	// constraints    
 	vector<string> allowedActions;
-	for(int i = 0; i < NUM_ACTIONS; ++i)
+	for(int i = 0; i < NUM_ACTIONS; ++i) {
 		allowedActions.push_back(actions[i]);
+	}
 	TCLAP::ValuesConstraint<string> actionConstraint(allowedActions);
 	
 	vector<string> allowedTypes;
-	for(int i = 0; i < NUM_TYPES; ++i)
+	for(int i = 0; i < NUM_TYPES; ++i) {
 		allowedTypes.push_back(types[i]);
+	}
 	TCLAP::ValuesConstraint<string> typeConstraint(allowedTypes);
 	
 	stringstream itoa;
@@ -85,18 +87,15 @@ int main(int argc, char *argv[])
 
 	// compose the message
 	string address = "/rc-unitd/" + actionCmd.getValue();
-	if(actionCmd.getValue() != "quit")
-	{
+	if(actionCmd.getValue() != "quit") {
 		// device message
 		address += "/" + typeOpt.getValue();
 		sender << osc::BeginMessage(address);
-		if(devCmd.getValue() != "")
-		{
+		if(devCmd.getValue() != "") {
 			sender << devCmd.getValue();
 		}
 	}
-	else
-	{
+	else {
 		// quit
 		sender << osc::BeginMessage(address);
 	}
@@ -109,8 +108,8 @@ int main(int argc, char *argv[])
 	cout << "Target ip: " << ipOpt.getValue() << " port: " << portOpt.getValue() << endl;
 	cout << "Sent message " << address << " " << devCmd.getValue() << endl;
 	
-	} catch(TCLAP::ArgException &e)  // catch any exceptions
-	{
+	}
+	catch(TCLAP::ArgException &e) {  // catch any exceptions
 		cerr << "CommandLine error: " << e.error() << " for arg " << e.argId() << endl;
 		return EXIT_FAILURE;
 	}

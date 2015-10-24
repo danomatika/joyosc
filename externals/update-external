@@ -38,7 +38,7 @@ elif [ "$1" == "tclap" ]; then
 	git clone git://github.com/danomatika/common.git common
 	cp -Rv common/tclap/* tclap
 	rm -rf common
-elif [ "$1" == "tclap" ]; then
+elif [ "$1" == "vmmlib" ]; then
 	mkdir -p vmmlib
 	git clone git://github.com/danomatika/common.git common
 	cp -Rv common/vmmlib/* vmmlib

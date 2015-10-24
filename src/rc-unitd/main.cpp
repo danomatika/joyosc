@@ -17,7 +17,7 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ==============================================================================*/
 
@@ -25,20 +25,18 @@
 
 #include "App.h"
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
+
 	// init config settings
 	if(!Config::instance().parseCommandLine(argc, argv))
 		return EXIT_FAILURE;
 
 	// init SDL
-	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)
-	{
+	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0) {
 		LOG_ERROR << "Couldn't initialize SDL: " << SDL_GetError() << endl;
 		return EXIT_FAILURE;
 	}
-	if(SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1") == SDL_FALSE)
-	{
+	if(SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1") == SDL_FALSE) {
 		LOG_WARN << "Couldn't set joystick background events" << endl;
 	}
 
