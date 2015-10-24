@@ -78,8 +78,11 @@ class JoystickDevice : public Device
 		bool isOpen();
 		
 		/// set/get SDL joystick index
-		inline void setIndex(int index) {m_joyIndex = index;}
+		inline void setIndex(unsigned int index) {m_joyIndex = index;}
 		inline int getIndex() 			{return m_joyIndex;}
+	
+		/// get the SDL instance ID, different from index
+		SDL_JoystickID getInstanceID();
 		
 		/// set/get joystick axis dead zone, used to set an ignore threshold around 0
 		void setAxisDeadZone(unsigned int zone);
@@ -92,9 +95,6 @@ class JoystickDevice : public Device
 		/// set/get joystick button, axis, etc ignores
 		void setIgnore(JoystickIgnore* ignore);
 		inline JoystickIgnore* getIgnore() {return m_ignore;}
-		
-		/// restart the SDL Joystick subsystem
-		static void restartJoystickSubSystem();
 
 	protected:
 	
@@ -102,7 +102,8 @@ class JoystickDevice : public Device
 		friend class JoystickIgnore;
 
 		SDL_Joystick	*m_joystick;
-		int				m_joyIndex;
+		int				m_joyIndex; // device list id
+		SDL_JoystickID  m_instanceID; // unique ID
 	
 		unsigned int m_axisDeadZone;
 		std::vector<int16_t>	m_prevAxisValues;

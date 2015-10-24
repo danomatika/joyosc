@@ -23,9 +23,9 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#include <config.h>		// automake config defines
+#include <config.h> // automake config defines
 
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <lo/lo.h>
 
 #include "Log.h"

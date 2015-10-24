@@ -28,45 +28,64 @@ JoystickManager::JoystickManager()
 JoystickManager::~JoystickManager()
 {}
 
-void JoystickManager::open()
+void JoystickManager::open(unsigned int index)
 {
-	// create and open a new joystick for each index
-	for(int i = 0; i < SDL_NumJoysticks(); ++i)
+	JoystickDevice* j = new JoystickDevice();
+	j->setIndex(index);
+	
+	// only add if the joystick was opened ok
+	if(j->open())
 	{
-		JoystickDevice* j = new JoystickDevice();
-		j->setIndex(i);
-		
-		// only add if the joystick was opened ok
-		if(j->open())
+		// set remapping if one exists
+		JoystickRemapping* remap = Config::instance().getJoystickRemapping(j->getDevName());
+		if(remap)
 		{
-			// set remapping if one exists
-			JoystickRemapping* remap = Config::instance().getJoystickRemapping(j->getDevName());
-			if(remap)
-			{
-				j->setRemapping(remap);
-				j->printRemapping();
-			}
-			
-			// set axis dead zone if one exists
-			int axisDeadZone = Config::instance().getJoystickAxisDeadZone(j->getDevName());
-			if(axisDeadZone > 0) {
-				j->setAxisDeadZone(axisDeadZone);
-			}
-			
-			// set ignore if one exists
-			JoystickIgnore *ignore = Config::instance().getJoystickIgnore(j->getDevName());
-			if(ignore)
-			{
-				j->setIgnore(ignore);
-				j->printIgnores();
-			}
-			
-			m_joysticks.push_back(j);
+			j->setRemapping(remap);
+			j->printRemapping();
+		}
+		
+		// set axis dead zone if one exists
+		int axisDeadZone = Config::instance().getJoystickAxisDeadZone(j->getDevName());
+		if(axisDeadZone > 0) {
+			j->setAxisDeadZone(axisDeadZone);
+		}
+		
+		// set ignore if one exists
+		JoystickIgnore *ignore = Config::instance().getJoystickIgnore(j->getDevName());
+		if(ignore)
+		{
+			j->setIgnore(ignore);
+			j->printIgnores();
+		}
+		
+		m_joysticks.push_back(j);
+	}
+}
+
+void JoystickManager::close(SDL_JoystickID instanceID)
+{
+	for(int i = 0; i < m_joysticks.size(); ++i)
+	{
+		if(m_joysticks[i]->getInstanceID() == instanceID) {
+			JoystickDevice* j = m_joysticks[i];
+			j->close();
+			delete j;
+			m_joysticks.erase(m_joysticks.begin()+i);
+			return;
 		}
 	}
 }
 
-void JoystickManager::close()
+void JoystickManager::openAll()
+{
+	// create and open a new joystick for each index
+	for(int i = 0; i < SDL_NumJoysticks(); ++i)
+	{
+		open(i);
+	}
+}
+
+void JoystickManager::closeAll()
 {
 	// close and erase all joysticks
 	for(unsigned int i = 0; i < m_joysticks.size(); ++i)
@@ -80,14 +99,31 @@ void JoystickManager::close()
 
 bool JoystickManager::handleEvents(SDL_Event* event)
 {
-	// pass event to each joystick and stop when one handles it
-	for(unsigned int i = 0; i < m_joysticks.size(); ++i)
+
+	switch(event->type)
 	{
-		if(m_joysticks[i]->handleEvents(event))
+		case SDL_JOYDEVICEADDED:
+			LOG << "ADD" << endl;
+			open(event->jdevice.which);
+			print();
 			return true;
-	}
+			
+		case SDL_JOYDEVICEREMOVED:
+			LOG << "REMOVE" << endl;
+			close(event->jdevice.which);
+			print();
+			return true;
+			
+		default:
 	
-	return false;
+			// pass event to each joystick and stop when one handles it
+			for(unsigned int i = 0; i < m_joysticks.size(); ++i)
+			{
+				if(m_joysticks[i]->handleEvents(event))
+					return true;
+			}
+			return false;
+	}
 }
 
 void JoystickManager::print(bool details)

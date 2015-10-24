@@ -14,7 +14,7 @@ dist_libunit_a_SOURCES =	Common.h Log.h \
 					JoystickManager.h JoystickManager.cpp
 
 # include paths
-AM_CPPFLAGS = $(CXXFLAGS) $(SDL_FLAGS) $(LO_CFLAGS) $(EXTERNALS_CFLAGS)
+AM_CPPFLAGS = $(CXXFLAGS) $(SDL_CFLAGS) $(LO_CFLAGS) $(EXTERNALS_CFLAGS)
 
 # libs to link
 AM_LDFLAGS = $(SDL_LIBS) $(LO_LIBS)

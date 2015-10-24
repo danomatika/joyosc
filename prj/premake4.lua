@@ -26,12 +26,12 @@ project "unit"
 			  "../externals/oscframework" }
 	
 	configuration "linux"
-		buildoptions { "`pkg-config --cflags sdl`", "`pkg-config --cflags liblo`" }
-		linkoptions { "`pkg-config --libs sdl`", "`pkg-config --libs liblo`" }
+		buildoptions { "`pkg-config --cflags sdl2`", "`pkg-config --cflags liblo`" }
+		linkoptions { "`pkg-config --libs sdl2`", "`pkg-config --libs liblo`" }
 	
 	configuration "macosx"
 		-- Homebrew
-		includedirs { "/usr/local/include" }
+		includedirs { "/usr/local/include", "/usr/local/include/SDL2", "src" }
 		libdirs { "/usr/local/lib" }
 
 	configuration "Debug"
@@ -58,14 +58,14 @@ project "rc-unitd"
 	links { "unit", "oscframework", "xmlframework" }
 
 	configuration "linux"
-		buildoptions { "`pkg-config --cflags sdl`", "`pkg-config --cflags liblo`" }
-		linkoptions { "`pkg-config --libs sdl`", "`pkg-config --libs liblo`" }
+		buildoptions { "`pkg-config --cflags sdl2`", "`pkg-config --cflags liblo`" }
+		linkoptions { "`pkg-config --libs sdl2`", "`pkg-config --libs liblo`" }
 
 	configuration 'macosx'
 		-- Homebrew
-		includedirs { "/usr/local/include"}
+		includedirs { "/usr/local/include", "/usr/local/include/SDL2" }
 		libdirs { "/usr/local/lib" }
-		links { "lo", "pthread", "SDLmain", "SDL" }
+		links { "lo", "pthread", "SDL2" }
 		linkoptions { "-Wl,-framework,Cocoa", "-Wl,-framework,OpenGL",
 					  "-Wl,-framework,ApplicationServices",
 					  "-Wl,-framework,Carbon", "-Wl,-framework,AudioToolbox",
@@ -92,14 +92,14 @@ project "lsjs"
 				  "../externals/oscframework" }
 
 	configuration "linux"
-		buildoptions { "`pkg-config --cflags sdl`" }
-		linkoptions { "`pkg-config --libs sdl`" }
+		buildoptions { "`pkg-config --cflags sdl2`" }
+		linkoptions { "`pkg-config --libs sdl2`" }
 
 	configuration 'macosx'
 		-- Homebrew
-		includedirs { "/usr/local/include"}
+		includedirs { "/usr/local/include", "/usr/local/include/SDL2" }
 		libdirs { "/usr/local/lib" }
-		links { "SDLmain", "SDL" }
+		links { "SDL2" }
 		linkoptions { "-Wl,-framework,Cocoa", "-Wl,-framework,OpenGL",
 					  "-Wl,-framework,ApplicationServices",
 					  "-Wl,-framework,Carbon", "-Wl,-framework,AudioToolbox",
@@ -129,14 +129,14 @@ project "rc-unit-notifier"
 	links { "oscframework" }
 
 	configuration "linux"
-		buildoptions { "`pkg-config --cflags sdl`" }
-		linkoptions { "`pkg-config --libs sdl`" }
+		buildoptions { "`pkg-config --cflags sdl2`" }
+		linkoptions { "`pkg-config --libs sdl2`" }
 
 	configuration 'macosx'
 		-- Homebrew
-		includedirs { "/usr/local/include"}
+		includedirs { "/usr/local/include", "/usr/local/include/SDL2" }
 		libdirs { "/usr/local/lib" }
-		links { "lo", "pthread", "SDLmain", "SDL" }
+		links { "lo", "pthread", "SDL2" }
 		linkoptions { "-Wl,-framework,Cocoa", "-Wl,-framework,OpenGL",
 					  "-Wl,-framework,ApplicationServices",
 					  "-Wl,-framework,Carbon", "-Wl,-framework,AudioToolbox",

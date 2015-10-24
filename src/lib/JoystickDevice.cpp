@@ -25,7 +25,7 @@
 using namespace xml;
 
 JoystickDevice::JoystickDevice(string oscAddress) :
-	Device(oscAddress), m_joystick(NULL), m_joyIndex(-1),
+	Device(oscAddress), m_joystick(NULL), m_joyIndex(-1), m_instanceID(-1),
 	m_axisDeadZone(0), m_remapping(NULL), m_ignore(NULL)
 {}
 
@@ -37,7 +37,7 @@ bool JoystickDevice::open()
 		return false;
 	}
 
-	if(SDL_JoystickOpened(m_joyIndex))
+	if(isOpen())
 	{
 		LOG_WARN << "JoystickDevice: joystick with index "
 				 << m_joyIndex << " already opened" << endl;
@@ -51,8 +51,11 @@ bool JoystickDevice::open()
 		return false;
 	}
 	
+	m_instanceID = SDL_JoystickInstanceID(m_joystick);
+	m_devName = SDL_JoystickName(m_joystick);
+	
 	// try to set the address from the mapping list using the dev name
-	m_oscAddress = m_config.getDeviceAddress((string) SDL_JoystickName(m_joyIndex));
+	m_oscAddress = m_config.getDeviceAddress((string) m_devName);
 	if(m_oscAddress == "")
 	{
 		// not found ... set a generic name using the index
@@ -60,8 +63,6 @@ bool JoystickDevice::open()
 		stream << "/js" << m_joyIndex;
 		m_oscAddress = stream.str();
 	}
-	
-	m_devName = SDL_JoystickName(m_joyIndex);
 			
 	// create prev axis values
 	for(int i = 0; i < SDL_JoystickNumAxes(m_joystick); ++i)
@@ -81,11 +82,15 @@ void JoystickDevice::close()
 		{
 			SDL_JoystickClose(m_joystick);
 		}
+		LOG << "JoystickDevice: closed " << m_joyIndex
+			<< " \"" << m_devName << "\" with address "
+			<< m_oscAddress << endl;
 		m_joystick = NULL;
 	}
 	
 	// reset variables
 	m_joyIndex = -1;
+	m_instanceID = -1;
 	m_devName = "";
 	m_prevAxisValues.clear();
 }
@@ -103,7 +108,7 @@ bool JoystickDevice::handleEvents(void* data)
 		
 		case SDL_JOYBUTTONDOWN:
 		{	
-			if(event->jbutton.which != m_joyIndex)
+			if(event->jbutton.which != m_instanceID)
 				break;
 			
 			// ignore?
@@ -138,7 +143,7 @@ bool JoystickDevice::handleEvents(void* data)
 		
 		case SDL_JOYBUTTONUP:
 		{	
-			if(event->jbutton.which != m_joyIndex)
+			if(event->jbutton.which != m_instanceID)
 				break;
 				
 			// ignore?
@@ -173,7 +178,7 @@ bool JoystickDevice::handleEvents(void* data)
 
 		case SDL_JOYAXISMOTION:
 		{
-			if(event->jaxis.which != m_joyIndex)
+			if(event->jaxis.which != m_instanceID)
 				break;
 			
 			// ignore?
@@ -223,7 +228,7 @@ bool JoystickDevice::handleEvents(void* data)
 		
 		case SDL_JOYBALLMOTION:
 		{
-			if(event->jball.which != m_joyIndex)
+			if(event->jball.which != m_instanceID)
 				break;
 			
 			// ignore?
@@ -259,7 +264,7 @@ bool JoystickDevice::handleEvents(void* data)
 		
 		case SDL_JOYHATMOTION:
 		{
-			if(event->jhat.which != m_joyIndex)
+			if(event->jhat.which != m_instanceID)
 				break;
 			
 			// ignore?
@@ -329,7 +334,12 @@ void JoystickDevice::printIgnores()
 
 bool JoystickDevice::isOpen()
 {
-	return SDL_JoystickOpened(m_joyIndex);
+	return SDL_JoystickGetAttached(m_joystick) == SDL_TRUE;
+}
+
+SDL_JoystickID JoystickDevice::getInstanceID()
+{
+	return m_instanceID;
 }
 
 void JoystickDevice::setAxisDeadZone(unsigned int zone)
@@ -355,12 +365,6 @@ void JoystickDevice::setIgnore(JoystickIgnore* ignore)
 	{
 		m_ignore->check(this);
 	}
-}
-
-void JoystickDevice::restartJoystickSubSystem()
-{
-	SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
-	SDL_InitSubSystem(SDL_INIT_JOYSTICK);
 }
 
 /* ***** JoystickRemapping ***** */

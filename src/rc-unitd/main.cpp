@@ -27,7 +27,7 @@
 
 int main(int argc, char **argv)
 {
-	// init Config settings
+	// init config settings
 	if(!Config::instance().parseCommandLine(argc, argv))
 		return EXIT_FAILURE;
 
@@ -36,6 +36,10 @@ int main(int argc, char **argv)
 	{
 		LOG_ERROR << "Couldn't initialize SDL: " << SDL_GetError() << endl;
 		return EXIT_FAILURE;
+	}
+	if(SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1") == SDL_FALSE)
+	{
+		LOG_WARN << "Couldn't set joystick background events" << endl;
 	}
 
 	// run the application

@@ -1,7 +1,7 @@
 #########################################
 ##### Prelude #####
 
-AC_INIT([rc-unitd], [0.3.5], [danomatika@gmail.com], [rc-unitd], [http://github.com/danomatika/rc-unitd])
+AC_INIT([rc-unitd], [0.4.0], [danomatika@gmail.com], [rc-unitd], [http://github.com/danomatika/rc-unitd])
 AC_CONFIG_SRCDIR([src/rc-unitd/main.cpp])
 AC_CONFIG_AUX_DIR([config])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
@@ -28,8 +28,8 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS(sstream) # needed for tclap
 
 # check for headers & libs
-PKG_CHECK_MODULES(SDL, sdl >= 1.2,[],
-	AC_MSG_ERROR([SDL library >= 1.2 not found]))
+PKG_CHECK_MODULES(SDL, sdl2 >= 2.0,[],
+	AC_MSG_ERROR([SDL library >= 2.0 not found]))
 	
 PKG_CHECK_MODULES(LO, liblo >= 0.23,[],
 	AC_MSG_ERROR([lo library >= 0.23 not found]))

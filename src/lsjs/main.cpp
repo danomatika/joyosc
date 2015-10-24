@@ -22,7 +22,7 @@
 ==============================================================================*/
 #include <config.h>		// automake config defines
 
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <tclap/tclap.h>
 
 using namespace std;
@@ -56,15 +56,17 @@ int main(int argc, char **argv)
 	}
 
 	// init SDL
-	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0 )
+	SDL_Init(0);
+	if(SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0 )
 	{
 		cerr << "lsjs: Couldn't initialize SDL: " << SDL_GetError() << endl;
 		return EXIT_FAILURE;
 	}
 
-	for(int i = 0; i < SDL_NumJoysticks(); ++i)
+	int num = SDL_NumJoysticks();
+	for(int i = 0; i < num; ++i)
 	{
-		cout << i << " \"" << SDL_JoystickName(i) << "\"" << endl;
+		cout << i << " \"" << SDL_JoystickNameForIndex(i) << "\"" << endl;
 		
 		if(bPrintDetails)
 		{

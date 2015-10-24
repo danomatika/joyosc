@@ -22,7 +22,7 @@
 ==============================================================================*/
 #include "App.h"
 
-#include <signal.h>     // signal handling
+#include <signal.h> // signal handling
 #include <unistd.h>
 
 using namespace osc;
@@ -60,10 +60,6 @@ void App::setup()
 				<< EndMessage();
 	m_oscSender.send();
 
-	// open existing devices
-	m_joystickManager.open();
-	m_joystickManager.print();
-
 	// set signal handling
 	signal(SIGTERM, signalExit);    // terminate
 	signal(SIGQUIT, signalExit);    // quit
@@ -86,12 +82,16 @@ void App::run()
 		SDL_Event event;
 		while(SDL_PollEvent(&event))
 		{
-			if(m_joystickManager.handleEvents(&event))
+			if(!m_joystickManager.handleEvents(&event))
 			{
 				switch(event.type)
 				{
 					case SDL_QUIT:
 						m_bRun = false;
+						break;
+						
+					default:
+						LOG_WARN << "Unhandled event type: " << event.type << endl;
 						break;
 				}
 			}
@@ -105,7 +105,7 @@ void App::run()
 void App::cleanup()
 {
 	// close devices
-	m_joystickManager.close();
+	m_joystickManager.closeAll();
 	
 	m_oscSender << BeginMessage(m_config.notificationAddress + "/shutdown")
 				<< EndMessage();
@@ -119,11 +119,10 @@ bool App::processOscMessage(const ReceivedMessage& message,
 {
 	if(message.path() == oscRootAddress + "/open/joystick")
 	{
-		LOG << endl << "    rc-unitd: Open joystick message received." << endl;
+		LOG << endl << "	" << PACKAGE << ": Open joystick message received." << endl;
 		
-		JoystickDevice::restartJoystickSubSystem();
-		m_joystickManager.close();
-		m_joystickManager.open();
+		m_joystickManager.closeAll();
+		m_joystickManager.openAll();
 		m_joystickManager.print();
 		LOG << endl;
 
@@ -136,11 +135,10 @@ bool App::processOscMessage(const ReceivedMessage& message,
 	
 	else if(message.path() == oscRootAddress + "/close/joystick")
 	{
-		LOG << endl << "    rc-unitd: Close joystick message received." << endl;
+		LOG << endl << "	" << PACKAGE << ": Close joystick message received." << endl;
 		
-		JoystickDevice::restartJoystickSubSystem();
-		m_joystickManager.close();
-		m_joystickManager.open();
+		m_joystickManager.closeAll();
+		m_joystickManager.openAll();
 		m_joystickManager.print();
 		LOG << endl;
 
@@ -154,11 +152,11 @@ bool App::processOscMessage(const ReceivedMessage& message,
 	else if(message.path() == oscRootAddress + "/quit")
 	{
 		stop();
-		LOG << endl << "    rc-unitd: Quit message received. Exiting ..." << endl;
+		LOG << endl << "	" << PACKAGE << ": Quit message received. Exiting ..." << endl;
 		return true;
 	}
 
-	LOG << endl << "    rc-unitd: Unknown message received: "
+	LOG << endl << "	" << PACKAGE << ": Unknown message received: "
 		<< message.path() << " " << message.types() << endl;
 
 	return false;
@@ -167,5 +165,5 @@ bool App::processOscMessage(const ReceivedMessage& message,
 void App::signalExit(int signal)
 {
 	appPtr->stop();
-	LOG << endl << "    " << PACKAGE << ": Signal caught.  Exiting ..." << endl;
+	LOG << endl << "	" << PACKAGE << ": Signal caught. Exiting ..." << endl;
 }

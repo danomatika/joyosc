@@ -36,23 +36,25 @@ class JoystickManager
 		JoystickManager();
 		virtual ~JoystickManager();
 
-		/** \brief  opens all current joysticks
+		/// open joystick at index
+		void open(unsigned int index);
+	
+		/// close joystick with instance ID (different from index)
+		void close(SDL_JoystickID instanceID);
 
-			restarts SDL Joystick subsystem to add any new joysticks and 
-			regenerates list
-		*/
-		void open();
+		/// opens all current joysticks
+		void openAll();
 
-		///  closes each joystick and removes it from the list
-		void close();
+		///  closes all current joysticks
+		void closeAll();
 
-		/** \brief  Checks for and sends device events */
+		//// handle and send device events
 		bool handleEvents(SDL_Event* event);
 
 		/// print active joystick list
 		void print(bool details=false);
 
-		/// get num of currentl active joysticks
+		/// get num of currently active joysticks
 		inline unsigned int getNumJoysticks() {return m_joysticks.size();}
 
 	protected:
