@@ -27,7 +27,7 @@
 
 using namespace osc;
 
-App* appPtr;
+App* appPtr; // global app this pointer
 
 App::App() : OscObject((string)"/"+PACKAGE), m_bRun(false),
 	m_config(Config::instance()),
@@ -43,9 +43,15 @@ void App::setup() {
 	m_config.print();
 	
 	// setup osc interface
-	m_oscReceiver.setup(m_config.listeningPort);
-	m_oscSender.setup(m_config.sendingIp, m_config.sendingPort);
-	m_oscReceiver.addOscObject(this);
+	try {
+		m_oscReceiver.setup(m_config.listeningPort);
+		m_oscSender.setup(m_config.sendingIp, m_config.sendingPort);
+		m_oscReceiver.addOscObject(this);
+	}
+	catch(osc::ReceiveException &e) {
+		LOG_ERROR << e.what() << endl;
+		exit(EXIT_FAILURE);
+	}
 
 	m_oscSender << BeginMessage(m_config.notificationAddress + "/startup")
 				<< EndMessage();
@@ -71,13 +77,10 @@ void App::run() {
 		// handle any joystick events
 		SDL_Event event;
 		while(SDL_PollEvent(&event)) {
-			if(!m_joystickManager.handleEvents(&event)) {
+			if(!m_joystickManager.handleEvent(&event)) {
 				switch(event.type) {
 					case SDL_QUIT:
 						m_bRun = false;
-						break;
-					default:
-						LOG_WARN << "Unhandled event type: " << event.type << endl;
 						break;
 				}
 			}
@@ -97,7 +100,7 @@ void App::cleanup() {
 	m_oscSender.send();
 }
 
-/* ***** PROTECTED ***** */
+// PROTECTED
 
 bool App::processOscMessage(const ReceivedMessage& message,
 							const MessageSource& source) {

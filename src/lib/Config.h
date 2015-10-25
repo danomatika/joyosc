@@ -33,29 +33,25 @@ using namespace std;
 class JoystickRemapping;
 class JoystickIgnore;
 
-/**
-	\class  Config
-	\brief  global, per-application instance state variable container class
-
-	implemented as a singleton class following:
-	http://en.wikipedia.org/wiki/Singleton_pattern
-
-	no initialization is needed, just use equt::Config::instance() to access
-	member functions, data
-**/
+/// \class Config
+/// \brief global, per-application instance state variable container class
+///
+/// implemented as a singleton class following:
+/// http://en.wikipedia.org/wiki/Singleton_pattern
+///
+/// no initialization is needed, just use Config::instance() to access
+/// member functions & data
 class Config : public xml::XmlObject {
 	
 	public:
 
-		/**
-			\brief singleton data access
-			\return a reference to itself
-
-			creates a new object on the first call
-		**/
+		/// singleton data access,
+		/// returns a reference to itself
+		///
+		/// creates a new object on the first call
 		static Config& instance();
 		
-		/* ***** VARIABLES ***** */
+		/// \section Variables
 		
 		unsigned int listeningPort;     ///< the listening port
 		string listeningAddress;        ///< base listening address
@@ -66,50 +62,47 @@ class Config : public xml::XmlObject {
 		string notificationAddress;     ///< base osc sending address for notifications
 		string deviceAddress;           ///< base osc sending addess for devices
 		
-		bool bPrintEvents;              ///< print lots of events?
+		bool printEvents;               ///< print lots of events?
+		bool joysticksOnly;				///< disable game controller support?
 		
 		int sleepUS;                    ///< how long to sleep in the run loop
+
+		/// \section Getters
 
 		/// get a reference to the OscSender and OscReceiver
 		inline osc::OscSender& getOscSender() {return m_oscSender;}
 		inline osc::OscReceiver& getOscReceiver() {return m_oscReceiver;}
 
-		/**
-			\brief	retreive the osc address for a given device name
-			\param	deviceName	device name as a string ie "Logitech Logitech Dual Action"
-			\return	mapped device addr on success, empty string "" if not found
-		*/
+		/// get the osc address for a given device name
+		/// deviceName is as a string ie "Logitech Logitech Dual Action"
+		/// returns mapped device addr on success, empty string "" if not found
 		string getDeviceAddress(string deviceName);
 		
-		/**
-			\brief	retreive the axis dead zone threshold for a given joystick device name
-			\param	deviceName	device name as a string ie "Logitech Logitech Dual Action"
-			\return	dead zone value on success, 0 if not found
-		*/
+		/// get the axis dead zone threshold for a given joystick device name
+		/// deviceName is a string ie "Logitech Logitech Dual Action"
+		/// returns dead zone value on success, 0 if not found
 		unsigned int getJoystickAxisDeadZone(string deviceName);
 		
-		/**
-			\brief	retreive the remapping for a given joystick device name
-			\param	deviceName	device name as a string ie "Logitech Logitech Dual Action"
-			\return	joystick remapping on success, NULL if not found
-		*/
+		/// get the remapping for a given joystick device name
+		/// deviceName is a string ie "Logitech Logitech Dual Action"
+		/// returns joystick remapping on success, NULL if not found
 		JoystickRemapping* getJoystickRemapping(string deviceName);
 		
-		/**
-			\brief	retrieve the button, axis, etc ignores for a given joystick device name
-			\param	deviceName	device name as a string ie "Logitech Logitech Dual Action"
-			\return	joystick ignore on success, NULL if not found
-		*/
+		/// get the button, axis, etc ignores for a given joystick device name
+		/// deviceName is a string ie "Logitech Logitech Dual Action"
+		/// returns joystick ignore on success, NULL if not found
 		JoystickIgnore* getJoystickIgnore(string deviceName);
-		
-		/**
-			\brief	parse the commandline options
-		*/
+	
+	/// \section Actions
+	
+		/// parse the commandline options & load a given config file
 		bool parseCommandLine(int argc, char **argv);
 
 		/// print the current config values
 		void print();
-		
+	
+	/// \section Util
+	
 		/// convert a given reletive path to an absolute path using the current dir,
 		/// passes through existing absolute paths
 		static string absolutePath(string path);

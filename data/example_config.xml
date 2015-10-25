@@ -7,11 +7,11 @@
 	<!-- OSC send settings -->
 	<sending ip="127.0.0.1" port="8880"/>
 	
-	<!-- bPrintEvents: print live events to to console? bool 0 or 1 -->
+	<!-- printEvents: print live events to to console? bool 0 or 1 -->
 	<!-- sleepUS: how often to poll for new events in micro seconds,
 		          a smaller number means faster events but more CPU time 
 	 -->
-	<config bPrintEvents="1" sleepUS="20000"/>
+	<config printEvents="1" sleepUS="20000"/>
 
 	<!-- map joystick names to OSC send addresses, use lsjs to get names -->
 	<mappings>

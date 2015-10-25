@@ -24,9 +24,15 @@
 
 #include "Common.h"
 
-/** \class  Device
-	\brief  a baseclass for devices
-*/
+/// supported device types
+enum DeviceType {
+	UNKNOWN,
+	JOYSTICK,
+	GAMECONTROLLER
+};
+
+/// \class Device
+/// \brief a baseclass for an event-based input device
 class Device {
 
 	public:
@@ -36,29 +42,32 @@ class Device {
 			m_config(Config::instance()) {}
 		virtual ~Device() {}
 
-		/**
-			\brief  open the device
-			\return	false on failure
-		*/
+		/// open the device,
+		/// pass implementation-specific open data via the data arg
+		/// returns true on success
 		virtual bool open(void* data=NULL) = 0;
 
 		/// close the device
 		virtual void close() = 0;
 
-		/**
-			\brief  handles device events and sends corresponding OSC messages
-			\return	true if event was handled
-			
-			call this inside a loop, does not block, does nothing if device has
-			not been opened
-		*/
-		virtual bool handleEvents(void* data=NULL) = 0;
+		/// handle a device event and send corresponding OSC messages,
+		/// returns true if event was handled
+		///
+		/// call this inside a loop, does not block, does nothing if device has
+		/// not been opened
+		virtual bool handleEvent(void* data=NULL) = 0;
 
 		/// print device info
 		virtual void print() = 0;
 
 		/// returns true if device is open
 		virtual bool isOpen() = 0;
+	
+		/// returns the device type enum value
+		virtual DeviceType getDeviceType() = 0;
+	
+		/// returns basic device info as a string
+		virtual string getDeviceString() = 0;
 
 		/// get device name i.e. "/dev/input/js0"
 		inline string getDevName() {return m_devName;}
@@ -73,4 +82,21 @@ class Device {
 		string	m_oscAddress;   ///< osc address to send to
 		
 		Config& m_config;       ///< global config access
+};
+
+/// \class DeviceIndices
+/// \brief index struct for opening a game controller or joystick
+///
+/// Since hot plugging was added to SDL 2, the index of a device in the
+/// DeviceManager device list may not == the joystick's SDL index.
+/// In this case we open the device using the SDL index but set the name
+/// and the index using the device list id.
+///
+/// This way, if there are two joysticks plugged in, js0 & js1, and js0 is
+/// unplugged then replugged, js0 will be given index 0 even though it's SDL
+/// index is actually 1 since it's now the second joystick as far as SDL is
+/// concerned.
+struct DeviceIndices {
+	int index; //< device list index
+	int sdlIndex; //< SDL index
 };

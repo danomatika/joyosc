@@ -25,7 +25,8 @@
 #include "Log.h"
 #include "../config.h" // autotools generated header
 
-#include "JoystickDevice.h"
+#include "JoystickIgnore.h"
+#include "JoystickRemapping.h"
 
 #include <tclap/tclap.h>
 
@@ -76,27 +77,26 @@ JoystickIgnore* Config::getJoystickIgnore(string deviceName) {
 bool Config::parseCommandLine(int argc, char **argv) {
 	try {
 		// the commandline parser
-		TCLAP::CommandLine cmd("a device event to osc bridge", VERSION);
+		TCLAP::CommandLine cmd("joystick device event to osc bridge", VERSION);
 		
 		stringstream itoa;
 		itoa << sendingPort;
 		
 		// options to parse
 		// short id, long id, description, required?, default value, short usage type description
-		TCLAP::ValueArg<string> ipOpt("i", "ip", (string) "IP address to send to; default is '"+sendingIp+"'", false, sendingIp, "string");
-		TCLAP::ValueArg<int> portOpt("p","port", (string) "Port to send to; default is '"+itoa.str()+"'", false, sendingPort, "int");
+		TCLAP::ValueArg<string> ipOpt("i", "ip", (string) "IP address to send to (default: "+sendingIp+")", false, sendingIp, "string");
+		TCLAP::ValueArg<int> portOpt("p","port", (string) "Port to send to (default: "+itoa.str()+")", false, sendingPort, "int");
 	 
 		itoa.str("");
 		itoa << listeningPort;
-		TCLAP::ValueArg<int> inputPortOpt("", "listeningPort", "Listening port; default is '"+itoa.str()+"'", false, listeningPort, "int");
-			  
-		itoa.str("");
-		itoa << bPrintEvents;
-		TCLAP::ValueArg<bool> eventsOpt("e", "events", (string) "Print events; default is '"+itoa.str()+"'", false, bPrintEvents, "bool");
+		TCLAP::ValueArg<int> inputPortOpt("l", "listeningPort", "Listening port (default: "+itoa.str()+")", false, listeningPort, "int");
+		
+		TCLAP::SwitchArg eventsOpt("e", "events", "Print incoming events, useful for debugging", printEvents);
+		TCLAP::SwitchArg joysticksOpt("j", "joysticksOnly", "Disable game controller support, use joystick interface only", joysticksOnly);
 		
 		itoa.str("");
 		itoa << sleepUS;
-		TCLAP::ValueArg<unsigned int> sleepOpt("s", "sleep", (string) "Sleep time in usecs; default is '"+itoa.str()+"'", false, sleepUS, "uint");
+		TCLAP::ValueArg<unsigned int> sleepOpt("s", "sleep", (string) "Sleep time in usecs (default: "+itoa.str()+")", false, sleepUS, "uint");
 
 		// commands to parse
 		// name, description, required?, default value, short usage type description
@@ -104,6 +104,7 @@ bool Config::parseCommandLine(int argc, char **argv) {
 
 		// add args to parser (in reverse order)
 		cmd.add(sleepOpt);
+		cmd.add(joysticksOpt);
 		cmd.add(eventsOpt);
 		cmd.add(inputPortOpt);
 		cmd.add(portOpt);
@@ -124,11 +125,12 @@ bool Config::parseCommandLine(int argc, char **argv) {
 		}
 		
 		// set the variables
-		if(ipOpt.isSet())        {sendingIp = ipOpt.getValue();}
-		if(portOpt.isSet())      {sendingPort = portOpt.getValue();}
-		if(inputPortOpt.isSet()) {listeningPort = inputPortOpt.getValue();}
-		if(eventsOpt.isSet())    {bPrintEvents = eventsOpt.getValue();}
-		if(sleepOpt.isSet())     {sleepUS = sleepOpt.getValue();}
+		if(ipOpt.isSet())         {sendingIp = ipOpt.getValue();}
+		if(portOpt.isSet())       {sendingPort = portOpt.getValue();}
+		if(inputPortOpt.isSet())  {listeningPort = inputPortOpt.getValue();}
+		if(eventsOpt.isSet())     {printEvents = eventsOpt.getValue();}
+		if(joysticksOpt.isSet())  {joysticksOnly = joysticksOpt.getValue();}
+		if(sleepOpt.isSet())      {sleepUS = sleepOpt.getValue();}
 	}
 	catch(TCLAP::ArgException &e) {  // catch any exceptions
 		LOG_ERROR << "CommandLine: " << e.error() << " for arg " << e.argId() << endl;
@@ -138,14 +140,15 @@ bool Config::parseCommandLine(int argc, char **argv) {
 }
 
 void Config::print() {
-	LOG << "listening port:	" << listeningPort << endl
-		<< "listening address: " << "/" << PACKAGE << endl
-		<< "sending ip:     " << sendingIp << endl
-		<< "sending port:   " << sendingPort << endl
+	LOG << "listening port:	 " << listeningPort << endl
+		<< "listening addr:  " << "/" << PACKAGE << endl
+		<< "sending ip:      " << sendingIp << endl
+		<< "sending port:    " << sendingPort << endl
 		<< "sending address for notifications: " << notificationAddress << endl
 		<< "sending address for devices:       " << deviceAddress << endl
-		<< "print events:   " << bPrintEvents << endl
-		<< "sleep us:       " << sleepUS << endl;
+		<< "print events?:   " << (printEvents ? "yes" : "no") << endl
+		<< "joysticks only?: " << (joysticksOnly ? "yes" : "no") << endl
+		<< "sleep us:        " << sleepUS << endl;
 
 	int index = 0;
 	map<string, string>::iterator iter;
@@ -169,7 +172,7 @@ string Config::absolutePath(string path) {
 		char currDir[1024];
 		path = "\\" + path;
 		path = _getcwd(currDir, 1024) + path;
-		std::replace(path.begin(), path.end(), '/', '\\'); // fix any unixy paths...
+		replace(path.begin(), path.end(), '/', '\\'); // fix any unixy paths...
 	#else // Mac / Linux
 		char currDir[1024];
 		path = "/" + path;
@@ -178,7 +181,7 @@ string Config::absolutePath(string path) {
 	return path;
 }
 
-/* ***** PROTECTED ***** */
+// PROTECTED
 
 bool Config::readXml(TiXmlElement* e) {
 	// load the device mappings
@@ -248,7 +251,7 @@ bool Config::readXml(TiXmlElement* e) {
 	return false;
 }
 
-/* ***** PRIVATE ***** */
+// PRIVATE
 
 Config::Config() :
 	XmlObject(PACKAGE),
@@ -256,7 +259,7 @@ Config::Config() :
 	sendingIp("127.0.0.1"), sendingPort(8880),
 	notificationAddress((string) "/"+PACKAGE+"/notifications"),
 	deviceAddress((string) "/"+PACKAGE+"/devices"),
-	bPrintEvents(false), sleepUS(10000) {
+	printEvents(false), joysticksOnly(false), sleepUS(10000) {
 
 	// attach config values to xml attributes
 	addXmlAttribute("port", "listening", XML_TYPE_UINT, &listeningPort);
@@ -267,6 +270,7 @@ Config::Config() :
 	addXmlAttribute("notificationAddress", "osc", XML_TYPE_STRING, &notificationAddress);
 	addXmlAttribute("deviceAddress", "osc", XML_TYPE_STRING, &deviceAddress);
 	
-	addXmlAttribute("bPrintEvents", "config", XML_TYPE_BOOL, &bPrintEvents);
+	addXmlAttribute("printEvents", "config", XML_TYPE_BOOL, &printEvents);
+	addXmlAttribute("joysticksOnly", "config", XML_TYPE_BOOL, &joysticksOnly);
 	addXmlAttribute("sleepUS", "config", XML_TYPE_UINT, &sleepUS);
 }

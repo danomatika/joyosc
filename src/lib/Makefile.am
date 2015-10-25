@@ -7,10 +7,10 @@ include $(top_srcdir)/externals/externals.mk
 noinst_LIBRARIES = libunit.a
 
 # libs sources, headers here because we dont want to install them
-dist_libunit_a_SOURCES = Common.h Log.h \
-                         Config.h Config.cpp Device.h \
-                         JoystickDevice.h JoystickDevice.cpp \
-                         JoystickManager.h JoystickManager.cpp
+dist_libunit_a_SOURCES = Config.cpp \
+						 Joystick.cpp JoystickIgnore.cpp JoystickRemapping.cpp \
+						 GameController.cpp \
+						 DeviceManager.cpp
 
 # include paths
 AM_CPPFLAGS = $(CXXFLAGS) $(SDL_CFLAGS) $(LO_CFLAGS) $(EXTERNALS_CFLAGS)
