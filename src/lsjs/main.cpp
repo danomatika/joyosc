@@ -4,7 +4,7 @@
 
 	lsjs: a tool to print the available joystick devices
   
-	Copyright (C) 2007, 2010  Dan Wilcox <danomatika@gmail.com>
+	Copyright (C) 2007, 2010 Dan Wilcox <danomatika@gmail.com>
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -60,16 +60,17 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	int num = SDL_NumJoysticks();
-	for(int i = 0; i < num; ++i) {
-		cout << i << " \"" << SDL_JoystickNameForIndex(i) << "\"" << endl;
-		if(bPrintDetails) {
-			SDL_Joystick* joystick = SDL_JoystickOpen(i);
-			if(joystick) {        	
-				cout << "   num axes: " << SDL_JoystickNumAxes(joystick) << endl
-					 << "   num buttons: " << SDL_JoystickNumButtons(joystick) << endl
-					 << "   num balls: " << SDL_JoystickNumBalls(joystick) << endl
-					 << "   num hats: " << SDL_JoystickNumHats(joystick) << endl;
+	char guidString[33];
+	for(int i = 0; i < SDL_NumJoysticks(); ++i) {
+		SDL_Joystick* joystick = SDL_JoystickOpen(i);
+		if(joystick) {
+			SDL_JoystickGetGUIDString(SDL_JoystickGetGUID(joystick), guidString, 33);
+			cout << i << " \"" << SDL_JoystickNameForIndex(i) << "\" " << guidString << endl;
+			if(bPrintDetails) {
+				cout << "  num axes: " << SDL_JoystickNumAxes(joystick) << endl
+				     << "  num buttons: " << SDL_JoystickNumButtons(joystick) << endl
+				     << "  num balls: " << SDL_JoystickNumBalls(joystick) << endl
+				     << "  num hats: " << SDL_JoystickNumHats(joystick) << endl;
 				cout << endl;
 				SDL_JoystickClose(joystick);
 			}
