@@ -35,11 +35,11 @@ class JoystickRemapping;
 
 	Uses SDL to open, read, and close a joystick
 */
-class JoystickDevice : public Device {
+class Joystick : public Device {
 
 	public:
 
-		JoystickDevice(string oscAddress="/joystick");
+		Joystick(string oscAddress="/joystick");
 
 		/**
 			\brief  open the device
@@ -144,7 +144,7 @@ class JoystickRemapping : public xml::XmlObject {
 		std::map<int,int> hats;
 		
 		// check mapping indices & toss out any bad values
-		void check(JoystickDevice* joystick);
+		void check(Joystick* joystick);
 		
 		void print();
 		
@@ -171,7 +171,7 @@ class JoystickIgnore : public xml::XmlObject {
 		std::map<int,bool> hats;
 		
 		// check mapping indexs & toss out any bad values
-		void check(JoystickDevice* joystick);
+		void check(Joystick* joystick);
 		
 		void print();
 		

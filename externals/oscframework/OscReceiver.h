@@ -30,6 +30,11 @@ namespace osc {
 class ReceiveException : public Exception
 {
 	public:
+	
+		ReceiveException(
+			std::string w="liblo receive error")
+			: Exception(w) {}
+	
 		ReceiveException(
 			const char* w="liblo receive error")
 			: Exception(w) {}

@@ -201,8 +201,10 @@ bool OscReceiver::processMessage(const ReceivedMessage& message, const MessageSo
 void OscReceiver::errorCB(int num, const char* msg, const char* where)
 {
 	std::stringstream stream;
-	stream << "liblo server thread error " << num << ": " << msg << ": " << where;
-	throw ReceiveException(stream.str().c_str());
+	stream << "OscReceiver: liblo server thread error " << num;
+	if(msg) {stream << ": " << msg;}     // might be NULL
+	if(where) {stream << ": " << where;} // might be NULL
+	throw ReceiveException(stream.str());
 }
 
 int OscReceiver::messageCB(const char* path, const char* types, lo_arg** argv,

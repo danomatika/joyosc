@@ -1,6 +1,6 @@
 /*==============================================================================
 
-	JoystickDevice.cpp
+	Joystick.cpp
 
 	rc-unitd: a device event to osc bridge
   
@@ -20,17 +20,17 @@
 	along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ==============================================================================*/
-#include "JoystickDevice.h"
+#include "Joystick.h"
 
 using namespace xml;
 
-JoystickDevice::JoystickDevice(string oscAddress) :
+Joystick::Joystick(string oscAddress) :
 	Device(oscAddress), m_joystick(NULL), m_joyIndex(-1), m_instanceID(-1),
 	m_axisDeadZone(0), m_remapping(NULL), m_ignore(NULL) {}
 
-bool JoystickDevice::open(void *data) {
+bool Joystick::open(void *data) {
 	if(data == NULL) {
-		LOG_WARN << "JoystickDevice: cannot open, index not set" << endl;
+		LOG_WARN << "Joystick: cannot open, index not set" << endl;
 		return false;
 	}
 	
@@ -38,14 +38,14 @@ bool JoystickDevice::open(void *data) {
 	m_joyIndex = indices->deviceIndex;
 
 	if(isOpen()) {
-		LOG_WARN << "JoystickDevice: joystick with index "
+		LOG_WARN << "Joystick: joystick with index "
 				 << m_joyIndex << " already opened" << endl;
 		return false;
 	}
 
 	m_joystick = SDL_JoystickOpen(indices->sdlIndex);
 	if(!m_joystick) {
-		LOG_WARN << "JoystickDevice: open failed for index " << m_joyIndex << endl;
+		LOG_WARN << "Joystick: open failed for index " << m_joyIndex << endl;
 		return false;
 	}
 	
@@ -66,18 +66,18 @@ bool JoystickDevice::open(void *data) {
 		m_prevAxisValues.push_back(0);
 	}
 	
-	LOG << "JoystickDevice: opened " << m_joyIndex
+	LOG << "Joystick: opened " << m_joyIndex
 		<< " \"" << m_devName << "\" with address "
 		<< m_oscAddress << endl;
 	return true;
 }
 
-void JoystickDevice::close() {
+void Joystick::close() {
 	if(m_joystick) {
 		if(isOpen()) {
 			SDL_JoystickClose(m_joystick);
 		}
-		LOG << "JoystickDevice: closed " << m_joyIndex
+		LOG << "Joystick: closed " << m_joyIndex
 			<< " \"" << m_devName << "\" with address "
 			<< m_oscAddress << endl;
 		m_joystick = NULL;
@@ -90,7 +90,7 @@ void JoystickDevice::close() {
 	m_prevAxisValues.clear();
 }
 
-bool JoystickDevice::handleEvents(void* data) {
+bool Joystick::handleEvents(void* data) {
 	if(data == NULL) {
 		return false;
 	}
@@ -290,7 +290,7 @@ bool JoystickDevice::handleEvents(void* data) {
 	return false;
 }
 
-void JoystickDevice::print() {
+void Joystick::print() {
 	LOG << "osc addr: "  << m_oscAddress << endl
 		<< "	dev name: " << m_devName << endl
 		<< "	index: " << m_joyIndex << endl;
@@ -302,40 +302,40 @@ void JoystickDevice::print() {
 	}
 }
 	
-void JoystickDevice::printRemapping() {
+void Joystick::printRemapping() {
 	if(m_joystick && m_remapping) {
 		m_remapping->print();
 	}
 }
 
-void JoystickDevice::printIgnores() {
+void Joystick::printIgnores() {
 	if(m_joystick && m_ignore) {
 		m_ignore->print();
 	}
 }
 
-bool JoystickDevice::isOpen() {
+bool Joystick::isOpen() {
 	return SDL_JoystickGetAttached(m_joystick) == SDL_TRUE;
 }
 
-SDL_JoystickID JoystickDevice::getInstanceID() {
+SDL_JoystickID Joystick::getInstanceID() {
 	return m_instanceID;
 }
 
-void JoystickDevice::setAxisDeadZone(unsigned int zone) {
+void Joystick::setAxisDeadZone(unsigned int zone) {
 	m_axisDeadZone = zone;
-	LOG_DEBUG << "JoystickDevice \"" << getDevName() << "\": "
+	LOG_DEBUG << "Joystick \"" << getDevName() << "\": "
 			  << "set axis dead zone to " << zone << endl;
 }
 
-void JoystickDevice::setRemapping(JoystickRemapping* remapping) {
+void Joystick::setRemapping(JoystickRemapping* remapping) {
 	m_remapping = remapping;
 	if(m_remapping) {
 		m_remapping->check(this);
 	}
 }
 
-void JoystickDevice::setIgnore(JoystickIgnore* ignore) {
+void Joystick::setIgnore(JoystickIgnore* ignore) {
 	m_ignore = ignore;
 	if(m_ignore) {
 		m_ignore->check(this);
@@ -344,7 +344,7 @@ void JoystickDevice::setIgnore(JoystickIgnore* ignore) {
 
 /* ***** JoystickRemapping ***** */
 
-void JoystickRemapping::check(JoystickDevice* joystick) {
+void JoystickRemapping::check(Joystick* joystick) {
 	if(!joystick){
 		return;
 	}
@@ -496,7 +496,7 @@ bool JoystickRemapping::readXml(TiXmlElement* e) {
 
 /* ***** JoystickIgnore ***** */
 
-void JoystickIgnore::check(JoystickDevice* joystick) {
+void JoystickIgnore::check(Joystick* joystick) {
 	if(!joystick) {
 		return;
 	}

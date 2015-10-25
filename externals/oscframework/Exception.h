@@ -2,7 +2,7 @@
 
 	Exception.h
   
-	Copyright (C) 2010  Dan Wilcox <danomatika@gmail.com>
+	Copyright (C) 2010, 2015 Dan Wilcox <danomatika@gmail.com>
 	
 	Exception taken from oscpack:
 
@@ -22,7 +22,7 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ==============================================================================*/
 #ifndef EXCEPTION_EXCEPTION_H
@@ -30,28 +30,29 @@
 
 #include <exception>
 
-class Exception : public std::exception
+class Exception : public std::runtime_error
 {
 	public:
-	
-		Exception() throw() {}
 		
 		Exception(const Exception& src) throw()
-			: m_what(src.m_what) {}
+			: std::runtime_error(src) {}
 			
 		Exception(const char *w) throw()
-			: m_what(w) {}
+			: std::runtime_error(w) {}
+	
+		Exception(const std::string w) throw()
+			: std::runtime_error(w) {}
 			
-		Exception& operator=(const Exception& src) throw()
-			{m_what = src.m_what; return *this;}
+//		Exception& operator=(const Exception& src) throw()
+//			{m_what = src.what(); return *this;}
 			
 		virtual ~Exception() throw() {}
 		
-		virtual const char* what() const throw() {return m_what;}
+//		virtual const char* what() const throw() {return m_what;}
 	
-	private:
-	
-		const char* m_what;
+//	private:
+//	
+//		const char* m_what;
 };
 
 #endif // EXCEPTION__EXCEPTION_H
