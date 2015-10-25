@@ -4,7 +4,7 @@
 
 	rc-unitd: a device event to osc bridge
   
-	Copyright (C) 2010  Dan Wilcox <danomatika@gmail.com>
+	Copyright (C) 2010 Dan Wilcox <danomatika@gmail.com>
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -134,7 +134,6 @@ bool Config::parseCommandLine(int argc, char **argv) {
 		LOG_ERROR << "CommandLine: " << e.error() << " for arg " << e.argId() << endl;
 		return false;
 	}
-
 	return true;
 }
 

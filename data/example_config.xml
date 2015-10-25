@@ -18,7 +18,7 @@
 		<joystick name="Saitek P990 Dual Analog Pad" address="/bbox"/>
 		<joystick name="Logitech Dual Action" address="/ps2black"/>
 
-		<!-- you can also customize  specific controller -->
+		<!-- you can also customize a specific controller -->
 		<joystick name="PLAYSTATION(R)3 Controller" address="/js0">
 
 			<!-- axisDeadZone: +/- area around the 0 point when centering
@@ -40,14 +40,14 @@
 			</remap>
 
 			<!-- ignore buttons, axes, etc; useful if you want to save bandwidth
-			     by not sending uneeded events
+			     by not sending unneeded events
 
 			     types: button, axis, hat, ball
 			-->
 			<ignore>
 				<!-- ignore button 1 -->
 				<button id="1"/>
-				<!-- ignore axis  1 -->
+				<!-- ignore axis 1 -->
 				<axis id="1"/>
 			</ignore>
 		</joystick>
