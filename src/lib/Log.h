@@ -31,20 +31,19 @@
 #define LOG_WARN   Log(Log::LOG_LEVEL_WARN)
 #define LOG_ERROR  Log(Log::LOG_LEVEL_ERROR)
 
-/**
-	\class  Log
-	\brief  a simple stream-based logger
-
-	class idea from:
-		http://www.gamedev.net/community/forums/topic.asp?topic_id=525405&whichpage=1&#3406418
-	how to catch std::endl (which is actually a func pointer):
-		http://yvan.seth.id.au/Entries/Technology/Code/std__endl.html
-**/
+/// \class Log
+/// \brief a simple stream-based logger
+///
+/// class idea from:
+/// http://www.gamedev.net/community/forums/topic.asp?topic_id=525405&whichpage=1&#3406418
+/// how to catch std::endl (which is actually a func pointer):
+/// http://yvan.seth.id.au/Entries/Technology/Code/std__endl.html
+///
 class Log {
 
 	public:
 
-		/// log level
+		/// log level enum
 		enum Level {
 			LOG_LEVEL_NORMAL,
 			LOG_LEVEL_DEBUG,
@@ -52,10 +51,7 @@ class Log {
 			LOG_LEVEL_ERROR
 		};
 
-		/**
-			\brief  select log level
-			\param  type log level to log at
-		**/
+		/// select log level, default: normal
 		Log(Level level=LOG_LEVEL_NORMAL) : m_level(level) {}
 
 		/// does the actual printing on exit

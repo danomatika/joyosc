@@ -20,7 +20,7 @@
 	along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ==============================================================================*/
-#include <config.h>  // automake config defines
+#include <config.h> // automake config defines
 
 #include <SDL.h>
 #include <tclap/tclap.h>
@@ -30,6 +30,7 @@ using namespace std;
 int main(int argc, char **argv) {
 
 	bool bPrintDetails = false;
+	bool bJoysticksOnly = false;
 
 	try {
 		// the commandline parser
@@ -37,9 +38,11 @@ int main(int argc, char **argv) {
 		
 		// options to parse
 		// short id, long id, description, required?, default value, short usage type description
-		TCLAP::SwitchArg detailOpt("d","details","Print joystick details", false);
+		TCLAP::SwitchArg detailOpt("d","details","Print joystick details", bPrintDetails);
+		TCLAP::SwitchArg joysticksOpt("j", "joysticksOnly", "Disable game controller support, use joystick interface only", bJoysticksOnly);
 
 		// add args to parser (in reverse order)
+		cmd.add(joysticksOpt);
 		cmd.add(detailOpt);
 
 		// parse the commandline
@@ -47,6 +50,7 @@ int main(int argc, char **argv) {
 		
 		// set options
 		bPrintDetails = detailOpt.getValue();
+		bJoysticksOnly = joysticksOpt.getValue();
 	}
 	catch(TCLAP::ArgException &e) { // catch any exceptions
 		cerr << "CommandLine error: " << e.error() << " for arg " << e.argId() << endl;
@@ -55,25 +59,43 @@ int main(int argc, char **argv) {
 
 	// init SDL
 	SDL_Init(0);
-	if(SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0 ) {
-		cerr << "lsjs: Couldn't initialize SDL: " << SDL_GetError() << endl;
-		return EXIT_FAILURE;
+	if(bJoysticksOnly) {
+		if(SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0 ) {
+			cerr << "lsjs: Couldn't initialize SDL: " << SDL_GetError() << endl;
+			return EXIT_FAILURE;
+		}
+	}
+	else {
+		if(SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) < 0 ) {
+			cerr << "lsjs: Couldn't initialize SDL: " << SDL_GetError() << endl;
+			return EXIT_FAILURE;
+		}
 	}
 
 	char guidString[33];
 	for(int i = 0; i < SDL_NumJoysticks(); ++i) {
 		SDL_Joystick* joystick = SDL_JoystickOpen(i);
 		if(joystick) {
+			if(bPrintDetails) {cout << endl;}
 			SDL_JoystickGetGUIDString(SDL_JoystickGetGUID(joystick), guidString, 33);
-			cout << i << " \"" << SDL_JoystickNameForIndex(i) << "\" " << guidString << endl;
+			if(SDL_IsGameController(i)) {
+				cout << i << " Controller: \"" << SDL_GameControllerNameForIndex(i) << "\" " << guidString << endl;
+			}
+			else {
+				cout << i << " Joystick: \"" << SDL_JoystickNameForIndex(i) << "\" " << guidString << endl;
+			}
 			if(bPrintDetails) {
 				cout << "  num axes: " << SDL_JoystickNumAxes(joystick) << endl
-				     << "  num buttons: " << SDL_JoystickNumButtons(joystick) << endl
-				     << "  num balls: " << SDL_JoystickNumBalls(joystick) << endl
-				     << "  num hats: " << SDL_JoystickNumHats(joystick) << endl;
-				cout << endl;
-				SDL_JoystickClose(joystick);
+				     << "  num buttons: " << SDL_JoystickNumButtons(joystick) << endl;
+				if(!SDL_IsGameController(i)) {
+					cout << "  num balls: " << SDL_JoystickNumBalls(joystick) << endl
+					     << "  num hats: " << SDL_JoystickNumHats(joystick) << endl;
+				}
+				if(i == SDL_NumJoysticks()-1) {
+					cout << endl;
+				}
 			}
+			SDL_JoystickClose(joystick);
 		}
 	}
 	

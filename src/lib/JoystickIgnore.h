@@ -1,6 +1,6 @@
 /*==============================================================================
 
-	App.h
+	JoystickIgnore.h
 
 	rc-unitd: a device event to osc bridge
   
@@ -22,45 +22,30 @@
 ==============================================================================*/
 #pragma once
 
-#include <Common.h>
+#include "Joystick.h"
 
-#include <DeviceManager.h>
-
-/// \class App
-/// \brief the main application class
-class App : public osc::OscObject {
+/// \class JoystickIgnore
+/// \brief defines which buttons, axes, balls, or hats to ignore
+class JoystickIgnore : public xml::XmlObject {
 
 	public:
-
-		App();
-		virtual ~App();
 	
-		/// setup resources
-		void setup();
-	
-		/// run the main loop
-		void run();
-	
-		/// clean up resources
-		void cleanup();
-	
-		/// stop the main loop
-		inline void stop() {m_bRun = false;}
-
+		JoystickIgnore() : xml::XmlObject("ignore") {}
+		
+		// ids to ignore
+		// with key: id & value: void
+		map<int,bool> buttons;
+		map<int,bool> axes;
+		map<int,bool> balls;
+		map<int,bool> hats;
+		
+		// check indices & toss out any bad values
+		void check(Joystick* joystick);
+		
+		void print();
+		
 	protected:
-
-		/// received osc message callback
-		bool processOscMessage(const osc::ReceivedMessage& message,
-							   const osc::MessageSource& source);
-
-		/// signal callback
-		static void signalExit(int signal);
-
-		bool m_bRun; //< is the main loop running?
-		
-		DeviceManager m_joystickManager; //< joystick device manager
-		
-		Config& m_config; //< reference to global config
-		osc::OscReceiver& m_oscReceiver; //< reference to global osc receiver
-		osc::OscSender& m_oscSender;     //< reference to global osc sender
+	
+		// XMLObject callback
+		bool readXml(TiXmlElement* e);
 };

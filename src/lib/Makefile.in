@@ -110,8 +110,9 @@ am__v_AR_0 = @echo "  AR      " $@;
 am__v_AR_1 = 
 libunit_a_AR = $(AR) $(ARFLAGS)
 libunit_a_LIBADD =
-dist_libunit_a_OBJECTS = Config.$(OBJEXT) JoystickDevice.$(OBJEXT) \
-	JoystickManager.$(OBJEXT)
+dist_libunit_a_OBJECTS = Config.$(OBJEXT) Joystick.$(OBJEXT) \
+	JoystickIgnore.$(OBJEXT) JoystickRemapping.$(OBJEXT) \
+	GameController.$(OBJEXT) DeviceManager.$(OBJEXT)
 libunit_a_OBJECTS = $(dist_libunit_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -142,18 +143,6 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-AM_V_CC = $(am__v_CC_@AM_V@)
-am__v_CC_ = $(am__v_CC_@AM_DEFAULT_V@)
-am__v_CC_0 = @echo "  CC      " $@;
-am__v_CC_1 = 
-CCLD = $(CC)
-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-AM_V_CCLD = $(am__v_CCLD_@AM_V@)
-am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
-am__v_CCLD_0 = @echo "  CCLD    " $@;
-am__v_CCLD_1 = 
 SOURCES = $(dist_libunit_a_SOURCES)
 DIST_SOURCES = $(dist_libunit_a_SOURCES)
 am__can_run_installinfo = \
@@ -299,7 +288,7 @@ EXTERNALS_DIRS = oscframework xmlframework tclap
 
 # includes (in srcdir)
 EXTERNALS_CFLAGS = \
-		-I$(top_srcdir)/externals/xmlframeworki \
+		-I$(top_srcdir)/externals/xmlframework \
 		-I$(top_srcdir)/externals/oscframework \
 		-I$(top_srcdir)/externals/
 
@@ -316,10 +305,10 @@ EXTERNALS_LIBS = \
 noinst_LIBRARIES = libunit.a
 
 # libs sources, headers here because we dont want to install them
-dist_libunit_a_SOURCES = Common.h Log.h \
-                         Config.h Config.cpp Device.h \
-                         JoystickDevice.h JoystickDevice.cpp \
-                         JoystickManager.h JoystickManager.cpp
+dist_libunit_a_SOURCES = Config.cpp \
+						 Joystick.cpp JoystickIgnore.cpp JoystickRemapping.cpp \
+						 GameController.cpp \
+						 DeviceManager.cpp
 
 
 # include paths
@@ -377,8 +366,11 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Config.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JoystickDevice.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JoystickManager.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DeviceManager.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GameController.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Joystick.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JoystickIgnore.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JoystickRemapping.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

@@ -293,7 +293,7 @@ EXTERNALS_DIRS = oscframework xmlframework tclap
 
 # includes (in srcdir)
 EXTERNALS_CFLAGS = \
-		-I$(top_srcdir)/externals/xmlframeworki \
+		-I$(top_srcdir)/externals/xmlframework \
 		-I$(top_srcdir)/externals/oscframework \
 		-I$(top_srcdir)/externals/
 

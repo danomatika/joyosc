@@ -1,6 +1,6 @@
 /*==============================================================================
 
-	Joystick.h
+	GameController.h
 
 	rc-unitd: a device event to osc bridge
   
@@ -24,86 +24,62 @@
 
 #include "Device.h"
 
-class JoystickIndices;
-class JoystickRemapping;
-
-/// \class Joystick
-/// \brief handles an SDL joystick device
+/// \class GameController
+/// \brief handles an SDL game controller device
 ///
-/// This uses the lower-level SDL joystick interface which reports buttons,
-/// axes, balls, & hats (dpads) IDs as numbers only, unlike the game controller
-/// interface which uses a standard set of remappable string names (a, b, leftx,
-/// etc). Event ID remapping is there for available by using the
-/// JoystickRemapping class.
-class Joystick : public Device {
+/// This uses the higher-level SDL joystick interface which reports buttons &
+/// axes using a standard set of remappable string names (a, b, leftx,
+/// etc) for known controllers. Game controllers only report button & axis events
+/// as hats (dpads) are translated into button presses.
+class GameController : public Device {
 
 	public:
 
-		Joystick(string oscAddress="/joystick");
-
-		/// open the joystick
+		GameController(string oscAddress="controller");
+		
+		/// open the controller
 		/// set the data arg to the location of an DeviceIndices struct
 		/// returns	true on success
 		bool open(void *data);
 
-		/// close the joystick
+		/// close the controller
 		void close();
 
-		/// handle a device event and send corresponding OSC messages,
+		/// handle a device event and send corresponding OSC messages
 		/// returns true if event was handled
 		///
 		/// call this inside a loop, does not block, does nothing if device has
 		/// not been opened
 		bool handleEvent(void* data);
-
-		/// returns true if the joystick is open
+	
+		/// returns true if the controller is open
 		bool isOpen();
 
-		/// print joystick info
+		/// print controller info
 		void print();
 	
 		/// returns the device type enum value
-		inline DeviceType getDeviceType() {return JOYSTICK;}
+		inline DeviceType getDeviceType() {return GAMECONTROLLER;}
 	
-		/// returns device list index, name, & osc address as a string
+		/// returns devices list index, name, & osc address as a string
 		string getDeviceString();
-		
-		/// print remapping
-		void printRemapping();
-		
-		/// print button, axis, etc ignores
-		void printIgnores();
-		
+	
 		/// get joystick index in the devices list
 		inline int getIndex() {return m_index;}
 	
 		/// get the SDL instance ID, different from index
 		inline SDL_JoystickID getInstanceID() {return m_instanceID;}
 	
-		/// get the underlying SDL joystick handle
-		inline SDL_Joystick* getJoystick() {return m_joystick;}
-		
 		/// set/get joystick axis dead zone, used to set an ignore threshold around 0
 		void setAxisDeadZone(unsigned int zone);
 		inline int getAxisDeadZone() {return m_axisDeadZone;}
-		
-		/// set/get joystick remapping
-		void setRemapping(JoystickRemapping* remapping);
-		inline JoystickRemapping* getRemapping() {return m_remapping;}
-		
-		/// set/get joystick button, axis, etc ignores
-		void setIgnore(JoystickIgnore* ignore);
-		inline JoystickIgnore* getIgnore() {return m_ignore;}
-
+	
 	protected:
-
-		SDL_Joystick *m_joystick; //< SDL joystick handle
+	
+		SDL_GameController *m_controller; //< SDL controller handle
 		int m_index; //< device list index, *not* SDL index
 		SDL_JoystickID m_instanceID; //< unique SDL instance ID, *not* SDL index
 	
 		unsigned int m_axisDeadZone; //< axis dead zone amount +/- center pos
 		vector<int16_t> m_prevAxisValues; //< prev axis valus to cancel repeats
-		
-		JoystickRemapping *m_remapping; //< joystick remapping values
-		JoystickIgnore *m_ignore; //<  button, axis, etc ignores
 };
