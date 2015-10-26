@@ -1,44 +1,56 @@
+2015-10-26 Dan Wilcox <danomatika@gmail.com>
+
+	0.4.0: SDL2 rewrite
+
+	* updated to SDL2 which adds built in hot plugging support
+	* added GameController device type for SDL2 game controller interface,
+	  original joystick interface provided as fallback or via override
+	* fixed lo_server exception not being handled if listening port is in use
+	* overall code cleanup and formatting
+	* removed unnecessary libunit build target
+	* removed udev rule generation from build process, saved in data/udev
+
 2014-02-18 Dan Wilcox <danomatika@gmail.com>
 
-	v0.3.5
+	0.3.5
 
 	* re-added "open" & "close" event notifications which were somehow lost in
-	the previous refactoring (they were "insert" & "removal" before)
+	  the previous refactoring (they were "insert" & "removal" before)
 	* fixed udev event device double open notification
 	* added -Wl,--no-as-needed to Linux LDFLAGS
 	* added autogen.sh for working with other versions of autotools
 
 2014-02-05 Dan Wilcox <danomatika@gmail.com>
 
-	v0.3.4
+	0.3.4
 
 	* fixed bad osc root name which kept notifications from being recognized
 	* added udev rules for new event devices
 
 2014-01-21 Dan Wilcox <danomatika@gmail.com>
 
-	v0.3.3: Ignoring events
+	0.3.3: Ignoring events
 
 	* added ability to ignore button, axis, ball, & hat events by id
 
 2013-04-26 Dan Wilcox <danomatika@gmail.com>
 
-    v0.3.2: Event remapping
+	0.3.2: Event remapping
 
-    * added axis deadzone setting
-    * added button, axis, ball, & hat id remapping
-    * config file relative path handling now works
+	* added axis deadzone setting
+	* added button, axis, ball, & hat id remapping
+	* config file relative path handling now works
 
 2010-12-23 Dan Wilcox <danomatika@gmail.com>
 
-	v0.3.1: Updated externals & project files
+	0.3.1: Updated externals & project files
 
 	* some reorganization
 	* rebuilding of project files
 
 2010-03-27 Dan Wilcox <danomatika@gmail.com>
 
-	v0.3.0: Cross platform rewrite
+	0.3.0: Cross platform rewrite
 	
 	* now uses SDL to abstract joysticks
 	* config file replaces key,value pairs with simplified xml format
@@ -53,7 +65,7 @@
 
 2008-05-28 Dan Wilcox <danomatika@gmail.com>
 	
-	v0.2.0: Partial rewrite for autotools
+	0.2.0: Partial rewrite for autotools
 
 	* reorganized build structure using autotools
 	* removed excess classes and class tests
@@ -62,5 +74,5 @@
 
 2007-06-10 Dan Wilcox <danomatika@gmail.com>
 
-	v0.1.0: 	Initial thesis release
+	0.1.0: 	Initial thesis release
 

@@ -16,7 +16,7 @@ The rc-unitd package contains the following parts:
 2. rc-unit-notifier - insert/removal notification tool
 3. lsjs - joystick info tool
 
-This group of tools allows any OSC-capable program to receive joystick event data aka button presses, axis movements, etc.  Specific joysticks can be mapped by name to specific OSC send addresses and button, axis, etc ids can be remapped or ignored.  A notification tool can control the running daemon.
+This group of tools allows any OSC-capable program to receive joystick event data aka button presses, axis movements, etc. Specific joysticks can be mapped by name to specific OSC send addresses and button, axis, etc ids can be remapped or ignored. A notification tool can control the running daemon.
 
 A udev rules set is provided for GNU/Linux to enable automatic notification when devices are plugged in.
 
@@ -44,7 +44,7 @@ BUILD REQUIREMENTS
 
 The following libraries are required:
 
-* SDL
+* SDL2
 * liblo (lightweight osc)
 
 ### Linux
@@ -53,12 +53,20 @@ Install the required development versions of the libraries using your distro's p
 
 For Debian/Ubuntu, you can use use `apt-get` on the command line:
 <pre>
-sudo apt-get libsdl-dev liblo-dev
+sudo apt-get libsdl2-dev liblo-dev
 </pre>
 
 ### Mac OS
 
-On Max OS, they can be installed easily using [Macports](http://macports.org) or [Homebrew](http://mxcl.github.com/homebrew/)
+On Max OS, they can be installed easily using [Homebrew](http://brew.sh) or [Macports](http://macports.org)
+
+#### Homebrew
+
+* install the Homebrew environment
+* go to the Terminal and install the libs:
+<pre>
+brew install sdl2 liblo
+</pre>
 
 #### Macports
 
@@ -73,17 +81,9 @@ If you use the default Macports install location of `/opt/local`, you will need 
 export CPPFLAGS=-I/opt/local/include && export LDFLAGS=-L/opt/local/lib
 </pre>
 
-#### Homebrew
-
-* install the Homebrew environment
-* go to the Terminal and install the libs:
-<pre>
-brew install sdl liblo
-</pre>
-
 ### Windows
 
-Windows support should work, but hasn't been tested. I'd recommend installing binary versions of the required libraries and building rc-unitd in MiniGW/Cygwin.
+Windows support should work, but hasn't been tested. I'd recommend installing binary versions of the required libraries and building rc-unitd in MinGW/Cygwin.
 
 BUILD AND INSTALLATION
 ----------------------
@@ -98,12 +98,11 @@ sudo make install
 This readme, example config files, and the pd library are also installed to your doc dir, something like `$(prefix)/share/doc/rc-unitd`.
 
 By default, the configure script installs to `/usr/local`. To change this behavior, specify a new dir before building the project:
-
 <pre>
 ./configure --prefix=/path/to/install/dir
 </pre>
 
-If using Macports on Mac OS X, it is recommended to use the Macports default prefix of `/opt/local`.
+If using Macports on Mac OS X, it is recommended to use the Macports default prefix of `/opt/local`. Homebrew installs to `/usr/local` so you won't need to set the prefix.
 
 USAGE
 -----
@@ -130,11 +129,13 @@ The config file sets the OSC connection information as well as device to OSC add
 
 You can also specify values on the command line which override values in the config file:
 <pre>
-  -i, --ip                      IP address to send to; default is '127.0.0.1'
-  -p, --port                    Port to send to; default is '8880'
-  --listening_port              Listening port; default is '7770'
-  -e, --events                  Print events; default is '0'
-  -s, --sleep                   Sleep time in usecs; default is '1000'
+  -i, --ip                 IP address to send to (default: 127.0.0.1)
+  -p, --port               Port to send to (default: 8880)
+  -l, --listeningPort      Listening port (default: 7770)
+  -e, --events             Print incoming events, useful for debugging
+  -j, --joysticksOnly      Disable game controller support, use joystick
+                           interface only
+  -s, --sleep              Sleep time in usecs (default: 10000)
 </pre>
 
 Note: Enabling event printing is useful when debugging:
@@ -181,10 +182,19 @@ rc-unitd streams device event information in the following OSC address format:
 
 Example messages:
 <pre>
-/rc-unitd/devices/js2/button 2 1/rc-unitd/devices/js2/button 2 0/rc-unitd/devices/js2/axis 0 32767</pre> 
-#### Notifications 
-rc-unitd also sends status notification messages:<pre>/rc-unitd/notifications/startup/rc-unitd/notifications/ready
-/rc-unitd/notifications/open devtype/rc-unitd/notifications/close devtype
+/rc-unitd/devices/js2/button 2 1
+/rc-unitd/devices/js2/button 2 0
+/rc-unitd/devices/js2/axis 0 32767
+</pre>
+ 
+#### Notifications
+ 
+rc-unitd also sends status notification messages:
+<pre>
+/rc-unitd/notifications/startup
+/rc-unitd/notifications/ready
+/rc-unitd/notifications/open devtype
+/rc-unitd/notifications/close devtype
 /rc-unitd/notifications/shutdown
 </pre>
 
@@ -205,6 +215,7 @@ Example output:
 You can also print detailed info using the -d or --details flags.
 <pre>
 % lsjs -d
+
 0 "OSCulator HID 1"
    num axes: 4
    num buttons: 20
@@ -222,6 +233,7 @@ You can also print detailed info using the -d or --details flags.
    num buttons: 14
    num balls: 0
    num hats: 1
+
 </pre>
 
 ----
@@ -252,7 +264,7 @@ rc-unit-notifier has ip and port setting options similar to rc-unitd:
 <pre>
   -i, --ip               IP address to send to; default is '127.0.0.1'
   -p, --port             Port to send to; default is '7770'
-  -t, --type             Device type to perform the action on (for internal use)
+  -t, --type             Device type to perform the action on
 </pre>
 
 Example, tell rc-unitd running on machine at 10.0.0.100 using port 10100 to shutdown:
@@ -261,27 +273,11 @@ Example, tell rc-unitd running on machine at 10.0.0.100 using port 10100 to shut
 </pre>
 
 ----
-### UDEV Rules
-
-There is a udev rule file for Linux installed to the doc dir that can be used to automatically call rc-unit-notifier when a joystick device is plugged/unplugged: `85-rc-unitd.rules`.
-
-If you want to enable hot plug support, simply copy it to the udev rules folder:
-<pre>
-sudo cp data/85-rc-unitd.rules /etc/udev/rules.d
-</pre>
-
-Whenever a joystick device is plugged in or unplugged, rc-unit-notifier is automatically called to send an add or remove event to rc-unitd if it is running.
-
-See the comments in the rules file itself for more info: `data/85-rc-unitd.rules`
-
-Note: This file in generated while running `make`, so it will not exist until you build the project.
-
-----
 ### Console Error
 
 As rc-unitd & lsjs use SDL, they will not work over a SSH connection and you'll get the following error:
 <pre>
-Error: Couldn't initialize SDL: Unable to open a console terminal
+Error: Couldn't init SDL: Unable to open a console terminal
 </pre>
 
 Run them from a real terminal on the machine.
@@ -303,9 +299,6 @@ I develop using an IDE, then update the autotools files when the sources are fin
 FUTURE IDEAS/IMPROVEMENTS
 -------------------------
 
-* add automatic device add/remove support on OSX (via [IOKIT](http://stackoverflow.com/questions/10843559/cocoa-detecting-usb-devices-by-vendor-id?rq=1))
-* update the SDL 2.0 which fixes the above issue as well
 * add multicast support
 * multiple osc send addresses for event forwarding between multiple machines
 * add built in osc -> MIDI and other mapping capability (ala junXion or Osculator)
-

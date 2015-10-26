@@ -1,6 +1,4 @@
 
-data/85-rc-unitd.rules
-
 # folders
 bin
 #lib
@@ -30,3 +28,6 @@ src/rc-unit-notifier/rc-unit-notifier
 
 # temp files
 *~
+
+# generated files
+data/udev/85-rc-unitd.rules
