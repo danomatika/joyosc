@@ -9,11 +9,10 @@ bin_PROGRAMS = rc-unit-notifier
 rc_unit_notifier_SOURCES = main.cpp
 
 # local libraries needed to build (builddir)
-rc_unit_notifier_LDADD = -L$(top_builddir)/src/lib -lunit \
-                         $(EXTERNALS_LIBS) -loscframework -lxmlframework
+rc_unit_notifier_LDADD = $(EXTERNALS_LIBS) -loscframework -lxmlframework
 
 # include paths
-AM_CPPFLAGS = $(CXXFLAGS) $(SDL_CFLAGS) $(LO_CFLAGS) $(EXTERNALS_CFLAGS) 
+AM_CPPFLAGS = $(CXXFLAGS) $(SDL_CFLAGS) $(LO_CFLAGS) $(EXTERNALS_CFLAGS)
 
 # libs to link
 AM_LDFLAGS = $(LDFLAGS) $(SDL_LIBS) $(LO_LIBS)

@@ -5234,7 +5234,7 @@ subdirs="$subdirs "
 
 ac_config_headers="$ac_config_headers src/config.h"
 
-ac_config_files="$ac_config_files Makefile data/Makefile externals/Makefile externals/oscframework/Makefile externals/xmlframework/Makefile externals/tclap/Makefile src/Makefile src/lib/Makefile src/rc-unitd/Makefile src/rc-unit-notifier/Makefile src/lsjs/Makefile"
+ac_config_files="$ac_config_files Makefile data/Makefile externals/Makefile externals/oscframework/Makefile externals/xmlframework/Makefile externals/tclap/Makefile src/Makefile src/rc-unitd/Makefile src/rc-unit-notifier/Makefile src/lsjs/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -5975,7 +5975,6 @@ do
     "externals/xmlframework/Makefile") CONFIG_FILES="$CONFIG_FILES externals/xmlframework/Makefile" ;;
     "externals/tclap/Makefile") CONFIG_FILES="$CONFIG_FILES externals/tclap/Makefile" ;;
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
-    "src/lib/Makefile") CONFIG_FILES="$CONFIG_FILES src/lib/Makefile" ;;
     "src/rc-unitd/Makefile") CONFIG_FILES="$CONFIG_FILES src/rc-unitd/Makefile" ;;
     "src/rc-unit-notifier/Makefile") CONFIG_FILES="$CONFIG_FILES src/rc-unit-notifier/Makefile" ;;
     "src/lsjs/Makefile") CONFIG_FILES="$CONFIG_FILES src/lsjs/Makefile" ;;

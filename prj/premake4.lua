@@ -10,37 +10,6 @@ http://bitbucket.org/anders/lightweight/src/tip/premake4.lua
 solution "rc-unitd"
 	configurations { "Debug", "Release" }
 	objdir "../obj"
- 
--- convenience library
-project "unit"
-	kind "StaticLib"
-	language "C++"
-	targetdir "../src/lib"
-	files { "../src/lib/**.h", "../src/lib/**.cpp" }
-	
-	includedirs { "../src",
-				  "../externals/",
-				  "../externals/xmlframework",
-				  "../externals/oscframework" }
-	libdirs { "../externals/xmlframework",
-			  "../externals/oscframework" }
-	
-	configuration "linux"
-		buildoptions { "`pkg-config --cflags sdl2`", "`pkg-config --cflags liblo`" }
-		linkoptions { "`pkg-config --libs sdl2`", "`pkg-config --libs liblo`" }
-	
-	configuration "macosx"
-		-- Homebrew
-		includedirs { "/usr/local/include", "/usr/local/include/SDL2", "src" }
-		libdirs { "/usr/local/lib" }
-
-	configuration "Debug"
-		defines { "DEBUG" }
-		flags { "Symbols" }
-
-	configuration "Release"
-		defines { "NDEBUG" }
-		flags { "Optimize" } 
 
 -- rc-unit executable
 project "rc-unitd"
@@ -49,16 +18,16 @@ project "rc-unitd"
 	targetdir "../src/rc-unitd"
 	files { "../src/rc-unitd/**.h", "../src/rc-unitd/**.cpp" }
 	
-	includedirs { "../src", "../src/lib",
+	includedirs { "../src",
 				  "../externals/",
 				  "../externals/xmlframework",
 				  "../externals/oscframework" }
 	libdirs { "../externals/xmlframework",
 			  "../externals/oscframework" }
-	links { "unit", "oscframework", "xmlframework" }
+	links { "oscframework", "xmlframework" }
 
 	configuration "linux"
-		buildoptions { "`pkg-config --cflags sdl2`", "`pkg-config --cflags liblo`" }
+		buildoptions { "`pkg-config --cflags sdl2`", "`pkg-config --cflags liblo`", "-DHAVE_CONFIG_H" }
 		linkoptions { "`pkg-config --libs sdl2`", "`pkg-config --libs liblo`" }
 
 	configuration 'macosx'
@@ -66,6 +35,7 @@ project "rc-unitd"
 		includedirs { "/usr/local/include", "/usr/local/include/SDL2" }
 		libdirs { "/usr/local/lib" }
 		links { "lo", "pthread", "SDL2" }
+		buildoptions { "-DHAVE_CONFIG_H"}
 		linkoptions { "-Wl,-framework,Cocoa", "-Wl,-framework,OpenGL",
 					  "-Wl,-framework,ApplicationServices",
 					  "-Wl,-framework,Carbon", "-Wl,-framework,AudioToolbox",
@@ -86,13 +56,13 @@ project "lsjs"
 	targetdir "../src/lsjs"
 	files { "../src/lsjs/**.h", "../src/lsjs/**.cpp" }
 
-	includedirs { "../src", "../src/lib",
+	includedirs { "../src",
 				  "../externals/",
 				  "../externals/xmlframework",
 				  "../externals/oscframework" }
 
 	configuration "linux"
-		buildoptions { "`pkg-config --cflags sdl2`" }
+		buildoptions { "`pkg-config --cflags sdl2`", "-DHAVE_CONFIG_H" }
 		linkoptions { "`pkg-config --libs sdl2`" }
 
 	configuration 'macosx'
@@ -100,6 +70,7 @@ project "lsjs"
 		includedirs { "/usr/local/include", "/usr/local/include/SDL2" }
 		libdirs { "/usr/local/lib" }
 		links { "SDL2" }
+		buildoptions { "-DHAVE_CONFIG_H" }
 		linkoptions { "-Wl,-framework,Cocoa", "-Wl,-framework,OpenGL",
 					  "-Wl,-framework,ApplicationServices",
 					  "-Wl,-framework,Carbon", "-Wl,-framework,AudioToolbox",
@@ -120,7 +91,7 @@ project "rc-unit-notifier"
 	targetdir "../src/rc-unit-notifier"
 	files { "../src/rc-unit-notifier/**.h", "../src/rc-unit-notifier/**.cpp" }
 	
-	includedirs { "../src", "../src/lib",
+	includedirs { "../src",
 				  "../externals/",
 				  "../externals/xmlframework",
 				  "../externals/oscframework" }
@@ -129,7 +100,7 @@ project "rc-unit-notifier"
 	links { "oscframework" }
 
 	configuration "linux"
-		buildoptions { "`pkg-config --cflags sdl2`" }
+		buildoptions { "`pkg-config --cflags sdl2`", "-DHAVE_CONFIG_H" }
 		linkoptions { "`pkg-config --libs sdl2`" }
 
 	configuration 'macosx'
@@ -137,6 +108,7 @@ project "rc-unit-notifier"
 		includedirs { "/usr/local/include", "/usr/local/include/SDL2" }
 		libdirs { "/usr/local/lib" }
 		links { "lo", "pthread", "SDL2" }
+		buildoptions { "-DHAVE_CONFIG_H" }
 		linkoptions { "-Wl,-framework,Cocoa", "-Wl,-framework,OpenGL",
 					  "-Wl,-framework,ApplicationServices",
 					  "-Wl,-framework,Carbon", "-Wl,-framework,AudioToolbox",

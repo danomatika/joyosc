@@ -20,7 +20,7 @@
 	along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ==============================================================================*/
-#include <config.h> // automake config defines
+#include "../config.h" // automake config defines
 
 #include <SDL.h>
 #include <tclap/tclap.h>

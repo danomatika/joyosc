@@ -85,7 +85,6 @@ AC_CONFIG_FILES([
 	externals/xmlframework/Makefile
 	externals/tclap/Makefile
 	src/Makefile
-	src/lib/Makefile
 	src/rc-unitd/Makefile
 	src/rc-unit-notifier/Makefile
 	src/lsjs/Makefile

@@ -22,7 +22,7 @@
 ==============================================================================*/
 #pragma once
 
-#include <config.h> // automake config defines
+#include "../config.h" // automake config defines
 
 #include <SDL.h>
 #include <lo/lo.h>

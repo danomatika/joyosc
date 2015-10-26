@@ -22,9 +22,8 @@
 ==============================================================================*/
 #pragma once
 
-#include <Common.h>
-
-#include <DeviceManager.h>
+#include "Common.h"
+#include "DeviceManager.h"
 
 /// \class App
 /// \brief the main application class

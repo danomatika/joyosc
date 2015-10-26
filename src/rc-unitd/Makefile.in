@@ -103,7 +103,10 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_rc_unitd_OBJECTS = main.$(OBJEXT) App.$(OBJEXT)
+am_rc_unitd_OBJECTS = main.$(OBJEXT) App.$(OBJEXT) Config.$(OBJEXT) \
+	DeviceManager.$(OBJEXT) Joystick.$(OBJEXT) \
+	JoystickIgnore.$(OBJEXT) JoystickRemapping.$(OBJEXT) \
+	GameController.$(OBJEXT)
 rc_unitd_OBJECTS = $(am_rc_unitd_OBJECTS)
 am__DEPENDENCIES_1 =
 rc_unitd_DEPENDENCIES = $(am__DEPENDENCIES_1)
@@ -305,17 +308,19 @@ EXTERNALS_LIBS = \
 
 
 # program's sources
-rc_unitd_SOURCES = main.cpp App.h App.cpp
+rc_unitd_SOURCES = main.cpp Common.h App.h App.cpp Config.h Config.cpp \
+				   Device.h DeviceManager.h DeviceManager.cpp \
+				   Joystick.h Joystick.cpp \
+				   JoystickIgnore.h JoystickIgnore.cpp \
+				   JoystickRemapping.h JoystickRemapping.cpp \
+				   GameController.h GameController.cpp
+
 
 # local libraries needed to build (builddir)
-rc_unitd_LDADD = -L$(top_builddir)/src/lib -lunit \
-				 $(EXTERNALS_LIBS) -loscframework -lxmlframework
-
+rc_unitd_LDADD = $(EXTERNALS_LIBS) -loscframework -lxmlframework
 
 # include paths
-AM_CPPFLAGS = $(CXXFLAGS) $(SDL_CFLAGS) $(LO_CFLAGS) $(EXTERNALS_CFLAGS) \
-			  -I$(top_srcdir)/src/lib
-
+AM_CPPFLAGS = $(CXXFLAGS) $(SDL_CFLAGS) $(LO_CFLAGS) $(EXTERNALS_CFLAGS)
 
 # libs to link
 AM_LDFLAGS = $(LDFLAGS) $(SDL_LIBS) $(LO_LIBS)
@@ -407,6 +412,12 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/App.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Config.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DeviceManager.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GameController.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Joystick.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JoystickIgnore.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JoystickRemapping.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 
 .cpp.o:

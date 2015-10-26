@@ -292,7 +292,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 
 # go into these dirs and process makefiles
-SUBDIRS = lib rc-unitd rc-unit-notifier lsjs
+SUBDIRS = rc-unitd rc-unit-notifier lsjs
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 

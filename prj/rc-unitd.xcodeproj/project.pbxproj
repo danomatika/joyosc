@@ -7,122 +7,119 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1BBF1E0F1C9177024B3809F9 /* App.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23F61CB34AF87592575E7ACC /* App.cpp */; };
-		5517141C5AE5719E54027E93 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7BA13C632BC85E3E47BB5138 /* main.cpp */; };
-		7D2A04280EB07DFF7EC75A44 /* libunit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 44384AE132DE3DD637466E41 /* libunit.a */; };
+		03393E16224C315202CE4CF0 /* Config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1606676B4B7912E912585C80 /* Config.cpp */; };
+		078F4F7135F56FB56EA55005 /* JoystickRemapping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C72158A46924635717F7491 /* JoystickRemapping.cpp */; };
+		330D203F3A750BD907B3290A /* Joystick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46915D7E0E1A5D89737876DB /* Joystick.cpp */; };
+		4209661E492955E00B605346 /* GameController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B4A7EAC68B158392B26628B /* GameController.cpp */; };
+		4B9C7FAB696D0BDC368E4ABB /* App.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D204A62162154723D5B36EA /* App.cpp */; };
+		54AF495B0B7E3E8D54E0691D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1551034415877ABF1B31532D /* main.cpp */; };
+		5B0124D469023BE16DE55F46 /* JoystickIgnore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 002A58EF3AB7635310675AA2 /* JoystickIgnore.cpp */; };
+		6CFE255D30EE5C685A573731 /* DeviceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08281B7723702CCD011C060F /* DeviceManager.cpp */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		1EAD7B7605A72BD76D8F5D13 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 18DA506E69EC25B3394D078B /* unit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 34853E9203F83FF901DD0022;
-			remoteInfo = "libunit.a";
-		};
-		22125AEE6C62322B401B6A0B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 18DA506E69EC25B3394D078B /* unit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 4A64128E4972798C7E330167;
-			remoteInfo = "libunit.a";
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
-		23F61CB34AF87592575E7ACC /* App.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "App.cpp"; path = "App.cpp"; sourceTree = "<group>"; };
-		735426DF14F257CE56B53B73 /* App.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "App.h"; path = "App.h"; sourceTree = "<group>"; };
-		7BA13C632BC85E3E47BB5138 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "main.cpp"; path = "main.cpp"; sourceTree = "<group>"; };
-		216B0C116BD865BF7E004484 /* rc-unitd */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = "rc-unitd"; path = "rc-unitd"; sourceTree = BUILT_PRODUCTS_DIR; };
-		18DA506E69EC25B3394D078B /* unit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "unit.xcodeproj"; path = "unit.xcodeproj"; sourceTree = SOURCE_ROOT; };
+		002A58EF3AB7635310675AA2 /* JoystickIgnore.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = JoystickIgnore.cpp; sourceTree = "<group>"; };
+		08281B7723702CCD011C060F /* DeviceManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DeviceManager.cpp; sourceTree = "<group>"; };
+		1551034415877ABF1B31532D /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		1606676B4B7912E912585C80 /* Config.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Config.cpp; sourceTree = "<group>"; };
+		1D204A62162154723D5B36EA /* App.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = App.cpp; sourceTree = "<group>"; };
+		38BD16906FF20E1F1FE046CD /* JoystickRemapping.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JoystickRemapping.h; sourceTree = "<group>"; };
+		3C72158A46924635717F7491 /* JoystickRemapping.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = JoystickRemapping.cpp; sourceTree = "<group>"; };
+		3DF73A0E145D6E2F6B04623E /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
+		455C2AD059A6421245B7004E /* Log.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Log.h; sourceTree = "<group>"; };
+		46915D7E0E1A5D89737876DB /* Joystick.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Joystick.cpp; sourceTree = "<group>"; };
+		4EA1551778B010285A01035C /* GameController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameController.h; sourceTree = "<group>"; };
+		53AC54034A0D1CE134B644BA /* rc-unitd */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "rc-unitd"; sourceTree = BUILT_PRODUCTS_DIR; };
+		61823C61322413D539B93588 /* Joystick.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Joystick.h; sourceTree = "<group>"; };
+		656E55496A1727407CBB0C6E /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		6B4A7EAC68B158392B26628B /* GameController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GameController.cpp; sourceTree = "<group>"; };
+		7245478D1FE5316D6D3F6E1B /* App.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = App.h; sourceTree = "<group>"; };
+		755A28376AC3420361B2258F /* Device.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Device.h; sourceTree = "<group>"; };
+		77C75EF82B7F2C75693868A7 /* JoystickIgnore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JoystickIgnore.h; sourceTree = "<group>"; };
+		7FAF5BB440DC49650F235316 /* DeviceManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeviceManager.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		19C1047674B9583C0CA125CA /* Frameworks */ = {
+		3A1A379C021428B139B73CB2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D2A04280EB07DFF7EC75A44 /* libunit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0E3578E116D50E2B4F137A29 /* rc-unitd */ = {
+		1AEC7DB46C2D1DFB58B21A0C /* rc-unitd */ = {
 			isa = PBXGroup;
 			children = (
-				32975B6215E03706250770CB /* src */,
-				266D6E6425B7242D237B0027 /* Products */,
-				1E3F3C4E37AC3B9566EA1123 /* Projects */,
+				1D204A62162154723D5B36EA /* App.cpp */,
+				7245478D1FE5316D6D3F6E1B /* App.h */,
+				656E55496A1727407CBB0C6E /* Common.h */,
+				1606676B4B7912E912585C80 /* Config.cpp */,
+				3DF73A0E145D6E2F6B04623E /* Config.h */,
+				755A28376AC3420361B2258F /* Device.h */,
+				08281B7723702CCD011C060F /* DeviceManager.cpp */,
+				7FAF5BB440DC49650F235316 /* DeviceManager.h */,
+				6B4A7EAC68B158392B26628B /* GameController.cpp */,
+				4EA1551778B010285A01035C /* GameController.h */,
+				46915D7E0E1A5D89737876DB /* Joystick.cpp */,
+				61823C61322413D539B93588 /* Joystick.h */,
+				002A58EF3AB7635310675AA2 /* JoystickIgnore.cpp */,
+				77C75EF82B7F2C75693868A7 /* JoystickIgnore.h */,
+				3C72158A46924635717F7491 /* JoystickRemapping.cpp */,
+				38BD16906FF20E1F1FE046CD /* JoystickRemapping.h */,
+				455C2AD059A6421245B7004E /* Log.h */,
+				1551034415877ABF1B31532D /* main.cpp */,
 			);
-			name = "rc-unitd";
+			path = "rc-unitd";
 			sourceTree = "<group>";
 		};
-		32975B6215E03706250770CB /* src */ = {
+		2AE418B60FE3415572AB56B7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2ABF0DDF42460E004B196BE9 /* rc-unitd */,
-			);
-			name = "src";
-			path = ../src;
-			sourceTree = "<group>";
-		};
-		2ABF0DDF42460E004B196BE9 /* rc-unitd */ = {
-			isa = PBXGroup;
-			children = (
-				23F61CB34AF87592575E7ACC /* App.cpp */,
-				735426DF14F257CE56B53B73 /* App.h */,
-				7BA13C632BC85E3E47BB5138 /* main.cpp */,
-			);
-			name = "rc-unitd";
-			path = rc-unitd;
-			sourceTree = "<group>";
-		};
-		266D6E6425B7242D237B0027 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				216B0C116BD865BF7E004484 /* rc-unitd */,
-			);
-			name = "Products";
-			sourceTree = "<group>";
-		};
-		1E3F3C4E37AC3B9566EA1123 /* Projects */ = {
-			isa = PBXGroup;
-			children = (
-				18DA506E69EC25B3394D078B /* unit.xcodeproj */,
-			);
-			name = "Projects";
-			sourceTree = "<group>";
-		};
-		295129114CE44C9630BC3B9E /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				44384AE132DE3DD637466E41 /* libunit.a */,
+				53AC54034A0D1CE134B644BA /* rc-unitd */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		6AB85F9C17177329218A1B4B /* rc-unitd */ = {
+			isa = PBXGroup;
+			children = (
+				7F250BDE49F935F921604C2C /* src */,
+				2AE418B60FE3415572AB56B7 /* Products */,
+			);
+			name = "rc-unitd";
+			sourceTree = "<group>";
+		};
+		7F250BDE49F935F921604C2C /* src */ = {
+			isa = PBXGroup;
+			children = (
+				1AEC7DB46C2D1DFB58B21A0C /* rc-unitd */,
+			);
+			name = src;
+			path = ../src;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5AAA7B213DFC14D62A831F3B /* rc-unitd */ = {
+		377E38BF25D41CD37DD421AB /* rc-unitd */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3FAC471549293E831DD45576 /* Build configuration list for PBXNativeTarget "rc-unitd" */;
+			buildConfigurationList = 0D3810F302F2047B3AEC6163 /* Build configuration list for PBXNativeTarget "rc-unitd" */;
 			buildPhases = (
-				4236779D143273CB454B65E9 /* Resources */,
-				5ABC27DE618D102049D4057C /* Sources */,
-				19C1047674B9583C0CA125CA /* Frameworks */,
+				656F045661CF6931329649B8 /* Resources */,
+				039A2D1D6A1654BD6EA95516 /* Sources */,
+				3A1A379C021428B139B73CB2 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				038667FE571465CB070D7D21 /* PBXTargetDependency */,
 			);
 			name = "rc-unitd";
 			productInstallPath = "$(HOME)/bin";
 			productName = "rc-unitd";
-			productReference = 216B0C116BD865BF7E004484 /* rc-unitd */;
+			productReference = 53AC54034A0D1CE134B644BA /* rc-unitd */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -130,36 +127,26 @@
 /* Begin PBXProject section */
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+			};
 			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "rc-unitd" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
-			mainGroup = 0E3578E116D50E2B4F137A29 /* rc-unitd */;
-			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 295129114CE44C9630BC3B9E /* Products */;
-					ProjectRef = 18DA506E69EC25B3394D078B /* unit.xcodeproj */;
-				},
+			knownRegions = (
+				en,
 			);
+			mainGroup = 6AB85F9C17177329218A1B4B /* rc-unitd */;
+			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5AAA7B213DFC14D62A831F3B /* rc-unitd */,
+				377E38BF25D41CD37DD421AB /* rc-unitd */,
 			);
 		};
 /* End PBXProject section */
 
-/* Begin PBXReferenceProxy section */
-		44384AE132DE3DD637466E41 /* libunit.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "../src/lib/libunit.a";
-			remoteRef = 1EAD7B7605A72BD76D8F5D13 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
-
 /* Begin PBXResourcesBuildPhase section */
-		4236779D143273CB454B65E9 /* Resources */ = {
+		656F045661CF6931329649B8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -169,55 +156,83 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		5ABC27DE618D102049D4057C /* Sources */ = {
+		039A2D1D6A1654BD6EA95516 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1BBF1E0F1C9177024B3809F9 /* App.cpp in Sources */,
-				5517141C5AE5719E54027E93 /* main.cpp in Sources */,
+				4B9C7FAB696D0BDC368E4ABB /* App.cpp in Sources */,
+				03393E16224C315202CE4CF0 /* Config.cpp in Sources */,
+				6CFE255D30EE5C685A573731 /* DeviceManager.cpp in Sources */,
+				4209661E492955E00B605346 /* GameController.cpp in Sources */,
+				330D203F3A750BD907B3290A /* Joystick.cpp in Sources */,
+				5B0124D469023BE16DE55F46 /* JoystickIgnore.cpp in Sources */,
+				078F4F7135F56FB56EA55005 /* JoystickRemapping.cpp in Sources */,
+				54AF495B0B7E3E8D54E0691D /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXVariantGroup section */
-/* End PBXVariantGroup section */
-
-/* Begin PBXTargetDependency section */
-		038667FE571465CB070D7D21 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "libunit.a";
-			targetProxy = 22125AEE6C62322B401B6A0B /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin XCBuildConfiguration section */
-		214B59EF5D9E341F72391F29 /* Debug */ = {
+		14AB0923032A5D0A599C3436 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CONFIGURATION_BUILD_DIR = ../src/rc-unitd;
+				CONFIGURATION_BUILD_DIR = "../src/rc-unitd";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
 				INSTALL_PATH = /usr/local/bin;
 				PRODUCT_NAME = "rc-unitd";
 			};
-			name = "Debug";
+			name = Debug;
 		};
-		6AFA7AA9109F52733A5A6BEF /* Release */ = {
+		304F270D7AD152EA40552C96 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				CONFIGURATION_BUILD_DIR = ../src/rc-unitd;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_MODEL_TUNING = G5;
-				INSTALL_PATH = /usr/local/bin;
-				PRODUCT_NAME = "rc-unitd";
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					../src,
+					../externals,
+					../externals/xmlframework,
+					../externals/oscframework,
+					/usr/local/include,
+					/usr/local/include/SDL2,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					../externals/xmlframework,
+					../externals/oscframework,
+					/usr/local/lib,
+				);
+				OBJROOT = "../obj/Release/rc-unitd";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = "-DHAVE_CONFIG_H";
+				OTHER_LDFLAGS = (
+					"-loscframework",
+					"-lxmlframework",
+					"-llo",
+					"-lpthread",
+					"-lSDL2",
+					"-Wl,-framework,Cocoa",
+					"-Wl,-framework,OpenGL",
+					"-Wl,-framework,ApplicationServices",
+					"-Wl,-framework,Carbon",
+					"-Wl,-framework,AudioToolbox",
+					"-Wl,-framework,AudioUnit",
+					"-Wl,-framework,IOKit",
+				);
+				PREBINDING = NO;
+				SYMROOT = "../src/rc-unitd";
 			};
-			name = "Release";
+			name = Release;
 		};
-		52D86F7B003745835A6B4B80 /* Debug */ = {
+		489B72DD2770645E08E16C03 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
@@ -227,27 +242,25 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"../src",
-					"../src/lib",
-					"../externals",
-					"../externals/xmlframework",
-					"../externals/oscframework",
-					"/usr/local/include",
-					"/usr/local/include/SDL2",
+					../src,
+					../externals,
+					../externals/xmlframework,
+					../externals/oscframework,
+					/usr/local/include,
+					/usr/local/include/SDL2,
 				);
 				LIBRARY_SEARCH_PATHS = (
-					"../externals/xmlframework",
-					"../externals/oscframework",
-					"/usr/local/lib",
+					../externals/xmlframework,
+					../externals/oscframework,
+					/usr/local/lib,
 				);
 				OBJROOT = "../obj/Debug/rc-unitd";
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = "-DHAVE_CONFIG_H";
 				OTHER_LDFLAGS = (
 					"-loscframework",
 					"-lxmlframework",
@@ -265,79 +278,43 @@
 				PREBINDING = NO;
 				SYMROOT = "../src/rc-unitd";
 			};
-			name = "Debug";
+			name = Debug;
 		};
-		282E666C670A57EA73C86331 /* Release */ = {
+		6D5043795E9800037E125F68 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
-				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
-				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"NDEBUG",
-				);
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"../src",
-					"../src/lib",
-					"../externals",
-					"../externals/xmlframework",
-					"../externals/oscframework",
-					"/usr/local/include",
-					"/usr/local/include/SDL2",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"../externals/xmlframework",
-					"../externals/oscframework",
-					"/usr/local/lib",
-				);
-				OBJROOT = "../obj/Release/rc-unitd";
-				ONLY_ACTIVE_ARCH = NO;
-				OTHER_LDFLAGS = (
-					"-loscframework",
-					"-lxmlframework",
-					"-llo",
-					"-lpthread",
-					"-lSDL2",
-					"-Wl,-framework,Cocoa",
-					"-Wl,-framework,OpenGL",
-					"-Wl,-framework,ApplicationServices",
-					"-Wl,-framework,Carbon",
-					"-Wl,-framework,AudioToolbox",
-					"-Wl,-framework,AudioUnit",
-					"-Wl,-framework,IOKit",
-				);
-				PREBINDING = NO;
-				SYMROOT = "../src/rc-unitd";
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = "../src/rc-unitd";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = "rc-unitd";
 			};
-			name = "Release";
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3FAC471549293E831DD45576 /* Build configuration list for PBXNativeTarget "rc-unitd" */ = {
+		0D3810F302F2047B3AEC6163 /* Build configuration list for PBXNativeTarget "rc-unitd" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				214B59EF5D9E341F72391F29 /* Debug */,
-				6AFA7AA9109F52733A5A6BEF /* Release */,
+				14AB0923032A5D0A599C3436 /* Debug */,
+				6D5043795E9800037E125F68 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Debug";
+			defaultConfigurationName = Debug;
 		};
 		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "rc-unitd" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				52D86F7B003745835A6B4B80 /* Debug */,
-				282E666C670A57EA73C86331 /* Release */,
+				489B72DD2770645E08E16C03 /* Debug */,
+				304F270D7AD152EA40552C96 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Debug";
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
-
 	};
 	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
 }
