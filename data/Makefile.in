@@ -268,7 +268,7 @@ top_srcdir = @top_srcdir@
 thisdir = $(srcdir)
 
 # include files
-dist_configfiles_DATA = example_config.xml 85-rc-unitd.rules.source
+dist_configfiles_DATA = example_config.xml
 configfilesdir = $(docdir)
 
 # include pd files
@@ -413,7 +413,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(DATA) all-local
+all-am: Makefile $(DATA)
 installdirs:
 	for dir in "$(DESTDIR)$(configfilesdir)" "$(DESTDIR)$(pd_readmedir)" "$(DESTDIR)$(unit_patchesdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
@@ -450,7 +450,7 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic clean-local mostlyclean-am
+clean-am: clean-generic mostlyclean-am
 
 distclean: distclean-am
 	-rm -f Makefile
@@ -518,35 +518,22 @@ uninstall-am: uninstall-dist_configfilesDATA \
 
 .MAKE: install-am install-strip
 
-.PHONY: all all-am all-local check check-am clean clean-generic \
-	clean-local cscopelist-am ctags-am distclean distclean-generic \
-	distdir dvi dvi-am html html-am info info-am install \
-	install-am install-data install-data-am \
-	install-dist_configfilesDATA install-dist_pd_readmeDATA \
-	install-dist_unit_patchesDATA install-dvi install-dvi-am \
-	install-exec install-exec-am install-html install-html-am \
-	install-info install-info-am install-man install-pdf \
-	install-pdf-am install-ps install-ps-am install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am tags-am uninstall uninstall-am \
-	uninstall-dist_configfilesDATA uninstall-dist_pd_readmeDATA \
-	uninstall-dist_unit_patchesDATA
+.PHONY: all all-am check check-am clean clean-generic cscopelist-am \
+	ctags-am distclean distclean-generic distdir dvi dvi-am html \
+	html-am info info-am install install-am install-data \
+	install-data-am install-dist_configfilesDATA \
+	install-dist_pd_readmeDATA install-dist_unit_patchesDATA \
+	install-dvi install-dvi-am install-exec install-exec-am \
+	install-html install-html-am install-info install-info-am \
+	install-man install-pdf install-pdf-am install-ps \
+	install-ps-am install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-generic pdf pdf-am ps ps-am tags-am \
+	uninstall uninstall-am uninstall-dist_configfilesDATA \
+	uninstall-dist_pd_readmeDATA uninstall-dist_unit_patchesDATA
 
 .PRECIOUS: Makefile
 
-
-# need to process the udev config file to insert the proper bin path
-#
-# udev needs the absolute path to rc-unitd-notifer so "BINDIR" in the rules file
-# is replaced by $(bindir), which means it should work regardless of what prefix 
-# is used 
-#
-all-local:
-	sed 's:BINDIR:$(bindir):' $(thisdir)/85-rc-unitd.rules.source > 85-rc-unitd.rules
-
-clean-local:
-	rm -f 85-rc-unitd.rules
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

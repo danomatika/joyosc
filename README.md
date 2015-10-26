@@ -241,7 +241,7 @@ You can also print detailed info using the -d or --details flags.
 
     % rc-unit-notifier 
 
-Used to control a running rc-unitd.  Can be used to signal device add or removals as well as send a quit command.
+Used to control a running rc-unitd. Can be used to signal device add or removals as well as send a quit command.
 
 A new joystick was added, reload current joysticks:
 <pre>
@@ -285,7 +285,7 @@ Run them from a real terminal on the machine.
 DEVELOPING
 ----------
 
-A Premake4 script and IDE files can be found in the prj folder.  Premake4 can generate the IDE files from a given lua script.  Download Premake4 from http://industriousone.com/premake.
+A Premake4 script and IDE files can be found in the prj folder. Premake4 can generate the IDE files from a given lua script. Download Premake4 from http://industriousone.com/premake.
 
 Make sure the externals are built by calling the prj/setupbuild script which runs configure and calls make in the externals dir.
 
@@ -294,7 +294,7 @@ You can enable a debug build using:
 ./configure --enable-debug
 </pre>
 
-I develop using an IDE, then update the autotools files when the sources are finished.  I run make dist-check to make sure the distributable package can be built successfully.
+I develop using an IDE, then update the autotools files when the sources are finished. I run `make distcheck` to make sure the distributable package can be built successfully.
 
 FUTURE IDEAS/IMPROVEMENTS
 -------------------------
