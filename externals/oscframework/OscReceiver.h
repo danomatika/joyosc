@@ -27,17 +27,17 @@
 
 namespace osc {
 
-class ReceiveException : public Exception
+class ReceiveException : public std::runtime_error
 {
 	public:
 	
 		ReceiveException(
 			std::string w="liblo receive error")
-			: Exception(w) {}
+			: std::runtime_error(w) {}
 	
 		ReceiveException(
 			const char* w="liblo receive error")
-			: Exception(w) {}
+			: std::runtime_error(w) {}
 };
 
 /**

@@ -34,8 +34,6 @@
 
 #include <lo/lo.h>
 
-#include "Exception.h"
-
 namespace osc {
 
 /* ***** OSC TYPES ***** */
@@ -181,21 +179,21 @@ struct EndMessage
 /* ***** MESSAGE PARSING EXCEPTIONS ***** */
 
 /// bad type exception
-class TypeException : public Exception
+class TypeException : public std::runtime_error
 {
 	public:
 		TypeException(
 			const char* w="argument is of different type then requested")
-			: Exception(w) {}
+			: std::runtime_error(w) {}
 };
 
 /// bad argument index exception
-class ArgException : public Exception
+class ArgException : public std::runtime_error
 {
 	public:
 		ArgException(
 			const char* w="argument index out of range")
-			: Exception(w) {}
+			: std::runtime_error(w) {}
 };
 
 /* ***** RECEIVED MESSAGE ***** */

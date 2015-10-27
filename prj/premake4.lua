@@ -31,9 +31,9 @@ project "rc-unitd"
 		linkoptions { "`pkg-config --libs sdl2`", "`pkg-config --libs liblo`" }
 
 	configuration 'macosx'
-		-- Homebrew
-		includedirs { "/usr/local/include", "/usr/local/include/SDL2" }
-		libdirs { "/usr/local/lib" }
+		-- Homebrew & Macports
+		includedirs { "/usr/local/include", "/usr/local/include/SDL2", "/opt/local/include", "/opt/local/include/SDL2" }
+		libdirs { "/usr/local/lib", "/opt/local/lib" }
 		links { "lo", "pthread", "SDL2" }
 		buildoptions { "-DHAVE_CONFIG_H"}
 		linkoptions { "-Wl,-framework,Cocoa", "-Wl,-framework,OpenGL",
@@ -66,9 +66,9 @@ project "lsjs"
 		linkoptions { "`pkg-config --libs sdl2`" }
 
 	configuration 'macosx'
-		-- Homebrew
-		includedirs { "/usr/local/include", "/usr/local/include/SDL2" }
-		libdirs { "/usr/local/lib" }
+		-- Homebrew & Macports
+		includedirs { "/usr/local/include", "/usr/local/include/SDL2", "/opt/local/include", "/usr/local/include/SDL2" }
+		libdirs { "/usr/local/lib", "/opt/local/lib" }
 		links { "SDL2" }
 		buildoptions { "-DHAVE_CONFIG_H" }
 		linkoptions { "-Wl,-framework,Cocoa", "-Wl,-framework,OpenGL",
@@ -105,8 +105,8 @@ project "rc-unit-notifier"
 
 	configuration 'macosx'
 		-- Homebrew
-		includedirs { "/usr/local/include", "/usr/local/include/SDL2" }
-		libdirs { "/usr/local/lib" }
+		includedirs { "/usr/local/include", "/usr/local/include/SDL2", "/opt/local/include", "/opt/local/include/SDL2" }
+		libdirs { "/usr/local/lib", "/opt/local/lib" }
 		links { "lo", "pthread", "SDL2" }
 		buildoptions { "-DHAVE_CONFIG_H" }
 		linkoptions { "-Wl,-framework,Cocoa", "-Wl,-framework,OpenGL",
