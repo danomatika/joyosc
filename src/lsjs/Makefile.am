@@ -1,6 +1,6 @@
 
-# load externals variables
-include $(top_srcdir)/externals/externals.mk
+# load library variables
+include $(top_srcdir)/lib/libs.mk
 
 # program to build
 bin_PROGRAMS = lsjs
@@ -9,7 +9,7 @@ bin_PROGRAMS = lsjs
 lsjs_SOURCES = main.cpp
 
 # include paths
-AM_CPPFLAGS = $(CXXFLAGS) $(SDL_CFLAGS) $(LO_CFLAGS) $(EXTERNALS_CFLAGS)
+AM_CPPFLAGS = $(SDL_CFLAGS) $(TCLAP_INCLUDE)
 
 # libs to link
-AM_LDFLAGS = $(LDFLAGS) $(SDL_LIBS) $(LO_LIBS)
+AM_LDFLAGS = $(SDL_LIBS)

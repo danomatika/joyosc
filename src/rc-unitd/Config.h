@@ -25,8 +25,8 @@
 #include <string>
 #include <map>
 
-#include <xmlframework/xmlframework.h>
-#include <oscframework/oscframework.h>
+#include <lopack/lopack.h>
+#include <tinyobject/tinyobject.h>
 
 using namespace std;
 
@@ -41,7 +41,7 @@ class JoystickIgnore;
 ///
 /// no initialization is needed, just use Config::instance() to access
 /// member functions & data
-class Config : public xml::XmlObject {
+class Config : public tinyxml2::XMLObject {
 	
 	public:
 
@@ -110,7 +110,7 @@ class Config : public xml::XmlObject {
 	protected:
 	
 		// XMLObject callback
-		bool readXml(TiXmlElement* e);
+		bool readXML(tinyxml2::XMLElement* e);
 
 	private:
 

@@ -23,7 +23,7 @@
 #include "../config.h" // automake config defines
 
 #include <SDL.h>
-#include <tclap/tclap.h>
+#include <tclap.h>
 
 using namespace std;
 

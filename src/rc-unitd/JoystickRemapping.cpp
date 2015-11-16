@@ -22,7 +22,7 @@
 ==============================================================================*/
 #include "JoystickRemapping.h"
 
-using namespace xml;
+using namespace tinyxml2;
 
 void JoystickRemapping::check(Joystick* joystick) {
 	if(!joystick){
@@ -102,19 +102,19 @@ void JoystickRemapping::print() {
 	}
 }
 
-bool JoystickRemapping::readXml(TiXmlElement* e) {
+bool JoystickRemapping::readXML(XMLElement* e) {
 
 	bool loaded = false;
-	string devName = Xml::getAttrString(e->Parent()->ToElement(), "name", "unknown");
+	string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
 	
 	// load the device mappings
-	TiXmlElement* child = e->FirstChildElement();
+	XMLElement* child = e->FirstChildElement();
 	while(child != NULL) {
-		int from  = Xml::getAttrInt(child, "from", -1);
-		int to = Xml::getAttrInt(child, "to", -1);
+		int from  = XML::getAttrInt(child, "from", -1);
+		int to = XML::getAttrInt(child, "to", -1);
 		
 		if(from > -1 && to > -1) {
-			if(child->ValueStr() == "button") {
+			if((string)child->Name() == "button") {
 				pair<map<int,int>::iterator, bool> ret;
 				ret = buttons.insert(make_pair(from, to));
 				if(!ret.second) {
@@ -126,7 +126,7 @@ bool JoystickRemapping::readXml(TiXmlElement* e) {
 						  << "remapped button " << from << " to " << to << endl;
 				loaded = true;
 			}
-			else if(child->ValueStr() == "axis") {
+			else if((string)child->Name() == "axis") {
 				pair<map<int,int>::iterator, bool> ret;
 				ret = axes.insert(make_pair(from, to));
 				if(!ret.second) {
@@ -138,7 +138,7 @@ bool JoystickRemapping::readXml(TiXmlElement* e) {
 						  << "remapped axis " << from << " to " << to << endl;
 				loaded = true;
 			}
-			else if(child->ValueStr() == "ball") {
+			else if((string)child->Name() == "ball") {
 				pair<map<int,int>::iterator, bool> ret;
 				ret = balls.insert(make_pair(from, to));
 				if(!ret.second) {
@@ -150,7 +150,7 @@ bool JoystickRemapping::readXml(TiXmlElement* e) {
 						  << "remapped ball " << from << " to " << to << endl;
 				loaded = true;
 			}
-			else if(child->ValueStr() == "hat") {
+			else if((string)child->Name() == "hat") {
 				pair<map<int,int>::iterator, bool> ret;
 				ret = balls.insert(make_pair(from, to));
 				if(!ret.second) {

@@ -28,14 +28,14 @@
 #include "JoystickIgnore.h"
 #include "JoystickRemapping.h"
 
-#include <tclap/tclap.h>
+#include <tclap.h>
 
 #if defined( __WIN32__ ) || defined( _WIN32 )
 	#include <windows.h>
 #endif
 #include <unistd.h>
 
-using namespace xml;
+using namespace tinyxml2;
 
 Config& Config::instance() {
 	static Config * pointerToTheSingletonInstance = new Config;
@@ -118,10 +118,10 @@ bool Config::parseCommandLine(int argc, char **argv) {
 
 		// load the config file (if one exists)
 		if(configCmd.getValue() != "") {
-			setXmlFilename(Config::absolutePath(configCmd.getValue()));
-			LOG << "Config: loading \"" << getXmlFilename() << "\"" << endl;
-			loadXmlFile();
-			closeXmlFile();
+			setXMLFilename(Config::absolutePath(configCmd.getValue()));
+			LOG << "Config: loading \"" << getXMLFilename() << "\"" << endl;
+			loadXMLFile();
+			closeXMLFile();
 		}
 		
 		// set the variables
@@ -183,15 +183,15 @@ string Config::absolutePath(string path) {
 
 // PROTECTED
 
-bool Config::readXml(TiXmlElement* e) {
+bool Config::readXML(XMLElement* e) {
 	// load the device mappings
-	TiXmlElement* child = Xml::getElement(e, "mappings");
+	XMLElement* child = XML::getChild(e, "mappings");
 	if(child != NULL) {
-		TiXmlElement* child2 = child->FirstChildElement();
+		XMLElement* child2 = child->FirstChildElement();
 		while(child2 != NULL) {
-			if(child2->ValueStr() == "joystick") {
-				string name = Xml::getAttrString(child2, "name");
-				string addr = Xml::getAttrString(child2, "address");
+			if((string)child2->Name() == "joystick") {
+				string name = XML::getAttrString(child2, "name");
+				string addr = XML::getAttrString(child2, "address");
 				
 				pair<map<string,string>::iterator, bool> ret;
 				ret = m_deviceAddresses.insert(make_pair(name, addr));
@@ -200,9 +200,9 @@ bool Config::readXml(TiXmlElement* e) {
 							 << "\" already exists" << endl;
 				}
 				
-				TiXmlElement* thresholdsChild = Xml::getElement(child2, "thresholds");
+				XMLElement* thresholdsChild = XML::getChild(child2, "thresholds");
 				if(thresholdsChild) {
-					unsigned int deadZone = Xml::getAttrUInt(thresholdsChild, "axisDeadZone", 0);
+					unsigned int deadZone = XML::getAttrUInt(thresholdsChild, "axisDeadZone", 0);
 					if(deadZone > 0) {
 						pair<map<string,unsigned int>::iterator, bool> threshRet;
 						threshRet= m_joystickAxisDeadZones.insert(make_pair(name, deadZone));
@@ -214,10 +214,10 @@ bool Config::readXml(TiXmlElement* e) {
 					}
 				}
 				
-				TiXmlElement* remapChild = Xml::getElement(child2, "remap");
+				XMLElement* remapChild = XML::getChild(child2, "remap");
 				if(remapChild) {
 					JoystickRemapping *remap = new JoystickRemapping;
-					if(!remap->loadXml(remapChild)) {
+					if(!remap->loadXML(remapChild)) {
 						LOG_WARN << "Config: ignoring empty remap for \""
 								 << name << "\""<< endl;
 					}
@@ -229,10 +229,10 @@ bool Config::readXml(TiXmlElement* e) {
 					}
 				}
 				
-				TiXmlElement* ignoreChild = Xml::getElement(child2, "ignore");
+				XMLElement* ignoreChild = XML::getChild(child2, "ignore");
 				if(ignoreChild) {
 					JoystickIgnore *ignore = new JoystickIgnore;
-					if(!ignore->loadXml(ignoreChild)) {
+					if(!ignore->loadXML(ignoreChild)) {
 						LOG_WARN << "Config: ignoring empty ignore for \""
 								 << name << "\""<< endl;
 					}
@@ -254,7 +254,7 @@ bool Config::readXml(TiXmlElement* e) {
 // PRIVATE
 
 Config::Config() :
-	XmlObject(PACKAGE),
+	XMLObject(PACKAGE),
 	listeningPort(7770),
 	sendingIp("127.0.0.1"), sendingPort(8880),
 	notificationAddress((string) "/"+PACKAGE+"/notifications"),
@@ -262,15 +262,15 @@ Config::Config() :
 	printEvents(false), joysticksOnly(false), sleepUS(10000) {
 
 	// attach config values to xml attributes
-	addXmlAttribute("port", "listening", XML_TYPE_UINT, &listeningPort);
+	subscribeXMLAttribute("port", "listening", XML_TYPE_UINT, &listeningPort);
 	
-	addXmlAttribute("ip", "sending", XML_TYPE_STRING, &sendingIp);
-	addXmlAttribute("port", "sending", XML_TYPE_UINT, &sendingPort);
+	subscribeXMLAttribute("ip", "sending", XML_TYPE_STRING, &sendingIp);
+	subscribeXMLAttribute("port", "sending", XML_TYPE_UINT, &sendingPort);
 	
-	addXmlAttribute("notificationAddress", "osc", XML_TYPE_STRING, &notificationAddress);
-	addXmlAttribute("deviceAddress", "osc", XML_TYPE_STRING, &deviceAddress);
+	subscribeXMLAttribute("notificationAddress", "osc", XML_TYPE_STRING, &notificationAddress);
+	subscribeXMLAttribute("deviceAddress", "osc", XML_TYPE_STRING, &deviceAddress);
 	
-	addXmlAttribute("printEvents", "config", XML_TYPE_BOOL, &printEvents);
-	addXmlAttribute("joysticksOnly", "config", XML_TYPE_BOOL, &joysticksOnly);
-	addXmlAttribute("sleepUS", "config", XML_TYPE_UINT, &sleepUS);
+	subscribeXMLAttribute("printEvents", "config", XML_TYPE_BOOL, &printEvents);
+	subscribeXMLAttribute("joysticksOnly", "config", XML_TYPE_BOOL, &joysticksOnly);
+	subscribeXMLAttribute("sleepUS", "config", XML_TYPE_UINT, &sleepUS);
 }

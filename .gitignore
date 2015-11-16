@@ -1,8 +1,5 @@
-
 # folders
-bin
-#lib
-obj
+prj/obj
 
 # autotools files
 autom4te.cache
@@ -13,10 +10,12 @@ config.status
 src/config.h
 src/stamp-h1
 .dirstamp
+libtool
 
 # build
 *.o
 *.a
+*.la
 src/lsjs/lsjs
 src/rc-unitd/rc-unitd
 src/rc-unit-notifier/rc-unit-notifier

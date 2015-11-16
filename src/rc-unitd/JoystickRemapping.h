@@ -26,11 +26,11 @@
 
 /// \class JoystickRemapping
 /// \brief defines button, axis, ball, & hat remappings
-class JoystickRemapping : public xml::XmlObject {
+class JoystickRemapping : public tinyxml2::XMLObject {
 
 	public:
 	
-		JoystickRemapping() : xml::XmlObject("remap") {}
+		JoystickRemapping() : tinyxml2::XMLObject("remap") {}
 		
 		// mappings from -> to
 		// with key: from & value: to
@@ -48,5 +48,5 @@ class JoystickRemapping : public xml::XmlObject {
 	protected:
 	
 		// XMLObject callback
-		bool readXml(TiXmlElement* e);
+		bool readXML(tinyxml2::XMLElement* e);
 };

@@ -105,7 +105,7 @@ void App::cleanup() {
 bool App::processOscMessage(const ReceivedMessage& message,
 							const MessageSource& source) {
 
-	if(message.path() == oscRootAddress + "/open/joystick") {
+	if(message.address() == oscRootAddress + "/open/joystick") {
 		LOG << endl << "	" << PACKAGE << ": Open joystick message received." << endl;
 		
 		m_joystickManager.closeAll();
@@ -119,7 +119,7 @@ bool App::processOscMessage(const ReceivedMessage& message,
 		
 		return true;
 	}
-	else if(message.path() == oscRootAddress + "/close/joystick") {
+	else if(message.address() == oscRootAddress + "/close/joystick") {
 		LOG << endl << "	" << PACKAGE << ": Close joystick message received." << endl;
 		
 		m_joystickManager.closeAll();
@@ -133,14 +133,14 @@ bool App::processOscMessage(const ReceivedMessage& message,
 		
 		return true;
 	}
-	else if(message.path() == oscRootAddress + "/quit") {
+	else if(message.address() == oscRootAddress + "/quit") {
 		stop();
 		LOG << endl << "	" << PACKAGE << ": Quit message received. Exiting ..." << endl;
 		return true;
 	}
 
 	LOG << endl << "	" << PACKAGE << ": Unknown message received: "
-		<< message.path() << " " << message.types() << endl;
+		<< message.address() << " " << message.types() << endl;
 
 	return false;
 }

@@ -22,7 +22,7 @@
 ==============================================================================*/
 #include "JoystickIgnore.h"
 
-using namespace xml;
+using namespace tinyxml2;
 
 void JoystickIgnore::check(Joystick* joystick) {
 	if(!joystick) {
@@ -95,18 +95,18 @@ void JoystickIgnore::print() {
 	}
 }
 
-bool JoystickIgnore::readXml(TiXmlElement* e) {
+bool JoystickIgnore::readXML(XMLElement* e) {
 
 	bool loaded = false;
-	string devName = Xml::getAttrString(e->Parent()->ToElement(), "name", "unknown");
+	string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
 	
 	// load the device mappings
-	TiXmlElement* child = e->FirstChildElement();
+	XMLElement* child = e->FirstChildElement();
 	while(child != NULL) {
-		int which  = Xml::getAttrInt(child, "id", -1);
+		int which  = XML::getAttrInt(child, "id", -1);
 		
 		if(which > -1) {
-			if(child->ValueStr() == "button") {
+			if((string)child->Name() == "button") {
 				pair<map<int,bool>::iterator, bool> ret;
 				ret = buttons.insert(make_pair(which,true));
 				if(!ret.second) {
@@ -117,7 +117,7 @@ bool JoystickIgnore::readXml(TiXmlElement* e) {
 						  << "ignoring button " << which << endl;
 				loaded = true;
 			}
-			else if(child->ValueStr() == "axis") {
+			else if((string)child->Name() == "axis") {
 				pair<map<int,bool>::iterator, bool> ret;
 				ret = axes.insert(make_pair(which, true));
 				if(!ret.second) {
@@ -128,7 +128,7 @@ bool JoystickIgnore::readXml(TiXmlElement* e) {
 						  << "ignoring axis " << which << endl;
 				loaded = true;
 			}
-			else if(child->ValueStr() == "ball") {
+			else if((string)child->Name() == "ball") {
 				pair<map<int,bool>::iterator, bool> ret;
 				ret = balls.insert(make_pair(which, true));
 				if(!ret.second) {
@@ -139,7 +139,7 @@ bool JoystickIgnore::readXml(TiXmlElement* e) {
 						  << "ignoring ball " << which << endl;
 				loaded = true;
 			}
-			else if(child->ValueStr() == "hat") {
+			else if((string)child->Name() == "hat") {
 				pair<map<int,bool>::iterator, bool> ret;
 				ret = balls.insert(make_pair(which, true));
 				if(!ret.second) {

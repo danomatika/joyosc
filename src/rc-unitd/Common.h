@@ -25,7 +25,6 @@
 #include "../config.h" // automake config defines
 
 #include <SDL.h>
-#include <lo/lo.h>
 
 #include "Log.h"
 #include "Config.h"

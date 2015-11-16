@@ -26,11 +26,11 @@
 
 /// \class JoystickIgnore
 /// \brief defines which buttons, axes, balls, or hats to ignore
-class JoystickIgnore : public xml::XmlObject {
+class JoystickIgnore : public tinyxml2::XMLObject {
 
 	public:
 	
-		JoystickIgnore() : xml::XmlObject("ignore") {}
+		JoystickIgnore() : tinyxml2::XMLObject("ignore") {}
 		
 		// ids to ignore
 		// with key: id & value: void
@@ -47,5 +47,5 @@ class JoystickIgnore : public xml::XmlObject {
 	protected:
 	
 		// XMLObject callback
-		bool readXml(TiXmlElement* e);
+		bool readXML(tinyxml2::XMLElement* e);
 };

@@ -22,8 +22,8 @@
 ==============================================================================*/
 #include "../config.h" // automake config defines
 
-#include <tclap/tclap.h>
-#include <oscframework/oscframework.h>
+#include <tclap.h>
+#include <lopack/lopack.h>
 
 using namespace std;
 
