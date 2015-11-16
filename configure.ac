@@ -1,8 +1,8 @@
 #########################################
 ##### Prelude #####
 
-AC_INIT([rc-unitd], [0.4.0], [danomatika@gmail.com], [rc-unitd], [http://github.com/danomatika/rc-unitd])
-AC_CONFIG_SRCDIR([src/rc-unitd/main.cpp])
+AC_INIT([joyosc], [0.4.0], [danomatika@gmail.com], [joyosc], [http://github.com/danomatika/joyosc])
+AC_CONFIG_SRCDIR([src/joyosc/main.cpp])
 AC_CONFIG_AUX_DIR([./config])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_CANONICAL_HOST
@@ -143,8 +143,7 @@ AC_CONFIG_FILES([
 	data/Makefile
 	lib/Makefile
 	src/Makefile
-	src/rc-unitd/Makefile
-	src/rc-unit-notifier/Makefile
+	src/joyosc/Makefile
 	src/lsjs/Makefile
 ])
 AC_OUTPUT

@@ -1,8 +1,10 @@
+Pure Data abstractions for use with joyosc event forwarding
 
-unit-patches: pure data abstractions for use with rc-unitd event forwarding
+* j_joystick: parse joystick events
+* j_controller: parse game controller events
+* g_joystick: gui wrapper for j_joystick
+* g_controller: gui wrapper for j_controller
 
-unit-joystick - for recieving and parsing joystick events
+Place the joyosc folder in a good location and add it to your pd path.
 
-Place the unit-patches folder in a good location and add it to your pd path.
-
-See Example-unit-receive.pd for a pure data example of communication with rc-unitd.
+See joyosc-example.pd for a Pure Data example of communication with joyosc.

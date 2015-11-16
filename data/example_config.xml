@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<rc-unitd>
+<joyosc>
 
 	<!-- OSC receive settings -->
 	<listening port="7770"/>
@@ -52,4 +52,4 @@
 			</ignore>
 		</joystick>
 	</mappings>
-</rc-unitd>
+</joyosc>

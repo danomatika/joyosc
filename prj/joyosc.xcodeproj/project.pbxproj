@@ -1,0 +1,333 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2B915CDA79901D506FB04042 /* App.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 624C2AFB62B82ECC1404227A /* App.cpp */; };
+		17E757B56D9C27F62F9A3F57 /* Config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2BBC55217B3C31311F7E3739 /* Config.cpp */; };
+		4E236BF27C95501C05DE6867 /* DeviceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5F15167969A84A8D06C37437 /* DeviceManager.cpp */; };
+		7E8D7BA140681A027D7E0FCA /* GameController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 78AC665D7EDA20953B081289 /* GameController.cpp */; };
+		296E10870F1F56206B196955 /* Joystick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7DCA5BEB4360042A697E7B67 /* Joystick.cpp */; };
+		6105174567D14B8602390C1A /* JoystickIgnore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B6F349559EB0C905A7D7416 /* JoystickIgnore.cpp */; };
+		7E14747C055A7A4E42976F8C /* JoystickRemapping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 357A6C6A28E83D066C9156E7 /* JoystickRemapping.cpp */; };
+		6DE81B1B22B25EB41EA91A28 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58533EC06758775B30F66C4D /* main.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		624C2AFB62B82ECC1404227A /* App.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "App.cpp"; path = "App.cpp"; sourceTree = "<group>"; };
+		57233B975BBB025C6BC75E67 /* App.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "App.h"; path = "App.h"; sourceTree = "<group>"; };
+		70B84816350D6A68529D7F1A /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Common.h"; path = "Common.h"; sourceTree = "<group>"; };
+		2BBC55217B3C31311F7E3739 /* Config.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "Config.cpp"; path = "Config.cpp"; sourceTree = "<group>"; };
+		286D4642392671715D125DC3 /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Config.h"; path = "Config.h"; sourceTree = "<group>"; };
+		565F12356FE11DF3704E1F25 /* Device.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Device.h"; path = "Device.h"; sourceTree = "<group>"; };
+		5F15167969A84A8D06C37437 /* DeviceManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "DeviceManager.cpp"; path = "DeviceManager.cpp"; sourceTree = "<group>"; };
+		012B3C7212A729F811B64C97 /* DeviceManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "DeviceManager.h"; path = "DeviceManager.h"; sourceTree = "<group>"; };
+		78AC665D7EDA20953B081289 /* GameController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "GameController.cpp"; path = "GameController.cpp"; sourceTree = "<group>"; };
+		50922C8B793C7F4273BA4A1A /* GameController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "GameController.h"; path = "GameController.h"; sourceTree = "<group>"; };
+		7DCA5BEB4360042A697E7B67 /* Joystick.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "Joystick.cpp"; path = "Joystick.cpp"; sourceTree = "<group>"; };
+		593C049625E632442CC14FEE /* Joystick.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Joystick.h"; path = "Joystick.h"; sourceTree = "<group>"; };
+		3B6F349559EB0C905A7D7416 /* JoystickIgnore.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "JoystickIgnore.cpp"; path = "JoystickIgnore.cpp"; sourceTree = "<group>"; };
+		093F3C624BB764EE042675F3 /* JoystickIgnore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "JoystickIgnore.h"; path = "JoystickIgnore.h"; sourceTree = "<group>"; };
+		357A6C6A28E83D066C9156E7 /* JoystickRemapping.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "JoystickRemapping.cpp"; path = "JoystickRemapping.cpp"; sourceTree = "<group>"; };
+		58F41F78343047F948D5305D /* JoystickRemapping.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "JoystickRemapping.h"; path = "JoystickRemapping.h"; sourceTree = "<group>"; };
+		58533EC06758775B30F66C4D /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "main.cpp"; path = "main.cpp"; sourceTree = "<group>"; };
+		7E363F07064550185CEE2713 /* joyosc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = "joyosc"; path = "joyosc"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		63FB143C26447B1D61DB27FA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		71CC2F627AFB33B876BB724C /* joyosc */ = {
+			isa = PBXGroup;
+			children = (
+				5EE52359305D507C1A81190E /* src */,
+				55B057714DA71F483C131811 /* Products */,
+			);
+			name = "joyosc";
+			sourceTree = "<group>";
+		};
+		5EE52359305D507C1A81190E /* src */ = {
+			isa = PBXGroup;
+			children = (
+				7F633D4B3EC85E040C34636A /* joyosc */,
+			);
+			name = "src";
+			path = ../src;
+			sourceTree = "<group>";
+		};
+		7F633D4B3EC85E040C34636A /* joyosc */ = {
+			isa = PBXGroup;
+			children = (
+				624C2AFB62B82ECC1404227A /* App.cpp */,
+				57233B975BBB025C6BC75E67 /* App.h */,
+				70B84816350D6A68529D7F1A /* Common.h */,
+				2BBC55217B3C31311F7E3739 /* Config.cpp */,
+				286D4642392671715D125DC3 /* Config.h */,
+				565F12356FE11DF3704E1F25 /* Device.h */,
+				5F15167969A84A8D06C37437 /* DeviceManager.cpp */,
+				012B3C7212A729F811B64C97 /* DeviceManager.h */,
+				78AC665D7EDA20953B081289 /* GameController.cpp */,
+				50922C8B793C7F4273BA4A1A /* GameController.h */,
+				7DCA5BEB4360042A697E7B67 /* Joystick.cpp */,
+				593C049625E632442CC14FEE /* Joystick.h */,
+				3B6F349559EB0C905A7D7416 /* JoystickIgnore.cpp */,
+				093F3C624BB764EE042675F3 /* JoystickIgnore.h */,
+				357A6C6A28E83D066C9156E7 /* JoystickRemapping.cpp */,
+				58F41F78343047F948D5305D /* JoystickRemapping.h */,
+				58533EC06758775B30F66C4D /* main.cpp */,
+			);
+			name = "joyosc";
+			path = joyosc;
+			sourceTree = "<group>";
+		};
+		55B057714DA71F483C131811 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7E363F07064550185CEE2713 /* joyosc */,
+			);
+			name = "Products";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		62664E2B015A7D43405322B2 /* joyosc */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3A6D74E02A3656AF1A9830ED /* Build configuration list for PBXNativeTarget "joyosc" */;
+			buildPhases = (
+				231E07A42E7065F3610B1D8C /* Resources */,
+				0BC06C2C5805603140BE32A2 /* Sources */,
+				63FB143C26447B1D61DB27FA /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "joyosc";
+			productInstallPath = "$(HOME)/bin";
+			productName = "joyosc";
+			productReference = 7E363F07064550185CEE2713 /* joyosc */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "joyosc" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 71CC2F627AFB33B876BB724C /* joyosc */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				62664E2B015A7D43405322B2 /* joyosc */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		231E07A42E7065F3610B1D8C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0BC06C2C5805603140BE32A2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B915CDA79901D506FB04042 /* App.cpp in Sources */,
+				17E757B56D9C27F62F9A3F57 /* Config.cpp in Sources */,
+				4E236BF27C95501C05DE6867 /* DeviceManager.cpp in Sources */,
+				7E8D7BA140681A027D7E0FCA /* GameController.cpp in Sources */,
+				296E10870F1F56206B196955 /* Joystick.cpp in Sources */,
+				6105174567D14B8602390C1A /* JoystickIgnore.cpp in Sources */,
+				7E14747C055A7A4E42976F8C /* JoystickRemapping.cpp in Sources */,
+				6DE81B1B22B25EB41EA91A28 /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		2DFD7E774E8842C004D00503 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../src/joyosc;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = "joyosc";
+			};
+			name = "Debug";
+		};
+		6C1703DE707263FE453C75F5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				CONFIGURATION_BUILD_DIR = ../src/joyosc;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = "joyosc";
+			};
+			name = "Release";
+		};
+		32605181745B032E72AB473C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"../src",
+					"../lib/lopack/src",
+					"../lib/tinyobject/src",
+					"../lib/cpphelpers/tclap",
+					"/usr/local/include",
+					"/usr/local/include/SDL2",
+					"/opt/local/include",
+					"/opt/local/include/SDL2",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"../lib/lopack/src/lopack",
+					"../lib/tinyobject/src/tinyobject",
+					"/usr/local/lib",
+					"/opt/local/lib",
+				);
+				OBJROOT = "obj/Debug/joyosc";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = (
+					"-DHAVE_CONFIG_H",
+				);
+				OTHER_LDFLAGS = (
+					"-llopack",
+					"-ltinyobject",
+					"-llo",
+					"-ltinyxml2",
+					"-lpthread",
+					"-lSDL2",
+					"-Wl,-framework,Cocoa",
+					"-Wl,-framework,OpenGL",
+					"-Wl,-framework,ApplicationServices",
+					"-Wl,-framework,Carbon",
+					"-Wl,-framework,AudioToolbox",
+					"-Wl,-framework,AudioUnit",
+					"-Wl,-framework,IOKit",
+				);
+				PREBINDING = NO;
+				SYMROOT = "../src/joyosc";
+			};
+			name = "Debug";
+		};
+		2A9273C461235B7C34C514A7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"NDEBUG",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"../src",
+					"../lib/lopack/src",
+					"../lib/tinyobject/src",
+					"../lib/cpphelpers/tclap",
+					"/usr/local/include",
+					"/usr/local/include/SDL2",
+					"/opt/local/include",
+					"/opt/local/include/SDL2",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"../lib/lopack/src/lopack",
+					"../lib/tinyobject/src/tinyobject",
+					"/usr/local/lib",
+					"/opt/local/lib",
+				);
+				OBJROOT = "obj/Release/joyosc";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = (
+					"-DHAVE_CONFIG_H",
+				);
+				OTHER_LDFLAGS = (
+					"-llopack",
+					"-ltinyobject",
+					"-llo",
+					"-ltinyxml2",
+					"-lpthread",
+					"-lSDL2",
+					"-Wl,-framework,Cocoa",
+					"-Wl,-framework,OpenGL",
+					"-Wl,-framework,ApplicationServices",
+					"-Wl,-framework,Carbon",
+					"-Wl,-framework,AudioToolbox",
+					"-Wl,-framework,AudioUnit",
+					"-Wl,-framework,IOKit",
+				);
+				PREBINDING = NO;
+				SYMROOT = "../src/joyosc";
+			};
+			name = "Release";
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3A6D74E02A3656AF1A9830ED /* Build configuration list for PBXNativeTarget "joyosc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2DFD7E774E8842C004D00503 /* Debug */,
+				6C1703DE707263FE453C75F5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Debug";
+		};
+		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "joyosc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				32605181745B032E72AB473C /* Debug */,
+				2A9273C461235B7C34C514A7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Debug";
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}

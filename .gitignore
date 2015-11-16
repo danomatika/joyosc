@@ -17,8 +17,8 @@ libtool
 *.a
 *.la
 src/lsjs/lsjs
-src/rc-unitd/rc-unitd
-src/rc-unit-notifier/rc-unit-notifier
+src/joyosc/joyosc
+src/joyosc/joyosc-notifier
 
 # OSX
 .DS_Store
@@ -29,4 +29,4 @@ src/rc-unit-notifier/rc-unit-notifier
 *~
 
 # generated files
-data/udev/85-rc-unitd.rules
+data/udev/85-joyosc.rules

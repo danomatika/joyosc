@@ -3,17 +3,17 @@
 thisdir = $(srcdir)
 
 # include files
-dist_configfiles_DATA = 85-rc-unitd.rules
+dist_configfiles_DATA = 85-joyosc.rules
 configfilesdir = $(docdir)
 
 # need to process the udev config file to insert the proper bin path
 #
-# udev needs the absolute path to rc-unitd-notifer so "BINDIR" in the rules file
+# udev needs the absolute path to joyosc-notifer so "BINDIR" in the rules file
 # is replaced by $(bindir), which means it should work regardless of what prefix 
 # is used 
 #
 all-local:
-	sed 's:BINDIR:$(bindir):' $(thisdir)/85-rc-unitd.rules.source > 85-rc-unitd.rules
+	sed 's:BINDIR:$(bindir):' $(thisdir)/85-joyosc.rules.source > 85-joyosc.rules
 
 clean-local:
-	rm -f 85-rc-unitd.rules
+	rm -f 85-joyosc.rules

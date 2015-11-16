@@ -1,0 +1,29 @@
+#
+#	joyosc udev rules
+#
+#	Put me in "/etc/udev/rules.d", I am named based on the debian udev rules format
+#
+#	launches joyosc-notifier to send OSC notification of device insert/removal to rc-unitd
+#	- joyosc is the device handling daemon the reads events for open devices
+#	- joyosc-notifier tells rc-unitd to open or close a device by kernel name
+#
+#	"add" actions are device insertions and device attributes are used to match the device
+#
+#	"remove" actions are matched using ENV variables since the SYSFS node for the device is gone
+#	and thus the attributes have been deleted
+#
+#	rules built using:
+#	- udevadm info --attribute-walk --name=input/*device* : attributes
+#	- udevadm monitor --env : events and env vars
+#
+#	Documentation is your friend: http://reactivated.net/writing_udev_rules.html
+#
+################################################################################################
+
+# legacy /dev/input/js* joystick devices
+KERNEL=="js[0-9]*", ACTION=="add", SUBSYSTEM=="input", RUN="BINDIR/joyosc-notifier -t joystick open"
+KERNEL=="js[0-9]*", ACTION=="remove", SUBSYSTEM=="input", RUN="BINDIR/joyosc-notifier -t joystick close"
+
+# /dev/input/event* joystick devices
+ENV{ID_INPUT_JOYSTICK}=="?*", ENV{DEVNAME}=="?*", ACTION=="add", SUBSYSTEM=="input", ATTRS{name}=="*", RUN="BINDIR/joyosc-notifier -t joystick open"
+ENV{ID_INPUT_JOYSTICK}=="?*", ENV{DEVNAME}=="?*", ACTION=="remove", SUBSYSTEM=="input", ATTRS{name}=="*", RUN="BINDIR/joyosc-notifier -t joystick close"
