@@ -78,10 +78,10 @@ class Device {
 
 	protected:
 
-		string	m_devName;      ///< the device name
-		string	m_oscAddress;   ///< osc address to send to
+		string	m_devName; //< the device name
+		string	m_oscAddress; //< osc address to send to
 		
-		Config& m_config;       ///< global config access
+		Config& m_config; //< global config access
 };
 
 /// \class DeviceIndices

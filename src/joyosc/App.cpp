@@ -49,7 +49,7 @@ void App::setup() {
 		m_oscReceiver.addOscObject(this);
 	}
 	catch(osc::ReceiveException &e) {
-		LOG_ERROR << e.what() << endl;
+		LOG_ERROR << endl << "	" << PACKAGE << e.what() << endl;
 		exit(EXIT_FAILURE);
 	}
 
@@ -58,9 +58,9 @@ void App::setup() {
 	m_oscSender.send();
 
 	// set signal handling
-	signal(SIGTERM, signalExit);    // terminate
-	signal(SIGQUIT, signalExit);    // quit
-	signal(SIGINT,  signalExit);	// interrupt
+	signal(SIGTERM, signalExit); // terminate
+	signal(SIGQUIT, signalExit); // quit
+	signal(SIGINT,  signalExit); // interrupt
 }
 		
 void App::run() {
@@ -106,7 +106,7 @@ bool App::processOscMessage(const ReceivedMessage& message,
 							const MessageSource& source) {
 
 	if(message.address() == oscRootAddress + "/open/joystick") {
-		LOG << endl << "	" << PACKAGE << ": Open joystick message received." << endl;
+		LOG << endl << "	" << PACKAGE << ": open joystick message received." << endl;
 		
 		m_joystickManager.closeAll();
 		m_joystickManager.openAll();
@@ -120,7 +120,7 @@ bool App::processOscMessage(const ReceivedMessage& message,
 		return true;
 	}
 	else if(message.address() == oscRootAddress + "/close/joystick") {
-		LOG << endl << "	" << PACKAGE << ": Close joystick message received." << endl;
+		LOG << endl << "	" << PACKAGE << ": close joystick message received" << endl;
 		
 		m_joystickManager.closeAll();
 		m_joystickManager.openAll();
@@ -135,11 +135,11 @@ bool App::processOscMessage(const ReceivedMessage& message,
 	}
 	else if(message.address() == oscRootAddress + "/quit") {
 		stop();
-		LOG << endl << "	" << PACKAGE << ": Quit message received. Exiting ..." << endl;
+		LOG << endl << "	" << PACKAGE << ": quit message received, exiting ..." << endl;
 		return true;
 	}
 
-	LOG << endl << "	" << PACKAGE << ": Unknown message received: "
+	LOG << endl << "	" << PACKAGE << ": unknown message received: "
 		<< message.address() << " " << message.types() << endl;
 
 	return false;
@@ -147,5 +147,5 @@ bool App::processOscMessage(const ReceivedMessage& message,
 
 void App::signalExit(int signal) {
 	appPtr->stop();
-	LOG << endl << "	" << PACKAGE << ": Signal caught. Exiting ..." << endl;
+	LOG << endl << "	" << PACKAGE << ": signal caught, exiting ..." << endl;
 }

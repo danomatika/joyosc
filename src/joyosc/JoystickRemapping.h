@@ -32,8 +32,8 @@ class JoystickRemapping : public tinyxml2::XMLObject {
 	
 		JoystickRemapping() : tinyxml2::XMLObject("remap") {}
 		
-		// mappings from -> to
-		// with key: from & value: to
+		/// mappings from -> to
+		/// with key: from & value: to
 		map<int,int> buttons;
 		map<int,int> axes;
 		map<int,int> balls;
@@ -47,6 +47,6 @@ class JoystickRemapping : public tinyxml2::XMLObject {
 		
 	protected:
 	
-		// XMLObject callback
+		/// XMLObject callback
 		bool readXML(tinyxml2::XMLElement* e);
 };

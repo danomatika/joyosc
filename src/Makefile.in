@@ -316,7 +316,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 
 # go into these dirs and process makefiles
-SUBDIRS = joyosc joyosc lsjs
+SUBDIRS = joyosc lsjs
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 

@@ -31,25 +31,25 @@ int main(int argc, char **argv) {
 
 	// init SDL
 	if(SDL_Init(SDL_INIT_VIDEO) < 0) {
-		LOG_ERROR << "Couldn't init SDL: " << SDL_GetError() << endl;
+		LOG_ERROR << PACKAGE << ": could not init SDL: " << SDL_GetError() << endl;
 		return EXIT_FAILURE;
 	}
 	
 	// init subsystem
 	if(Config::instance().joysticksOnly) {
 		if(SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) {
-			LOG_ERROR << "Couldn't init SDL joystick support: " << SDL_GetError() << endl;
+			LOG_ERROR << PACKAGE << ": could not init SDL joystick support: " << SDL_GetError() << endl;
 			return EXIT_FAILURE;
 		}
 	}
 	else {
 		if(SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) < 0) {
-			LOG_ERROR << "Couldn't init SDL game controller support: " << SDL_GetError() << endl;
+			LOG_ERROR << PACKAGE << ": could not init SDL game controller support: " << SDL_GetError() << endl;
 			return EXIT_FAILURE;
 		}
 	}
 	if(SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1") == SDL_FALSE) {
-		LOG_WARN << "Couldn't set joystick background events" << endl;
+		LOG_WARN << PACKAGE << ": could not set joystick background events" << endl;
 	}
 
 	// run the application

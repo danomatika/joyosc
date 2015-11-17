@@ -32,20 +32,21 @@ class JoystickIgnore : public tinyxml2::XMLObject {
 	
 		JoystickIgnore() : tinyxml2::XMLObject("ignore") {}
 		
-		// ids to ignore
-		// with key: id & value: void
+		/// ids to ignore
+		/// with key: id & value: void
 		map<int,bool> buttons;
 		map<int,bool> axes;
 		map<int,bool> balls;
 		map<int,bool> hats;
 		
-		// check indices & toss out any bad values
+		/// check indices & toss out any bad values
 		void check(Joystick* joystick);
-		
+	
+		/// print the current ignore values
 		void print();
 		
 	protected:
 	
-		// XMLObject callback
+		/// XMLObject callback
 		bool readXML(tinyxml2::XMLElement* e);
 };

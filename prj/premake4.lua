@@ -21,6 +21,7 @@ project "joyosc"
 	includedirs { "../src",
 				  "../lib/lopack/src",
 				  "../lib/tinyobject/src",
+				  "../lib/cpphelpers",
 				  "../lib/cpphelpers/tclap" }
 	libdirs { "../lib/lopack/src/lopack",
 			  "../lib/tinyobject/src/tinyobject" }

@@ -7,16 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5F406FAC22F92CBA17482A82 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E55142E0A447D3A0D8E032A /* main.cpp */; };
+		02A9665A4FFC568563173C4B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D6951155D3F124329527DA3 /* main.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1E55142E0A447D3A0D8E032A /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "main.cpp"; path = "main.cpp"; sourceTree = "<group>"; };
-		541F56517EAF3EA643D842CB /* lsjs */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = "lsjs"; path = "lsjs"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D6951155D3F124329527DA3 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "main.cpp"; path = "main.cpp"; sourceTree = "<group>"; };
+		3F86192D709431E62040750B /* lsjs */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = "lsjs"; path = "lsjs"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		4B7255B64880756163AD7705 /* Frameworks */ = {
+		76F75B161F2B74FA6F053A67 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -26,37 +26,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1A7303F009140C3E40AC076D /* lsjs */ = {
+		172519AC1AAF76B17D5E5EA8 /* lsjs */ = {
 			isa = PBXGroup;
 			children = (
-				3F1A61426F941D9C7BE272F8 /* src */,
-				4843528D2F9564AD44304928 /* Products */,
+				1803291E7B62004E02B54A2F /* src */,
+				66DB45C650AA7C7C32BA6707 /* Products */,
 			);
 			name = "lsjs";
 			sourceTree = "<group>";
 		};
-		3F1A61426F941D9C7BE272F8 /* src */ = {
+		1803291E7B62004E02B54A2F /* src */ = {
 			isa = PBXGroup;
 			children = (
-				0D4427E768587C8310B8553D /* lsjs */,
+				0599097C439D21CA61627DB6 /* lsjs */,
 			);
 			name = "src";
 			path = ../src;
 			sourceTree = "<group>";
 		};
-		0D4427E768587C8310B8553D /* lsjs */ = {
+		0599097C439D21CA61627DB6 /* lsjs */ = {
 			isa = PBXGroup;
 			children = (
-				1E55142E0A447D3A0D8E032A /* main.cpp */,
+				3D6951155D3F124329527DA3 /* main.cpp */,
 			);
 			name = "lsjs";
 			path = lsjs;
 			sourceTree = "<group>";
 		};
-		4843528D2F9564AD44304928 /* Products */ = {
+		66DB45C650AA7C7C32BA6707 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				541F56517EAF3EA643D842CB /* lsjs */,
+				3F86192D709431E62040750B /* lsjs */,
 			);
 			name = "Products";
 			sourceTree = "<group>";
@@ -64,13 +64,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		21ED78A20CE72E2C4C6F1B8C /* lsjs */ = {
+		57BE2F700C7F0716524953D6 /* lsjs */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0E092021574372B16E29788A /* Build configuration list for PBXNativeTarget "lsjs" */;
+			buildConfigurationList = 36504FC4654521367447617E /* Build configuration list for PBXNativeTarget "lsjs" */;
 			buildPhases = (
-				3B3A7A7129446D5B03C45C95 /* Resources */,
-				459D555D0B3C44EF64C633C3 /* Sources */,
-				4B7255B64880756163AD7705 /* Frameworks */,
+				40417B093428316047AB2D38 /* Resources */,
+				40BD64B53A704F5F73DE7FCD /* Sources */,
+				76F75B161F2B74FA6F053A67 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -79,7 +79,7 @@
 			name = "lsjs";
 			productInstallPath = "$(HOME)/bin";
 			productName = "lsjs";
-			productReference = 541F56517EAF3EA643D842CB /* lsjs */;
+			productReference = 3F86192D709431E62040750B /* lsjs */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -90,17 +90,17 @@
 			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "lsjs" */;
 			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
-			mainGroup = 1A7303F009140C3E40AC076D /* lsjs */;
+			mainGroup = 172519AC1AAF76B17D5E5EA8 /* lsjs */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				21ED78A20CE72E2C4C6F1B8C /* lsjs */,
+				57BE2F700C7F0716524953D6 /* lsjs */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		3B3A7A7129446D5B03C45C95 /* Resources */ = {
+		40417B093428316047AB2D38 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -110,11 +110,11 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		459D555D0B3C44EF64C633C3 /* Sources */ = {
+		40BD64B53A704F5F73DE7FCD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5F406FAC22F92CBA17482A82 /* main.cpp in Sources */,
+				02A9665A4FFC568563173C4B /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,7 +124,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		109E30CE50590A9C0B9723CF /* Debug */ = {
+		58DA788E6C840C7B05AD3DB3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -136,7 +136,7 @@
 			};
 			name = "Debug";
 		};
-		3DC165EA1EF5739F5D4E5EE3 /* Release */ = {
+		05D0459A23AB42997FF60685 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -149,7 +149,7 @@
 			};
 			name = "Release";
 		};
-		6BBF52BC46EF76825D140291 /* Debug */ = {
+		6C2A44853200583E556F196C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
@@ -196,7 +196,7 @@
 			};
 			name = "Debug";
 		};
-		3F1678E4723E058828AF2BA2 /* Release */ = {
+		46D979DE609240D0242F130A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
@@ -244,11 +244,11 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0E092021574372B16E29788A /* Build configuration list for PBXNativeTarget "lsjs" */ = {
+		36504FC4654521367447617E /* Build configuration list for PBXNativeTarget "lsjs" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				109E30CE50590A9C0B9723CF /* Debug */,
-				3DC165EA1EF5739F5D4E5EE3 /* Release */,
+				58DA788E6C840C7B05AD3DB3 /* Debug */,
+				05D0459A23AB42997FF60685 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug";
@@ -256,8 +256,8 @@
 		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "lsjs" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6BBF52BC46EF76825D140291 /* Debug */,
-				3F1678E4723E058828AF2BA2 /* Release */,
+				6C2A44853200583E556F196C /* Debug */,
+				46D979DE609240D0242F130A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug";

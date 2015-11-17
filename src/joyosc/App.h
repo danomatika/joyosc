@@ -61,5 +61,5 @@ class App : public osc::OscObject {
 		
 		Config& m_config; //< reference to global config
 		osc::OscReceiver& m_oscReceiver; //< reference to global osc receiver
-		osc::OscSender& m_oscSender;     //< reference to global osc sender
+		osc::OscSender& m_oscSender; //< reference to global osc sender
 };

@@ -16654,7 +16654,7 @@ esac
 
 ac_config_headers="$ac_config_headers src/config.h"
 
-ac_config_files="$ac_config_files Makefile data/Makefile lib/Makefile src/Makefile src/joyosc/Makefile src/joyosc-notifier/Makefile src/lsjs/Makefile"
+ac_config_files="$ac_config_files Makefile data/Makefile lib/Makefile src/Makefile src/joyosc/Makefile src/lsjs/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -17783,7 +17783,6 @@ do
     "lib/Makefile") CONFIG_FILES="$CONFIG_FILES lib/Makefile" ;;
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
     "src/joyosc/Makefile") CONFIG_FILES="$CONFIG_FILES src/joyosc/Makefile" ;;
-    "src/joyosc-notifier/Makefile") CONFIG_FILES="$CONFIG_FILES src/joyosc-notifier/Makefile" ;;
     "src/lsjs/Makefile") CONFIG_FILES="$CONFIG_FILES src/lsjs/Makefile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;

@@ -51,23 +51,23 @@ class Config : public tinyxml2::XMLObject {
 		/// creates a new object on the first call
 		static Config& instance();
 		
-		/// \section Variables
+	/// \section Variables
 		
-		unsigned int listeningPort;     ///< the listening port
-		string listeningAddress;        ///< base listening address
+		unsigned int listeningPort;     //< the listening port
+		string listeningAddress;        //< base listening address
 		
-		string sendingIp;               ///< ip to send to
-		unsigned int sendingPort;       ///< port to send to
+		string sendingIp;               //< ip to send to
+		unsigned int sendingPort;       //< port to send to
 		
-		string notificationAddress;     ///< base osc sending address for notifications
-		string deviceAddress;           ///< base osc sending addess for devices
+		string notificationAddress;     //< base osc sending address for notifications
+		string deviceAddress;           //< base osc sending addess for devices
 		
-		bool printEvents;               ///< print lots of events?
-		bool joysticksOnly;				///< disable game controller support?
+		bool printEvents;               //< print lots of events?
+		bool joysticksOnly;				//< disable game controller support?
 		
-		int sleepUS;                    ///< how long to sleep in the run loop
+		int sleepUS;                    //< how long to sleep in the run loop
 
-		/// \section Getters
+	/// \section Getters
 
 		/// get a reference to the OscSender and OscReceiver
 		inline osc::OscSender& getOscSender() {return m_oscSender;}
@@ -109,18 +109,18 @@ class Config : public tinyxml2::XMLObject {
 
 	protected:
 	
-		// XMLObject callback
+		/// XMLObject callback
 		bool readXML(tinyxml2::XMLElement* e);
 
 	private:
 
-		map<string,string> m_deviceAddresses; ///< device osc address mappings
-		map<string,unsigned int> m_joystickAxisDeadZones; ///< zeroing threshold
-		map<string,JoystickRemapping*> m_joystickRemappings; ///< joystick remappings
-		map<string,JoystickIgnore*> m_joystickIgnores; ///< joystick button, axis, etc ignores
+		map<string,string> m_deviceAddresses; //< device osc address mappings
+		map<string,unsigned int> m_joystickAxisDeadZones; //< zeroing threshold
+		map<string,JoystickRemapping*> m_joystickRemappings; //< joystick remappings
+		map<string,JoystickIgnore*> m_joystickIgnores; //< joystick button, axis, etc ignores
 		
-		osc::OscSender m_oscSender;         ///< global osc sender
-		osc::OscReceiver m_oscReceiver;     ///< global osc receiver
+		osc::OscSender m_oscSender; //< global osc sender
+		osc::OscReceiver m_oscReceiver; //< global osc receiver
 		
 		// hide all the constructors, copy functions here
 		Config();                           // singleton constructor

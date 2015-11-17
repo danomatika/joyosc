@@ -33,12 +33,10 @@ bool DeviceManager::open(int sdlIndex) {
 	if(m_devices.find(sdlIndex) != m_devices.end()) {
 		return false; // ignore duplicates
 	}
-	
 	DeviceIndices indices;
 	indices.index = firstAvailableIndex();
 	indices.sdlIndex = sdlIndex;
-	
-	if(SDL_IsGameController(sdlIndex)) {
+	if(SDL_IsGameController(sdlIndex)) { // false when controller api not inited
 		GameController *gc = new GameController();
 		if(gc->open(&indices)) {
 			m_devices[gc->getInstanceID()] = gc;
@@ -158,7 +156,8 @@ void DeviceManager::print(bool details) {
 
 // PROTECTED
 
-// brute force search for first available index, works with fact that map is ordered
+// brute force search for first available index, works with fact
+// that the map is ordered
 int DeviceManager::firstAvailableIndex() {
 	for(int i = 0; i < m_devices.size(); ++i) {
 		if(m_devices.find(i) == m_devices.end()) {

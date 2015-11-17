@@ -89,10 +89,10 @@ bool Config::parseCommandLine(int argc, char **argv) {
 	 
 		itoa.str("");
 		itoa << listeningPort;
-		TCLAP::ValueArg<int> inputPortOpt("l", "listeningPort", "Listening port (default: "+itoa.str()+")", false, listeningPort, "int");
+		TCLAP::ValueArg<int> inputPortOpt("l", "listeningport", "Listening port (default: "+itoa.str()+")", false, listeningPort, "int");
 		
 		TCLAP::SwitchArg eventsOpt("e", "events", "Print incoming events, useful for debugging", printEvents);
-		TCLAP::SwitchArg joysticksOpt("j", "joysticksOnly", "Disable game controller support, use joystick interface only", joysticksOnly);
+		TCLAP::SwitchArg joysticksOpt("j", "joysticksonly", "Disable game controller support, use joystick interface only", joysticksOnly);
 		
 		itoa.str("");
 		itoa << sleepUS;
@@ -262,15 +262,15 @@ Config::Config() :
 	printEvents(false), joysticksOnly(false), sleepUS(10000) {
 
 	// attach config values to xml attributes
-	subscribeXMLAttribute("port", "listening", XML_TYPE_UINT, &listeningPort);
+	subscribeXMLAttribute("listening", "port", XML_TYPE_UINT, &listeningPort);
 	
-	subscribeXMLAttribute("ip", "sending", XML_TYPE_STRING, &sendingIp);
-	subscribeXMLAttribute("port", "sending", XML_TYPE_UINT, &sendingPort);
+	subscribeXMLAttribute("sending", "ip", XML_TYPE_STRING, &sendingIp);
+	subscribeXMLAttribute("sending", "port", XML_TYPE_UINT, &sendingPort);
 	
-	subscribeXMLAttribute("notificationAddress", "osc", XML_TYPE_STRING, &notificationAddress);
-	subscribeXMLAttribute("deviceAddress", "osc", XML_TYPE_STRING, &deviceAddress);
+	subscribeXMLAttribute("osc", "notificationAddress", XML_TYPE_STRING, &notificationAddress);
+	subscribeXMLAttribute("osc", "deviceAddress", XML_TYPE_STRING, &deviceAddress);
 	
-	subscribeXMLAttribute("printEvents", "config", XML_TYPE_BOOL, &printEvents);
-	subscribeXMLAttribute("joysticksOnly", "config", XML_TYPE_BOOL, &joysticksOnly);
-	subscribeXMLAttribute("sleepUS", "config", XML_TYPE_UINT, &sleepUS);
+	subscribeXMLAttribute("config", "printEvents", XML_TYPE_BOOL, &printEvents);
+	subscribeXMLAttribute("config", "joysticksOnly", XML_TYPE_BOOL, &joysticksOnly);
+	subscribeXMLAttribute("config", "sleepUS", XML_TYPE_UINT, &sleepUS);
 }
