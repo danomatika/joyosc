@@ -36,7 +36,7 @@ bool DeviceManager::open(int sdlIndex) {
 	DeviceIndices indices;
 	indices.index = firstAvailableIndex();
 	indices.sdlIndex = sdlIndex;
-	if(SDL_IsGameController(sdlIndex)) { // false when controller api not inited
+	if(SDL_IsGameController(sdlIndex) == SDL_TRUE) { // false when controller api not inited
 		GameController *gc = new GameController();
 		if(gc->open(&indices)) {
 			m_devices[gc->getInstanceID()] = gc;
@@ -80,6 +80,7 @@ void DeviceManager::closeAll() {
 	m_devices.clear();	
 }
 
+// controller hotplugging: https://gist.github.com/urkle/6701236
 bool DeviceManager::handleEvent(SDL_Event* event) {
 	switch(event->type) {
 		
@@ -93,7 +94,7 @@ bool DeviceManager::handleEvent(SDL_Event* event) {
 			return true;
 			
 		case SDL_CONTROLLERDEVICEREMAPPED:
-			LOG << "DeviceManager: controller remapped event" << endl;
+			LOG << "CONTROLLER REMAPPED " << event->cdevice.which << endl;
 			return true;
 			
 		case SDL_CONTROLLERAXISMOTION:

@@ -13,12 +13,75 @@
 	 -->
 	<config printEvents="1" sleepUS="20000"/>
 
-	<!-- map joystick names to OSC send addresses, use lsjs to get names -->
-	<mappings>
+	<!-- device types to for mapping names to OSC send addresses and adding
+		 event customizations, use lsjs to get the names of the devices
+		 currently plugged in
+	-->
+	<devices>
+
+		<!-- game controllers: higher level joystick with input mappings
+
+			these are joysticks with a default SDL button & axis mapping
+
+			you can provide a custom mapping to add or override existing
+			mappings using the <mappings> element further below
+		-->
+		<controller name="Logitech F310 Gamepad (DInput)" address="/F310"/>
+		<controller name="PS3 Controller" address="/ps3"/>
+
+		<!-- you can also customize a specific controller -->
+		<controller name="Logitech F510 Gamepad (DInput)" address="/F510">
+
+			<!-- axisDeadZone: +/- area around the 0 point when centering
+							   an axis, some devices are jittery
+							   and require a larger number
+			-->
+			<thresholds axisDeadZone="3000"/>
+			
+			<!-- remap buttons, axes, etc; useful when trying to
+			     match different controllers to send the same button presses
+			     or you want to change the button and axis names
+				
+				types: button, axis
+
+				SDL game controller button names: a, b, x, y, start, back, guide,
+				leftshoudler, lefttrigger, rightshoulder, righttrigger, leftstick,
+				rightstick, dpup, dpdown, dpleft, dpright (dp = digital pad)
+
+				SDL game controller axis names: leftx, lefty, rightx, righty
+			-->
+			<remap>
+				<!-- send button b as lefttrigger button -->
+				<!-- <button from="b" to="lefttrigger"/> -->
+				<!-- send a button a as square button (rename completely) -->
+				<!-- <button from="a" to="square"/> -->
+				<!-- send left x axis  as right y axis -->
+				<axis from="leftx" to="righty"/>
+			</remap>
+
+			<!-- ignore buttons, axes, etc; useful if you want to save bandwidth
+			     by not sending unneeded events, this is especially true for
+			     devices which might map an accelerometer to a set of axes
+
+			     types: button, axis
+			-->
+			<ignore>
+				<!-- ignore x button -->
+				<!-- <button id="x"/> -->
+				<!-- ignore rightx axis -->
+				<axis id="rightx"/>
+			</ignore>
+		</controller>
+
+		<!-- joysticks: base hoystick device
+
+			these are joysticks devices w/out game controller mappings or when
+			the game controller api is disabled via the --joysticks only option
+		-->
 		<joystick name="Saitek P990 Dual Analog Pad" address="/bbox"/>
 		<joystick name="Logitech Dual Action" address="/ps2black"/>
 
-		<!-- you can also customize a specific controller -->
+		<!-- like controllers, you can also customize a specific joystick -->
 		<joystick name="PLAYSTATION(R)3 Controller" address="/js0">
 
 			<!-- axisDeadZone: +/- area around the 0 point when centering
@@ -40,7 +103,8 @@
 			</remap>
 
 			<!-- ignore buttons, axes, etc; useful if you want to save bandwidth
-			     by not sending unneeded events
+			     by not sending unneeded events, this is especially true for
+			     devices which might map an accelerometer to a set of axes
 
 			     types: button, axis, hat, ball
 			-->
@@ -51,5 +115,25 @@
 				<axis id="1"/>
 			</ignore>
 		</joystick>
+	</devices>
+
+	<!-- mappings: custom SDL game controller mappings to add at runtime
+
+		 useful if you want to remap butons/axes or you have a device which does
+		 not have a game controller mapping and only detects as a joystick
+
+		 use lsjs -m to print the default SDL mappings for the currently plugged
+		 in devices, if there is no mapping for a device, you'll need to provide
+		 one here if you want the device to show up as a game controller
+
+		 note: device names & guids may be different between platforms
+
+		 see the folloeing for more info:
+		 - http://wiki.libsdl.org/SDL_GameControllerAddMapping
+		 - https://github.com/gabomdq/SDL_GameControllerDB
+	-->
+	<mappings>
+		<mapping>4c050000000000006802000000000000,PS3 Controller,a:b14,b:b13,back:b0,dpdown:b6,dpleft:b7,dpright:b5,dpup:b4,guide:b16,leftshoulder:b10,leftstick:b1,lefttrigger:b8,leftx:a0,lefty:a1,rightshoulder:b11,rightstick:b2,righttrigger:b9,rightx:a2,righty:a3,start:b3,x:b15,y:b12,platform:Mac OS X</mapping>
 	</mappings>
+
 </joyosc>

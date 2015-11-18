@@ -25,7 +25,7 @@
 #include "Joystick.h"
 
 /// \class JoystickRemapping
-/// \brief defines button, axis, ball, & hat remappings
+/// \brief defines joystick button, axis, ball, & hat remappings
 class JoystickRemapping : public tinyxml2::XMLObject {
 
 	public:
@@ -41,6 +41,12 @@ class JoystickRemapping : public tinyxml2::XMLObject {
 		
 		/// check indices & toss out any bad values
 		void check(Joystick* joystick);
+	
+		/// get mapping for an id, returns the id if no mapping found
+		int mappingForButton(int button);
+		int mappingForAxis(int axis);
+		int mappingForBall(int ball);
+		int mappingForHat(int hat);
 	
 		/// print the current mappings
 		void print();

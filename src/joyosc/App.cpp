@@ -39,7 +39,6 @@ App::App() : OscObject((string)"/"+PACKAGE), m_bRun(false),
 App::~App() {}
 
 void App::setup() {
-
 	m_config.print();
 	
 	// setup osc interface
@@ -48,8 +47,8 @@ void App::setup() {
 		m_oscSender.setup(m_config.sendingIp, m_config.sendingPort);
 		m_oscReceiver.addOscObject(this);
 	}
-	catch(osc::ReceiveException &e) {
-		LOG_ERROR << endl << "	" << PACKAGE << e.what() << endl;
+	catch(exception &e) {
+		LOG_ERROR << e.what() << endl;
 		exit(EXIT_FAILURE);
 	}
 
@@ -77,7 +76,7 @@ void App::run() {
 		// handle any joystick events
 		SDL_Event event;
 		while(SDL_PollEvent(&event)) {
-			if(!m_joystickManager.handleEvent(&event)) {
+			if(!m_deviceManager.handleEvent(&event)) {
 				switch(event.type) {
 					case SDL_QUIT:
 						m_bRun = false;
@@ -92,8 +91,7 @@ void App::run() {
 }
 		
 void App::cleanup() {
-	// close devices
-	m_joystickManager.closeAll();
+	m_deviceManager.closeAll();
 	
 	m_oscSender << BeginMessage(m_config.notificationAddress + "/shutdown")
 				<< EndMessage();
@@ -108,9 +106,9 @@ bool App::processOscMessage(const ReceivedMessage& message,
 	if(message.address() == oscRootAddress + "/open/joystick") {
 		LOG << endl << "	" << PACKAGE << ": open joystick message received." << endl;
 		
-		m_joystickManager.closeAll();
-		m_joystickManager.openAll();
-		m_joystickManager.print();
+		m_deviceManager.closeAll();
+		m_deviceManager.openAll();
+		m_deviceManager.print();
 		LOG << endl;
 
 		m_oscSender << BeginMessage(m_config.notificationAddress + "/open")
@@ -122,9 +120,9 @@ bool App::processOscMessage(const ReceivedMessage& message,
 	else if(message.address() == oscRootAddress + "/close/joystick") {
 		LOG << endl << "	" << PACKAGE << ": close joystick message received" << endl;
 		
-		m_joystickManager.closeAll();
-		m_joystickManager.openAll();
-		m_joystickManager.print();
+		m_deviceManager.closeAll();
+		m_deviceManager.openAll();
+		m_deviceManager.print();
 		LOG << endl;
 
 		m_oscSender << BeginMessage(m_config.notificationAddress + "/close")

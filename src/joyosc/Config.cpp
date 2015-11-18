@@ -25,6 +25,9 @@
 #include "Log.h"
 #include "../config.h" // autotools generated header
 
+#include "GameController.h"
+#include "GameControllerignore.h"
+#include "GameControllerRemapping.h"
 #include "JoystickIgnore.h"
 #include "JoystickRemapping.h"
 
@@ -48,6 +51,30 @@ string Config::getDeviceAddress(string deviceName) {
 		return iter->second;
 	}
 	return "";
+}
+
+unsigned int Config::getControllerAxisDeadZone(string deviceName) {
+	map<string,unsigned int>::iterator iter = m_controllerAxisDeadZones.find(deviceName);
+	if(iter != m_controllerAxisDeadZones.end()) {
+		return iter->second;
+	}
+	return 0;
+}
+
+GameControllerRemapping* Config::getControllerRemapping(string deviceName) {
+	map<string,GameControllerRemapping*>::iterator iter = m_controllerRemappings.find(deviceName);
+	if(iter != m_controllerRemappings.end()) {
+		return iter->second;
+	}
+	return NULL;
+}
+
+GameControllerIgnore* Config::getControllerIgnore(string deviceName) {
+	map<string,GameControllerIgnore*>::iterator iter = m_controllerIgnores.find(deviceName);
+	if(iter != m_controllerIgnores.end()) {
+		return iter->second;
+	}
+	return NULL;
 }
 
 unsigned int Config::getJoystickAxisDeadZone(string deviceName) {
@@ -119,7 +146,7 @@ bool Config::parseCommandLine(int argc, char **argv) {
 		// load the config file (if one exists)
 		if(configCmd.getValue() != "") {
 			setXMLFilename(Config::absolutePath(configCmd.getValue()));
-			LOG << "Config: loading \"" << getXMLFilename() << "\"" << endl;
+			LOG << "Config: loading " << getXMLFilename() << endl;
 			loadXMLFile();
 			closeXMLFile();
 		}
@@ -149,12 +176,14 @@ void Config::print() {
 		<< "print events?:   " << (printEvents ? "yes" : "no") << endl
 		<< "joysticks only?: " << (joysticksOnly ? "yes" : "no") << endl
 		<< "sleep us:        " << sleepUS << endl;
-
+	
+	LOG << m_deviceAddresses.size() << " device addresses"
+		<< (m_deviceAddresses.empty() ? "" : ": ") << endl;
 	int index = 0;
 	map<string, string>::iterator iter;
 	for(iter = m_deviceAddresses.begin(); iter != m_deviceAddresses.end(); iter++) {
-		LOG << "	" << index << " \"" << iter->first
-			<< "\" : \"" << iter->second << "\"" << endl;
+		LOG << "  " << index << " " << iter->first
+			<< " : " << iter->second << endl;
 		++index;
 	}
 }
@@ -184,32 +213,84 @@ string Config::absolutePath(string path) {
 // PROTECTED
 
 bool Config::readXML(XMLElement* e) {
-	// load the device mappings
-	XMLElement* child = XML::getChild(e, "mappings");
+	XMLElement* child = getXMLChild("devices");
 	if(child != NULL) {
 		XMLElement* child2 = child->FirstChildElement();
 		while(child2 != NULL) {
-			if((string)child2->Name() == "joystick") {
+			if((string)child2->Name() == "controller") {
 				string name = XML::getAttrString(child2, "name");
 				string addr = XML::getAttrString(child2, "address");
 				
-				pair<map<string,string>::iterator, bool> ret;
+				pair<map<string,string>::iterator,bool> ret;
 				ret = m_deviceAddresses.insert(make_pair(name, addr));
 				if(!ret.second) {
-					LOG_WARN << "Config: joystick name \"" << name
-							 << "\" already exists" << endl;
+					LOG_WARN << "Config: game controller name " << name
+							 << " already exists" << endl;
 				}
 				
 				XMLElement* thresholdsChild = XML::getChild(child2, "thresholds");
 				if(thresholdsChild) {
 					unsigned int deadZone = XML::getAttrUInt(thresholdsChild, "axisDeadZone", 0);
 					if(deadZone > 0) {
-						pair<map<string,unsigned int>::iterator, bool> threshRet;
+						pair<map<string,unsigned int>::iterator,bool> threshRet;
 						threshRet= m_joystickAxisDeadZones.insert(make_pair(name, deadZone));
-						if(!threshRet.second)
-						{
-							LOG_WARN << "Config: joystick axis deadzone for \""
-									 << name << "\" already exists" << endl;
+						if(!threshRet.second) {
+							LOG_WARN << "Config: game controller axis deadzone for "
+									 << name << " already exists" << endl;
+						}
+					}
+				}
+				
+				XMLElement* remapChild = XML::getChild(child2, "remap");
+				if(remapChild) {
+					GameControllerRemapping *remap = new GameControllerRemapping;
+					if(!remap->loadXML(remapChild)) {
+						LOG_WARN << "Config: ignoring empty game controller remap for "
+								 << name << endl;
+					}
+					pair<map<string,GameControllerRemapping*>::iterator,bool> remapRet;
+					remapRet = m_controllerRemappings.insert(make_pair(name, remap));
+					if(!remapRet.second) {
+						LOG_WARN << "Config: game controller remapping for "
+								 << name << " already exists" << endl;
+					}
+				}
+				
+				XMLElement* ignoreChild = XML::getChild(child2, "ignore");
+				if(ignoreChild) {
+					GameControllerIgnore *ignore = new GameControllerIgnore;
+					if(!ignore->loadXML(ignoreChild)) {
+						LOG_WARN << "Config: ignoring empty game controller ignore for "
+								 << name << endl;
+					}
+					pair<map<string,GameControllerIgnore*>::iterator,bool> ignoreRet;
+					ignoreRet = m_controllerIgnores.insert(make_pair(name, ignore));
+					if(!ignoreRet.second) {
+						LOG_WARN << "Config: game controller ignore for "
+								 << name << " already exists" << endl;
+					}
+				}
+			}
+			else if((string)child2->Name() == "joystick") {
+				string name = XML::getAttrString(child2, "name");
+				string addr = XML::getAttrString(child2, "address");
+				
+				pair<map<string,string>::iterator,bool> ret;
+				ret = m_deviceAddresses.insert(make_pair(name, addr));
+				if(!ret.second) {
+					LOG_WARN << "Config: joystick name " << name
+							 << " already exists" << endl;
+				}
+				
+				XMLElement* thresholdsChild = XML::getChild(child2, "thresholds");
+				if(thresholdsChild) {
+					unsigned int deadZone = XML::getAttrUInt(thresholdsChild, "axisDeadZone", 0);
+					if(deadZone > 0) {
+						pair<map<string,unsigned int>::iterator,bool> threshRet;
+						threshRet= m_joystickAxisDeadZones.insert(make_pair(name, deadZone));
+						if(!threshRet.second) {
+							LOG_WARN << "Config: joystick axis deadzone for "
+									 << name << " already exists" << endl;
 						}
 					}
 				}
@@ -218,14 +299,14 @@ bool Config::readXML(XMLElement* e) {
 				if(remapChild) {
 					JoystickRemapping *remap = new JoystickRemapping;
 					if(!remap->loadXML(remapChild)) {
-						LOG_WARN << "Config: ignoring empty remap for \""
-								 << name << "\""<< endl;
+						LOG_WARN << "Config: ignoring empty joystick remap for "
+								 << name << endl;
 					}
-					pair<map<string,JoystickRemapping*>::iterator, bool> remapRet;
+					pair<map<string,JoystickRemapping*>::iterator,bool> remapRet;
 					remapRet = m_joystickRemappings.insert(make_pair(name, remap));
 					if(!remapRet.second) {
-						LOG_WARN << "Config: joystick remapping for \""
-								 << name << "\" already exists" << endl;
+						LOG_WARN << "Config: joystick remapping for "
+								 << name << " already exists" << endl;
 					}
 				}
 				
@@ -233,19 +314,46 @@ bool Config::readXML(XMLElement* e) {
 				if(ignoreChild) {
 					JoystickIgnore *ignore = new JoystickIgnore;
 					if(!ignore->loadXML(ignoreChild)) {
-						LOG_WARN << "Config: ignoring empty ignore for \""
-								 << name << "\""<< endl;
+						LOG_WARN << "Config: ignoring empty joystick ignore for "
+								 << name << endl;
 					}
-					pair<map<string,JoystickIgnore*>::iterator, bool> ignoreRet;
+					pair<map<string,JoystickIgnore*>::iterator,bool> ignoreRet;
 					ignoreRet = m_joystickIgnores.insert(make_pair(name, ignore));
 					if(!ignoreRet.second) {
-						LOG_WARN << "Config: joystick ignore for \""
-								 << name << "\" already exists" << endl;
+						LOG_WARN << "Config: joystick ignore for "
+								 << name << " already exists" << endl;
 					}
 				}
 			}
+			else {
+				LOG_WARN << "Config: unknown device xml element: \""
+						 << child2->Name() << "\"" << endl;
+			}
 			child2 = child2->NextSiblingElement();
-		}	
+		}
+		child = getXMLChild("mappings");
+		if(child != NULL) {
+			XMLElement* child2 = child->FirstChildElement();
+			while(child2 != NULL) {
+				if((string)child2->Name() == "mapping") {
+					string mapping = XML::getTextString(child2);
+					int ret = GameController::addMapping(mapping);
+					if(ret == 0) {
+						LOG_DEBUG << "Config: updated mapping: \""
+								  << mapping << "\"" << endl;
+					}
+					else if(ret == 1) {
+						LOG_DEBUG << "Config: added mapping: \""
+								  << mapping << "\"" << endl;
+					}
+				}
+				else {
+					LOG_WARN << "Config: unknown mapping element: \""
+					         << child2->Name() << "\"" << endl;
+				}
+				child2 = child2->NextSiblingElement();
+			}
+		}
 		return true;
 	}
 	return false;

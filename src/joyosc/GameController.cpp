@@ -22,11 +22,12 @@
 ==============================================================================*/
 #include "GameController.h"
 
-#include "Joystick.h"
+#include "GameControllerRemapping.h"
+#include "GameControllerIgnore.h"
 
 GameController::GameController(string oscAddress) :
 	Device(oscAddress), m_controller(NULL), m_index(-1), m_instanceID(-1),
-	m_axisDeadZone(0) {}
+	m_axisDeadZone(0), m_remapping(NULL), m_ignore(NULL) {}
 
 bool GameController::open(void *data) {
 	if(data == NULL) {
@@ -58,7 +59,7 @@ bool GameController::open(void *data) {
 	if(m_oscAddress == "") {
 		// not found ... set a generic name using the index
 		stringstream stream;
-		stream << "/js" << m_index;
+		stream << "/gc" << m_index;
 		m_oscAddress = stream.str();
 	}
 			
@@ -67,11 +68,31 @@ bool GameController::open(void *data) {
 		m_prevAxisValues.push_back(0);
 	}
 	
+	// set axis dead zone if one exists
+	int axisDeadZone = Config::instance().getControllerAxisDeadZone(getDevName());
+	if(axisDeadZone > 0) {
+		setAxisDeadZone(axisDeadZone);
+	}
+	
+	// set remapping if one exists
+	GameControllerRemapping* remap = Config::instance().getControllerRemapping(getDevName());
+	if(remap) {
+		setRemapping(remap);
+		printRemapping();
+	}
+	
+	// set ignore if one exists
+	GameControllerIgnore *ignore = Config::instance().getControllerIgnore(getDevName());
+	if(ignore) {
+		setIgnore(ignore);
+		printIgnores();
+	}
+	
 	LOG << "GameController: opened " << getDeviceString() << endl;
 	if(m_controller && Config::instance().printEvents) {
 		SDL_Joystick *joystick = SDL_GameControllerGetJoystick(m_controller);
-		LOG << "	num buttons: " << SDL_JoystickNumButtons(joystick) << endl
-			<< "	num axes: " << SDL_JoystickNumAxes(joystick) << endl;
+		LOG << "  num buttons: " << SDL_JoystickNumButtons(joystick) << endl
+			<< "  num axes: " << SDL_JoystickNumAxes(joystick) << endl;
 	}
 	return true;
 }
@@ -82,7 +103,7 @@ void GameController::close() {
 			SDL_GameControllerClose(m_controller);
 		}
 		LOG << "GameController: closed " << m_index
-			<< " \"" << m_devName << "\" with address "
+			<< " " << m_devName << " with address "
 			<< m_oscAddress << endl;
 		m_controller = NULL;
 	}
@@ -98,104 +119,63 @@ bool GameController::handleEvent(void* data) {
 	if(data == NULL) {
 		return false;
 	}
-	
 	osc::OscSender& sender = m_config.getOscSender();
-	
 	SDL_Event* event = (SDL_Event*) data;
 	switch(event->type) {
 		
 		case SDL_CONTROLLERBUTTONDOWN: {
-//			if(event->jbutton.which != m_instanceID) {
-//				break;
-//			}
-			
-//			// ignore?
-//			if(m_ignore) {
-//				map<int,bool>::iterator iter = m_ignore->buttons.find(event->jbutton.button);
-//				if(iter != m_ignore->buttons.end()) {
-//					break;
-//				}
-//			}
-//			
-//			// remap?
-//			if(m_remapping) {				
-//				map<int,int>::iterator iter = m_remapping->buttons.find(event->jbutton.button);
-//				if(iter != m_remapping->buttons.end()) {
-//					event->jbutton.button = iter->second;
-//				}
-//			}
-			
 			string button = SDL_GameControllerGetStringForButton((SDL_GameControllerButton)event->cbutton.button);
+			if(m_ignore && m_ignore->isButtonIgnored(button)) {
+				break;
+			}
+			if(m_remapping) {
+				button = m_remapping->mappingForButton(button);
+			}
+
 			sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/button")
 				   << button << event->cbutton.state
 				   << osc::EndMessage();
 			sender.send();
-
+			
 			if(m_config.printEvents) {
-				LOG << m_oscAddress << " \"" << m_devName << "\""
+				LOG << m_oscAddress << " " << m_devName
 					<< " button: " << button << " " << (int) event->cbutton.state << endl;
 			}
 			return true;
 		}
 		
 		case SDL_CONTROLLERBUTTONUP: {
-//			if(event->jbutton.which != m_instanceID) {
-//				break;
-//			}
-			
-//			// ignore?
-//			if(m_ignore) {
-//				map<int,bool>::iterator iter = m_ignore->buttons.find(event->jbutton.button);
-//				if(iter != m_ignore->buttons.end()) {
-//					break;
-//				}
-//			}
-			
-//			// remap?
-//			if(m_remapping) {
-//				map<int,int>::iterator iter = m_remapping->buttons.find(event->jbutton.button);
-//				if(iter != m_remapping->buttons.end()) {
-//					event->jbutton.button = iter->second;
-//				}
-//			}
-			
 			string button = SDL_GameControllerGetStringForButton((SDL_GameControllerButton)event->cbutton.button);
+			if(m_ignore && m_ignore->isButtonIgnored(button)) {
+				break;
+			}
+			if(m_remapping) {
+				button = m_remapping->mappingForButton(button);
+			}
+
 			sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/button")
 				   << button << event->cbutton.state
 				   << osc::EndMessage();
 			sender.send();
-
+			
 			if(m_config.printEvents) {
-				LOG << m_oscAddress << " \"" << m_devName << "\""
+				LOG << m_oscAddress << " " << m_devName
 					<< " button: " << button << " " << (int) event->cbutton.state << endl;
 			}
 			return true;
 		}
 
 		case SDL_CONTROLLERAXISMOTION: {
-//			if(event->jaxis.which != m_instanceID) {
-//				break;
-//			}
-			
-//			// ignore?
-//			if(m_ignore) {
-//				map<int,bool>::iterator iter = m_ignore->axes.find(event->jaxis.axis);
-//				if(iter != m_ignore->axes.end()) {
-//					break;
-//				}
-//			}
-			
-//			// remap?
-//			if(m_remapping) {
-//				map<int,int>::iterator iter = m_remapping->axes.find(event->jaxis.axis);
-//				if(iter != m_remapping->axes.end()) {
-//					event->jaxis.axis = iter->second;
-//				}
-//			}
-			
-			int value = (int) event->caxis.value;
-			 
+			string axis = SDL_GameControllerGetStringForAxis((SDL_GameControllerAxis)event->caxis.axis);
+			if(m_ignore && m_ignore->isAxisIgnored(axis)) {
+				break;
+			}
+			if(m_remapping) {
+				axis = m_remapping->mappingForAxis(axis);
+			}
+
 			// handle jitter by creating a dead zone
+			int value = (int) event->caxis.value;
 			if(abs(value) < m_axisDeadZone) {
 				value = 0;
 			}
@@ -205,7 +185,6 @@ bool GameController::handleEvent(void* data) {
 				return true;
 			}
 			
-			string axis = SDL_GameControllerGetStringForAxis((SDL_GameControllerAxis)event->caxis.axis);
 			sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/axis")
 				   << axis << value
 				   << osc::EndMessage();
@@ -215,13 +194,12 @@ bool GameController::handleEvent(void* data) {
 			m_prevAxisValues[event->caxis.axis] = value;
 
 			if(m_config.printEvents) {
-				LOG << m_oscAddress << " \"" << m_devName << "\""
+				LOG << m_oscAddress << " " << m_devName
 					<< " axis: " << axis << " " << value << endl;
 			}
 			return true;
 		}
 	}
-	
 	return false;
 }
 
@@ -233,8 +211,8 @@ void GameController::print() {
 	LOG << getDeviceString() << endl;
 	if(m_controller) {
 		SDL_Joystick *joystick = SDL_GameControllerGetJoystick(m_controller);
-		LOG << "	num buttons: " << SDL_JoystickNumButtons(joystick) << endl
-			<< "	num axes: " << SDL_JoystickNumAxes(joystick) << endl;
+		LOG << "  num buttons: " << SDL_JoystickNumButtons(joystick) << endl
+			<< "  num axes: " << SDL_JoystickNumAxes(joystick) << endl;
 	}
 }
 
@@ -244,8 +222,49 @@ string GameController::getDeviceString() {
 	return s.str();
 }
 
+void GameController::printRemapping() {
+	if(m_controller && m_remapping) {
+		m_remapping->print();
+	}
+}
+
+void GameController::printIgnores() {
+	if(m_controller && m_ignore) {
+		m_ignore->print();
+	}
+}
+
+SDL_Joystick* GameController::getJoystick() {
+	if(m_controller) {
+		return SDL_GameControllerGetJoystick(m_controller);
+	}
+	return NULL;
+}
+
 void GameController::setAxisDeadZone(unsigned int zone) {
 	m_axisDeadZone = zone;
 	LOG_DEBUG << "GameController \"" << getDevName() << "\": "
 			  << "set axis dead zone to " << zone << endl;
+}
+
+void GameController::setRemapping(GameControllerRemapping* remapping) {
+	m_remapping = remapping;
+	if(m_remapping) {
+		m_remapping->check(this);
+	}
+}
+
+void GameController::setIgnore(GameControllerIgnore* ignore) {
+	m_ignore = ignore;
+	if(m_ignore) {
+		m_ignore->check(this);
+	}
+}
+
+int GameController::addMapping(string mapping) {
+	int ret = SDL_GameControllerAddMapping(mapping.c_str());
+	if(ret < 0) {
+		LOG_WARN << "GameController mapping error: " << SDL_GetError() << endl;
+	}
+	return ret;
 }

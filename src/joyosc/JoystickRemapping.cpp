@@ -31,145 +31,158 @@ void JoystickRemapping::check(Joystick* joystick) {
 
 	map<int,int>::iterator iter;
 	int numButtons = SDL_JoystickNumButtons(joystick->getJoystick());
-	for(iter = buttons.begin(); iter != buttons.end(); ++iter) {
+	for(iter = buttons.begin(); iter != buttons.end();) {
 		if(iter->first > numButtons || iter->second > numButtons) {
-			LOG_WARN << "JoystickRemapping for \"" << joystick->getDevName() << "\": "
+			LOG_WARN << "Joystick " << joystick->getDevName() << ": "
 					 << "removing invalid button remap: "
-					 << iter->first << " -> " << iter->second;
+					 << iter->first << " -> " << iter->second << endl;
+			iter = buttons.erase(iter);
+		}
+		else {
+			++iter;
 		}
 	}
 	
 	int numAxes = SDL_JoystickNumAxes(joystick->getJoystick());
-	for(iter = axes.begin(); iter != axes.end(); ++iter) {
+	for(iter = axes.begin(); iter != axes.end();) {
 		if(iter->first > numAxes || iter->second > numAxes) {
-			LOG_WARN << "JoystickRemapping for \"" << joystick->getDevName() << "\": "
+			LOG_WARN << "Joystick " << joystick->getDevName() << ": "
 					 << "removing invalid axis remap: "
-					 << iter->first << " -> " << iter->second;
+					 << iter->first << " -> " << iter->second << endl;
+			iter = axes.erase(iter);
+		}
+		else {
+			++iter;
 		}
 	}
 	
 	int numBalls = SDL_JoystickNumBalls(joystick->getJoystick());
-	for(iter = balls.begin(); iter != balls.end(); ++iter) {
+	for(iter = balls.begin(); iter != balls.end();) {
 		if(iter->first > numBalls || iter->second > numBalls) {
-			LOG_WARN << "JoystickRemapping for \"" << joystick->getDevName() << "\": "
+			LOG_WARN << "Joystick " << joystick->getDevName() << ": "
 					 << "removing invalid ball remap: "
-					 << iter->first << " -> " << iter->second;
+					 << iter->first << " -> " << iter->second << endl;
+			iter = balls.erase(iter);
+		}
+		else {
+			++iter;
 		}
 	}
 	
-	int numHats = SDL_JoystickNumButtons(joystick->getJoystick());
-	for(iter = hats.begin(); iter != hats.end(); ++iter) {
+	int numHats = SDL_JoystickNumHats(joystick->getJoystick());
+	for(iter = hats.begin(); iter != hats.end();) {
 		if(iter->first > numHats || iter->second > numHats) {
-			LOG_WARN << "JoystickRemapping for \"" << joystick->getDevName() << "\": "
+			LOG_WARN << "Joystick " << joystick->getDevName() << ": "
 					 << "removing invalid hat remap: "
-					 << iter->first << " -> " << iter->second;
+					 << iter->first << " -> " << iter->second << endl;
+			iter = hats.erase(iter);
+		}
+		else {
+			++iter;
 		}
 	}
 }
 
-void JoystickRemapping::print() {
+int JoystickRemapping::mappingForButton(int button) {
+	map<int,int>::iterator iter = buttons.find(button);
+	return iter != buttons.end() ? iter->second : button;
+}
 
-	if(!buttons.empty()) {
-		map<int,int>::iterator iter = buttons.begin();
-		for(; iter != buttons.end(); ++iter) {
-			LOG << "	button remap: " << iter->first
-				<< " -> " << iter->second << endl;
-		}
+int JoystickRemapping::mappingForAxis(int axis) {
+	map<int,int>::iterator iter = axes.find(axis);
+	return iter != axes.end() ? iter->second : axis;
+}
+
+int JoystickRemapping::mappingForBall(int ball) {
+	map<int,int>::iterator iter = balls.find(ball);
+	return iter != balls.end() ? iter->second : ball;
+}
+
+int JoystickRemapping::mappingForHat(int hat) {
+	map<int,int>::iterator iter = hats.find(hat);
+	return iter != hats.end() ? iter->second : hat;
+}
+
+void JoystickRemapping::print() {
+	map<int,int>::iterator iter;
+	for(iter = buttons.begin(); iter != buttons.end(); ++iter) {
+		LOG << "  button remap: " << iter->first
+			<< " -> " << iter->second << endl;
 	}
-	
-	if(!axes.empty()) {
-		map<int,int>::iterator iter = axes.begin();
-		for(; iter != axes.end(); ++iter) {
-			LOG << "	axis remap: " << iter->first
-				<< " -> " << iter->second << endl;
-		}
+	for(iter = axes.begin(); iter != axes.end(); ++iter) {
+		LOG << "  axis remap: " << iter->first
+			<< " -> " << iter->second << endl;
 	}
-	
-	if(!balls.empty()) {
-		map<int,int>::iterator iter = balls.begin();
-		for(; iter != balls.end(); ++iter) {
-			LOG << "	ball remap: " << iter->first
-				<< " -> " << iter->second << endl;
-		}
+	for(iter = balls.begin(); iter != balls.end(); ++iter) {
+		LOG << "  ball remap: " << iter->first
+			<< " -> " << iter->second << endl;
 	}
-	
-	if(!hats.empty()) {
-		map<int,int>::iterator iter = hats.begin();
-		for(; iter != hats.end(); ++iter) {
-			LOG << "	hat remap: " << iter->first
-				<< " -> " << iter->second << endl;
-		}
+	for(iter = hats.begin(); iter != hats.end(); ++iter) {
+		LOG << "  hat remap: " << iter->first
+			<< " -> " << iter->second << endl;
 	}
 }
 
 bool JoystickRemapping::readXML(XMLElement* e) {
-
 	bool loaded = false;
+	pair<map<int,int>::iterator, bool> ret;
 	string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
-	
-	// load the device mappings
 	XMLElement* child = e->FirstChildElement();
 	while(child != NULL) {
 		int from  = XML::getAttrInt(child, "from", -1);
 		int to = XML::getAttrInt(child, "to", -1);
-		
 		if(from > -1 && to > -1) {
 			if((string)child->Name() == "button") {
-				pair<map<int,int>::iterator, bool> ret;
 				ret = buttons.insert(make_pair(from, to));
 				if(!ret.second) {
-					LOG_WARN << "Joystick \"" << devName << "\": "
+					LOG_WARN << "Joystick " << devName << ": "
 							 << "mapping for button " << from
 							 << " already exists" << endl;
 				}
-				LOG_DEBUG << "Joystick \"" << devName << "\": "
+				LOG_DEBUG << "Joystick " << devName << ": "
 						  << "remapped button " << from << " to " << to << endl;
 				loaded = true;
 			}
 			else if((string)child->Name() == "axis") {
-				pair<map<int,int>::iterator, bool> ret;
 				ret = axes.insert(make_pair(from, to));
 				if(!ret.second) {
-					LOG_WARN << "Joystick \"" << devName << "\": "
+					LOG_WARN << "Joystick " << devName << ": "
 							 << "mapping for axis " << from
 							 << " already exists" << endl;
 				}
-				LOG_DEBUG << "Joystick \"" << devName << "\": "
+				LOG_DEBUG << "Joystick " << devName << ": "
 						  << "remapped axis " << from << " to " << to << endl;
 				loaded = true;
 			}
 			else if((string)child->Name() == "ball") {
-				pair<map<int,int>::iterator, bool> ret;
 				ret = balls.insert(make_pair(from, to));
 				if(!ret.second) {
-					LOG_WARN << "Joystick \"" << devName << "\": "
+					LOG_WARN << "Joystick " << devName << ": "
 							 << "mapping for ball " << from
 							 << " already exists" << endl;
 				}
-				LOG_DEBUG << "Joystick \"" << devName << "\": "
+				LOG_DEBUG << "Joystick " << devName << ": "
 						  << "remapped ball " << from << " to " << to << endl;
 				loaded = true;
 			}
 			else if((string)child->Name() == "hat") {
-				pair<map<int,int>::iterator, bool> ret;
 				ret = balls.insert(make_pair(from, to));
 				if(!ret.second) {
-					LOG_WARN << "Joystick \"" << devName << "\": "
+					LOG_WARN << "Joystick " << devName << ": "
 							 << "mapping for hat " << from
 							 << " already exists" << endl;
 				}
-				LOG_DEBUG << "Joystick \"" << devName << "\": "
+				LOG_DEBUG << "Joystick " << devName << ": "
 						  << "remapped hat " << from << " to " << to << endl;
 				loaded = true;
 			}
 		}
 		else {
-			LOG_WARN << "Joystick \"" << devName << "\": "
-					 << "ignoring invalid remapping";
+			LOG_WARN << "Joystick " << devName << ": "
+					 << "ignoring invalid remap xml element: \""
+					 << child->Name() << "\"" << endl;
 		}
-
 		child = child->NextSiblingElement();
 	}
-	
 	return loaded;
 }

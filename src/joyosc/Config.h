@@ -24,12 +24,15 @@
 
 #include <string>
 #include <map>
+#include <set>
 
 #include <lopack/lopack.h>
 #include <tinyobject/tinyobject.h>
 
 using namespace std;
 
+class GameControllerRemapping;
+class GameControllerIgnore;
 class JoystickRemapping;
 class JoystickIgnore;
 
@@ -77,7 +80,22 @@ class Config : public tinyxml2::XMLObject {
 		/// deviceName is as a string ie "Logitech Logitech Dual Action"
 		/// returns mapped device addr on success, empty string "" if not found
 		string getDeviceAddress(string deviceName);
+	
+		/// get the axis dead zone threshold for a given game controller name
+		/// deviceName is a string ie "Logitech Logitech Dual Action"
+		/// returns dead zone value on success, 0 if not found
+		unsigned int getControllerAxisDeadZone(string deviceName);
 		
+		/// get the input remapping for a given game controller device name
+		/// deviceName is a string ie "Logitech Logitech Dual Action"
+		/// returns joystick remapping on success, NULL if not found
+		GameControllerRemapping* getControllerRemapping(string deviceName);
+		
+		/// get the button, axis, etc ignores for a given game controller  name
+		/// deviceName is a string ie "Logitech Logitech Dual Action"
+		/// returns joystick ignore on success, NULL if not found
+		GameControllerIgnore* getControllerIgnore(string deviceName);
+	
 		/// get the axis dead zone threshold for a given joystick device name
 		/// deviceName is a string ie "Logitech Logitech Dual Action"
 		/// returns dead zone value on success, 0 if not found
@@ -115,6 +133,11 @@ class Config : public tinyxml2::XMLObject {
 	private:
 
 		map<string,string> m_deviceAddresses; //< device osc address mappings
+	
+		map<string,unsigned int> m_controllerAxisDeadZones; //< zeroing threshold
+		map<string,GameControllerRemapping*> m_controllerRemappings; //< joystick remappings
+		map<string,GameControllerIgnore*> m_controllerIgnores; //< joystick button, axis, etc ignores
+	
 		map<string,unsigned int> m_joystickAxisDeadZones; //< zeroing threshold
 		map<string,JoystickRemapping*> m_joystickRemappings; //< joystick remappings
 		map<string,JoystickIgnore*> m_joystickIgnores; //< joystick button, axis, etc ignores

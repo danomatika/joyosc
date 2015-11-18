@@ -24,6 +24,9 @@
 
 #include "Device.h"
 
+class GameControllerRemapping;
+class GameControllerIgnore;
+
 /// \class GameController
 /// \brief handles an SDL game controller device
 ///
@@ -64,15 +67,39 @@ class GameController : public Device {
 		/// returns devices list index, name, & osc address as a string
 		string getDeviceString();
 	
-		/// get joystick index in the devices list
+		/// print remapping
+		void printRemapping();
+		
+		/// print button, axis, etc ignores
+		void printIgnores();
+	
+		/// get index in the devices list
 		inline int getIndex() {return m_index;}
 	
 		/// get the SDL instance ID, different from index
 		inline SDL_JoystickID getInstanceID() {return m_instanceID;}
 	
-		/// set/get joystick axis dead zone, used to set an ignore threshold around 0
+		/// get the underlying SDL game controller handle
+		inline SDL_GameController* getController() {return m_controller;}
+	
+		/// get the underlying SDL joystick handle, converted from game controller
+		SDL_Joystick* getJoystick();
+	
+		/// set/get axis dead zone, used to set an ignore threshold around 0
 		void setAxisDeadZone(unsigned int zone);
 		inline int getAxisDeadZone() {return m_axisDeadZone;}
+	
+		/// set/get button. axis, etc remappings
+		void setRemapping(GameControllerRemapping* remapping);
+		inline GameControllerRemapping* getRemapping() {return m_remapping;}
+	
+		/// set/get button, axis, etc ignores
+		void setIgnore(GameControllerIgnore* ignore);
+		inline GameControllerIgnore* getIgnore() {return m_ignore;}
+	
+		/// add a game controller mapping string to SDL,
+		/// returns 1 on add, 0 on update, & -1 on error
+		static int addMapping(string mapping);
 	
 	protected:
 	
@@ -82,4 +109,7 @@ class GameController : public Device {
 	
 		unsigned int m_axisDeadZone; //< axis dead zone amount +/- center pos
 		vector<int16_t> m_prevAxisValues; //< prev axis valus to cancel repeats
+	
+		GameControllerRemapping *m_remapping; //< joystick remapping values
+		GameControllerIgnore *m_ignore; //<  button, axis, etc ignores
 };

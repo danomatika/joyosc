@@ -67,17 +67,17 @@ bool Joystick::open(void *data) {
 		m_prevAxisValues.push_back(0);
 	}
 	
+	// set axis dead zone if one exists
+	int axisDeadZone = Config::instance().getJoystickAxisDeadZone(getDevName());
+	if(axisDeadZone > 0) {
+		setAxisDeadZone(axisDeadZone);
+	}
+	
 	// set remapping if one exists
 	JoystickRemapping* remap = Config::instance().getJoystickRemapping(getDevName());
 	if(remap) {
 		setRemapping(remap);
 		printRemapping();
-	}
-	
-	// set axis dead zone if one exists
-	int axisDeadZone = Config::instance().getJoystickAxisDeadZone(getDevName());
-	if(axisDeadZone > 0) {
-		setAxisDeadZone(axisDeadZone);
 	}
 	
 	// set ignore if one exists
@@ -89,10 +89,10 @@ bool Joystick::open(void *data) {
 	
 	LOG << "Joystick: opened " << getDeviceString() << endl;
 	if(m_joystick && Config::instance().printEvents) {
-		LOG << "	num buttons: " << SDL_JoystickNumButtons(m_joystick) << endl
-			<< "	num axes: " << SDL_JoystickNumAxes(m_joystick) << endl
-			<< "	num balls: " << SDL_JoystickNumBalls(m_joystick) << endl
-			<< "	num hats: " << SDL_JoystickNumHats(m_joystick) << endl;
+		LOG << "  num buttons: " << SDL_JoystickNumButtons(m_joystick) << endl
+			<< "  num axes: " << SDL_JoystickNumAxes(m_joystick) << endl
+			<< "  num balls: " << SDL_JoystickNumBalls(m_joystick) << endl
+			<< "  num hats: " << SDL_JoystickNumHats(m_joystick) << endl;
 	}
 	return true;
 }
@@ -117,31 +117,16 @@ bool Joystick::handleEvent(void* data) {
 	if(data == NULL) {
 		return false;
 	}
-	
 	osc::OscSender& sender = m_config.getOscSender();
-	
 	SDL_Event* event = (SDL_Event*) data;
 	switch(event->type) {
 		
 		case SDL_JOYBUTTONDOWN: {	
-			if(event->jbutton.which != m_instanceID) {
+			if(m_ignore && m_ignore->isButtonIgnored(event->jbutton.button)) {
 				break;
 			}
-			
-			// ignore?
-			if(m_ignore) {
-				map<int,bool>::iterator iter = m_ignore->buttons.find(event->jbutton.button);
-				if(iter != m_ignore->buttons.end()) {
-					break;
-				}
-			}
-			
-			// remap?
 			if(m_remapping) {				
-				map<int,int>::iterator iter = m_remapping->buttons.find(event->jbutton.button);
-				if(iter != m_remapping->buttons.end()) {
-					event->jbutton.button = iter->second;
-				}
+				event->jbutton.button = m_remapping->mappingForButton(event->jbutton.button);
 			}
 							
 			sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/button")
@@ -150,7 +135,7 @@ bool Joystick::handleEvent(void* data) {
 			sender.send();
 
 			if(m_config.printEvents) {
-				LOG << m_oscAddress << " \"" << m_devName << "\""
+				LOG << m_oscAddress << " " << m_devName
 					<< " button: " << (int) event->jbutton.button
 					<< " " << (int) event->jbutton.state << endl;
 			}
@@ -158,24 +143,11 @@ bool Joystick::handleEvent(void* data) {
 		}
 		
 		case SDL_JOYBUTTONUP: {
-			if(event->jbutton.which != m_instanceID) {
+			if(m_ignore && m_ignore->isButtonIgnored(event->jbutton.button)) {
 				break;
 			}
-				
-			// ignore?
-			if(m_ignore) {
-				map<int,bool>::iterator iter = m_ignore->buttons.find(event->jbutton.button);
-				if(iter != m_ignore->buttons.end()) {
-					break;
-				}
-			}
-				
-			// remap?
-			if(m_remapping) {
-				map<int,int>::iterator iter = m_remapping->buttons.find(event->jbutton.button);
-				if(iter != m_remapping->buttons.end()) {
-					event->jbutton.button = iter->second;
-				}
+			if(m_remapping) {				
+				event->jbutton.button = m_remapping->mappingForButton(event->jbutton.button);
 			}
 							
 			sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/button")
@@ -184,7 +156,7 @@ bool Joystick::handleEvent(void* data) {
 			sender.send();
 
 			if(m_config.printEvents) {
-				LOG << m_oscAddress << " \"" << m_devName << "\""
+				LOG << m_oscAddress << " " << m_devName
 					<< " button: " << (int) event->jbutton.button
 					<< " " << (int) event->jbutton.state << endl;
 			}
@@ -192,29 +164,15 @@ bool Joystick::handleEvent(void* data) {
 		}
 
 		case SDL_JOYAXISMOTION: {
-			if(event->jaxis.which != m_instanceID) {
+			if(m_ignore && m_ignore->isAxisIgnored(event->jaxis.axis)) {
 				break;
 			}
-			
-			// ignore?
-			if(m_ignore) {
-				map<int,bool>::iterator iter = m_ignore->axes.find(event->jaxis.axis);
-				if(iter != m_ignore->axes.end()) {
-					break;
-				}
+			if(m_remapping) {				
+				event->jaxis.axis = m_remapping->mappingForAxis(event->jaxis.axis);
 			}
 			
-			// remap?
-			if(m_remapping) {
-				map<int,int>::iterator iter = m_remapping->axes.find(event->jaxis.axis);
-				if(iter != m_remapping->axes.end()) {
-					event->jaxis.axis = iter->second;
-				}
-			}
-			
-			int value = (int) event->jaxis.value;
-			 
 			// handle jitter by creating a dead zone
+			int value = (int) event->jaxis.value;
 			if(abs(value) < m_axisDeadZone) {
 				value = 0;
 			}
@@ -233,7 +191,7 @@ bool Joystick::handleEvent(void* data) {
 			m_prevAxisValues[event->jaxis.axis] = value;
 
 			if(m_config.printEvents) {
-				LOG << m_oscAddress << " \"" << m_devName << "\""
+				LOG << m_oscAddress << " " << m_devName
 					<< " axis: " << (int) event->jaxis.axis
 					<< " " << value << endl;
 			}
@@ -241,24 +199,11 @@ bool Joystick::handleEvent(void* data) {
 		}
 		
 		case SDL_JOYBALLMOTION: {
-			if(event->jball.which != m_instanceID) {
+			if(m_ignore && m_ignore->isBallIgnored(event->jball.ball)) {
 				break;
 			}
-			
-			// ignore?
-			if(m_ignore) {
-				map<int,bool>::iterator iter = m_ignore->balls.find(event->jball.ball);
-				if(iter != m_ignore->balls.end()) {
-					break;
-				}
-			}
-			
-			// remap?
-			if(m_remapping) {
-				map<int,int>::iterator iter = m_remapping->balls.find(event->jball.ball);
-				if(iter != m_remapping->balls.end()) {
-					event->jball.ball = iter->second;
-				}
+			if(m_remapping) {				
+				event->jball.ball = m_remapping->mappingForBall(event->jball.ball);
 			}
 				
 			sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/ball")
@@ -267,7 +212,7 @@ bool Joystick::handleEvent(void* data) {
 			sender.send();
 
 			if(m_config.printEvents) {
-				LOG << m_oscAddress << " \"" << m_devName << "\""
+				LOG << m_oscAddress << " " << m_devName
 					<< " ball: " << (int) event->jaxis.axis
 					<< " " << (int)event->jball.xrel
 					<< " " << (int) event->jball.yrel << endl;
@@ -276,24 +221,11 @@ bool Joystick::handleEvent(void* data) {
 		}
 		
 		case SDL_JOYHATMOTION: {
-			if(event->jhat.which != m_instanceID) {
+			if(m_ignore && m_ignore->isHatIgnored(event->jhat.hat)) {
 				break;
 			}
-			
-			// ignore?
-			if(m_ignore) {
-				map<int,bool>::iterator iter = m_ignore->hats.find(event->jhat.hat);
-				if(iter != m_ignore->hats.end()) {
-					break;
-				}
-			}
-			
-			// remap?
-			if(m_remapping) {
-				map<int,int>::iterator iter = m_remapping->hats.find(event->jhat.hat);
-				if(iter != m_remapping->hats.end()) {
-					event->jhat.hat = iter->second;
-				}
+			if(m_remapping) {				
+				event->jhat.hat = m_remapping->mappingForHat(event->jhat.hat);
 			}
 				
 			sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/hat")
@@ -302,14 +234,13 @@ bool Joystick::handleEvent(void* data) {
 			sender.send();
 
 			if(m_config.printEvents) {
-				LOG << m_oscAddress << " \"" << m_devName << "\""
+				LOG << m_oscAddress << " " << m_devName
 					<< " hat: " << (int) event->jhat.hat
 					<< " " << (int) event->jhat.value << endl;
 			}
 			return true;
 		}
 	}
-	
 	return false;
 }
 
@@ -320,10 +251,10 @@ bool Joystick::isOpen() {
 void Joystick::print() {
 	LOG << getDeviceString() << endl;
 	if(m_joystick) {
-		LOG << "	num buttons: " << SDL_JoystickNumButtons(m_joystick) << endl
-			<< "	num axes: " << SDL_JoystickNumAxes(m_joystick) << endl
-			<< "	num balls: " << SDL_JoystickNumBalls(m_joystick) << endl
-			<< "	num hats: " << SDL_JoystickNumHats(m_joystick) << endl;
+		LOG << "  num buttons: " << SDL_JoystickNumButtons(m_joystick) << endl
+			<< "  num axes: " << SDL_JoystickNumAxes(m_joystick) << endl
+			<< "  num balls: " << SDL_JoystickNumBalls(m_joystick) << endl
+			<< "  num hats: " << SDL_JoystickNumHats(m_joystick) << endl;
 	}
 }
 
@@ -347,7 +278,7 @@ void Joystick::printIgnores() {
 
 void Joystick::setAxisDeadZone(unsigned int zone) {
 	m_axisDeadZone = zone;
-	LOG_DEBUG << "Joystick \"" << getDevName() << "\": "
+	LOG_DEBUG << "Joystick " << getDevName() << ": "
 			  << "set axis dead zone to " << zone << endl;
 }
 

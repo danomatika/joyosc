@@ -25,22 +25,26 @@
 #include "Joystick.h"
 
 /// \class JoystickIgnore
-/// \brief defines which buttons, axes, balls, or hats to ignore
+/// \brief defines which joystick buttons, axes, balls, or hats to ignore
 class JoystickIgnore : public tinyxml2::XMLObject {
 
 	public:
 	
 		JoystickIgnore() : tinyxml2::XMLObject("ignore") {}
 		
-		/// ids to ignore
-		/// with key: id & value: void
-		map<int,bool> buttons;
-		map<int,bool> axes;
-		map<int,bool> balls;
-		map<int,bool> hats;
+		set<int> buttons; //< buttons ids to ignore
+		set<int> axes; //< axis ids to ignore
+		set<int> balls; //< ball ids to ignore
+		set<int> hats; //< hat ids to ignore
 		
 		/// check indices & toss out any bad values
 		void check(Joystick* joystick);
+	
+		/// check ignore status
+		bool isButtonIgnored(int button);
+		bool isAxisIgnored(int axis);
+		bool isBallIgnored(int ball);
+		bool isHatIgnored(int hat);
 	
 		/// print the current ignore values
 		void print();

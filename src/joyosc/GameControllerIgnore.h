@@ -1,6 +1,6 @@
 /*==============================================================================
 
-	App.h
+	GameControllerIgnore.h
 
 	joyosc: a device event to osc bridge
   
@@ -22,44 +22,31 @@
 ==============================================================================*/
 #pragma once
 
-#include "Common.h"
-#include "DeviceManager.h"
+#include "GameController.h"
 
-/// \class App
-/// \brief the main application class
-class App : public osc::OscObject {
+/// \class GameControllerIgnore
+/// \brief defines which game controller button & axis names to ignore
+class GameControllerIgnore : public tinyxml2::XMLObject {
 
 	public:
-
-		App();
-		virtual ~App();
 	
-		/// setup resources
-		void setup();
+		GameControllerIgnore() : tinyxml2::XMLObject("ignore") {}
 	
-		/// run the main loop
-		void run();
+		set<string> buttons; //< button names to ignore
+		set<string> axes; //< axis names to ignore
+		
+		/// check names & toss out any bad values
+		void check(GameController* controller);
 	
-		/// clean up resources
-		void cleanup();
+		/// check ignore status
+		bool isButtonIgnored(string &button);
+		bool isAxisIgnored(string &axis);
 	
-		/// stop the main loop
-		inline void stop() {m_bRun = false;}
-
+		/// print the current ignore values
+		void print();
+		
 	protected:
-
-		/// received osc message callback
-		bool processOscMessage(const osc::ReceivedMessage& message,
-							   const osc::MessageSource& source);
-
-		/// signal callback
-		static void signalExit(int signal);
-
-		bool m_bRun; //< is the main loop running?
-		
-		DeviceManager m_deviceManager; //< controller & joystick device manager
-		
-		Config& m_config; //< reference to global config
-		osc::OscReceiver& m_oscReceiver; //< reference to global osc receiver
-		osc::OscSender& m_oscSender; //< reference to global osc sender
+	
+		/// XMLObject callback
+		bool readXML(tinyxml2::XMLElement* e);
 };

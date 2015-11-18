@@ -126,36 +126,36 @@ You can also specify values on the command line which override values in the con
 <pre>
   -i, --ip                 IP address to send to (default: 127.0.0.1)
   -p, --port               Port to send to (default: 8880)
-  -l, --listeningPort      Listening port (default: 7770)
+  -l, --listeningport      Listening port (default: 7770)
   -e, --events             Print incoming events, useful for debugging
-  -j, --joysticksOnly      Disable game controller support, use joystick
+  -j, --joysticksonly      Disable game controller support, use joystick
                            interface only
   -s, --sleep              Sleep time in usecs (default: 10000)
 </pre>
 
 Note: Enabling event printing is useful when debugging:
 <pre>
-% joyosc -e 1
+% joyosc -e
 ...
-/js2 "Saitek P990 Dual Analog Pad" Axis: 0 Value: 32767
-/js2 "Saitek P990 Dual Analog Pad" Axis: 1 Value: -32768
-/js2 "Saitek P990 Dual Analog Pad" Axis: 2 Value: -32768
-/js2 "Saitek P990 Dual Analog Pad" Axis: 3 Value: -32768
-/js2 "Saitek P990 Dual Analog Pad" Button: 8 State: 1
-/js2 "Saitek P990 Dual Analog Pad" Button: 9 State: 1
-/js2 "Saitek P990 Dual Analog Pad" Button: 10 State: 1
-/js2 "Saitek P990 Dual Analog Pad" Button: 11 State: 1
-/js2 "Saitek P990 Dual Analog Pad" Button: 0 State: 1
-/js2 "Saitek P990 Dual Analog Pad" Button: 3 State: 1
-/js2 "Saitek P990 Dual Analog Pad" Button: 0 State: 0
-/js2 "Saitek P990 Dual Analog Pad" Button: 3 State: 0
-/js2 "Saitek P990 Dual Analog Pad" Button: 0 State: 1
-/js2 "Saitek P990 Dual Analog Pad" Button: 3 State: 1
-/js2 "Saitek P990 Dual Analog Pad" Button: 0 State: 0
-/js2 "Saitek P990 Dual Analog Pad" Button: 3 State: 0
-/js2 "Saitek P990 Dual Analog Pad" Button: 3 State: 1
-/js2 "Saitek P990 Dual Analog Pad" Button: 3 State: 0
-/js2 "Saitek P990 Dual Analog Pad" Button: 0 State: 1
+/js2 Saitek P990 Dual Analog Pad axis: 0 32767
+/js2 Saitek P990 Dual Analog Pad axis: 1 -32768
+/js2 Saitek P990 Dual Analog Pad axis: 2 -32768
+/js2 Saitek P990 Dual Analog Pad axis: 3 -32768
+/js2 Saitek P990 Dual Analog Pad button: 8 1
+/js2 Saitek P990 Dual Analog Pad button: 9 1
+/js2 Saitek P990 Dual Analog Pad button: 10 1
+/js2 Saitek P990 Dual Analog Pad button: 11 1
+/js2 Saitek P990 Dual Analog Pad button: 0 1
+/js2 Saitek P990 Dual Analog Pad button: 3 1
+/js2 Saitek P990 Dual Analog Pad button: 0 0
+/js2 Saitek P990 Dual Analog Pad button: 3 0
+/js2 Saitek P990 Dual Analog Pad button: 0 1
+/js2 Saitek P990 Dual Analog Pad button: 3 1
+/js2 Saitek P990 Dual Analog Pad button: 0 0
+/js2 Saitek P990 Dual Analog Pad button: 3 0
+/js2 Saitek P990 Dual Analog Pad button: 3 1
+/js2 Saitek P990 Dual Analog Pad button: 3 0
+/js2 Saitek P990 Dual Analog Pad button: 0 1
 </pre>
 
 #### Event Streaming
@@ -167,7 +167,7 @@ joyosc streams device event information in the following OSC address format:
 /joyosc/devices/DEVICE_NAME/INPUT_TYPE ID VALUE
 </pre>
 
-* _DEVICE_NAME_ is the mapped name to the device as specified in the config file, otherwise it is "js#" with # being the current device id
+* _DEVICE_NAME_ is the mapped name to the device as specified in the config file, otherwise it is "gc#" or "js#" with # being the current device id
 * _INPUT_TYPE_ can be `button`, `axis`, `ball`, or `hat` depending on the control layout of your joystick/gamepad.
 * _ID_ is the id number for the control (aka button 1, axis 2, etc); these are likely different from device to device
 * _VALUE_ is the current value of the control:
@@ -201,32 +201,31 @@ The lsjs tool lists the names of currently plugged in joysticks, which you can t
 Example output:
 <pre>
 % lsjs
-0 "OSCulator HID 1"
-1 "OSCulator HID 2"
-2 "Saitek P990 Dual Analog Pad"
+0 Logitech F510 Gamepad (DInput)
+1 Saitek P990 Dual Analog Pad
 </pre>
 
 You can also print detailed info using the -d or --details flags.
 <pre>
 % lsjs -d
 
-0 "OSCulator HID 1"
-   num axes: 4
-   num buttons: 20
-   num balls: 0
-   num hats: 0
+0 OSCulator HID 1
+  num axes: 4
+  num buttons: 20
+  num balls: 0
+  num hats: 0
 
-1 "OSCulator HID 2"
-   num axes: 4
-   num buttons: 20
-   num balls: 0
-   num hats: 0
+1 OSCulator HID 2
+  num axes: 4
+  num buttons: 20
+  num balls: 0
+  num hats: 0
 
-2 "Saitek P990 Dual Analog Pad"
-   num axes: 4
-   num buttons: 14
-   num balls: 0
-   num hats: 1
+2 Saitek P990 Dual Analog Pad
+  num axes: 4
+  num buttons: 14
+  num balls: 0
+  num hats: 1
 </pre>
 
 ----
@@ -234,7 +233,7 @@ You can also print detailed info using the -d or --details flags.
 
 As joyosc & lsjs use SDL, they will not work over a SSH connection and you'll get the following error:
 <pre>
-Error: Couldn't init SDL: Unable to open a console terminal
+Error: could not init SDL: Unable to open a console terminal
 </pre>
 
 Run them from a real terminal on the machine.
