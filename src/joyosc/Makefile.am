@@ -11,7 +11,9 @@ joyosc_SOURCES = main.cpp Common.h App.h App.cpp Config.h Config.cpp \
 				 Joystick.h Joystick.cpp \
 				 JoystickIgnore.h JoystickIgnore.cpp \
 				 JoystickRemapping.h JoystickRemapping.cpp \
-				 GameController.h GameController.cpp
+				 GameController.h GameController.cpp \
+				 GameControllerIgnore.h GameControllerIgnore.cpp \
+				 GameControllerRemapping.h GameControllerRemapping.cpp
 
 # include paths
 AM_CPPFLAGS = $(SDL_CFLAGS) \

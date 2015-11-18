@@ -118,7 +118,8 @@ PROGRAMS = $(bin_PROGRAMS)
 am_joyosc_OBJECTS = main.$(OBJEXT) App.$(OBJEXT) Config.$(OBJEXT) \
 	DeviceManager.$(OBJEXT) Joystick.$(OBJEXT) \
 	JoystickIgnore.$(OBJEXT) JoystickRemapping.$(OBJEXT) \
-	GameController.$(OBJEXT)
+	GameController.$(OBJEXT) GameControllerIgnore.$(OBJEXT) \
+	GameControllerRemapping.$(OBJEXT)
 joyosc_OBJECTS = $(am_joyosc_OBJECTS)
 joyosc_LDADD = $(LDADD)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -358,7 +359,9 @@ joyosc_SOURCES = main.cpp Common.h App.h App.cpp Config.h Config.cpp \
 				 Joystick.h Joystick.cpp \
 				 JoystickIgnore.h JoystickIgnore.cpp \
 				 JoystickRemapping.h JoystickRemapping.cpp \
-				 GameController.h GameController.cpp
+				 GameController.h GameController.cpp \
+				 GameControllerIgnore.h GameControllerIgnore.cpp \
+				 GameControllerRemapping.h GameControllerRemapping.cpp
 
 
 # include paths
@@ -471,6 +474,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Config.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DeviceManager.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GameController.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GameControllerIgnore.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GameControllerRemapping.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Joystick.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JoystickIgnore.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JoystickRemapping.Po@am__quote@
