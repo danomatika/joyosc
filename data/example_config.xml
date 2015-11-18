@@ -2,10 +2,16 @@
 <joyosc>
 
 	<!-- OSC receive settings -->
-	<listening port="7770"/>
+	<!-- <listening port="7770"/> -->
+
+	<!-- multicast OSC receive settings -->
+	<listening multicast="239.200.200.200" port="7770"/>
 
 	<!-- OSC send settings -->
-	<sending ip="127.0.0.1" port="8880"/>
+	<!-- <sending ip="127.0.0.1" port="8880"/> -->
+
+	<!-- multicast OSC send settings -->
+	<sending ip="239.200.200.200" port="8880"/>
 	
 	<!-- printEvents: print live events to to console? bool 0 or 1 -->
 	<!-- sleepUS: how often to poll for new events in micro seconds,

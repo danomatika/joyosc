@@ -43,7 +43,12 @@ void App::setup() {
 	
 	// setup osc interface
 	try {
-		m_oscReceiver.setup(m_config.listeningPort);
+		if(m_config.listeningMulticast == "") {
+			m_oscReceiver.setup(m_config.listeningPort);
+		}
+		else {
+			m_oscReceiver.setupMulticast(m_config.listeningMulticast, m_config.listeningPort);
+		}
 		m_oscSender.setup(m_config.sendingIp, m_config.sendingPort);
 		m_oscReceiver.addOscObject(this);
 	}

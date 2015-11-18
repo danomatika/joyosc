@@ -117,6 +117,7 @@ bool Config::parseCommandLine(int argc, char **argv) {
 		itoa.str("");
 		itoa << listeningPort;
 		TCLAP::ValueArg<int> inputPortOpt("l", "listeningport", "Listening port (default: "+itoa.str()+")", false, listeningPort, "int");
+		TCLAP::ValueArg<string> multicastOpt("m", "multicast", "Multicast listening group address (off by default)", false, listeningMulticast, "string");
 		
 		TCLAP::SwitchArg eventsOpt("e", "events", "Print incoming events, useful for debugging", printEvents);
 		TCLAP::SwitchArg joysticksOpt("j", "joysticksonly", "Disable game controller support, use joystick interface only", joysticksOnly);
@@ -133,6 +134,7 @@ bool Config::parseCommandLine(int argc, char **argv) {
 		cmd.add(sleepOpt);
 		cmd.add(joysticksOpt);
 		cmd.add(eventsOpt);
+		cmd.add(multicastOpt);
 		cmd.add(inputPortOpt);
 		cmd.add(portOpt);
 		cmd.add(ipOpt);
@@ -155,6 +157,7 @@ bool Config::parseCommandLine(int argc, char **argv) {
 		if(ipOpt.isSet())         {sendingIp = ipOpt.getValue();}
 		if(portOpt.isSet())       {sendingPort = portOpt.getValue();}
 		if(inputPortOpt.isSet())  {listeningPort = inputPortOpt.getValue();}
+		if(multicastOpt.isSet())  {listeningMulticast = multicastOpt.getValue();}
 		if(eventsOpt.isSet())     {printEvents = eventsOpt.getValue();}
 		if(joysticksOpt.isSet())  {joysticksOnly = joysticksOpt.getValue();}
 		if(sleepOpt.isSet())      {sleepUS = sleepOpt.getValue();}
@@ -168,6 +171,7 @@ bool Config::parseCommandLine(int argc, char **argv) {
 
 void Config::print() {
 	LOG << "listening port:	 " << listeningPort << endl
+	    << "multicast listening?: " << (listeningMulticast == "" ? "no" : listeningMulticast) << endl
 		<< "listening addr:  " << "/" << PACKAGE << endl
 		<< "sending ip:      " << sendingIp << endl
 		<< "sending port:    " << sendingPort << endl
@@ -363,13 +367,14 @@ bool Config::readXML(XMLElement* e) {
 
 Config::Config() :
 	XMLObject(PACKAGE),
-	listeningPort(7770),
+	listeningPort(7770), listeningMulticast(""),
 	sendingIp("127.0.0.1"), sendingPort(8880),
 	notificationAddress((string) "/"+PACKAGE+"/notifications"),
 	deviceAddress((string) "/"+PACKAGE+"/devices"),
 	printEvents(false), joysticksOnly(false), sleepUS(10000) {
 
 	// attach config values to xml attributes
+	subscribeXMLAttribute("listening", "multicast", XML_TYPE_STRING, &listeningMulticast);
 	subscribeXMLAttribute("listening", "port", XML_TYPE_UINT, &listeningPort);
 	
 	subscribeXMLAttribute("sending", "ip", XML_TYPE_STRING, &sendingIp);
