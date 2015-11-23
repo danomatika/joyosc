@@ -97,8 +97,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 DIST_COMMON = $(srcdir)/Makefile.am $(dist_configfiles_DATA) \
-	$(dist_pd_readme_DATA) $(dist_unit_patches_DATA) \
-	$(am__DIST_COMMON)
+	$(dist_joyosc_DATA) $(dist_pd_readme_DATA) $(am__DIST_COMMON)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/src/config.h
 CONFIG_CLEAN_FILES =
@@ -150,9 +149,9 @@ am__uninstall_files_from_dir = { \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
 am__installdirs = "$(DESTDIR)$(configfilesdir)" \
-	"$(DESTDIR)$(pd_readmedir)" "$(DESTDIR)$(unit_patchesdir)"
-DATA = $(dist_configfiles_DATA) $(dist_pd_readme_DATA) \
-	$(dist_unit_patches_DATA)
+	"$(DESTDIR)$(joyoscdir)" "$(DESTDIR)$(pd_readmedir)"
+DATA = $(dist_configfiles_DATA) $(dist_joyosc_DATA) \
+	$(dist_pd_readme_DATA)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 am__DIST_COMMON = $(srcdir)/Makefile.in
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -298,7 +297,7 @@ configfilesdir = $(docdir)
 # include pd files
 dist_pd_readme_DATA = $(thisdir)/pd/README $(thisdir)/pd/joyosc-example.pd
 pd_readmedir = $(docdir)/pd
-dist_unit_patches_DATA = $(thisdir)/pd/joyosc/g_controller.pd \
+dist_joyosc_DATA = $(thisdir)/pd/joyosc/g_controller.pd \
                          $(thisdir)/pd/joyosc/g_controller-help.pd \
                          $(thisdir)/pd/joyosc/g_joystick.pd \
                          $(thisdir)/pd/joyosc/g_joystick-help.pd \
@@ -307,7 +306,7 @@ dist_unit_patches_DATA = $(thisdir)/pd/joyosc/g_controller.pd \
                          $(thisdir)/pd/joyosc/j_joystick.pd \
                          $(thisdir)/pd/joyosc/j_joystick-help.pd
 
-unit_patchesdir = $(docdir)/pd/unit-patches
+joyoscdir = $(docdir)/pd/joyosc
 all: all-am
 
 .SUFFIXES:
@@ -367,6 +366,27 @@ uninstall-dist_configfilesDATA:
 	@list='$(dist_configfiles_DATA)'; test -n "$(configfilesdir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	dir='$(DESTDIR)$(configfilesdir)'; $(am__uninstall_files_from_dir)
+install-dist_joyoscDATA: $(dist_joyosc_DATA)
+	@$(NORMAL_INSTALL)
+	@list='$(dist_joyosc_DATA)'; test -n "$(joyoscdir)" || list=; \
+	if test -n "$$list"; then \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(joyoscdir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(joyoscdir)" || exit 1; \
+	fi; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(joyoscdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(joyoscdir)" || exit $$?; \
+	done
+
+uninstall-dist_joyoscDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_joyosc_DATA)'; test -n "$(joyoscdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	dir='$(DESTDIR)$(joyoscdir)'; $(am__uninstall_files_from_dir)
 install-dist_pd_readmeDATA: $(dist_pd_readme_DATA)
 	@$(NORMAL_INSTALL)
 	@list='$(dist_pd_readme_DATA)'; test -n "$(pd_readmedir)" || list=; \
@@ -388,27 +408,6 @@ uninstall-dist_pd_readmeDATA:
 	@list='$(dist_pd_readme_DATA)'; test -n "$(pd_readmedir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	dir='$(DESTDIR)$(pd_readmedir)'; $(am__uninstall_files_from_dir)
-install-dist_unit_patchesDATA: $(dist_unit_patches_DATA)
-	@$(NORMAL_INSTALL)
-	@list='$(dist_unit_patches_DATA)'; test -n "$(unit_patchesdir)" || list=; \
-	if test -n "$$list"; then \
-	  echo " $(MKDIR_P) '$(DESTDIR)$(unit_patchesdir)'"; \
-	  $(MKDIR_P) "$(DESTDIR)$(unit_patchesdir)" || exit 1; \
-	fi; \
-	for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  echo "$$d$$p"; \
-	done | $(am__base_list) | \
-	while read files; do \
-	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(unit_patchesdir)'"; \
-	  $(INSTALL_DATA) $$files "$(DESTDIR)$(unit_patchesdir)" || exit $$?; \
-	done
-
-uninstall-dist_unit_patchesDATA:
-	@$(NORMAL_UNINSTALL)
-	@list='$(dist_unit_patches_DATA)'; test -n "$(unit_patchesdir)" || list=; \
-	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	dir='$(DESTDIR)$(unit_patchesdir)'; $(am__uninstall_files_from_dir)
 tags TAGS:
 
 ctags CTAGS:
@@ -450,7 +449,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(configfilesdir)" "$(DESTDIR)$(pd_readmedir)" "$(DESTDIR)$(unit_patchesdir)"; do \
+	for dir in "$(DESTDIR)$(configfilesdir)" "$(DESTDIR)$(joyoscdir)" "$(DESTDIR)$(pd_readmedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -503,8 +502,8 @@ info: info-am
 
 info-am:
 
-install-data-am: install-dist_configfilesDATA \
-	install-dist_pd_readmeDATA install-dist_unit_patchesDATA
+install-data-am: install-dist_configfilesDATA install-dist_joyoscDATA \
+	install-dist_pd_readmeDATA
 
 install-dvi: install-dvi-am
 
@@ -548,8 +547,8 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-dist_configfilesDATA \
-	uninstall-dist_pd_readmeDATA uninstall-dist_unit_patchesDATA
+uninstall-am: uninstall-dist_configfilesDATA uninstall-dist_joyoscDATA \
+	uninstall-dist_pd_readmeDATA
 
 .MAKE: install-am install-strip
 
@@ -557,8 +556,8 @@ uninstall-am: uninstall-dist_configfilesDATA \
 	cscopelist-am ctags-am distclean distclean-generic \
 	distclean-libtool distdir dvi dvi-am html html-am info info-am \
 	install install-am install-data install-data-am \
-	install-dist_configfilesDATA install-dist_pd_readmeDATA \
-	install-dist_unit_patchesDATA install-dvi install-dvi-am \
+	install-dist_configfilesDATA install-dist_joyoscDATA \
+	install-dist_pd_readmeDATA install-dvi install-dvi-am \
 	install-exec install-exec-am install-html install-html-am \
 	install-info install-info-am install-man install-pdf \
 	install-pdf-am install-ps install-ps-am install-strip \
@@ -566,7 +565,7 @@ uninstall-am: uninstall-dist_configfilesDATA \
 	maintainer-clean-generic mostlyclean mostlyclean-generic \
 	mostlyclean-libtool pdf pdf-am ps ps-am tags-am uninstall \
 	uninstall-am uninstall-dist_configfilesDATA \
-	uninstall-dist_pd_readmeDATA uninstall-dist_unit_patchesDATA
+	uninstall-dist_joyoscDATA uninstall-dist_pd_readmeDATA
 
 .PRECIOUS: Makefile
 

@@ -31,7 +31,7 @@ make
 sudo make install
 </pre>
 
-If everything finished successfully, you're good to go. 
+If everything finished successfully, you're good to go. If you're using Pure Data, check out the joyosc abstraction library in `data/pd` and installed into `share/doc/joyosc/pd/joyosc`.
 
 BUILD REQUIREMENTS
 ------------------
@@ -238,6 +238,11 @@ Error: could not init SDL: Unable to open a console terminal
 
 Run them from a real terminal on the machine.
 
+PURE DATA LIBRARY
+-----------------
+
+A small library of Pure Data abstractions is provided in the `data/pd` folder for OSC message parsing. This library set is also installed to `share/doc/joyosc/pd/joyosc`.
+
 DEVELOPING
 ----------
 
@@ -255,9 +260,7 @@ I develop using an IDE, then update the autotools files when the sources are fin
 FUTURE IDEAS/IMPROVEMENTS
 -------------------------
 
-* add multicast support
-* multiple osc send addresses for event forwarding between multiple machines
-* add built in osc -> MIDI and other mapping capability (ala junXion or Osculator)
+* add built in osc -> MIDI and other mapping capabilities (ala junXion or Osculator)
 
 Notes
 -----

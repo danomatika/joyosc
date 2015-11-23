@@ -1,45 +1,48 @@
-#N canvas 583 44 321 244 10;
+#N canvas 583 44 413 232 10;
 #X obj 143 193 outlet;
 #X obj 56 193 outlet;
 #X obj 56 96 inlet OSC in;
-#X obj 161 96 inlet joy name;
-#X obj 1 17 cnv 15 128 43 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 1 17 cnv 15 182 43 empty empty empty 20 12 0 14 -233017 -66577
 0;
-#X obj 29 23 nbx 2 14 -1e+37 1e+37 0 0 empty \$0-button btn -20 6 0
-10 -261234 -1 -1 0 256;
-#X obj 29 42 nbx 2 14 -1e+37 1e+37 0 0 empty \$0-axis axis -25 6 0
-10 -204786 -1 -1 0 256;
-#X obj 64 42 nbx 6 14 -1e+37 1e+37 0 0 empty \$0-axis-value empty 0
--6 0 10 -228856 -1 -1 0 256;
+#X obj 116 42 nbx 6 14 -1e+37 1e+37 0 0 empty \$0-axis-value empty
+0 -6 0 10 -228856 -1 -1 0 256;
 #N canvas 702 431 201 175 button 0;
 #X obj 13 16 inlet;
 #X obj 13 151 outlet;
-#X obj 29 65 unpack f f;
 #X obj 29 119 s \$0-button;
 #X obj 86 95 s \$0-button-value;
-#X connect 0 0 2 0;
+#X obj 29 65 unpack s f;
 #X connect 0 0 1 0;
-#X connect 2 0 3 0;
-#X connect 2 1 4 0;
+#X connect 0 0 4 0;
+#X connect 4 0 2 0;
+#X connect 4 1 3 0;
 #X restore 56 165 pd button;
 #N canvas 537 450 210 193 axis 0;
 #X obj 16 6 inlet;
-#X obj 50 71 unpack f f;
 #X obj 50 129 s \$0-axis;
 #X obj 107 102 s \$0-axis-value;
 #X obj 16 155 outlet;
-#X connect 0 0 1 0;
+#X obj 50 71 unpack s f;
+#X connect 0 0 3 0;
 #X connect 0 0 4 0;
-#X connect 1 0 2 0;
-#X connect 1 1 3 0;
+#X connect 4 0 1 0;
+#X connect 4 1 2 0;
 #X restore 143 166 pd axis;
 #X obj 56 133 j_controller \$1;
-#X symbolatom 64 24 10 0 0 0 - - -, f 10;
-#X text 145 25 j_controller gui wrapper;
-#X connect 2 0 10 0;
-#X connect 3 0 10 1;
-#X connect 8 0 1 0;
-#X connect 9 0 0 0;
-#X connect 10 0 8 0;
-#X connect 10 1 9 0;
-#X coords 0 -1 1 1 130 62 1 0 0;
+#X text 212 24 j_controller gui wrapper;
+#X obj 161 96 inlet control;
+#X obj 116 24 nbx 6 14 -1e+37 1e+37 0 0 empty \$0-button-value empty
+0 -6 0 10 -228856 -1 -1 0 256;
+#X obj 30 24 cnv 15 78 12 empty empty empty 20 12 0 14 -261234 -66577
+0;
+#X obj 31 43 cnv 15 78 12 empty empty empty 20 12 0 14 -204786 -66577
+0;
+#X symbolatom 29 23 13 0 0 0 btn #0-button -, f 13;
+#X symbolatom 30 42 13 0 0 0 axis #0-axis -, f 13;
+#X connect 2 0 7 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 5 0;
+#X connect 7 1 6 0;
+#X connect 9 0 7 1;
+#X coords 0 -1 1 1 184 62 1 0 0;

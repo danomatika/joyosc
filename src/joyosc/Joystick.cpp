@@ -214,7 +214,7 @@ bool Joystick::handleEvent(void* data) {
 			if(m_config.printEvents) {
 				LOG << m_oscAddress << " " << m_devName
 					<< " ball: " << (int) event->jaxis.axis
-					<< " " << (int)event->jball.xrel
+					<< " " << (int) event->jball.xrel
 					<< " " << (int) event->jball.yrel << endl;
 			}
 			return true;
