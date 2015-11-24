@@ -39,9 +39,9 @@ int main(int argc, char **argv) {
 		
 		// options to parse
 		// short id, long id, description, required?, default value, short usage type description
-		TCLAP::SwitchArg detailOpt("d","details","Print device details (buttons, axes, game controller mappings, etc)", printDetails);
+		TCLAP::SwitchArg detailOpt("d","details","Print device details (buttons, axes, GUIDs, etc)", printDetails);
 		TCLAP::SwitchArg mappingOpt("m","mappings","Print game controller mappings, requires game controller support", printMappings);
-		TCLAP::SwitchArg joysticksOpt("j", "joysticksOnly", "Disable game controller support, use joystick interface only", joysticksOnly);
+		TCLAP::SwitchArg joysticksOpt("j", "joysticksonly", "Disable game controller support, use joystick interface only", joysticksOnly);
 
 		// add args to parser (in reverse order)
 		cmd.add(joysticksOpt);
