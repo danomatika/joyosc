@@ -26,8 +26,11 @@
 #include "JoystickRemapping.h"
 
 Joystick::Joystick(string oscAddress) :
-	Device(oscAddress), m_joystick(NULL), m_index(-1), m_instanceID(-1),
-	m_axisDeadZone(0), m_remapping(NULL), m_ignore(NULL) {}
+	Device(oscAddress), m_joystick(NULL), m_instanceID(-1),
+	m_axisDeadZone(0), m_remapping(NULL), m_ignore(NULL) {
+	m_indices.index = -1;
+	m_indices.sdlIndex = -1;
+}
 
 bool Joystick::open(void *data) {
 	if(data == NULL) {
@@ -36,17 +39,18 @@ bool Joystick::open(void *data) {
 	}
 	
 	DeviceIndices *indices = (DeviceIndices *)data;
-	m_index = indices->index;
+	m_indices.index = indices->index;
+	m_indices.sdlIndex = indices->sdlIndex;
 
 	if(isOpen()) {
 		LOG_WARN << "Joystick: joystick with index "
-				 << m_index << " already opened" << endl;
+				 << m_indices.index << " already opened" << endl;
 		return false;
 	}
 
-	m_joystick = SDL_JoystickOpen(indices->sdlIndex);
+	m_joystick = SDL_JoystickOpen(m_indices.sdlIndex);
 	if(!m_joystick) {
-		LOG_WARN << "Joystick: open failed for index " << m_index << endl;
+		LOG_WARN << "Joystick: open failed for index " << m_indices.index << endl;
 		return false;
 	}
 	
@@ -58,7 +62,7 @@ bool Joystick::open(void *data) {
 	if(m_oscAddress == "") {
 		// not found ... set a generic name using the index
 		stringstream stream;
-		stream << "/js" << m_index;
+		stream << "/js" << m_indices.index;
 		m_oscAddress = stream.str();
 	}
 			
@@ -107,7 +111,8 @@ void Joystick::close() {
 	}
 	
 	// reset variables
-	m_index = -1;
+	m_indices.index = -1;
+	m_indices.sdlIndex = -1;
 	m_instanceID = -1;
 	m_devName = "";
 	m_prevAxisValues.clear();
@@ -260,7 +265,7 @@ void Joystick::print() {
 
 string Joystick::getDeviceString() {
 	stringstream s;
-	s << m_index << " " << m_devName << " " << m_oscAddress;
+	s << m_indices.index << " " << m_devName << " " << m_oscAddress;
 	return s.str();
 }
 	

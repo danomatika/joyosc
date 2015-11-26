@@ -26,8 +26,11 @@
 #include "GameControllerIgnore.h"
 
 GameController::GameController(string oscAddress) :
-	Device(oscAddress), m_controller(NULL), m_index(-1), m_instanceID(-1),
-	m_axisDeadZone(0), m_remapping(NULL), m_ignore(NULL) {}
+	Device(oscAddress), m_controller(NULL), m_instanceID(-1),
+	m_axisDeadZone(0), m_remapping(NULL), m_ignore(NULL) {
+	m_indices.index = -1;
+	m_indices.sdlIndex = -1;
+}
 
 bool GameController::open(void *data) {
 	if(data == NULL) {
@@ -36,17 +39,18 @@ bool GameController::open(void *data) {
 	}
 	
 	DeviceIndices *indices = (DeviceIndices *)data;
-	m_index = indices->index;
+	m_indices.index = indices->index;
+	m_indices.sdlIndex = indices->sdlIndex;
 
 	if(isOpen()) {
 		LOG_WARN << "GameController: joystick with index "
-				 << m_index << " already opened" << endl;
+				 << m_indices.index << " already opened" << endl;
 		return false;
 	}
 
-	m_controller = SDL_GameControllerOpen(indices->sdlIndex);
+	m_controller = SDL_GameControllerOpen(m_indices.sdlIndex);
 	if(!m_controller) {
-		LOG_WARN << "GameController: open failed for index " << m_index << endl;
+		LOG_WARN << "GameController: open failed for index " << m_indices.index << endl;
 		return false;
 	}
 	
@@ -59,7 +63,7 @@ bool GameController::open(void *data) {
 	if(m_oscAddress == "") {
 		// not found ... set a generic name using the index
 		stringstream stream;
-		stream << "/gc" << m_index;
+		stream << "/gc" << m_indices.index;
 		m_oscAddress = stream.str();
 	}
 			
@@ -102,14 +106,15 @@ void GameController::close() {
 		if(isOpen()) {
 			SDL_GameControllerClose(m_controller);
 		}
-		LOG << "GameController: closed " << m_index
+		LOG << "GameController: closed " << m_indices.index
 			<< " " << m_devName << " with address "
 			<< m_oscAddress << endl;
 		m_controller = NULL;
 	}
 	
 	// reset variables
-	m_index = -1;
+	m_indices.index = -1;
+	m_indices.sdlIndex = -1;
 	m_instanceID = -1;
 	m_devName = "";
 	m_prevAxisValues.clear();
@@ -218,7 +223,7 @@ void GameController::print() {
 
 string GameController::getDeviceString() {
 	stringstream s;
-	s << m_index << " " << m_devName << " " << m_oscAddress;
+	s << m_indices.index << " " << m_devName << " " << m_oscAddress;
 	return s.str();
 }
 

@@ -55,9 +55,7 @@ int main(int argc, char **argv) {
 
 	// run the application
 	App app;
-	app.setup();
 	app.run();
-	app.cleanup();
 	
 	// cleanup SDL
 	SDL_Quit();

@@ -32,16 +32,9 @@ class App : public osc::OscObject {
 	public:
 
 		App();
-		virtual ~App();
 	
-		/// setup resources
-		void setup();
-	
-		/// run the main loop
+		/// setup resources, run the main loop, then cleanup on exit
 		void run();
-	
-		/// clean up resources
-		void cleanup();
 	
 		/// stop the main loop
 		inline void stop() {m_bRun = false;}

@@ -31,7 +31,6 @@ class DeviceManager {
 	public:
 
 		DeviceManager();
-		virtual ~DeviceManager();
 
 		/// open game controller or joystick at SDL index,
 		/// returns true on success
@@ -53,7 +52,7 @@ class DeviceManager {
 		/// opens all currently connected devices
 		void openAll();
 
-		///  closes all currently connected devices
+		/// closes all currently connected devices
 		void closeAll();
 
 		//// handle and send device event
@@ -61,6 +60,11 @@ class DeviceManager {
 
 		/// print active joystick list
 		void print(bool details=false);
+	
+		/// return the number of devices
+		unsigned int numDevices() {return m_devices.size();}
+	
+		bool sendDeviceEvents; //< send device open/close events? (default: false)
 
 	protected:
 	
@@ -69,6 +73,9 @@ class DeviceManager {
 	
 		/// get the device type at a given index
 		DeviceType getDeviceType(int index);
+	
+		/// is an sdlIndex already in use by an active device?
+		bool sdlIndexExists(int sdlIndex);
 
 		map<int,Device*> m_devices; //< active device list, mapped by instanceID
 };

@@ -35,10 +35,8 @@ App::App() : OscObject((string)"/"+PACKAGE), m_bRun(false),
 	m_oscSender(Config::instance().getOscSender()) {
 	appPtr = this;
 }
-
-App::~App() {}
-
-void App::setup() {
+		
+void App::run() {
 	m_config.print();
 	
 	// setup osc interface
@@ -58,18 +56,20 @@ void App::setup() {
 	}
 
 	m_oscSender << BeginMessage(m_config.notificationAddress + "/startup")
-				<< EndMessage();
+	            << EndMessage();
 	m_oscSender.send();
 
 	// set signal handling
 	signal(SIGTERM, signalExit); // terminate
 	signal(SIGQUIT, signalExit); // quit
 	signal(SIGINT,  signalExit); // interrupt
-}
-		
-void App::run() {
+
+	// open all currently plugged in devices before mainloop
+	m_deviceManager.openAll();
+	m_deviceManager.sendDeviceEvents = true;
+
 	m_oscSender << BeginMessage(m_config.notificationAddress + "/ready")
-				<< EndMessage();
+	            << EndMessage();
 	m_oscSender.send();
 	
 	m_bRun = true;
@@ -89,13 +89,13 @@ void App::run() {
 				}
 			}
 		}
-			 
+		
 		// and 2 cents for the scheduler ...
 		usleep(m_config.sleepUS);
 	}
-}
-		
-void App::cleanup() {
+	
+	// close all opened devices
+	m_deviceManager.sendDeviceEvents = false;
 	m_deviceManager.closeAll();
 	
 	m_oscSender << BeginMessage(m_config.notificationAddress + "/shutdown")
@@ -105,46 +105,14 @@ void App::cleanup() {
 
 // PROTECTED
 
-bool App::processOscMessage(const ReceivedMessage& message,
-							const MessageSource& source) {
-
-	if(message.address() == oscRootAddress + "/open/joystick") {
-		LOG << endl << "	" << PACKAGE << ": open joystick message received." << endl;
-		
-		m_deviceManager.closeAll();
-		m_deviceManager.openAll();
-		m_deviceManager.print();
-		LOG << endl;
-
-		m_oscSender << BeginMessage(m_config.notificationAddress + "/open")
-					<< "joystick" << EndMessage();
-		m_oscSender.send();
-		
-		return true;
-	}
-	else if(message.address() == oscRootAddress + "/close/joystick") {
-		LOG << endl << "	" << PACKAGE << ": close joystick message received" << endl;
-		
-		m_deviceManager.closeAll();
-		m_deviceManager.openAll();
-		m_deviceManager.print();
-		LOG << endl;
-
-		m_oscSender << BeginMessage(m_config.notificationAddress + "/close")
-					<< "joystick" << EndMessage();
-		m_oscSender.send();
-		
-		return true;
-	}
-	else if(message.address() == oscRootAddress + "/quit") {
+bool App::processOscMessage(const ReceivedMessage& message, const MessageSource& source) {
+	if(message.address() == oscRootAddress + "/quit") {
 		stop();
 		LOG << endl << "	" << PACKAGE << ": quit message received, exiting ..." << endl;
 		return true;
 	}
-
 	LOG << endl << "	" << PACKAGE << ": unknown message received: "
-		<< message.address() << " " << message.types() << endl;
-
+	    << message.address() << " " << message.types() << endl;
 	return false;
 }
 

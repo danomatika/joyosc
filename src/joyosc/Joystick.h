@@ -75,7 +75,10 @@ class Joystick : public Device {
 		void printIgnores();
 		
 		/// get index in the devices list
-		inline int getIndex() {return m_index;}
+		inline int getIndex() {return m_indices.index;}
+	
+		/// get the SDL index, different from index
+		inline int getSdlIndex() {return m_indices.sdlIndex;}
 	
 		/// get the SDL instance ID, different from index
 		inline SDL_JoystickID getInstanceID() {return m_instanceID;}
@@ -98,7 +101,7 @@ class Joystick : public Device {
 	protected:
 
 		SDL_Joystick *m_joystick; //< SDL joystick handle
-		int m_index; //< device list index, *not* SDL index
+		DeviceIndices m_indices; //< device list index & SDL index
 		SDL_JoystickID m_instanceID; //< unique SDL instance ID, *not* SDL index
 	
 		unsigned int m_axisDeadZone; //< axis dead zone amount +/- center pos
