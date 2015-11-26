@@ -23,10 +23,10 @@ project "joyosc"
 				  "../lib/tinyobject/src",
 				  "../lib/cpphelpers",
 				  "../lib/cpphelpers/tclap" }
-	libdirs { "../lib/lopack/src/lopack",
-			  "../lib/tinyobject/src/tinyobject" }
-	links { "lopack", "tinyobject" }
-
+	--libdirs { "../lib/lopack/src/lopack", "../lib/tinyobject/src/tinyobject" }
+	--links { "lopack", "tinyobject" }
+	linkoptions { "$(PROJECT_DIR)/../lib/lopack/src/lopack/.libs/liblopack.a", 
+	              "$(PROJECT_DIR)/../lib/tinyobject/src/tinyobject/.libs/libtinyobject.a" }
 	configuration "linux"
 		buildoptions { "`pkg-config --cflags sdl2`", "`pkg-config --cflags liblo`", "`pkg-config --cflags tinyxml2`", "-DHAVE_CONFIG_H" }
 		linkoptions { "`pkg-config --libs sdl2`", "`pkg-config --libs liblo`", "`pkg-config --libs tinyxml2`" }
