@@ -238,12 +238,23 @@ joyosc also sends status notification messages:
 <pre>
 /joyosc/notifications/startup
 /joyosc/notifications/ready
-/joyosc/notifications/open devtype
-/joyosc/notifications/close devtype
+/joyosc/notifications/open devType\* deviceID
+/joyosc/notifications/close devType\* deviceID
 /joyosc/notifications/shutdown
 </pre>
 
-\* devtype is either "joystick" or "controller"
+\* devType is either "joystick" or "controller"
+
+#### Control Messages
+
+joyosc also listens for osc control messages on a specified listening port (default: 7770).
+
+The current messages are:
+<pre>
+/joyosc/quit
+</pre>
+
+_Note: This capability may be expanded in the future._
 
 ---
 
@@ -328,6 +339,7 @@ I develop using an IDE, then update the autotools files when the sources are fin
 FUTURE IDEAS/IMPROVEMENTS
 -------------------------
 
+* add support for SDL2 haptic/force feedback interfaces, to be triggerable over OSC
 * add built in osc -> MIDI and other mapping capabilities (ala junXion or Osculator)
 
 Notes

@@ -41,7 +41,7 @@ bool DeviceManager::open(int sdlIndex) {
 			if(sendDeviceEvents) {
 				Config &config = Config::instance();
 				config.getOscSender() << osc::BeginMessage(config.notificationAddress + "/open")
-									  << "controller" << osc::EndMessage();
+									  << "controller" << indices.index << osc::EndMessage();
 				config.getOscSender().send();
 			}
 			return true;
@@ -54,7 +54,7 @@ bool DeviceManager::open(int sdlIndex) {
 			if(sendDeviceEvents) {
 				Config &config = Config::instance();
 				config.getOscSender() << osc::BeginMessage(config.notificationAddress + "/open")
-									  << "joystick" << osc::EndMessage();
+									  << "joystick" << indices.index << osc::EndMessage();
 				config.getOscSender().send();
 			}
 			return true;
@@ -71,10 +71,10 @@ bool DeviceManager::close(SDL_JoystickID instanceID) {
 			config.getOscSender() << osc::BeginMessage(config.notificationAddress + "/close");
 			switch(js->getDeviceType()) {
 				case GAMECONTROLLER:
-					config.getOscSender() << "controller";
+					config.getOscSender() << "controller" << ((GameController *)js)->getIndex();
 					break;
 				default: // JOYSTICK, should never be UNKNOWN
-					config.getOscSender() << "joystick";
+					config.getOscSender() << "joystick" << ((Joystick *)js)->getIndex();
 					break;
 			}
 			config.getOscSender() << osc::EndMessage();
@@ -203,14 +203,12 @@ bool DeviceManager::sdlIndexExists(int sdlIndex) {
 	map<int,Device*>::iterator iter;
 	for(iter = m_devices.begin(); iter != m_devices.end(); ++iter) {
 		if(iter->second->getDeviceType() == GAMECONTROLLER) {
-			GameController *gc = (GameController *)iter->second;
-			if(gc->getSdlIndex() == sdlIndex) {
+			if(((GameController *)iter->second)->getSdlIndex() == sdlIndex) {
 				return true;
 			}
 		}
 		else if(iter->second->getDeviceType() == JOYSTICK) {
-			Joystick *js = (Joystick *)iter->second;
-			if(js->getSdlIndex() == sdlIndex) {
+			if(((Joystick *)iter->second)->getSdlIndex() == sdlIndex) {
 				return true;
 			}
 		}
