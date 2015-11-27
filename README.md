@@ -174,12 +174,12 @@ A similar printout for a game controller:
 /gc0 Logitech F510 Gamepad (DInput) button: a 0
 /gc0 Logitech F510 Gamepad (DInput) button: b 1
 /gc0 Logitech F510 Gamepad (DInput) button: b 0
-/gc0 Logitech F510 Gamepad (DInput) axis: rightx 642
-/gc0 Logitech F510 Gamepad (DInput) axis: righty -129
-/gc0 Logitech F510 Gamepad (DInput) axis: rightx 128
-/gc0 Logitech F510 Gamepad (DInput) axis: righty -1671
-/gc0 Logitech F510 Gamepad (DInput) axis: righty -129
-/gc0 Logitech F510 Gamepad (DInput) axis: rightx -129
+/gc0 Logitech F510 Gamepad (DInput) button: x 1
+/gc0 Logitech F510 Gamepad (DInput) button: x 0
+/gc0 Logitech F510 Gamepad (DInput) axis: righty 3469
+/gc0 Logitech F510 Gamepad (DInput) axis: rightx 5782
+/gc0 Logitech F510 Gamepad (DInput) axis: righty 7324
+/gc0 Logitech F510 Gamepad (DInput) axis: leftx -3470
 </pre>
 
 #### Game Controllers vs. Joysticks
@@ -214,9 +214,9 @@ joyosc streams device event information in the following OSC address format:
 * _ID_ is the joystick id number or game controller name string for the control (aka joystick button 1, axis 2, etc / game controller button x, axis lefty, etc); these are likely different between joystick devices but largely the same between game controllers
 * _VALUE_ is the current value of the control:
   * button state values are 1 or 0 for pressed & released
-  * axis values are -32767 to 32767
+  * axis values are -32767 to 32767 (signed 16 bit)
   * hat values are binary bits representing the hat button aka: 0, 2, 4, 8
-  * ball values are the relative x & y movment in pixels (I think, SDL docs don't go into details)
+  * (track)ball values are the relative x & y movment in pixels (I think, SDL docs don't go into details)
 
 Example joystick messages:
 <pre>

@@ -90,7 +90,9 @@ int main(int argc, char **argv) {
 				if(printDetails) {
 					cout << "  num axes: " << SDL_JoystickNumAxes(joystick) << endl
 					     << "  num buttons: " << SDL_JoystickNumButtons(joystick) << endl;
-					cout << endl;
+					if(i == numJoysticks-1) {
+						cout << endl;
+					}
 				}
 			}
 			else {
@@ -100,7 +102,9 @@ int main(int argc, char **argv) {
 					     << "  num buttons: " << SDL_JoystickNumButtons(joystick) << endl
 					     << "  num balls: " << SDL_JoystickNumBalls(joystick) << endl
 					     << "  num hats: " << SDL_JoystickNumHats(joystick) << endl;
-					cout << endl;
+					if(i == numJoysticks-1) {
+						cout << endl;
+					}
 				}
 			}
 			SDL_JoystickClose(joystick);

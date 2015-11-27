@@ -106,6 +106,9 @@ class GameController : public Device {
 	
 	protected:
 	
+		/// send button event
+		bool buttonPressed(string &name, int value);
+	
 		SDL_GameController *m_controller; //< SDL controller handle
 		DeviceIndices m_indices; //< device list index & SDL index
 		SDL_JoystickID m_instanceID; //< unique SDL instance ID, *not* SDL index

@@ -27,7 +27,7 @@
 
 Joystick::Joystick(string oscAddress) :
 	Device(oscAddress), m_joystick(NULL), m_instanceID(-1),
-	m_axisDeadZone(0), m_remapping(NULL), m_ignore(NULL) {
+	m_axisDeadZone(3200), m_remapping(NULL), m_ignore(NULL) {
 	m_indices.index = -1;
 	m_indices.sdlIndex = -1;
 }

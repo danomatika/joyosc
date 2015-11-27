@@ -27,7 +27,7 @@
 
 GameController::GameController(string oscAddress) :
 	Device(oscAddress), m_controller(NULL), m_instanceID(-1),
-	m_axisDeadZone(0), m_remapping(NULL), m_ignore(NULL) {
+	m_axisDeadZone(3200), m_remapping(NULL), m_ignore(NULL) {
 	m_indices.index = -1;
 	m_indices.sdlIndex = -1;
 }
@@ -130,48 +130,57 @@ bool GameController::handleEvent(void* data) {
 		
 		case SDL_CONTROLLERBUTTONDOWN: {
 			string button = SDL_GameControllerGetStringForButton((SDL_GameControllerButton)event->cbutton.button);
-			if(m_ignore && m_ignore->isButtonIgnored(button)) {
-				break;
-			}
-			if(m_remapping) {
-				button = m_remapping->mappingForButton(button);
-			}
-
-			sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/button")
-				   << button << event->cbutton.state
-				   << osc::EndMessage();
-			sender.send();
-			
-			if(m_config.printEvents) {
-				LOG << m_oscAddress << " " << m_devName
-					<< " button: " << button << " " << (int) event->cbutton.state << endl;
-			}
-			return true;
+			return buttonPressed(button, event->cbutton.state);
+//			if(m_ignore && m_ignore->isButtonIgnored(button)) {
+//				break;
+//			}
+//			if(m_remapping) {
+//				button = m_remapping->mappingForButton(button);
+//			}
+//
+//			sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/button")
+//				   << button << event->cbutton.state
+//				   << osc::EndMessage();
+//			sender.send();
+//			
+//			if(m_config.printEvents) {
+//				LOG << m_oscAddress << " " << m_devName
+//					<< " button: " << button << " " << (int) event->cbutton.state << endl;
+//			}
+//			return true;
 		}
 		
 		case SDL_CONTROLLERBUTTONUP: {
 			string button = SDL_GameControllerGetStringForButton((SDL_GameControllerButton)event->cbutton.button);
-			if(m_ignore && m_ignore->isButtonIgnored(button)) {
-				break;
-			}
-			if(m_remapping) {
-				button = m_remapping->mappingForButton(button);
-			}
-
-			sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/button")
-				   << button << event->cbutton.state
-				   << osc::EndMessage();
-			sender.send();
-			
-			if(m_config.printEvents) {
-				LOG << m_oscAddress << " " << m_devName
-					<< " button: " << button << " " << (int) event->cbutton.state << endl;
-			}
-			return true;
+			return buttonPressed(button, event->cbutton.state);
+//			if(m_ignore && m_ignore->isButtonIgnored(button)) {
+//				break;
+//			}
+//			if(m_remapping) {
+//				button = m_remapping->mappingForButton(button);
+//			}
+//
+//			sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/button")
+//				   << button << event->cbutton.state
+//				   << osc::EndMessage();
+//			sender.send();
+//			
+//			if(m_config.printEvents) {
+//				LOG << m_oscAddress << " " << m_devName
+//					<< " button: " << button << " " << (int) event->cbutton.state << endl;
+//			}
+//			return true;
 		}
 
 		case SDL_CONTROLLERAXISMOTION: {
 			string axis = SDL_GameControllerGetStringForAxis((SDL_GameControllerAxis)event->caxis.axis);
+			
+			// there seems to be a bug (at last on OSX) where trigger buttons for some
+			// devices are reported as axis values, so catch them here for now
+			if(axis == "lefttrigger" || axis == "righttrigger") {
+				return buttonPressed(axis, (event->caxis.value > 0 ? 1 : 0));
+			}
+			
 			if(m_ignore && m_ignore->isAxisIgnored(axis)) {
 				break;
 			}
@@ -272,4 +281,27 @@ int GameController::addMapping(string mapping) {
 		LOG_WARN << "GameController mapping error: " << SDL_GetError() << endl;
 	}
 	return ret;
+}
+
+// PROTECTED
+
+bool GameController::buttonPressed(string &button, int value) {
+	if(m_ignore && m_ignore->isButtonIgnored(button)) {
+		return false;
+	}
+	if(m_remapping) {
+		button = m_remapping->mappingForButton(button);
+	}
+
+	osc::OscSender& sender = m_config.getOscSender();
+	sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/button")
+		   << button << value
+		   << osc::EndMessage();
+	sender.send();
+	
+	if(m_config.printEvents) {
+		LOG << m_oscAddress << " " << m_devName
+			<< " button: " << button << " " << value << endl;
+	}
+	return true;
 }
