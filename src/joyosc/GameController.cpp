@@ -24,6 +24,7 @@
 
 #include "GameControllerRemapping.h"
 #include "GameControllerIgnore.h"
+#include "Path.h"
 
 GameController::GameController(string oscAddress) :
 	Device(oscAddress), m_controller(NULL), m_instanceID(-1),
@@ -275,10 +276,19 @@ void GameController::setIgnore(GameControllerIgnore* ignore) {
 	}
 }
 
-int GameController::addMapping(string mapping) {
+int GameController::addMappingString(string mapping) {
 	int ret = SDL_GameControllerAddMapping(mapping.c_str());
 	if(ret < 0) {
-		LOG_WARN << "GameController mapping error: " << SDL_GetError() << endl;
+		LOG_WARN << "GameController mapping string error: " << SDL_GetError() << endl;
+	}
+	return ret;
+}
+
+int GameController::addMappingFile(string path) {
+	path = Path::absolutePath(path);
+	int ret = SDL_GameControllerAddMappingsFromFile(path.c_str());
+	if(ret < 0) {
+		LOG_WARN << "GameController mapping file error: " << SDL_GetError() << endl;
 	}
 	return ret;
 }

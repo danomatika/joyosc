@@ -102,7 +102,11 @@ class GameController : public Device {
 	
 		/// add a game controller mapping string to SDL,
 		/// returns 1 on add, 0 on update, & -1 on error
-		static int addMapping(string mapping);
+		static int addMappingString(string mapping);
+	
+		/// add a game controller mapping file to SDL,
+		/// returns num mappings added or -1 on error
+		static int addMappingFile(string path);
 	
 	protected:
 	

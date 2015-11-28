@@ -7,7 +7,7 @@ dist_configfiles_DATA = example_config.xml
 configfilesdir = $(docdir)
 
 # include pd files
-dist_pd_readme_DATA = $(thisdir)/pd/README $(thisdir)/pd/joyosc-example.pd
+dist_pd_readme_DATA = $(thisdir)/pd/README.md $(thisdir)/pd/joyosc-example.pd
 pd_readmedir = $(docdir)/pd
 dist_joyosc_DATA = $(thisdir)/pd/joyosc/g_controller.pd \
                    $(thisdir)/pd/joyosc/g_controller-help.pd \

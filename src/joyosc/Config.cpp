@@ -23,6 +23,7 @@
 #include "Config.h"
 
 #include "Log.h"
+#include "Path.h"
 #include "../config.h" // autotools generated header
 
 #include "GameController.h"
@@ -147,7 +148,7 @@ bool Config::parseCommandLine(int argc, char **argv) {
 
 		// load the config file (if one exists)
 		if(configCmd.getValue() != "") {
-			setXMLFilename(Config::absolutePath(configCmd.getValue()));
+			setXMLFilename(Path::absolutePath(configCmd.getValue()));
 			LOG << "Config: loading " << getXMLFilename() << endl;
 			loadXMLFile();
 			closeXMLFile();
@@ -190,28 +191,6 @@ void Config::print() {
 			<< " : " << iter->second << endl;
 		++index;
 	}
-}
-
-// adapted from openframeworks ofToDataPath():
-// https://github.com/openframeworks/openFrameworks/blob/master/libs/openFrameworks/utils/ofUtils.cpp
-string Config::absolutePath(string path) {
-	// check for absolute path, 
-	if(path.length() != 0 && (path.substr(0, 1) == "/" || path.substr(1, 1) == ":")) {
-		return path; // is absolute, so pass through
-	}
-
-	// relative path, so append current dir
-	#if defined( __WIN32__ ) || defined( _WIN32 )
-		char currDir[1024];
-		path = "\\" + path;
-		path = _getcwd(currDir, 1024) + path;
-		replace(path.begin(), path.end(), '/', '\\'); // fix any unixy paths...
-	#else // Mac / Linux
-		char currDir[1024];
-		path = "/" + path;
-		path = getcwd(currDir, 1024) + path;
-	#endif
-	return path;
 }
 
 // PROTECTED
@@ -341,7 +320,7 @@ bool Config::readXML(XMLElement* e) {
 			while(child2 != NULL) {
 				if((string)child2->Name() == "mapping") {
 					string mapping = XML::getTextString(child2);
-					int ret = GameController::addMapping(mapping);
+					int ret = GameController::addMappingString(mapping);
 					if(ret == 0) {
 						LOG_DEBUG << "Config: updated mapping: \""
 								  << mapping << "\"" << endl;
@@ -349,6 +328,17 @@ bool Config::readXML(XMLElement* e) {
 					else if(ret == 1) {
 						LOG_DEBUG << "Config: added mapping: \""
 								  << mapping << "\"" << endl;
+					}
+				}
+				else if((string)child2->Name() == "file") {
+					string path = XML::getTextString(child2);
+					if(!Path::isAbsolute(path)) {
+						path = Path::append(Path::withoutLastComponent(getXMLFilename()), Path::lastComponent(path));
+					}
+					int ret = GameController::addMappingFile(path);
+					if(ret >= 0) {
+						LOG_DEBUG << "Config: added " << ret << " mappings from: "
+						          << "\"" << path << "\"" << endl;
 					}
 				}
 				else {

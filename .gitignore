@@ -4,6 +4,7 @@ prj/obj
 # autotools files
 autom4te.cache
 .deps
+.libs
 Makefile
 config.log
 config.status

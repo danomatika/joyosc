@@ -191,7 +191,7 @@ As of SDL 2, there are two joystick event interfaces:
 
 Joystick devices report all input events with a numeric button, axis, hat, & trackball id which may vary between devices.
 
-Game Controllers map underlying joystick inputs to generic button and axis name strings if the device is detected by SDL as having a game controller mapping. If a device is *not* detected, you can add a custom SDL mapping string via the xml config file. See the following for more info: [SDL_GameControllerAddMapping](http://wiki.libsdl.org/SDL_GameControllerAddMapping) & [SDL Game Controller DB](https://github.com/gabomdq/SDL_GameControllerDB).
+Game Controllers map underlying joystick inputs to generic button and axis name strings if the device is detected by SDL as having a game controller mapping. If a device is *not* detected, you can add a custom SDL mapping string via the xml config file or an external text file. See the following for more info: [SDL_GameControllerAddMapping](http://wiki.libsdl.org/SDL_GameControllerAddMapping) & [SDL Game Controller DB](https://github.com/gabomdq/SDL_GameControllerDB).
 
 SDL Game Controller button names: a, b, x, y, start, back, guide, leftshoudler, lefttrigger, rightshoulder, righttrigger, leftstick, rightstick, dpup, dpdown, dpleft, dpright (dp = digital pad)
 
