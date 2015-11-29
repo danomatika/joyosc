@@ -1,12 +1,14 @@
 joyosc
 ======
 
-hid device event to Open Sound Control bridge daemon and associated tools
+joystick & game controller hid device event to Open Sound Control bridge daemon and associated tools
 
 Copyright (c) [Dan Wilcox](danomatika.com) 2007 - 2015
 
 DESCRIPTION
 -----------
+
+USB joysticks & game controllers are a cheap, ubiqutous source for alternate interfaces and can be easily hacked with custom switches, buttons, and analog sensors. Furthermore, physical computing platforms such as Arduino & Teensy can be configured to appear as USB HID (Human Interface Devices). joyosc provides a quick OSC event interface for such devices into your favorite creative coding environents (Pure Data, Max MSP, Processing, OpenFrameworks, etc).
 
 The joyosc package contains the following parts:
 
