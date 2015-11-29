@@ -1,7 +1,7 @@
 joyosc
 ======
 
-joystick & game controller hid device event to Open Sound Control bridge daemon and associated tools
+joystick & game controller hid device event to Open Sound Control daemon and associated tools
 
 Copyright (c) [Dan Wilcox](danomatika.com) 2007 - 2015
 
@@ -13,12 +13,12 @@ USB joysticks & game controllers are a cheap, ubiqutous source for alternate int
 The joyosc package contains the following parts:
 
 1. joyosc - device event daemon
-2. lsjs - joystick info tool
+2. lsjs - joystick & game controller info tool
 
-This group of tools allows any OSC-capable program to receive joystick event data aka button presses, axis movements, etc. Specific joysticks & game controllers can be mapped by name to specific OSC send addresses and button, axis, etc ids can be remapped or ignored.
+This group of tools allows any OSC capable program to receive joystick & game controller event data aka button presses, axis movements, etc. Specific joysticks & game controllers can be mapped by name to specific OSC send addresses and button, axis, etc ids can be remapped or ignored.
 
 These tools were developed for the robotcowboy project, a wearable computer
-music system using Pure Data in GNU/Linux. See <http://robotcowboy.com>
+music system using [Pure Data](http://puredata.info) in GNU/Linux. See <http://robotcowboy.com>
 
 QUICK START
 -----------
@@ -39,9 +39,9 @@ BUILD REQUIREMENTS
 
 The following libraries are required:
 
-* SDL2
-* liblo
-* tinyxml2
+* **SDL2**: input device events
+* **liblo**: OSC
+* **tinyxml2**: XML file reading
 
 ### Linux
 
