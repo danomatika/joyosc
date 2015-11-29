@@ -39,7 +39,7 @@
 #X obj 29 122 route devices notifications;
 #X obj 29 91 route joyosc;
 #X obj 134 23 tgl 15 0 empty empty print_all_messages 17 7 0 10 -262144
--1 -1 1 1;
+-1 -1 0 1;
 #N canvas 0 22 418 314 oscreceive 0;
 #X obj 110 131 oscparse;
 #X obj 110 160 list trim;
@@ -65,7 +65,7 @@
 #X connect 10 0 8 0;
 #X coords 0 314 1 313 140 40 0;
 #X restore 29 52 pd oscreceive 8880;
-#X obj 29 22 tgl 15 0 empty empty listen 17 7 0 10 -262144 -1 -1 1
+#X obj 29 22 tgl 15 0 empty empty listen 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 319 23 declare -path ./joyosc;
 #X obj 110 273 unpack f f f;

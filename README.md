@@ -345,4 +345,8 @@ FUTURE IDEAS/IMPROVEMENTS
 Notes
 -----
 
-Note: joyosc was originally named "rc-unitd" (the robotcowboy unit daemon) in versions prior to 0.4.0
+_Note: joyosc was originally named "rc-unitd" (the robotcowboy unit daemon) in versions prior to 0.4.0_
+
+[How to connect PS3 controller on Mac OSX, PC, etc](https://gist.github.com/hlung/8385683)
+
+[Use Osculator + HID extension for Wiimote support on OSX](http://www.osculator.net)
