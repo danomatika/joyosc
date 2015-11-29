@@ -1,14 +1,24 @@
-2015-10-26 Dan Wilcox <danomatika@gmail.com>
+2015-11-29 Dan Wilcox <danomatika@gmail.com>
 
 	0.4.0: SDL2 rewrite
 
+	* renamed project and resulting binary to "joyosc"
 	* updated to SDL2 which adds built in hot plugging support
+	* added multicast sending & listening
 	* added GameController device type for SDL2 game controller interface,
 	  original joystick interface provided as fallback or via override
+	* added ability to load SDL2 Game Controller mappings via string or file
+	* added game controller mapping & GUID printing to lsjs
+	* added options to configure to optionally use installed local libs: lopack & tinyobject
 	* fixed lo_server exception not being handled if listening port is in use
 	* overall code cleanup and formatting
+	* renamed config file "mappings" xml element to "devices"
+	* default axis dead zone now 3200
+	* updated pure data patch library, main objects now j_joystick & j_controller
+	* updated auto tools build system to use local lib configure 
 	* removed unnecessary libunit build target
 	* removed udev rule generation from build process, saved in data/udev
+	* removed notifier tool, saved in data/udev/joyosc-notifier
 
 2014-02-18 Dan Wilcox <danomatika@gmail.com>
 
