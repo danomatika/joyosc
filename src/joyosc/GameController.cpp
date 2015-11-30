@@ -45,7 +45,7 @@ bool GameController::open(void *data) {
 
 	if(isOpen()) {
 		LOG_WARN << "GameController: joystick with index "
-				 << m_indices.index << " already opened" << endl;
+		         << m_indices.index << " already opened" << endl;
 		return false;
 	}
 
@@ -97,7 +97,7 @@ bool GameController::open(void *data) {
 	if(m_controller && Config::instance().printEvents) {
 		SDL_Joystick *joystick = SDL_GameControllerGetJoystick(m_controller);
 		LOG << "  num buttons: " << SDL_JoystickNumButtons(joystick) << endl
-			<< "  num axes: " << SDL_JoystickNumAxes(joystick) << endl;
+		    << "  num axes: " << SDL_JoystickNumAxes(joystick) << endl;
 	}
 	return true;
 }
@@ -108,8 +108,8 @@ void GameController::close() {
 			SDL_GameControllerClose(m_controller);
 		}
 		LOG << "GameController: closed " << m_indices.index
-			<< " " << m_devName << " with address "
-			<< m_oscAddress << endl;
+		    << " " << m_devName << " with address "
+		    << m_oscAddress << endl;
 		m_controller = NULL;
 	}
 	
@@ -132,45 +132,11 @@ bool GameController::handleEvent(void* data) {
 		case SDL_CONTROLLERBUTTONDOWN: {
 			string button = SDL_GameControllerGetStringForButton((SDL_GameControllerButton)event->cbutton.button);
 			return buttonPressed(button, event->cbutton.state);
-//			if(m_ignore && m_ignore->isButtonIgnored(button)) {
-//				break;
-//			}
-//			if(m_remapping) {
-//				button = m_remapping->mappingForButton(button);
-//			}
-//
-//			sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/button")
-//				   << button << event->cbutton.state
-//				   << osc::EndMessage();
-//			sender.send();
-//			
-//			if(m_config.printEvents) {
-//				LOG << m_oscAddress << " " << m_devName
-//					<< " button: " << button << " " << (int) event->cbutton.state << endl;
-//			}
-//			return true;
 		}
 		
 		case SDL_CONTROLLERBUTTONUP: {
 			string button = SDL_GameControllerGetStringForButton((SDL_GameControllerButton)event->cbutton.button);
 			return buttonPressed(button, event->cbutton.state);
-//			if(m_ignore && m_ignore->isButtonIgnored(button)) {
-//				break;
-//			}
-//			if(m_remapping) {
-//				button = m_remapping->mappingForButton(button);
-//			}
-//
-//			sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/button")
-//				   << button << event->cbutton.state
-//				   << osc::EndMessage();
-//			sender.send();
-//			
-//			if(m_config.printEvents) {
-//				LOG << m_oscAddress << " " << m_devName
-//					<< " button: " << button << " " << (int) event->cbutton.state << endl;
-//			}
-//			return true;
 		}
 
 		case SDL_CONTROLLERAXISMOTION: {
@@ -194,15 +160,15 @@ bool GameController::handleEvent(void* data) {
 			if(abs(value) < m_axisDeadZone) {
 				value = 0;
 			}
-				   
+			
 			// make sure we don't report a value more then once
 			if(m_prevAxisValues[event->caxis.axis] == value) {
 				return true;
 			}
 			
 			sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/axis")
-				   << axis << value
-				   << osc::EndMessage();
+			       << axis << value
+			       << osc::EndMessage();
 			sender.send();
 			
 			// store value
@@ -210,7 +176,7 @@ bool GameController::handleEvent(void* data) {
 
 			if(m_config.printEvents) {
 				LOG << m_oscAddress << " " << m_devName
-					<< " axis: " << axis << " " << value << endl;
+				    << " axis: " << axis << " " << value << endl;
 			}
 			return true;
 		}
@@ -227,7 +193,7 @@ void GameController::print() {
 	if(m_controller) {
 		SDL_Joystick *joystick = SDL_GameControllerGetJoystick(m_controller);
 		LOG << "  num buttons: " << SDL_JoystickNumButtons(joystick) << endl
-			<< "  num axes: " << SDL_JoystickNumAxes(joystick) << endl;
+		    << "  num axes: " << SDL_JoystickNumAxes(joystick) << endl;
 	}
 }
 
@@ -259,7 +225,7 @@ SDL_Joystick* GameController::getJoystick() {
 void GameController::setAxisDeadZone(unsigned int zone) {
 	m_axisDeadZone = zone;
 	LOG_DEBUG << "GameController \"" << getDevName() << "\": "
-			  << "set axis dead zone to " << zone << endl;
+	          << "set axis dead zone to " << zone << endl;
 }
 
 void GameController::setRemapping(GameControllerRemapping* remapping) {
@@ -305,13 +271,13 @@ bool GameController::buttonPressed(string &button, int value) {
 
 	osc::OscSender& sender = m_config.getOscSender();
 	sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/button")
-		   << button << value
-		   << osc::EndMessage();
+	       << button << value
+	       << osc::EndMessage();
 	sender.send();
 	
 	if(m_config.printEvents) {
 		LOG << m_oscAddress << " " << m_devName
-			<< " button: " << button << " " << value << endl;
+		    << " button: " << button << " " << value << endl;
 	}
 	return true;
 }

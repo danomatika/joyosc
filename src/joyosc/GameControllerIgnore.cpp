@@ -32,7 +32,7 @@ void GameControllerIgnore::check(GameController *controller) {
 	for(iter = buttons.begin(); iter != buttons.end();) {
 		if(SDL_GameControllerGetButtonFromString((*iter).c_str()) == SDL_CONTROLLER_BUTTON_INVALID) {
 			LOG_WARN << "GameController " << controller->getDevName() << ": "
-					 << "removing invalid button ignore: " << (*iter) << endl;
+			         << "removing invalid button ignore: " << (*iter) << endl;
 			iter = buttons.erase(iter);
 		}
 		else {
@@ -42,7 +42,7 @@ void GameControllerIgnore::check(GameController *controller) {
 	for(iter = axes.begin(); iter != axes.end();) {
 		if(SDL_GameControllerGetAxisFromString((*iter).c_str()) == SDL_CONTROLLER_AXIS_INVALID) {
 			LOG_WARN << "GameController " << controller->getDevName() << ": "
-					 << "removing invalid axis ignore: " << (*iter) << endl;
+			         << "removing invalid axis ignore: " << (*iter) << endl;
 			iter = axes.erase(iter);
 		}
 		else {
@@ -83,27 +83,27 @@ bool GameControllerIgnore::readXML(XMLElement* e) {
 				ret = buttons.insert(which);
 				if(!ret.second) {
 					LOG_WARN << "GameController " << devName << ": "
-							 << "already ignoring button " << which << endl;
+					         << "already ignoring button " << which << endl;
 				}
 				LOG_DEBUG << "GameController " << devName << ": "
-						  << "ignoring button " << which << endl;
+				          << "ignoring button " << which << endl;
 				loaded = true;
 			}
 			else if((string)child->Name() == "axis") {
 				ret = axes.insert(which);
 				if(!ret.second) {
 					LOG_WARN << "GameController " << devName << ": "
-							 << "already ignoring axis " << which << endl;
+					         << "already ignoring axis " << which << endl;
 				}
 				LOG_DEBUG << "GameController " << devName << ": "
-						  << "ignoring axis " << which << endl;
+				          << "ignoring axis " << which << endl;
 				loaded = true;
 			}
 		}
 		else {
 			LOG_WARN << "GameController " << devName << ": "
-					 << "ignoring invalid ignore xml element: \""
-					 << child->Name() << "\"" << endl;
+			         << "ignoring invalid ignore xml element: \""
+			         << child->Name() << "\"" << endl;
 		}
 		child = child->NextSiblingElement();
 	}

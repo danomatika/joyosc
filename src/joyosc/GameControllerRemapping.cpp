@@ -32,8 +32,8 @@ void GameControllerRemapping::check(GameController* controller) {
 	for(iter = buttons.begin(); iter != buttons.end();) {
 		if(SDL_GameControllerGetButtonFromString(iter->first.c_str()) == SDL_CONTROLLER_BUTTON_INVALID) {
 			LOG_WARN << "GameController " << controller->getDevName() << ": "
-					 << "removing invalid button remap: "
-					 << iter->first << " -> " << iter->second << endl;
+			         << "removing invalid button remap: "
+			         << iter->first << " -> " << iter->second << endl;
 			iter = buttons.erase(iter);
 		}
 		else {
@@ -43,8 +43,8 @@ void GameControllerRemapping::check(GameController* controller) {
 	for(iter = axes.begin(); iter != axes.end();) {
 		if(SDL_GameControllerGetAxisFromString(iter->first.c_str()) == SDL_CONTROLLER_AXIS_INVALID) {
 			LOG_WARN << "GameController " << controller->getDevName() << ": "
-					 << "removing invalid axis remap: "
-					 << iter->first << " -> " << iter->second << endl;
+			         << "removing invalid axis remap: "
+			         << iter->first << " -> " << iter->second << endl;
 			iter = axes.erase(iter);
 		}
 		else {
@@ -67,11 +67,11 @@ void GameControllerRemapping::print() {
 	map<string,string>::iterator iter;
 	for(iter = buttons.begin(); iter != buttons.end(); ++iter) {
 		LOG << "  button remap: " << iter->first
-			<< " -> " << iter->second << endl;
+		    << " -> " << iter->second << endl;
 	}
 	for(iter = axes.begin(); iter != axes.end(); ++iter) {
 		LOG << "  axis remap: " << iter->first
-			<< " -> " << iter->second << endl;
+		    << " -> " << iter->second << endl;
 	}
 }
 
@@ -88,29 +88,29 @@ bool GameControllerRemapping::readXML(XMLElement* e) {
 				ret = buttons.insert(make_pair(from, to));
 				if(!ret.second) {
 					LOG_WARN << "GameController " << devName << ": "
-							 << "mapping for button " << from
-							 << " already exists" << endl;
+					         << "mapping for button " << from
+					         << " already exists" << endl;
 				}
 				LOG_DEBUG << "GameController " << devName << ": "
-						  << "remapped button " << from << " to " << to << endl;
+				          << "remapped button " << from << " to " << to << endl;
 				loaded = true;
 			}
 			else if((string)child->Name() == "axis") {
 				ret = axes.insert(make_pair(from, to));
 				if(!ret.second) {
 					LOG_WARN << "GameController " << devName << ": "
-							 << "mapping for axis " << from
-							 << " already exists" << endl;
+					         << "mapping for axis " << from
+					         << " already exists" << endl;
 				}
 				LOG_DEBUG << "GameController " << devName << ": "
-						  << "remapped axis " << from << " to " << to << endl;
+				          << "remapped axis " << from << " to " << to << endl;
 				loaded = true;
 			}
 		}
 		else {
 			LOG_WARN << "GameController " << devName << ": "
-					 << "ignoring invalid remap xml element: \""
-					 << child->Name() << "\"" << endl;
+			         << "ignoring invalid remap xml element: \""
+			         << child->Name() << "\"" << endl;
 		}
 		child = child->NextSiblingElement();
 	}
