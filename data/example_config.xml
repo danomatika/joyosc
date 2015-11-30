@@ -22,7 +22,7 @@
 	     sleepUS: how often to poll for new events in micro seconds, a smaller
 	              number means faster events but more CPU time (default: 10000)
 	 -->
-	<config printEvents="1" joysticksOnly="false" sleepUS="20000"/>
+	<config printEvents="true" joysticksOnly="false" sleepUS="20000"/>
 
 	<!-- device types to for mapping names to OSC send addresses and adding
 	     event customizations, use lsjs to get the names of the devices
