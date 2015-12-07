@@ -24,6 +24,7 @@
 
 #include "Log.h"
 #include "Path.h"
+#include "Options.h"
 #include "../config.h" // autotools generated header
 
 #include "GameController.h"
@@ -31,8 +32,6 @@
 #include "GameControllerRemapping.h"
 #include "JoystickIgnore.h"
 #include "JoystickRemapping.h"
-
-#include <tclap.h>
 
 #if defined( __WIN32__ ) || defined( _WIN32 )
 	#include <windows.h>
@@ -103,70 +102,41 @@ JoystickIgnore* Config::getJoystickIgnore(string deviceName) {
 }
 
 bool Config::parseCommandLine(int argc, char **argv) {
-	try {
-		// the commandline parser
-		TCLAP::CommandLine cmd("joystick device event to osc bridge", VERSION);
-		
-		stringstream itoa;
-		itoa << sendingPort;
-		
-		// options to parse
-		// short id, long id, description, required?, default value, short usage type description
-		TCLAP::ValueArg<string> ipOpt("i", "ip", (string) "IP address to send to (default: "+sendingIp+")", false, sendingIp, "string");
-		TCLAP::ValueArg<int> portOpt("p","port", (string) "Port to send to (default: "+itoa.str()+")", false, sendingPort, "int");
-	 
-		itoa.str("");
-		itoa << listeningPort;
-		TCLAP::ValueArg<int> inputPortOpt("l", "listeningport", "Listening port (default: "+itoa.str()+")", false, listeningPort, "int");
-		TCLAP::ValueArg<string> multicastOpt("m", "multicast", "Multicast listening group address (off by default)", false, listeningMulticast, "string");
-		
-		TCLAP::SwitchArg eventsOpt("e", "events", "Print incoming events, useful for debugging", printEvents);
-		TCLAP::SwitchArg joysticksOpt("j", "joysticksonly", "Disable game controller support, use joystick interface only", joysticksOnly);
-		
-		itoa.str("");
-		itoa << sleepUS;
-		TCLAP::ValueArg<unsigned int> sleepOpt("s", "sleep", (string) "Sleep time in usecs (default: "+itoa.str()+")", false, sleepUS, "uint");
+	
+	Options options("joystick device event to osc bridge", VERSION);
 
-		// commands to parse
-		// name, description, required?, default value, short usage type description
-		TCLAP::UnlabeledValueArg<string> configCmd("config", "Config file to load", false, "", "config");
-
-		// add args to parser (in reverse order)
-		cmd.add(sleepOpt);
-		cmd.add(joysticksOpt);
-		cmd.add(eventsOpt);
-		cmd.add(multicastOpt);
-		cmd.add(inputPortOpt);
-		cmd.add(portOpt);
-		cmd.add(ipOpt);
-		
-		// add commands
-		cmd.add(configCmd);
-
-		// parse the commandline
-		cmd.parse(argc, argv);
-
-		// load the config file (if one exists)
-		if(configCmd.getValue() != "") {
-			setXMLFilename(Path::absolutePath(configCmd.getValue()));
-			LOG << "Config: loading " << getXMLFilename() << endl;
-			loadXMLFile();
-			closeXMLFile();
-		}
-		
-		// set the variables
-		if(ipOpt.isSet())         {sendingIp = ipOpt.getValue();}
-		if(portOpt.isSet())       {sendingPort = portOpt.getValue();}
-		if(inputPortOpt.isSet())  {listeningPort = inputPortOpt.getValue();}
-		if(multicastOpt.isSet())  {listeningMulticast = multicastOpt.getValue();}
-		if(eventsOpt.isSet())     {printEvents = eventsOpt.getValue();}
-		if(joysticksOpt.isSet())  {joysticksOnly = joysticksOpt.getValue();}
-		if(sleepOpt.isSet())      {sleepUS = sleepOpt.getValue();}
-	}
-	catch(TCLAP::ArgException &e) {  // catch any exceptions
-		LOG_ERROR << "CommandLine: " << e.error() << " for arg " << e.argId() << endl;
+	options.addString("IP", "i", "ip", "  -i, --ip \tIP address to send to (default: 127.0.0.1)");
+	options.addInteger("PORT","p", "port", "  -p, --port \tPort to send to (default: 8880)");
+	options.addInteger("LISTENPORT", "l", "listening-port", "  -l, --listening-port \tListening port (default: 7770)");
+	options.addSwitch("MULTICAST", "m", "multicast", "  -m, --multicast \tMulticast listening group address (off by default)");
+	options.addSwitch("EVENTS", "e", "events", "  -e, --events \tPrint incoming events, useful for debugging");
+	options.addSwitch("JSONLY", "j", "joysticks-only", "  -j, --joysticks-only \tDisable game controller support, use joystick interface only");
+	options.addSwitch("SLEEP", "s", "sleep", "  -s, --sleep \tSleep time in usecs (default: 10000)");
+	options.addArgument("FILE", "  FILE \tOptional XML config file");
+	
+	Options::print(argc, argv);
+	
+	if(!options.parse(argc, argv)) {
 		return false;
 	}
+	
+	// load the config file (if one exists)
+	if(options.numArguments() > 0) {
+		setXMLFilename(Path::absolutePath(options.getArgumentString(0)));
+		LOG << "Config: loading " << getXMLFilename() << endl;
+		loadXMLFile();
+		closeXMLFile();
+	}
+	
+	// set the variables
+	if(options.isSet("IP"))         {sendingIp = options.getString("IP");}
+	if(options.isSet("PORT"))       {sendingPort = options.getUInt("PORT");}
+	if(options.isSet("LISTENPORT")) {listeningPort = options.getUInt("LISTENPORT");}
+	if(options.isSet("MULTICAST"))  {listeningMulticast = true;}
+	if(options.isSet("EVENTS"))     {printEvents = true;}
+	if(options.isSet("JSONLY"))     {joysticksOnly = true;}
+	if(options.isSet("SLEEP"))      {sleepUS = options.getUInt("SLEEP");}
+	
 	return true;
 }
 
