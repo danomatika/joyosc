@@ -62,7 +62,7 @@ class GameController : public Device {
 		void print();
 	
 		/// returns the device type enum value
-		inline DeviceType getDeviceType() {return GAMECONTROLLER;}
+		inline Type getDeviceType() {return GAMECONTROLLER;}
 	
 		/// returns devices list index, name, & osc address as a string
 		string getDeviceString();

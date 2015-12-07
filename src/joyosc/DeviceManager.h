@@ -72,7 +72,7 @@ class DeviceManager {
 		int firstAvailableIndex();
 	
 		/// get the device type at a given index
-		DeviceType getDeviceType(int index);
+		Device::Type getDeviceType(int index);
 	
 		/// is an sdlIndex already in use by an active device?
 		bool sdlIndexExists(int sdlIndex);

@@ -24,18 +24,18 @@
 
 #include "Common.h"
 
-/// supported device types
-enum DeviceType {
-	UNKNOWN,
-	JOYSTICK,
-	GAMECONTROLLER
-};
-
 /// \class Device
 /// \brief a baseclass for an event-based input device
 class Device {
 
 	public:
+
+		/// supported device types
+		enum Type {
+			UNKNOWN,
+			JOYSTICK,
+			GAMECONTROLLER
+		};
 
 		Device(string oscAddress="/device") :
 			m_devName(""), m_oscAddress(oscAddress),
@@ -64,7 +64,7 @@ class Device {
 		virtual bool isOpen() = 0;
 	
 		/// returns the device type enum value
-		virtual DeviceType getDeviceType() = 0;
+		virtual Type getDeviceType() = 0;
 	
 		/// returns basic device info as a string
 		virtual string getDeviceString() = 0;

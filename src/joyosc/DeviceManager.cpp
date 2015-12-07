@@ -70,7 +70,7 @@ bool DeviceManager::close(SDL_JoystickID instanceID) {
 			Config &config = Config::instance();
 			config.getOscSender() << osc::BeginMessage(config.notificationAddress + "/close");
 			switch(js->getDeviceType()) {
-				case GAMECONTROLLER:
+				case Device::GAMECONTROLLER:
 					config.getOscSender() << "controller" << ((GameController *)js)->getIndex();
 					break;
 				default: // JOYSTICK, should never be UNKNOWN
@@ -123,7 +123,7 @@ bool DeviceManager::handleEvent(SDL_Event* event) {
 			
 		case SDL_CONTROLLERAXISMOTION:
 		case SDL_CONTROLLERBUTTONDOWN: case SDL_CONTROLLERBUTTONUP:
-			if(getDeviceType(event->cdevice.which) == GAMECONTROLLER) {
+			if(getDeviceType(event->cdevice.which) == Device::GAMECONTROLLER) {
 				return m_devices[event->cdevice.which]->handleEvent(event);
 			}
 			return false;
@@ -148,7 +148,7 @@ bool DeviceManager::handleEvent(SDL_Event* event) {
 			
 		case SDL_JOYBUTTONDOWN: case SDL_JOYBUTTONUP:
 		case SDL_JOYAXISMOTION: case SDL_JOYBALLMOTION: case SDL_JOYHATMOTION:
-			if(getDeviceType(event->jdevice.which) == JOYSTICK) {
+			if(getDeviceType(event->jdevice.which) == Device::JOYSTICK) {
 				return m_devices[event->jdevice.which]->handleEvent(event);
 			}
 			return false;
@@ -192,22 +192,22 @@ int DeviceManager::firstAvailableIndex() {
 	return m_devices.size();
 }
 
-DeviceType DeviceManager::getDeviceType(int index) {
+Device::Type DeviceManager::getDeviceType(int index) {
 	if(m_devices.find(index) != m_devices.end()) {
 		return m_devices[index]->getDeviceType();
 	}
-	return UNKNOWN;
+	return Device::UNKNOWN;
 }
 
 bool DeviceManager::sdlIndexExists(int sdlIndex) {
 	map<int,Device*>::iterator iter;
 	for(iter = m_devices.begin(); iter != m_devices.end(); ++iter) {
-		if(iter->second->getDeviceType() == GAMECONTROLLER) {
+		if(iter->second->getDeviceType() == Device::GAMECONTROLLER) {
 			if(((GameController *)iter->second)->getSdlIndex() == sdlIndex) {
 				return true;
 			}
 		}
-		else if(iter->second->getDeviceType() == JOYSTICK) {
+		else if(iter->second->getDeviceType() == Device::JOYSTICK) {
 			if(((Joystick *)iter->second)->getSdlIndex() == sdlIndex) {
 				return true;
 			}

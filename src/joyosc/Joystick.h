@@ -63,7 +63,7 @@ class Joystick : public Device {
 		void print();
 	
 		/// returns the device type enum value
-		inline DeviceType getDeviceType() {return JOYSTICK;}
+		inline Type getDeviceType() {return JOYSTICK;}
 	
 		/// returns device list index, name, & osc address as a string
 		string getDeviceString();
