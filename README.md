@@ -134,13 +134,13 @@ Look at the `example_config.xml` file installed to the doc folder or in the `dat
 
 You can also specify values on the command line which override values in the config file:
 <pre>
-  -i, --ip                 IP address to send to (default: 127.0.0.1)
-  -p, --port               Port to send to (default: 8880)
-  -l, --listeningport      Listening port (default: 7770)
-  -e, --events             Print incoming events, useful for debugging
-  -j, --joysticksonly      Disable game controller support, use joystick
-                           interface only
-  -s, --sleep              Sleep time in usecs (default: 10000)
+  -i, --ip             IP address to send to (default: 127.0.0.1)
+  -p, --port           Port to send to (default: 8880)
+  -l, --listening-port Listening port (default: 7770)
+  -m, --multicast      Multicast listening group address (off by default)
+  -e, --events         Print incoming events, useful for debugging
+  -j, --joysticks-only Disable game controller support, joystick interface only
+  -s, --sleep          Sleep time in usecs (default: 10000)
 </pre>
 
 Note: Enabling event printing is useful when debugging:
@@ -304,11 +304,9 @@ If you want to customize an SDL game controller mapping, you can print the defau
 #### Options
 
 <pre>
-  -d, --details            Print device details (buttons, axes, GUIDs, etc)
-  -m, --mappings           Print game controller mappings, requires game
-                           controller support
-  -j, --joysticksonly      Disable game controller support, use joystick
-                           interface only
+  -d, --details        Print device details (buttons, axes, GUIDs, etc)
+  -m, --mappings       Print game controller mappings
+  -j, --joysticks-only Disable game controller support, joystick interface only
 </pre>
 
 ----

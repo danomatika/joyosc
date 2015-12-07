@@ -23,7 +23,7 @@
 #include "../config.h" // automake config defines
 
 #include <SDL.h>
-#include <tclap.h>
+#include "Options.h"
 
 using namespace std;
 
@@ -32,35 +32,18 @@ int main(int argc, char **argv) {
 	bool printDetails = false;
 	bool printMappings = false;
 	bool joysticksOnly = false;
-	
-	try {
-		// the commandline parser
-		TCLAP::CommandLine cmd("print the available joysticks", VERSION);
-		
-		// options to parse
-		// short id, long id, description, required?, default value, short usage type description
-		TCLAP::SwitchArg detailOpt("d","details","Print device details (buttons, axes, GUIDs, etc)", printDetails);
-		TCLAP::SwitchArg mappingOpt("m","mappings","Print game controller mappings, requires game controller support", printMappings);
-		TCLAP::SwitchArg joysticksOpt("j", "joysticksonly", "Disable game controller support, use joystick interface only", joysticksOnly);
 
-		// add args to parser (in reverse order)
-		cmd.add(joysticksOpt);
-		cmd.add(mappingOpt);
-		cmd.add(detailOpt);
-
-		// parse the commandline
-		cmd.parse(argc, argv);
-		
-		// set options
-		printDetails = detailOpt.getValue();
-		printMappings = mappingOpt.getValue();
-		joysticksOnly = joysticksOpt.getValue();
-		
+	// parse commandline	
+	Options options("  print the available joysticks & game controllers", VERSION);
+	options.addSwitch("DETAILS", "d", "details", "  -d, --details \tPrint device details (buttons, axes, GUIDs, etc)");
+	options.addSwitch("MAPPINGS", "m", "mappings", "  -m, --mappings \tPrint game controller mappings");
+	options.addSwitch("JSONLY", "j", "joysticks-only", "  -j, --joysticks-only \tDisable game controller support, joystick interface only");
+	if(!options.parse(argc, argv)) {
+		return false;
 	}
-	catch(TCLAP::ArgException &e) { // catch any exceptions
-		cerr << "Error: CommandLine: " << e.error() << " for arg " << e.argId() << endl;
-		return EXIT_FAILURE;
-	}
+	if(options.isSet("DETAILS"))  {printDetails = true;}
+	if(options.isSet("MAPPINGS")) {printMappings = true;}
+	if(options.isSet("JSONLY"))   {joysticksOnly = true;}
 
 	// init SDL
 	SDL_Init(0);

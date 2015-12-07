@@ -102,13 +102,13 @@ JoystickIgnore* Config::getJoystickIgnore(string deviceName) {
 }
 
 bool Config::parseCommandLine(int argc, char **argv) {
-	Options options("joystick device event to osc bridge", VERSION);
+	Options options("  joystick device event to osc bridge", VERSION);
 	options.addString("IP", "i", "ip", "  -i, --ip \tIP address to send to (default: 127.0.0.1)");
 	options.addInteger("PORT","p", "port", "  -p, --port \tPort to send to (default: 8880)");
 	options.addInteger("LISTENPORT", "l", "listening-port", "  -l, --listening-port \tListening port (default: 7770)");
 	options.addSwitch("MULTICAST", "m", "multicast", "  -m, --multicast \tMulticast listening group address (off by default)");
 	options.addSwitch("EVENTS", "e", "events", "  -e, --events \tPrint incoming events, useful for debugging");
-	options.addSwitch("JSONLY", "j", "joysticks-only", "  -j, --joysticks-only \tDisable game controller support, use joystick interface only");
+	options.addSwitch("JSONLY", "j", "joysticks-only", "  -j, --joysticks-only \tDisable game controller support, joystick interface only");
 	options.addSwitch("SLEEP", "s", "sleep", "  -s, --sleep \tSleep time in usecs (default: 10000)");
 	options.addArgument("FILE", "  FILE \tOptional XML config file");
 	if(!options.parse(argc, argv)) {
