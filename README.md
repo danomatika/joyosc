@@ -23,7 +23,7 @@ music system using [Pure Data](http://puredata.info) in GNU/Linux. See <http://r
 QUICK START
 -----------
 
-Here's a quick start to build and install for Ubuntu/Debian on the command line:
+Here's a quick start to build and install for Ubuntu/Debian on the command line to the `/usr/local` prefix:
 
     sudo apt-get install libsdl-dev liblo-dev libtinyxml2-dev
     git clone git://github.com/danomatika/joyosc.git
@@ -32,7 +32,16 @@ Here's a quick start to build and install for Ubuntu/Debian on the command line:
     make
     sudo make install
 
-If everything finished successfully, you're good to go. If you're using Pure Data, check out the joyosc abstraction library in `data/pd` and installed into `share/doc/joyosc/pd/joyosc`.
+and the same foc Mac OS X using Homebrew:
+
+    brew install sdl2 liblo tinyxml2
+    git clone git://github.com/danomatika/joyosc.git
+    cd joyosc
+    ./configure
+    make
+    make install
+
+If everything finished successfully, you're good to go. If you're using Pure Data, check out the joyosc abstraction library in `data/pd` and installed into `$(prefix)/share/doc/joyosc/pd/joyosc`.
 
 BUILD REQUIREMENTS
 ------------------
@@ -60,14 +69,18 @@ On Max OS, they can be installed easily using [Homebrew](http://brew.sh) or [Mac
 * install the Homebrew environment
 * go to the Terminal and install the libs:
 
-    brew install sdl2 liblo tinyxml2
+~~~
+brew install sdl2 liblo tinyxml2
+~~~
 
 #### Macports
 
 * install the Macports binary and setup the Macports environment
 * go to the Terminal and install the libs:
 
-    sudo port install libsdl liblo tinyxml2
+~~~
+sudo port install libsdl liblo tinyxml2
+~~~
 
 If you use the default Macports install location of `/opt/local`, you will need to set the Macports include and lib dirs before running ./configure:
 
