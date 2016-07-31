@@ -9,7 +9,7 @@ bin_PROGRAMS = lsjs
 lsjs_SOURCES = main.cpp
 
 # include paths
-AM_CPPFLAGS = $(SDL_CFLAGS) $(TCLAP_INCLUDE)
+AM_CPPFLAGS = $(SDL_CFLAGS) $(HELPERS_INCLUDE)
 
 # libs to link
 AM_LDFLAGS = $(SDL_LIBS)

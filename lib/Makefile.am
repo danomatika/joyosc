@@ -8,11 +8,10 @@ SUBDIRS = $(LIB_SUBDIRS)
 # make sure libs are included in the dist tarball
 DIST_SUBDIRS = lopack tinyobject
 
-# tclap commandline parser
-
 # libs sources, headers here because we dont want to install them
 noinst_HEADERS = cpphelpers/Log.h \
 				 cpphelpers/Path.h \
+				 cpphelpers/optionparser.h cpphelpers/Options.h \
 				 cpphelpers/tclap/tclap.h \
 				 cpphelpers/tclap/CommandLine.h \
 				 cpphelpers/tclap/tclap/Arg.h \

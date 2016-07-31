@@ -328,14 +328,14 @@ LIB_SUBDIRS = $(am__append_1) $(am__append_2)
 @LOCAL_TINYOBJECT_FALSE@TINYOBJECT_LIBS = -ltinyobject
 @LOCAL_TINYOBJECT_TRUE@TINYOBJECT_LIBS = -L$(top_builddir)/lib/tinyobject/src/tinyobject -ltinyobject
 
-# tclap
-TCLAP_INCLUDE = -I$(top_srcdir)/lib/cpphelpers -I$(top_srcdir)/lib/cpphelpers/tclap
+# cpphelpers
+HELPERS_INCLUDE = -I$(top_srcdir)/lib/cpphelpers
 
 # program's sources
 lsjs_SOURCES = main.cpp
 
 # include paths
-AM_CPPFLAGS = $(SDL_CFLAGS) $(TCLAP_INCLUDE)
+AM_CPPFLAGS = $(SDL_CFLAGS) $(HELPERS_INCLUDE)
 
 # libs to link
 AM_LDFLAGS = $(SDL_LIBS)

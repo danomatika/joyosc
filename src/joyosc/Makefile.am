@@ -19,7 +19,7 @@ joyosc_SOURCES = main.cpp Common.h App.h App.cpp Config.h Config.cpp \
 AM_CPPFLAGS = $(SDL_CFLAGS) \
 			  $(LO_CFLAGS) $(LOPACK_INCLUDE) \
 			  $(TINYXML2_CFLAGS) $(TINYOBJECT_INCLUDE) \
-			  $(TCLAP_INCLUDE)
+			  $(HELPERS_INCLUDE)
 
 # libs to link
 AM_LDFLAGS = $(SDL_LIBS) \

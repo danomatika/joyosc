@@ -26,5 +26,5 @@ TINYOBJECT_INCLUDE =
 TINYOBJECT_LIBS = -ltinyobject
 endif
 
-# tclap
-TCLAP_INCLUDE = -I$(top_srcdir)/lib/cpphelpers -I$(top_srcdir)/lib/cpphelpers/tclap
+# cpphelpers
+HELPERS_INCLUDE = -I$(top_srcdir)/lib/cpphelpers
