@@ -28,7 +28,7 @@
 #include "../config.h" // autotools generated header
 
 #include "GameController.h"
-#include "GameControllerignore.h"
+#include "GameControllerIgnore.h"
 #include "GameControllerRemapping.h"
 #include "JoystickIgnore.h"
 #include "JoystickRemapping.h"
