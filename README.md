@@ -8,7 +8,7 @@ Copyright (c) [Dan Wilcox](danomatika.com) 2007 - 2015
 DESCRIPTION
 -----------
 
-USB joysticks & game controllers are a cheap, ubiqutous source for alternate interfaces and can be easily hacked with custom switches, buttons, and analog sensors. Furthermore, physical computing platforms such as Arduino & Teensy can be configured to appear as USB HID (Human Interface Devices). joyosc provides a quick OSC event interface for such devices into your favorite creative coding environents (Pure Data, Max MSP, Processing, OpenFrameworks, etc).
+USB joysticks & game controllers are a cheap, ubiquitous source for alternate interfaces and can be easily hacked with custom switches, buttons, and analog sensors. Furthermore, physical computing platforms such as Arduino & Teensy can be configured to appear as USB HID (Human Interface Devices). joyosc provides a quick OSC event interface for such devices into your favorite creative coding environments (Pure Data, Max MSP, Processing, OpenFrameworks, etc).
 
 The joyosc package contains the following parts:
 
@@ -23,25 +23,25 @@ music system using [Pure Data](http://puredata.info) in GNU/Linux. See <http://r
 QUICK START
 -----------
 
+Download a release tarball from <http://docs.danomatika.com/releases/joyosc/>. 
+
 Here's a quick start to build and install for Ubuntu/Debian on the command line to the `/usr/local` prefix:
 
     sudo apt-get install libsdl-dev liblo-dev libtinyxml2-dev
-    git clone git://github.com/danomatika/joyosc.git
-    cd joyosc
     ./configure
     make
     sudo make install
 
-and the same foc Mac OS X using Homebrew:
+and the same for Mac OS X using Homebrew:
 
     brew install sdl2 liblo tinyxml2
-    git clone git://github.com/danomatika/joyosc.git
-    cd joyosc
     ./configure
     make
     make install
 
 If everything finished successfully, you're good to go. If you're using Pure Data, check out the joyosc abstraction library in `data/pd` and installed into `$(prefix)/share/doc/joyosc/pd/joyosc`.
+
+Note: If cloning this repo, you will need to run `autogen.sh` to create the configure script.
 
 BUILD REQUIREMENTS
 ------------------
@@ -109,7 +109,7 @@ If using Macports on Mac OS X, it is recommended to use the Macports default pre
 
 ### lopack & tinyobject libraries
 
-Two helper libraries are included with joysoc in the `lib` folder: lopack & tinyobject. By default, these libraries are built and installed along with joyosc. If you happen to have either installed seprately (not likely), you can disable the use of the local library when building via:
+Two helper libraries are included with joysoc in the `lib` folder: lopack & tinyobject. By default, these libraries are built and installed along with joyosc. If you happen to have either installed separately (not likely), you can disable the use of the local library when building via:
 
     ./configure --without-local-lopack --without-local-tinyobject
 
@@ -136,8 +136,8 @@ The config file sets the OSC connection information as well as device to OSC dev
 
 * setup info such as listening and sending ports
 * OSC device name addresses for specific device names
-* axis dead zone values for jittery thumbsticks
-* button, axis, hat, & trackball remappings
+* axis dead zone values for jittery thumb sticks
+* button, axis, hat, & trackball re-mappings
 * which button, axis, hat, & trackball events to ignore
 * custom SDL2 game controller mapping strings for devices only detected as joysticks
 
@@ -231,7 +231,7 @@ joyosc streams device event information in the following OSC address format:
   * button state values are 1 or 0 for pressed & released
   * axis values are -32767 to 32767 (signed 16 bit)
   * hat values are binary bits representing the hat button aka: 0, 2, 4, 8
-  * (track)ball values are the relative x & y movment in pixels (I think, SDL docs don't go into details)
+  * (track)ball values are the relative x & y movement in pixels (I think, SDL docs don't go into details)
 
 Example joystick messages:
 <pre>

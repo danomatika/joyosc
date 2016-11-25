@@ -4,11 +4,12 @@ src/lsjs/lsjs
 
 # autotools files
 autom4te.cache
-config
+INSTALL
 Makefile
 Makefile.in
 aclocal.m4
 configure
+config
 config.log
 config.status
 libtool
