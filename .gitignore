@@ -1,25 +1,39 @@
-# folders
-prj/obj
+# binaries
+src/joyosc/joyosc
+src/lsjs/lsjs
 
 # autotools files
 autom4te.cache
-.deps
-.libs
+config
 Makefile
+Makefile.in
+aclocal.m4
+configure
 config.log
 config.status
+libtool
 src/config.h
 src/stamp-h1
 .dirstamp
-libtool
+dist
+m4
 
 # build
 *.o
 *.a
+
+# libtool
+.deps
+.libs
+libtool
+*.lo
 *.la
-src/lsjs/lsjs
-src/joyosc/joyosc
-src/joyosc/joyosc-notifier
+
+# premake
+prj/obj
+
+# distribution tarballs
+joyosc-*
 
 # OSX
 .DS_Store
@@ -28,6 +42,3 @@ src/joyosc/joyosc-notifier
 
 # temp files
 *~
-
-# generated files
-data/udev/85-joyosc.rules
