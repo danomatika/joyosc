@@ -1,4 +1,7 @@
 #! /bin/bash
+#
+# generate autotools files
+#
 
 cd lib/lopack && ./autogen.sh && cd ../../
 cd lib/tinyobject && ./autogen.sh && cd ../../
