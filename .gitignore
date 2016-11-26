@@ -34,7 +34,7 @@ libtool
 prj/obj
 
 # distribution tarballs
-joyosc-*
+joyosc-*.tar.gz
 
 # OSX
 .DS_Store
