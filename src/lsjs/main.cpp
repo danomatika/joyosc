@@ -32,18 +32,48 @@ int main(int argc, char **argv) {
 	bool printDetails = false;
 	bool printMappings = false;
 	bool joysticksOnly = false;
+	
+	
+		// option index enum
+	enum optionNames {
+		UNKNOWN,
+		HELP,
+		VERS,
+		DETAILS,
+		MAPPINGS,
+		JSONLY
+	};
 
-	// parse commandline	
-	Options options("  print the available joysticks & game controllers", VERSION);
-	options.addSwitch("DETAILS", "d", "details", "  -d, --details \tPrint device details (buttons, axes, GUIDs, etc)");
-	options.addSwitch("MAPPINGS", "m", "mappings", "  -m, --mappings \tPrint game controller mappings");
-	options.addSwitch("JSONLY", "j", "joysticks-only", "  -j, --joysticks-only \tDisable game controller support, joystick interface only");
-	if(!options.parse(argc, argv)) {
+	// option and usage print descriptors, note the use of the Options::Arg functions
+	// which provide extended type checks
+	const option::Descriptor usage[] = {
+		{UNKNOWN, 0, "", "", Options::Arg::Unknown, "Options:"},
+		{HELP, 0, "h", "help", Options::Arg::None, "  -h, --help \tPrint usage and exit"},
+		{VERS, 0, "", "version", Options::Arg::None, "  --version \tPrint version and exit"},
+		{DETAILS, 0, "d", "details", Options::Arg::None, "  -d, --details \tPrint device details (buttons, axes, GUIDs, etc)"},
+		{MAPPINGS, 0, "m", "mappings", Options::Arg::None, "  -m, --mappings \tPrint game controller mappings"},
+		{JSONLY, 0, "j", "joysticks-only", Options::Arg::None, "  -j, --joysticks-only \tDisable game controller support, joystick interface only"},
+		{0, 0, 0, 0, 0, 0}
+	};
+
+	// parse commandline
+	Options options("  print the available joysticks & game controllers");
+	if(!options.parse(usage, argc, argv)) {
 		return false;
 	}
-	if(options.isSet("DETAILS"))  {printDetails = true;}
-	if(options.isSet("MAPPINGS")) {printMappings = true;}
-	if(options.isSet("JSONLY"))   {joysticksOnly = true;}
+	if(options.isSet(HELP)) {
+		options.printUsage(usage);
+		return false;
+	}
+	if(options.isSet(VERS)) {
+		std::cout << VERSION << std::endl;
+		return false;
+	}
+	
+	// read option values if set
+	if(options.isSet(DETAILS))  {printDetails = true;}
+	if(options.isSet(MAPPINGS)) {printMappings = true;}
+	if(options.isSet(JSONLY))   {joysticksOnly = true;}
 
 	// init SDL
 	SDL_Init(0);

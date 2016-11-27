@@ -60,7 +60,7 @@ class Config : public tinyxml2::XMLObject {
 		string listeningMulticast;      //< multicast listening group, "" if none
 		string listeningAddress;        //< base listening address
 		
-		string sendingIp;               //< ip/multicast group to send to
+		string sendingIp;               //< ip/hostname/multicast group to send to
 		unsigned int sendingPort;       //< port to send to
 		
 		string notificationAddress;     //< base osc sending address for notifications

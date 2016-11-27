@@ -102,37 +102,75 @@ JoystickIgnore* Config::getJoystickIgnore(string deviceName) {
 }
 
 bool Config::parseCommandLine(int argc, char **argv) {
-	Options options("  joystick device event to osc bridge", VERSION);
-	options.addString("IP", "i", "ip", "  -i, --ip \tIP address to send to (default: 127.0.0.1)");
-	options.addInteger("PORT","p", "port", "  -p, --port \tPort to send to (default: 8880)");
-	options.addInteger("LISTENPORT", "l", "listening-port", "  -l, --listening-port \tListening port (default: 7770)");
-	options.addSwitch("MULTICAST", "m", "multicast", "  -m, --multicast \tMulticast listening group address (off by default)");
-	options.addSwitch("EVENTS", "e", "events", "  -e, --events \tPrint incoming events, useful for debugging");
-	options.addSwitch("JSONLY", "j", "joysticks-only", "  -j, --joysticks-only \tDisable game controller support, joystick interface only");
-	options.addSwitch("SLEEP", "s", "sleep", "  -s, --sleep \tSleep time in usecs (default: 10000)");
-	options.addArgument("FILE", "  FILE \tOptional XML config file");
-	if(!options.parse(argc, argv)) {
+
+	// option index enum
+	enum optionNames {
+		UNKNOWN,
+		HELP,
+		VERS,
+		IP,
+		PORT,
+		LISTENPORT,
+		MULTICAST,
+		EVENTS,
+		JSONLY,
+		SLEEP
+	};
+
+	// option and usage print descriptors
+	const option::Descriptor usage[] = {
+		{UNKNOWN, 0, "", "", Options::Arg::Unknown, "Options:"},
+		{HELP, 0, "h", "help", Options::Arg::None, "  -h, --help \tPrint usage and exit"},
+		{VERS, 0, "", "version", Options::Arg::None, "  --version \tPrint version and exit"},
+		{LISTENPORT, 0, "l", "listening-port", Options::Arg::Integer, "  -l, --listening-port \tListening port (default: 7770)"},
+		{MULTICAST, 0, "m", "multicast", Options::Arg::NonEmpty, "  -m, --multicast \tMulticast listening group address (off by default)"},
+		{IP, 0, "i", "ip", Options::Arg::NonEmpty, "  -i, --ip \tIP address, hostname, or multicast group to send to (default: 127.0.0.1)"},
+		{PORT, 0, "p", "port", Options::Arg::Integer, "  -p, --port \tPort to send to (default: 8880)"},
+		{EVENTS, 0, "e", "events", Options::Arg::None, "  -e, --events \tPrint incoming events, useful for debugging"},
+		{JSONLY, 0, "j", "joysticks-only", Options::Arg::None, "  -j, --joysticks-only \tDisable game controller support, joystick interface only"},
+		{SLEEP, 0, "s", "sleep", Options::Arg::Integer, "  -s, --sleep \tSleep time in usecs (default: 10000)"},
+		{UNKNOWN, 0, "", "", Options::Arg::Unknown, "\nArguments:"},
+		{UNKNOWN, 0, "", "", Options::Arg::None, "  FILE \tOptional XML config file"},
+		{0, 0, 0, 0, 0, 0}
+	};
+
+	// parse commandline
+	Options options("  joystick device event to osc bridge");
+	if(!options.parse(usage, argc, argv)) {
 		return false;
 	}
+	if(options.isSet(HELP)) {
+		options.printUsage(usage, "[FILE]");
+		return false;
+	}
+	if(options.isSet(VERS)) {
+		std::cout << VERSION << std::endl;
+		return false;
+	}
+
+	// load the config file (if one exists)
 	if(options.numArguments() > 0) { // load the config file (if one exists)
 		setXMLFilename(Path::absolutePath(options.getArgumentString(0)));
 		LOG << "Config: loading " << getXMLFilename() << endl;
 		loadXMLFile();
 		closeXMLFile();
 	}
-	if(options.isSet("IP"))         {sendingIp = options.getString("IP");}
-	if(options.isSet("PORT"))       {sendingPort = options.getUInt("PORT");}
-	if(options.isSet("LISTENPORT")) {listeningPort = options.getUInt("LISTENPORT");}
-	if(options.isSet("MULTICAST"))  {listeningMulticast = true;}
-	if(options.isSet("EVENTS"))     {printEvents = true;}
-	if(options.isSet("JSONLY"))     {joysticksOnly = true;}
-	if(options.isSet("SLEEP"))      {sleepUS = options.getUInt("SLEEP");}
+
+	// read option values if set
+	if(options.isSet(IP))         {sendingIp = options.getString(IP);}
+	if(options.isSet(PORT))       {sendingPort = options.getUInt(PORT);}
+	if(options.isSet(LISTENPORT)) {listeningPort = options.getUInt(LISTENPORT);}
+	if(options.isSet(MULTICAST))  {listeningMulticast = options.getString(MULTICAST);}
+	if(options.isSet(EVENTS))     {printEvents = true;}
+	if(options.isSet(JSONLY))     {joysticksOnly = true;}
+	if(options.isSet(SLEEP))      {sleepUS = options.getUInt(SLEEP);}
+
 	return true;
 }
 
 void Config::print() {
 	LOG << "listening port:	 " << listeningPort << endl
-	    << "multicast listening?: " << (listeningMulticast == "" ? "no" : listeningMulticast) << endl
+	    << "listening multicast group: " << (listeningMulticast == "" ? "none" : listeningMulticast) << endl
 	    << "listening addr:  " << "/" << PACKAGE << endl
 	    << "sending ip:      " << sendingIp << endl
 	    << "sending port:    " << sendingPort << endl
