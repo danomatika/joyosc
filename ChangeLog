@@ -1,7 +1,10 @@
-2015-**-** Dan Wilcox <danomatika@gmail.com>
+2016-11-27 Dan Wilcox <danomatika@gmail.com>
 
 	* updated commandline option parsing, usage is slightly different but
 	works the same
+	* updated download & build info in readme
+	* fixed build on linux (hopefully)
+	* removed generated autotools files from repo
 
 2015-11-29 Dan Wilcox <danomatika@gmail.com>
 

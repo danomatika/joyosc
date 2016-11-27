@@ -23,7 +23,15 @@ music system using [Pure Data](http://puredata.info) in GNU/Linux. See <http://r
 QUICK START
 -----------
 
-Download a release tarball from <http://docs.danomatika.com/releases/joyosc/>. Otherwise, if cloning this repo, you will need to run `autogen.sh` to create the configure script.
+Download a release tarball from <http://docs.danomatika.com/releases/joyosc/>.
+
+Otherwise, if cloning this repo, you will also need to check out the submodules using then run `autogen.sh` to create the configure script:
+
+    git clone https://github.com/danomatika/joyosc.git
+    cd joyosc
+    git submodule init
+    git submodule update
+    ./autogen.sh
 
 Here's a quick start to build and install for Ubuntu/Debian on the command line to the `/usr/local` prefix:
 
