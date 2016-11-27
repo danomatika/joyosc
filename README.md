@@ -23,7 +23,7 @@ music system using [Pure Data](http://puredata.info) in GNU/Linux. See <http://r
 QUICK START
 -----------
 
-Download a release tarball from <http://docs.danomatika.com/releases/joyosc/>.
+Download a release tarball from <http://docs.danomatika.com/releases/joyosc/>. _Do not download a release zip from Github as the submodule files will not be included._
 
 Otherwise, if cloning this repo, you will also need to check out the submodules using then run `autogen.sh` to create the configure script:
 
