@@ -85,7 +85,7 @@ brew install sdl2 liblo tinyxml2
 * go to the Terminal and install the libs:
 
 ~~~
-sudo port install libsdl liblo tinyxml2
+sudo port install libsdl2 liblo tinyxml2
 ~~~
 
 If you use the default Macports install location of `/opt/local`, you will need to set the Macports include and lib dirs before running ./configure:
