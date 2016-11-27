@@ -27,7 +27,7 @@ Download a release tarball from <http://docs.danomatika.com/releases/joyosc/>. O
 
 Here's a quick start to build and install for Ubuntu/Debian on the command line to the `/usr/local` prefix:
 
-    sudo apt-get install libsdl-dev liblo-dev libtinyxml2-dev
+    sudo apt-get install libsdl2-dev liblo-dev libtinyxml2-dev
     ./configure
     make
     sudo make install
