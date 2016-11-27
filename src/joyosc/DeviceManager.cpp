@@ -184,7 +184,7 @@ void DeviceManager::print(bool details) {
 // brute force search for first available index, works with fact
 // that the map is ordered
 int DeviceManager::firstAvailableIndex() {
-	for(int i = 0; i < m_devices.size(); ++i) {
+	for(unsigned int i = 0; i < m_devices.size(); ++i) {
 		if(m_devices.find(i) == m_devices.end()) {
 			return i;
 		}
