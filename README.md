@@ -33,14 +33,14 @@ Otherwise, if cloning this repo, you will also need to check out the submodules 
     git submodule update
     ./autogen.sh
 
-Here's a quick start to build and install for Ubuntu/Debian on the command line to the `/usr/local` prefix:
+For Ubuntu/Debian, build and install on the command line to the `/usr/local` prefix via:
 
     sudo apt-get install libsdl2-dev liblo-dev libtinyxml2-dev
     ./configure
     make
     sudo make install
 
-and the same for Mac OS X using Homebrew:
+and the same for macOS using Homebrew:
 
     brew install sdl2 liblo tinyxml2
     ./configure
@@ -66,9 +66,9 @@ For Debian/Ubuntu, you can use use `apt-get` on the command line:
 
     sudo apt-get libsdl2-dev liblo-dev tinyxml2-dev
 
-### Mac OS
+### macOS
 
-On Max OS, they can be installed easily using [Homebrew](http://brew.sh) or [Macports](http://macports.org)
+On macOS, they can be installed easily using [Homebrew](http://brew.sh) or [Macports](http://macports.org)
 
 #### Homebrew
 
@@ -90,7 +90,7 @@ sudo port install libsdl2 liblo tinyxml2
 
 If you use the default Macports install location of `/opt/local`, you will need to set the Macports include and lib dirs before running ./configure:
 
-    export CPPFLAGS=-I/opt/local/include && export LDFLAGS=-L/opt/local/lib
+    export CXXFLAGS=-I/opt/local/include && export LDFLAGS=-L/opt/local/lib
 
 ### Windows
 
@@ -345,7 +345,7 @@ A small library of Pure Data abstractions is provided in the `data/pd` folder fo
 DEVELOPING
 ----------
 
-A Premake4 script and IDE files can be found in the prj folder. Premake4 can generate the IDE files from a given lua script. Download Premake4 from http://industriousone.com/premake.
+A Premake4 script and IDE files can be found in the prj folder. Premake4 can generate IDE files from a given lua script. Download Premake4 from http://industriousone.com/premake.
 
 Make sure the external libraries are built by calling make in the `lib` directory.
 
@@ -366,6 +366,6 @@ Notes
 
 _Note: joyosc was originally named "rc-unitd" (the robotcowboy unit daemon) in versions prior to 0.4.0_
 
-[How to connect PS3 controller on Mac OSX, PC, etc](https://gist.github.com/hlung/8385683)
+[How to connect PS3 controller on macOS, PC, etc](https://gist.github.com/hlung/8385683)
 
-[Use Osculator + HID extension for Wiimote support on OSX](http://www.osculator.net)
+[Use Osculator + HID extension for Wiimote support on macOS](http://www.osculator.net)
