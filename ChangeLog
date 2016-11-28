@@ -1,4 +1,14 @@
+2016-11-28 Dan Wilcox <danomatika@gmail.com>
+
+	0.4.2
+
+	* added autconf macros to enable C++11, should fix gcc Linux build
+	* updated configure to use CXXFLAGS and respect default settings for debug build
+	* lib/libs.mk: explicitly link local static libs
+
 2016-11-27 Dan Wilcox <danomatika@gmail.com>
+
+	0.4.1
 
 	* updated commandline option parsing, usage is slightly different but
 	works the same
