@@ -10,7 +10,7 @@ LIB_SUBDIRS =
 if LOCAL_LOPACK
 LIB_SUBDIRS += lopack
 LOPACK_INCLUDE = -I$(top_srcdir)/lib/lopack/src
-LOPACK_LIBS = -L$(top_builddir)/lib/lopack/src/lopack -llopack
+LOPACK_LIBS = $(top_builddir)/lib/lopack/src/lopack/.libs/liblopack.la
 else
 LOPACK_INCLUDE =
 LOPACK_LIBS = -llopack
@@ -20,7 +20,7 @@ endif
 if LOCAL_TINYOBJECT
 LIB_SUBDIRS += tinyobject
 TINYOBJECT_INCLUDE = -I$(top_srcdir)/lib/tinyobject/src
-TINYOBJECT_LIBS = -L$(top_builddir)/lib/tinyobject/src/tinyobject -ltinyobject
+TINYOBJECT_LIBS = $(top_builddir)/lib/tinyobject/src/tinyobject/.libs/libtinyobject.la
 else
 TINYOBJECT_INCLUDE =
 TINYOBJECT_LIBS = -ltinyobject

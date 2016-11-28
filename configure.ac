@@ -1,7 +1,7 @@
 #########################################
 ##### Prelude #####
 
-AC_INIT([joyosc], [0.4.1], [danomatika@gmail.com], [joyosc], [http://github.com/danomatika/joyosc])
+AC_INIT([joyosc], [0.4.2], [danomatika@gmail.com], [joyosc], [http://github.com/danomatika/joyosc])
 AC_CONFIG_SRCDIR([src/joyosc/main.cpp])
 AC_CONFIG_AUX_DIR([./config])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
@@ -13,10 +13,21 @@ if test "x$prefix" = x"NONE" ; then
 fi
 
 #########################################
-##### Build Options #####
+##### Build settings #####
 
-DEBUG_CPPFLAGS="-g -Wall -Werror -Wno-uninitialized -O0"
-RELEASE_CPPFLAGS="-g -O2"
+DEBUG_CXXFLAGS="-O0 -Wall -Werror -Wno-uninitialized"
+
+#########################################
+##### Platform #####
+
+case $host in
+	*linux*)
+		# add linker flags for GCC (needed by Linaro/udoo)
+       	LDFLAGS="$LDFLAGS -Wl,--no-as-needed"
+       	;;
+	*)
+		;;
+esac
 
 #########################################
 ##### Check for programs/libs #####
@@ -32,10 +43,10 @@ AC_SUBST([LIBTOOL_DEPS])
 
 # using c++ compiler and linker
 AC_LANG_CPLUSPLUS
+AX_CXX_COMPILE_STDCXX_11([noext], [optional]) # C++11
 
 # check for headers
 AC_HEADER_STDC
-AC_CHECK_HEADERS([sstream]) # needed for tclap
 
 # check for headers & libs
 PKG_CHECK_MODULES(SDL, sdl2 >= 2.0, [],
@@ -58,8 +69,8 @@ PKG_CHECK_MODULES(TINYXML2, tinyxml2, [],
 # also set automake conditional variables for use in lib/libs.mk
 
 # add include path for AC_CHECK_HEADER
-ORIG_CPPFLAGS="$CPPFLAGS"
-CPPFLAGS="-I${prefix}/include $CPPFLAGS"
+ORIG_CXXFLAGS="$CXXFLAGS"
+CXXFLAGS="-I${prefix}/include $CXXFLAGS"
 
 # lopack
 AC_MSG_CHECKING([whether to build & install local lopack library])
@@ -95,43 +106,33 @@ else
 fi
 AM_CONDITIONAL([LOCAL_TINYOBJECT], [test x"$with_local_tinyobject" = x"yes"])
 
-# reset CPPFLAGS if building with local libs
+# reset CXXFLAGS if building with local libs
 if test x"$with_local_lopack" = x"yes" ; then
 	if test x"$with_local_tinyobject" = x"yes" ; then 
-		CPPFLAGS="$ORIG_CPPFLAGS"
+		CXXFLAGS="$ORIG_CXXFLAGS"
 	fi
 fi
-ORIG_CPPFLAGS=
+ORIG_CXXFLAGS=
 
 #########################################
-##### Options #####
+##### Build options #####
 
 # debug build switch
 # from http://www.bioinf.uni-freiburg.de/~mmann/HowTo/automake.html#debug
 AC_MSG_CHECKING([whether to enable the debug build])
 AC_ARG_ENABLE([debug],
-	AS_HELP_STRING([--enable-debug],
-		[enable debug build [default=no]]),
+	[AS_HELP_STRING([--enable-debug],
+		[enable debug build [default=no]])],
 	[enable_debug="$enableval"],
-	[enable_debug="no"])
+	[enable_debug=no])
 AC_MSG_RESULT([$enable_debug])
 
 if test x"$enable_debug" = x"yes"; then
 	AC_DEFINE([DEBUG], [], [Debug Mode])
-	CPPFLAGS="$DEBUG_CPPFLAGS $CPPFLAGS"
+	CXXFLAGS="$CXXFLAGS $DEBUG_CXXFLAGS"
 else
 	AC_DEFINE([NDEBUG], [], [Release Mode])
-	CPPFLAGS="$RELEASE_CPPFLAGS $CPPFLAGS"
 fi
-
-# add linker flags for GCC (needed by Linaro/udoo)
-case $host_os in
-	*linux*)
-       	LDFLAGS="$LDFLAGS -Wl,--no-as-needed"
-       	;;
-	*)
-		;;
-esac
 
 #########################################
 ##### Output files #####
@@ -158,7 +159,7 @@ AC_MSG_RESULT([
 
 	Source directory:     $srcdir
 	Installation prefix:  $prefix
-	C++ compiler:         $CXX $CPPFLAGS $LDFLAGS
+	C++ compiler:         $CXX $CXXFLAGS $LDFLAGS
 	Local lopack:         $with_local_lopack
 	Local tinyobject:     $with_local_tinyobject
 	Debug build:          $enable_debug

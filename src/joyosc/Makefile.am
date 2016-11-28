@@ -1,5 +1,5 @@
 
-# load externals variables
+# load library variables
 include $(top_srcdir)/lib/libs.mk
 
 # program to build
@@ -16,7 +16,7 @@ joyosc_SOURCES = main.cpp Common.h App.h App.cpp Config.h Config.cpp \
 				 GameControllerRemapping.h GameControllerRemapping.cpp
 
 # include paths
-AM_CPPFLAGS = $(SDL_CFLAGS) \
+AM_CXXFLAGS = $(SDL_CFLAGS) \
 			  $(LO_CFLAGS) $(LOPACK_INCLUDE) \
 			  $(TINYXML2_CFLAGS) $(TINYOBJECT_INCLUDE) \
 			  $(HELPERS_INCLUDE)
