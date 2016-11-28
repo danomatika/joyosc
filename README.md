@@ -152,18 +152,19 @@ Look at the `example_config.xml` file installed to the doc folder or in the `dat
 #### Options
 
 You can also specify values on the command line which override values in the config file:
-<pre>
-  -i, --ip             IP address to send to (default: 127.0.0.1)
-  -p, --port           Port to send to (default: 8880)
+~~~
   -l, --listening-port Listening port (default: 7770)
   -m, --multicast      Multicast listening group address (off by default)
+  -i, --ip             IP address, hostname, or multicast group to send to
+                       (default: 127.0.0.1)
+  -p, --port           Port to send to (default: 8880)
   -e, --events         Print incoming events, useful for debugging
   -j, --joysticks-only Disable game controller support, joystick interface only
   -s, --sleep          Sleep time in usecs (default: 10000)
-</pre>
+~~~
 
 Note: Enabling event printing is useful when debugging:
-<pre>
+~~~
 % joyosc -e
 ...
 /js2 Saitek P990 Dual Analog Pad axis: 0 32767
@@ -185,10 +186,10 @@ Note: Enabling event printing is useful when debugging:
 /js2 Saitek P990 Dual Analog Pad button: 3 1
 /js2 Saitek P990 Dual Analog Pad button: 3 0
 /js2 Saitek P990 Dual Analog Pad button: 0 1
-</pre>
+~~~
 
 A similar printout for a game controller:
-<pre>
+~~~
 % joyosc -e
 ...
 /gc0 Logitech F510 Gamepad (DInput) button: a 1
@@ -201,7 +202,7 @@ A similar printout for a game controller:
 /gc0 Logitech F510 Gamepad (DInput) axis: rightx 5782
 /gc0 Logitech F510 Gamepad (DInput) axis: righty 7324
 /gc0 Logitech F510 Gamepad (DInput) axis: leftx -3470
-</pre>
+~~~
 
 #### Game Controllers vs. Joysticks
 
@@ -220,7 +221,7 @@ SDL Game Controller axis names: leftx, lefty, rightx, righty
 
 _Note: Game Controller names seem to follow the general Playstation DualShock layout. Devices with more than 4 axes and ~20 buttons are probably best used as Joysticks._
 
-If you do not want to use the Game Controller interface and stick with Joysticks only, use the `-joysticksonly` commandline option.
+If you do not want to use the Game Controller interface and stick with Joysticks only, use the `--joysticks-only` commandline option.
 
 #### Event Streaming
 
@@ -237,32 +238,32 @@ joyosc streams device event information in the following OSC address format:
   * button state values are 1 or 0 for pressed & released
   * axis values are -32767 to 32767 (signed 16 bit)
   * hat values are binary bits representing the hat button aka: 0, 2, 4, 8
-  * (track)ball values are the relative x & y movement in pixels (I think, SDL docs don't go into details)
+  * (track)ball values are relative x & y movement in pixels (I think, SDL docs don't go into details)
 
 Example joystick messages:
-<pre>
+~~~
 /joyosc/devices/js2/button 2 1
 /joyosc/devices/js2/button 2 0
 /joyosc/devices/js2/axis 0 32767
-</pre>
+~~~
 
 Example game controller messages:
-<pre>
+~~~
 /joyosc/devices/gc0/button lefttrigger 1
 /joyosc/devices/gc0/button lefttrigger 0
 /joyosc/devices/gc0/axis righty 32767
-</pre>
+~~~
  
 #### Notifications
  
 joyosc also sends status notification messages:
-<pre>
+~~~
 /joyosc/notifications/startup
 /joyosc/notifications/ready
 /joyosc/notifications/open devType\* deviceID
 /joyosc/notifications/close devType\* deviceID
 /joyosc/notifications/shutdown
-</pre>
+~~~
 
 \* devType is either "joystick" or "controller"
 
@@ -271,9 +272,9 @@ joyosc also sends status notification messages:
 joyosc also listens for osc control messages on a specified listening port (default: 7770).
 
 The current messages are:
-<pre>
+~~~
 /joyosc/quit
-</pre>
+~~~
 
 _Note: This capability may be expanded in the future._
 
@@ -284,23 +285,23 @@ _Note: This capability may be expanded in the future._
 The lsjs tool lists the names of currently plugged in joysticks & game controllers, which you can then use to create your device mappings.
 
 Example output:
-<pre>
+~~~
 % lsjs
 0 Controller: "Logitech F510 Gamepad (DInput)" 6d0400000000000018c2000000000000
-</pre>
+~~~
 
 You can also print detailed info using the -d or --details flags.
-<pre>
+~~~
 % lsjs -d
 
 0 Controller: "Logitech F510 Gamepad (DInput)" 6d0400000000000018c2000000000000
   num axes: 4
   num buttons: 12
 
-</pre>
+~~~
 
 Here is the same device as a joystick when disabling the game controller interface:
-<pre>
+~~~
 % lsjs -dj
 
 0 Joystick: "Logitech RumblePad 2 USB" 6d0400000000000018c2000000000000
@@ -309,24 +310,24 @@ Here is the same device as a joystick when disabling the game controller interfa
   num balls: 0
   num hats: 1
 
-</pre>
+~~~
 
 If you want to customize an SDL game controller mapping, you can print the default mapping string for a plugged in device:
-<pre>
+~~~
 % lsjs -m
 0 Controller: "Logitech F510 Gamepad (DInput)" 6d0400000000000018c2000000000000
 
 6d0400000000000018c2000000000000,Logitech F510 Gamepad (DInput),a:b1,b:b2,back:b8,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,leftshoulder:b4,leftstick:b10,lefttrigger:b6,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b11,righttrigger:b7,rightx:a2,righty:a3,start:b9,x:b0,y:b3,
 
-</pre>
+~~~
 
 #### Options
 
-<pre>
+~~~
   -d, --details        Print device details (buttons, axes, GUIDs, etc)
   -m, --mappings       Print game controller mappings
   -j, --joysticks-only Disable game controller support, joystick interface only
-</pre>
+~~~
 
 ----
 ### Console Error
