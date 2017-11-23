@@ -59,15 +59,15 @@ int main(int argc, char **argv) {
 	// parse commandline
 	Options options("  print the available joysticks & game controllers");
 	if(!options.parse(usage, argc, argv)) {
-		return false;
+		return EXIT_FAILURE;
 	}
 	if(options.isSet(HELP)) {
 		options.printUsage(usage);
-		return false;
+		return EXIT_SUCCESS;
 	}
 	if(options.isSet(VERS)) {
 		std::cout << VERSION << std::endl;
-		return false;
+		return EXIT_SUCCESS;
 	}
 	
 	// read option values if set
