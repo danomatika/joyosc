@@ -1,3 +1,11 @@
+2019-01-12 Dan Wilcox <danomatika@gmail.com>
+
+	0.4.3
+
+	* fixed Tinyxml ErrorStr() build error
+	* updated local library versions
+	* small source cleanups and warning fixes
+
 2016-11-28 Dan Wilcox <danomatika@gmail.com>
 
 	0.4.2
