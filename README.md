@@ -3,7 +3,7 @@ joyosc
 
 joystick & game controller hid device event to Open Sound Control daemon and associated tools
 
-Copyright (c) [Dan Wilcox](danomatika.com) 2007 - 2015
+Copyright (c) [Dan Wilcox](danomatika.com) 2007 - 2019
 
 DESCRIPTION
 -----------

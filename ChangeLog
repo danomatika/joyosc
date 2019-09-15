@@ -1,3 +1,11 @@
+2019-09-15 Dan Wilcox <danomatika@gmail.com>
+
+	0.4.4
+
+	* fixed joysticks only option not working
+	* no longer need to init SDL video for joystick events in SDL2,
+	  this also keeps the default window & app icon from appearing
+
 2019-01-12 Dan Wilcox <danomatika@gmail.com>
 
 	0.4.3
