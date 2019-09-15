@@ -31,15 +31,15 @@ bool DeviceManager::open(int sdlIndex) {
 	if(sdlIndexExists(sdlIndex)) {
 		return false; // ignore duplicates
 	}
+	Config &config = Config::instance();
 	DeviceIndices indices;
 	indices.index = firstAvailableIndex();
 	indices.sdlIndex = sdlIndex;
-	if(SDL_IsGameController(sdlIndex) == SDL_TRUE) { // false when controller api not inited
+	if(SDL_IsGameController(sdlIndex) == SDL_TRUE && !config.joysticksOnly) {
 		GameController *gc = new GameController();
 		if(gc->open(&indices)) {
 			m_devices[gc->getInstanceID()] = gc;
 			if(sendDeviceEvents) {
-				Config &config = Config::instance();
 				config.getOscSender() << osc::BeginMessage(config.notificationAddress + "/open")
 									  << "controller" << indices.index << osc::EndMessage();
 				config.getOscSender().send();

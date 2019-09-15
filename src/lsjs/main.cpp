@@ -76,18 +76,9 @@ int main(int argc, char **argv) {
 	if(options.isSet(JSONLY))   {joysticksOnly = true;}
 
 	// init SDL
-	SDL_Init(0);
-	if(joysticksOnly) {
-		if(SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0 ) {
-			cerr << "Error: could not initialize SDL: " << SDL_GetError() << endl;
-			return EXIT_FAILURE;
-		}
-	}
-	else {
-		if(SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) < 0 ) {
-			cerr << "Error: could not initialize SDL: " << SDL_GetError() << endl;
-			return EXIT_FAILURE;
-		}
+	if(SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER) < 0 ) {
+		cerr << "Error: could not initialize SDL: " << SDL_GetError() << endl;
+		return EXIT_FAILURE;
 	}
 
 	// print
@@ -98,7 +89,7 @@ int main(int argc, char **argv) {
 		if(joystick) {
 			if(printDetails) {cout << endl;}
 			SDL_JoystickGetGUIDString(SDL_JoystickGetGUID(joystick), guidString, 33);
-			if(SDL_IsGameController(i)) {
+			if(SDL_IsGameController(i) == SDL_TRUE && !joysticksOnly) {
 				cout << i << " Controller: \"" << SDL_GameControllerNameForIndex(i) << "\" " << guidString << endl;
 				if(printDetails) {
 					cout << "  num axes: " << SDL_JoystickNumAxes(joystick) << endl
