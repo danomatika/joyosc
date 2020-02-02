@@ -1,3 +1,10 @@
+2020-##-## Dan Wilcox <danomatika@gmail.com>
+
+   0.4.5
+
+   * a couple of small fixes so joyosc builds on Windows
+   * added Windows build requirements steps (Fede Camara Halac)
+
 2019-09-15 Dan Wilcox <danomatika@gmail.com>
 
 	0.4.4
