@@ -61,8 +61,10 @@ void App::run() {
 
 	// set signal handling
 	signal(SIGTERM, signalExit); // terminate
-	signal(SIGQUIT, signalExit); // quit
 	signal(SIGINT,  signalExit); // interrupt
+#ifdef SIGQUIT // Windows doesn't have this
+	signal(SIGQUIT, signalExit); // quit
+#endif
 
 	// open all currently plugged in devices before mainloop
 	m_deviceManager.openAll();
