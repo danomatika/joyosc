@@ -94,7 +94,36 @@ If you use the default Macports install location of `/opt/local`, you will need 
 
 ### Windows
 
-Windows support should work, but hasn't been tested. I'd recommend installing binary versions of the required libraries and building joyosc in MinGW/Cygwin.
+_Thanks to Fede Camara Halac for the following steps._
+
+On Windows, it is recommended to use [Msys2](https://www.msys2.org) to install the required build system and library dependencies. Msys2 provides both 32 and 64 MinGW and command shells.
+
+_Note: Msys2 development seems to change frequently, so some of the package names below may have changed after this document was written._
+
+Open an Msys2 shell and install the compiler chain & autotools via:
+
+    # 32 bit
+    pacman -S mingw-w64-i686-toolchain mingw-w64-i686-clang \
+              make pkgconfig autoconf automake libtool
+
+    # 64 bit
+    pacman -S mingw-w64-x86_64-toolchain mingw-w64-x86_64-clang \
+              make pkgconfig autoconf automake libtool
+
+Next install SDL2 and TinyXML2:
+
+    # 32 bit
+    pacman -S mingw-w64-i686-SDL2 mingw-w64-i686-tinyxml2
+
+    # 64 bit
+    pacman -S mingw-w64-x86_64-SDL2 mingw-w64-x86_64-tinyxml2
+
+Msys2 does not have a package for liblo, so you need to download the source from https://github.com/radarsat1/liblo/releases then build & install it manually:
+
+    cd liblo-0.30
+    ./configure --disable-debug --disable-dependency-tracking --disable-tests --disable-network-tests --disable-tools --disable-examples
+    make
+    make install
 
 BUILD AND INSTALLATION
 ----------------------
@@ -104,6 +133,8 @@ As this is an GNU autotools project, simply run the following on the command lin
     ./configure
     make
     sudo make install
+
+_Note: If you have cloned joyosc from a git repo, you may need to generate the configure script by running `./autogen.sh` first._
 
 This readme, example config files, and the pd library are also installed to your doc dir, something like `$(prefix)/share/doc/joyosc`.
 
