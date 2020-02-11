@@ -12,8 +12,8 @@ USB joysticks & game controllers are a cheap, ubiquitous source for alternate in
 
 The joyosc package contains the following parts:
 
-1. joyosc - device event daemon
-2. lsjs - joystick & game controller info tool
+1. joyosc: device event daemon
+2. lsjs: joystick & game controller info tool
 
 This group of tools allows any OSC capable program to receive joystick & game controller event data aka button presses, axis movements, etc. Specific joysticks & game controllers can be mapped by name to specific OSC send addresses and button, axis, etc ids can be remapped or ignored.
 
@@ -23,7 +23,7 @@ music system using [Pure Data](http://puredata.info) in GNU/Linux. See <http://r
 QUICK START
 -----------
 
-Download a release tarball from <http://docs.danomatika.com/releases/joyosc/>. _Do not download a release zip from Github as the submodule files will not be included._
+Download a release tarball from <http://docs.danomatika.com/releases/joyosc>. _Do not download a release zip from Github as the submodule files will not be included._
 
 Otherwise, if cloning this repo, you will also need to check out the submodules using then run `autogen.sh` to create the configure script:
 
