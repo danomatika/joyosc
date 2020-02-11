@@ -24,7 +24,7 @@
 
 using namespace tinyxml2;
 
-void JoystickRemapping::check(Joystick* joystick) {
+void JoystickRemapping::check(Joystick *joystick) {
 	if(!joystick){
 		return;
 	}
@@ -123,11 +123,11 @@ void JoystickRemapping::print() {
 	}
 }
 
-bool JoystickRemapping::readXML(XMLElement* e) {
+bool JoystickRemapping::readXML(XMLElement *e) {
 	bool loaded = false;
 	pair<map<int,int>::iterator, bool> ret;
 	string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
-	XMLElement* child = e->FirstChildElement();
+	XMLElement *child = e->FirstChildElement();
 	while(child != NULL) {
 		int from  = XML::getAttrInt(child, "from", -1);
 		int to = XML::getAttrInt(child, "to", -1);

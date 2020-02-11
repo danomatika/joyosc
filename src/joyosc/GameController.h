@@ -53,7 +53,7 @@ class GameController : public Device {
 		///
 		/// call this inside a loop, does not block, does nothing if device has
 		/// not been opened
-		bool handleEvent(void* data);
+		bool handleEvent(void *data);
 	
 		/// returns true if the controller is open
 		bool isOpen();
@@ -93,11 +93,11 @@ class GameController : public Device {
 		inline int getAxisDeadZone() {return m_axisDeadZone;}
 	
 		/// set/get button. axis, etc remappings
-		void setRemapping(GameControllerRemapping* remapping);
+		void setRemapping(GameControllerRemapping *remapping);
 		inline GameControllerRemapping* getRemapping() {return m_remapping;}
 	
 		/// set/get button, axis, etc ignores
-		void setIgnore(GameControllerIgnore* ignore);
+		void setIgnore(GameControllerIgnore *ignore);
 		inline GameControllerIgnore* getIgnore() {return m_ignore;}
 	
 		/// add a game controller mapping string to SDL,
@@ -113,13 +113,13 @@ class GameController : public Device {
 		/// send button event
 		bool buttonPressed(string &name, int value);
 	
-		SDL_GameController *m_controller; //< SDL controller handle
-		DeviceIndices m_indices; //< device list index & SDL index
-		SDL_JoystickID m_instanceID; //< unique SDL instance ID, *not* SDL index
+		SDL_GameController *m_controller; ///< SDL controller handle
+		DeviceIndices m_indices; ///< device list index & SDL index
+		SDL_JoystickID m_instanceID; ///< unique SDL instance ID, *not* SDL index
 	
-		unsigned int m_axisDeadZone; //< axis dead zone amount +/- center pos
-		vector<int16_t> m_prevAxisValues; //< prev axis valus to cancel repeats
+		unsigned int m_axisDeadZone; ///< axis dead zone amount +/- center pos
+		vector<int16_t> m_prevAxisValues; ///< prev axis valus to cancel repeats
 	
-		GameControllerRemapping *m_remapping; //< joystick remapping values
-		GameControllerIgnore *m_ignore; //<  button, axis, etc ignores
+		GameControllerRemapping *m_remapping; ///< joystick remapping values
+		GameControllerIgnore *m_ignore; ///< button, axis, etc ignores
 };

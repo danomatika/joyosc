@@ -64,7 +64,7 @@ class DeviceManager {
 		/// return the number of devices
 		unsigned int numDevices() {return m_devices.size();}
 	
-		bool sendDeviceEvents; //< send device open/close events? (default: false)
+		bool sendDeviceEvents; ///< send device open/close events? (default: false)
 
 	protected:
 	
@@ -77,5 +77,5 @@ class DeviceManager {
 		/// is an sdlIndex already in use by an active device?
 		bool sdlIndexExists(int sdlIndex);
 
-		map<int,Device*> m_devices; //< active device list, mapped by instanceID
+		map<int,Device *> m_devices; ///< active device list, mapped by instanceID
 };

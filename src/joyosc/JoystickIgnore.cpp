@@ -24,7 +24,7 @@
 
 using namespace tinyxml2;
 
-void JoystickIgnore::check(Joystick* joystick) {
+void JoystickIgnore::check(Joystick *joystick) {
 	if(!joystick) {
 		return;
 	}
@@ -113,11 +113,11 @@ void JoystickIgnore::print() {
 
 // PROTECTED
 
-bool JoystickIgnore::readXML(XMLElement* e) {
+bool JoystickIgnore::readXML(XMLElement *e) {
 	bool loaded = false;
 	pair<set<int>::iterator,bool> ret;
 	string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
-	XMLElement* child = e->FirstChildElement();
+	XMLElement *child = e->FirstChildElement();
 	while(child != NULL) {
 		int which  = XML::getAttrInt(child, "id", -1);
 		if(which > -1) {

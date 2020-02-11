@@ -33,7 +33,6 @@ int main(int argc, char **argv) {
 	bool printMappings = false;
 	bool joysticksOnly = false;
 	
-	
 		// option index enum
 	enum optionNames {
 		UNKNOWN,

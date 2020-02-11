@@ -54,7 +54,7 @@ class Joystick : public Device {
 		///
 		/// call this inside a loop, does not block, does nothing if device has
 		/// not been opened
-		bool handleEvent(void* data);
+		bool handleEvent(void *data);
 
 		/// returns true if the joystick is open
 		bool isOpen();
@@ -91,22 +91,22 @@ class Joystick : public Device {
 		inline int getAxisDeadZone() {return m_axisDeadZone;}
 		
 		/// set/get button. axis, etc remappings
-		void setRemapping(JoystickRemapping* remapping);
+		void setRemapping(JoystickRemapping *remapping);
 		inline JoystickRemapping* getRemapping() {return m_remapping;}
 		
 		/// set/get button, axis, etc ignores
-		void setIgnore(JoystickIgnore* ignore);
+		void setIgnore(JoystickIgnore *ignore);
 		inline JoystickIgnore* getIgnore() {return m_ignore;}
 
 	protected:
 
-		SDL_Joystick *m_joystick; //< SDL joystick handle
-		DeviceIndices m_indices; //< device list index & SDL index
-		SDL_JoystickID m_instanceID; //< unique SDL instance ID, *not* SDL index
+		SDL_Joystick *m_joystick; ///< SDL joystick handle
+		DeviceIndices m_indices; ///< device list index & SDL index
+		SDL_JoystickID m_instanceID; ///< unique SDL instance ID, *not* SDL index
 	
-		unsigned int m_axisDeadZone; //< axis dead zone amount +/- center pos
-		vector<int16_t> m_prevAxisValues; //< prev axis valus to cancel repeats
+		unsigned int m_axisDeadZone; ///< axis dead zone amount +/- center pos
+		vector<int16_t> m_prevAxisValues; ///< prev axis valus to cancel repeats
 		
-		JoystickRemapping *m_remapping; //< joystick remapping values
-		JoystickIgnore *m_ignore; //<  button, axis, etc ignores
+		JoystickRemapping *m_remapping; ///< joystick remapping values
+		JoystickIgnore *m_ignore; ///< button, axis, etc ignores
 };

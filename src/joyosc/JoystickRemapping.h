@@ -40,7 +40,7 @@ class JoystickRemapping : public tinyxml2::XMLObject {
 		map<int,int> hats;
 		
 		/// check indices & toss out any bad values
-		void check(Joystick* joystick);
+		void check(Joystick *joystick);
 	
 		/// get mapping for an id, returns the id if no mapping found
 		int mappingForButton(int button);
@@ -54,5 +54,5 @@ class JoystickRemapping : public tinyxml2::XMLObject {
 	protected:
 	
 		/// XMLObject callback
-		bool readXML(tinyxml2::XMLElement* e);
+		bool readXML(tinyxml2::XMLElement *e);
 };

@@ -80,7 +80,7 @@ bool GameController::open(void *data) {
 	}
 	
 	// set remapping if one exists
-	GameControllerRemapping* remap = Config::instance().getControllerRemapping(getDevName());
+	GameControllerRemapping *remap = Config::instance().getControllerRemapping(getDevName());
 	if(remap) {
 		setRemapping(remap);
 		printRemapping();
@@ -121,12 +121,12 @@ void GameController::close() {
 	m_prevAxisValues.clear();
 }
 
-bool GameController::handleEvent(void* data) {
+bool GameController::handleEvent(void *data) {
 	if(data == NULL) {
 		return false;
 	}
 	osc::OscSender& sender = m_config.getOscSender();
-	SDL_Event* event = (SDL_Event*) data;
+	SDL_Event *event = (SDL_Event *)data;
 	switch(event->type) {
 		
 		case SDL_CONTROLLERBUTTONDOWN: {
@@ -269,7 +269,7 @@ bool GameController::buttonPressed(string &button, int value) {
 		button = m_remapping->mappingForButton(button);
 	}
 
-	osc::OscSender& sender = m_config.getOscSender();
+	osc::OscSender &sender = m_config.getOscSender();
 	sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/button")
 	       << button << value
 	       << osc::EndMessage();

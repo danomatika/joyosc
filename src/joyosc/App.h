@@ -42,17 +42,17 @@ class App : public osc::OscObject {
 	protected:
 
 		/// received osc message callback
-		bool processOscMessage(const osc::ReceivedMessage& message,
-							   const osc::MessageSource& source);
+		bool processOscMessage(const osc::ReceivedMessage &message,
+							   const osc::MessageSource &source);
 
 		/// signal callback
 		static void signalExit(int signal);
 
-		bool m_bRun; //< is the main loop running?
+		bool m_bRun; ///< is the main loop running?
 		
-		DeviceManager m_deviceManager; //< controller & joystick device manager
+		DeviceManager m_deviceManager; ///< controller & joystick device manager
 		
-		Config& m_config; //< reference to global config
-		osc::OscReceiver& m_oscReceiver; //< reference to global osc receiver
-		osc::OscSender& m_oscSender; //< reference to global osc sender
+		Config &m_config; ///< reference to global config
+		osc::OscReceiver &m_oscReceiver; ///< reference to global osc receiver
+		osc::OscSender &m_oscSender; ///< reference to global osc sender
 };

@@ -45,7 +45,7 @@ class Device {
 		/// open the device,
 		/// pass implementation-specific open data via the data arg
 		/// returns true on success
-		virtual bool open(void* data=NULL) = 0;
+		virtual bool open(void *data=NULL) = 0;
 
 		/// close the device
 		virtual void close() = 0;
@@ -55,7 +55,7 @@ class Device {
 		///
 		/// call this inside a loop, does not block, does nothing if device has
 		/// not been opened
-		virtual bool handleEvent(void* data=NULL) = 0;
+		virtual bool handleEvent(void *data=NULL) = 0;
 
 		/// print device info
 		virtual void print() = 0;
@@ -78,10 +78,10 @@ class Device {
 
 	protected:
 
-		string	m_devName; //< the device name
-		string	m_oscAddress; //< osc address to send to
+		string	m_devName; ///< the device name
+		string	m_oscAddress; ///< osc address to send to
 		
-		Config& m_config; //< global config access
+		Config& m_config; ///< global config access
 };
 
 /// \class DeviceIndices
@@ -97,6 +97,6 @@ class Device {
 /// index is actually 1 since it's now the second joystick as far as SDL is
 /// concerned.
 struct DeviceIndices {
-	int index; //< device list index
-	int sdlIndex; //< SDL index
+	int index; ///< device list index
+	int sdlIndex; ///< SDL index
 };

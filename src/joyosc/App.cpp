@@ -107,7 +107,7 @@ void App::run() {
 
 // PROTECTED
 
-bool App::processOscMessage(const ReceivedMessage& message, const MessageSource& source) {
+bool App::processOscMessage(const ReceivedMessage &message, const MessageSource &source) {
 	if(message.address() == oscRootAddress + "/quit") {
 		stop();
 		LOG << endl << "	" << PACKAGE << ": quit message received, exiting ..." << endl;

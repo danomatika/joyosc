@@ -65,7 +65,7 @@ bool DeviceManager::open(int sdlIndex) {
 
 bool DeviceManager::close(SDL_JoystickID instanceID) {
 	if(m_devices.find(instanceID) != m_devices.end()) {
-		Device* js = m_devices[instanceID];
+		Device *js = m_devices[instanceID];
 		if(sendDeviceEvents) {
 			Config &config = Config::instance();
 			config.getOscSender() << osc::BeginMessage(config.notificationAddress + "/close");
@@ -95,9 +95,9 @@ void DeviceManager::openAll() {
 }
 
 void DeviceManager::closeAll() {
-	map<int,Device*>::iterator iter;
+	map<int,Device *>::iterator iter;
 	for(iter = m_devices.begin(); iter != m_devices.end(); ++iter) {
-		Device* js = iter->second;
+		Device *js = iter->second;
 		js->close();
 		delete js;
 	}
@@ -105,7 +105,7 @@ void DeviceManager::closeAll() {
 }
 
 // controller hotplugging: https://gist.github.com/urkle/6701236
-bool DeviceManager::handleEvent(SDL_Event* event) {
+bool DeviceManager::handleEvent(SDL_Event *event) {
 	switch(event->type) {
 		
 		case SDL_CONTROLLERDEVICEADDED:
@@ -168,7 +168,7 @@ bool DeviceManager::handleEvent(SDL_Event* event) {
 }
 
 void DeviceManager::print(bool details) {
-	map<int,Device*>::iterator iter;
+	map<int,Device *>::iterator iter;
 	for(iter = m_devices.begin(); iter != m_devices.end(); ++iter) {
 		if(details) {
 			iter->second->print();
@@ -200,7 +200,7 @@ Device::Type DeviceManager::getDeviceType(int index) {
 }
 
 bool DeviceManager::sdlIndexExists(int sdlIndex) {
-	map<int,Device*>::iterator iter;
+	map<int,Device *>::iterator iter;
 	for(iter = m_devices.begin(); iter != m_devices.end(); ++iter) {
 		if(iter->second->getDeviceType() == Device::GAMECONTROLLER) {
 			if(((GameController *)iter->second)->getSdlIndex() == sdlIndex) {

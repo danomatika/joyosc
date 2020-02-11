@@ -71,11 +71,11 @@ void GameControllerIgnore::print() {
 
 // PROTECTED
 
-bool GameControllerIgnore::readXML(XMLElement* e) {
+bool GameControllerIgnore::readXML(XMLElement *e) {
 	bool loaded = false;
 	pair<set<string>::iterator,bool> ret;
 	string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
-	XMLElement* child = e->FirstChildElement();
+	XMLElement *child = e->FirstChildElement();
 	while(child != NULL) {
 		string which  = XML::getAttrString(child, "id", "");
 		if(which != "") {

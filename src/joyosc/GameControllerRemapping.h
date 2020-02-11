@@ -38,7 +38,7 @@ class GameControllerRemapping : public tinyxml2::XMLObject {
 		map<string,string> axes;
 		
 		/// check indices & toss out any bad values
-		void check(GameController* controller);
+		void check(GameController *controller);
 	
 		/// get mapping for a name, returns the name if no mapping found
 		string mappingForButton(string string);
@@ -50,5 +50,5 @@ class GameControllerRemapping : public tinyxml2::XMLObject {
 	protected:
 	
 		/// XMLObject callback
-		bool readXML(tinyxml2::XMLElement* e);
+		bool readXML(tinyxml2::XMLElement *e);
 };

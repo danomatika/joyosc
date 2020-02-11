@@ -78,7 +78,7 @@ bool Joystick::open(void *data) {
 	}
 	
 	// set remapping if one exists
-	JoystickRemapping* remap = Config::instance().getJoystickRemapping(getDevName());
+	JoystickRemapping *remap = Config::instance().getJoystickRemapping(getDevName());
 	if(remap) {
 		setRemapping(remap);
 		printRemapping();
@@ -118,12 +118,12 @@ void Joystick::close() {
 	m_prevAxisValues.clear();
 }
 
-bool Joystick::handleEvent(void* data) {
+bool Joystick::handleEvent(void *data) {
 	if(data == NULL) {
 		return false;
 	}
 	osc::OscSender& sender = m_config.getOscSender();
-	SDL_Event* event = (SDL_Event*) data;
+	SDL_Event *event = (SDL_Event *)data;
 	switch(event->type) {
 		
 		case SDL_JOYBUTTONDOWN: {
@@ -287,14 +287,14 @@ void Joystick::setAxisDeadZone(unsigned int zone) {
 	          << "set axis dead zone to " << zone << endl;
 }
 
-void Joystick::setRemapping(JoystickRemapping* remapping) {
+void Joystick::setRemapping(JoystickRemapping *remapping) {
 	m_remapping = remapping;
 	if(m_remapping) {
 		m_remapping->check(this);
 	}
 }
 
-void Joystick::setIgnore(JoystickIgnore* ignore) {
+void Joystick::setIgnore(JoystickIgnore *ignore) {
 	m_ignore = ignore;
 	if(m_ignore) {
 		m_ignore->check(this);

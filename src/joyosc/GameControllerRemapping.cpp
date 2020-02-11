@@ -24,7 +24,7 @@
 
 using namespace tinyxml2;
 
-void GameControllerRemapping::check(GameController* controller) {
+void GameControllerRemapping::check(GameController *controller) {
 	if(!controller){
 		return;
 	}
@@ -75,11 +75,11 @@ void GameControllerRemapping::print() {
 	}
 }
 
-bool GameControllerRemapping::readXML(XMLElement* e) {
+bool GameControllerRemapping::readXML(XMLElement *e) {
 	bool loaded = false;
 	pair<map<string,string>::iterator, bool> ret;
 	string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
-	XMLElement* child = e->FirstChildElement();
+	XMLElement *child = e->FirstChildElement();
 	while(child != NULL) {
 		string from  = XML::getAttrString(child, "from", "");
 		string to = XML::getAttrString(child, "to", "");

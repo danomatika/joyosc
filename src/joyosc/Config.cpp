@@ -41,7 +41,7 @@
 using namespace tinyxml2;
 
 Config& Config::instance() {
-	static Config * pointerToTheSingletonInstance = new Config;
+	static Config *pointerToTheSingletonInstance = new Config;
 	return *pointerToTheSingletonInstance;
 }
 
@@ -62,7 +62,7 @@ unsigned int Config::getControllerAxisDeadZone(string deviceName) {
 }
 
 GameControllerRemapping* Config::getControllerRemapping(string deviceName) {
-	map<string,GameControllerRemapping*>::iterator iter = m_controllerRemappings.find(deviceName);
+	map<string,GameControllerRemapping *>::iterator iter = m_controllerRemappings.find(deviceName);
 	if(iter != m_controllerRemappings.end()) {
 		return iter->second;
 	}
@@ -70,7 +70,7 @@ GameControllerRemapping* Config::getControllerRemapping(string deviceName) {
 }
 
 GameControllerIgnore* Config::getControllerIgnore(string deviceName) {
-	map<string,GameControllerIgnore*>::iterator iter = m_controllerIgnores.find(deviceName);
+	map<string,GameControllerIgnore *>::iterator iter = m_controllerIgnores.find(deviceName);
 	if(iter != m_controllerIgnores.end()) {
 		return iter->second;
 	}
@@ -86,7 +86,7 @@ unsigned int Config::getJoystickAxisDeadZone(string deviceName) {
 }
 
 JoystickRemapping* Config::getJoystickRemapping(string deviceName) {
-	map<string,JoystickRemapping*>::iterator iter = m_joystickRemappings.find(deviceName);
+	map<string,JoystickRemapping *>::iterator iter = m_joystickRemappings.find(deviceName);
 	if(iter != m_joystickRemappings.end()) {
 		return iter->second;
 	}
@@ -94,7 +94,7 @@ JoystickRemapping* Config::getJoystickRemapping(string deviceName) {
 }
 
 JoystickIgnore* Config::getJoystickIgnore(string deviceName) {
-	map<string,JoystickIgnore*>::iterator iter = m_joystickIgnores.find(deviceName);
+	map<string,JoystickIgnore *>::iterator iter = m_joystickIgnores.find(deviceName);
 	if(iter != m_joystickIgnores.end()) {
 		return iter->second;
 	}
@@ -181,7 +181,7 @@ void Config::print() {
 	    << "sleep us:        " << sleepUS << endl
 	    << "device addresses: " << m_deviceAddresses.size() << endl;
 	int index = 0;
-	map<string, string>::iterator iter;
+	map<string,string>::iterator iter;
 	for(iter = m_deviceAddresses.begin(); iter != m_deviceAddresses.end(); iter++) {
 		LOG << "  " << index << " " << iter->first
 		    << " : " << iter->second << endl;
@@ -191,10 +191,10 @@ void Config::print() {
 
 // PROTECTED
 
-bool Config::readXML(XMLElement* e) {
-	XMLElement* child = getXMLChild("devices");
+bool Config::readXML(XMLElement *e) {
+	XMLElement *child = getXMLChild("devices");
 	if(child != NULL) {
-		XMLElement* child2 = child->FirstChildElement();
+		XMLElement *child2 = child->FirstChildElement();
 		while(child2 != NULL) {
 			if((string)child2->Name() == "controller") {
 				string name = XML::getAttrString(child2, "name");
@@ -207,7 +207,7 @@ bool Config::readXML(XMLElement* e) {
 					         << " already exists" << endl;
 				}
 				
-				XMLElement* thresholdsChild = XML::getChild(child2, "thresholds");
+				XMLElement *thresholdsChild = XML::getChild(child2, "thresholds");
 				if(thresholdsChild) {
 					unsigned int deadZone = XML::getAttrUInt(thresholdsChild, "axisDeadZone", 0);
 					if(deadZone > 0) {
@@ -220,7 +220,7 @@ bool Config::readXML(XMLElement* e) {
 					}
 				}
 				
-				XMLElement* remapChild = XML::getChild(child2, "remap");
+				XMLElement *remapChild = XML::getChild(child2, "remap");
 				if(remapChild) {
 					GameControllerRemapping *remap = new GameControllerRemapping;
 					if(!remap->loadXML(remapChild)) {
@@ -235,7 +235,7 @@ bool Config::readXML(XMLElement* e) {
 					}
 				}
 				
-				XMLElement* ignoreChild = XML::getChild(child2, "ignore");
+				XMLElement *ignoreChild = XML::getChild(child2, "ignore");
 				if(ignoreChild) {
 					GameControllerIgnore *ignore = new GameControllerIgnore;
 					if(!ignore->loadXML(ignoreChild)) {
@@ -261,7 +261,7 @@ bool Config::readXML(XMLElement* e) {
 					         << " already exists" << endl;
 				}
 				
-				XMLElement* thresholdsChild = XML::getChild(child2, "thresholds");
+				XMLElement *thresholdsChild = XML::getChild(child2, "thresholds");
 				if(thresholdsChild) {
 					unsigned int deadZone = XML::getAttrUInt(thresholdsChild, "axisDeadZone", 0);
 					if(deadZone > 0) {
@@ -274,7 +274,7 @@ bool Config::readXML(XMLElement* e) {
 					}
 				}
 				
-				XMLElement* remapChild = XML::getChild(child2, "remap");
+				XMLElement *remapChild = XML::getChild(child2, "remap");
 				if(remapChild) {
 					JoystickRemapping *remap = new JoystickRemapping;
 					if(!remap->loadXML(remapChild)) {
@@ -289,7 +289,7 @@ bool Config::readXML(XMLElement* e) {
 					}
 				}
 				
-				XMLElement* ignoreChild = XML::getChild(child2, "ignore");
+				XMLElement *ignoreChild = XML::getChild(child2, "ignore");
 				if(ignoreChild) {
 					JoystickIgnore *ignore = new JoystickIgnore;
 					if(!ignore->loadXML(ignoreChild)) {
@@ -312,7 +312,7 @@ bool Config::readXML(XMLElement* e) {
 		}
 		child = getXMLChild("mappings");
 		if(child != NULL) {
-			XMLElement* child2 = child->FirstChildElement();
+			XMLElement *child2 = child->FirstChildElement();
 			while(child2 != NULL) {
 				if((string)child2->Name() == "mapping") {
 					string mapping = XML::getTextString(child2);

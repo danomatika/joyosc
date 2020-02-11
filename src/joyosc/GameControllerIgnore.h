@@ -32,11 +32,11 @@ class GameControllerIgnore : public tinyxml2::XMLObject {
 	
 		GameControllerIgnore() : tinyxml2::XMLObject("ignore") {}
 	
-		set<string> buttons; //< button names to ignore
-		set<string> axes; //< axis names to ignore
+		set<string> buttons; ///< button names to ignore
+		set<string> axes; ///< axis names to ignore
 		
 		/// check names & toss out any bad values
-		void check(GameController* controller);
+		void check(GameController *controller);
 	
 		/// check ignore status
 		bool isButtonIgnored(string &button);
@@ -48,5 +48,5 @@ class GameControllerIgnore : public tinyxml2::XMLObject {
 	protected:
 	
 		/// XMLObject callback
-		bool readXML(tinyxml2::XMLElement* e);
+		bool readXML(tinyxml2::XMLElement *e);
 };
