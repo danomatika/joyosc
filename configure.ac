@@ -3,7 +3,7 @@
 
 AC_INIT([joyosc], [0.4.5], [danomatika@gmail.com], [joyosc], [http://github.com/danomatika/joyosc])
 AC_CONFIG_SRCDIR([src/joyosc/main.cpp])
-AC_CONFIG_AUX_DIR([./config])
+AC_CONFIG_AUX_DIR([config])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_CANONICAL_HOST
 

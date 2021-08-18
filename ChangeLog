@@ -1,11 +1,13 @@
 2021-08-19 Dan Wilcox <danomatika@gmail.com>
 
-   0.4.5
+	0.4.5
 
-   * a couple of small fixes so joyosc builds on Windows
-   * added Windows build requirements steps (Fede Camara Halac)
-   * added info about running ldconfig to fix shared libs load error
-     (reported by Steven Noreyko)
+	* a couple of small fixes so joyosc builds on Windows
+	* added Windows build requirements steps (Fede Camara Halac)
+	* added info about running ldconfig to fix shared libs load error
+	  (reported by Steven Noreyko)
+	* updated for autoconf 2.7.0+
+	* removed src/config.h.in from repo
 
 2019-09-15 Dan Wilcox <danomatika@gmail.com>
 
@@ -128,4 +130,3 @@
 2007-06-10 Dan Wilcox <danomatika@gmail.com>
 
 	0.1.0: 	Initial thesis release
-
