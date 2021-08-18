@@ -33,21 +33,26 @@ Otherwise, if cloning this repo, you will also need to check out the submodules 
     git submodule update
     ./autogen.sh
 
-For Ubuntu/Debian, build and install on the command line to the `/usr/local` prefix via:
-
-    sudo apt-get install libsdl2-dev liblo-dev libtinyxml2-dev
-    ./configure
-    make
-    sudo make install
-
-and the same for macOS using Homebrew:
+On the macOS command line, use Homebrew to install libraries, then build and install to the `/usr/local` prefix via:
 
     brew install sdl2 liblo tinyxml2
     ./configure
     make
     make install
 
-If everything finished successfully, you're good to go. If you're using Pure Data, check out the joyosc abstraction library in `data/pd` and installed into `$(prefix)/share/doc/joyosc/pd/joyosc`.
+and the same goes for Ubuntu/Debian with the additional call to `ldconfig` or shared helper libraries may not be found after install\*: 
+
+    sudo apt-get install libsdl2-dev liblo-dev libtinyxml2-dev
+    ./configure
+    make
+    sudo make install
+    sudo ldconfig
+
+If everything finished successfully, you're good to go.
+
+If you're using Pure Data, check out the joyosc abstraction library in `data/pd` and installed into `$(prefix)/share/doc/joyosc/pd/joyosc`.
+
+\*: See the "Loading shared libraries error" section for more info
 
 BUILD REQUIREMENTS
 ------------------
@@ -149,6 +154,21 @@ If using Macports on Mac OS X, it is recommended to use the Macports default pre
 Two helper libraries are included with joysoc in the `lib` folder: lopack & tinyobject. By default, these libraries are built and installed along with joyosc. If you happen to have either installed separately (not likely), you can disable the use of the local library when building via:
 
     ./configure --without-local-lopack --without-local-tinyobject
+
+### Loading shared libraries error
+
+On some Linux systems, the install may finish successfully, but running joyosc will fail with the following error:
+
+~~~
+$ joyosc
+joyosc: error while loading shared libraries: liblopack.so.0: cannot open shared object file: No such file or directory
+~~~
+
+This can happen if installing to `/usr/local` and can be fixed by regenerating the system's lib cache by running:
+
+```shell
+sudo ldconfig
+```
 
 USAGE
 -----
