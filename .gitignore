@@ -13,6 +13,7 @@ config
 config.log
 config.status
 libtool
+src/config.h.in
 src/config.h
 src/stamp-h1
 .dirstamp

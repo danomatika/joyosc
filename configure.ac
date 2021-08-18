@@ -42,11 +42,11 @@ LT_INIT
 AC_SUBST([LIBTOOL_DEPS])
 
 # using c++ compiler and linker
-AC_LANG_CPLUSPLUS
+AC_LANG([C++])
 AX_CXX_COMPILE_STDCXX_11([noext], [optional]) # C++11
 
 # check for headers
-AC_HEADER_STDC
+AC_CHECK_INCLUDES_DEFAULT
 
 # check for headers & libs
 PKG_CHECK_MODULES(SDL, sdl2 >= 2.0, [],
