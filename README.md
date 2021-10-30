@@ -139,7 +139,7 @@ As this is an GNU autotools project, simply run the following on the command lin
     make
     sudo make install
 
-_Note: If you have cloned joyosc from a git repo, you may need to generate the configure script by running `./autogen.sh` first._
+_Note: If you have cloned joyosc from a git repo, you may need to generate the configure script by running `./autogen.sh` first and you will need autoconf, automake, and libtool installed as well._
 
 This readme, example config files, and the pd library are also installed to your doc dir, something like `$(prefix)/share/doc/joyosc`.
 
