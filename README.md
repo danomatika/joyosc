@@ -147,7 +147,7 @@ By default, the configure script installs to `/usr/local`. To change this behavi
 
     ./configure --prefix=/path/to/install/dir
 
-If using Macports on Mac OS X, it is recommended to use the Macports default prefix of `/opt/local`. Homebrew installs to `/usr/local` so you won't need to set the prefix.
+If using Macports on macOS, it is recommended to use the Macports default prefix of `/opt/local`. Homebrew installs to `/usr/local` so you won't need to set the prefix.
 
 ### lopack & tinyobject libraries
 
