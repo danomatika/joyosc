@@ -28,7 +28,7 @@ void GameControllerIgnore::check(GameController *controller) {
 	if(!controller) {
 		return;
 	}
-	std::set<std::string>::iterator iter;
+	Map::iterator iter;
 	for(iter = buttons.begin(); iter != buttons.end();) {
 		if(SDL_GameControllerGetButtonFromString((*iter).c_str()) == SDL_CONTROLLER_BUTTON_INVALID) {
 			LOG_WARN << "GameController " << controller->getDevName() << ": "
@@ -60,7 +60,7 @@ bool GameControllerIgnore::isAxisIgnored(std::string &axis) {
 }
 
 void GameControllerIgnore::print() {
-	std::set<std::string>::iterator iter;
+	Map::iterator iter;
 	for(iter = buttons.begin(); iter != buttons.end(); ++iter) {
 		LOG << "  ignore button: " << (*iter) << std::endl;
 	}
@@ -73,7 +73,7 @@ void GameControllerIgnore::print() {
 
 bool GameControllerIgnore::readXML(XMLElement *e) {
 	bool loaded = false;
-	std::pair<std::set<std::string>::iterator,bool> ret;
+	std::pair<Map::iterator,bool> ret;
 	std::string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
 	XMLElement *child = e->FirstChildElement();
 	while(child != NULL) {

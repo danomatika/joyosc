@@ -95,7 +95,7 @@ void DeviceManager::openAll() {
 }
 
 void DeviceManager::closeAll() {
-	std::map<int,Device *>::iterator iter;
+	Map::iterator iter;
 	for(iter = m_devices.begin(); iter != m_devices.end(); ++iter) {
 		Device *js = iter->second;
 		js->close();
@@ -168,7 +168,7 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 }
 
 void DeviceManager::print(bool details) {
-	std::map<int,Device *>::iterator iter;
+	Map::iterator iter;
 	for(iter = m_devices.begin(); iter != m_devices.end(); ++iter) {
 		if(details) {
 			iter->second->print();
@@ -200,7 +200,7 @@ Device::Type DeviceManager::getDeviceType(int index) {
 }
 
 bool DeviceManager::sdlIndexExists(int sdlIndex) {
-	std::map<int,Device *>::iterator iter;
+	Map::iterator iter;
 	for(iter = m_devices.begin(); iter != m_devices.end(); ++iter) {
 		if(iter->second->getDeviceType() == Device::GAMECONTROLLER) {
 			if(((GameController *)iter->second)->getSdlIndex() == sdlIndex) {

@@ -105,7 +105,7 @@ class Joystick : public Device {
 		SDL_JoystickID m_instanceID; ///< unique SDL instance ID, *not* SDL index
 	
 		unsigned int m_axisDeadZone; ///< axis dead zone amount +/- center pos
-		std::vector<int16_t> m_prevAxisValues; ///< prev axis valus to cancel repeats
+		std::vector<int16_t> m_prevAxisValues; ///< prev axis values to cancel repeats
 		
 		JoystickRemapping *m_remapping; ///< joystick remapping values
 		JoystickIgnore *m_ignore; ///< button, axis, etc ignores

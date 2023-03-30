@@ -29,13 +29,15 @@
 class GameControllerRemapping : public tinyxml2::XMLObject {
 
 	public:
-	
+		
+		typedef std::map<std::string,std::string> Map;
+		
 		GameControllerRemapping() : tinyxml2::XMLObject("remap") {}
 		
 		/// mappings from -> to
 		/// with key: from & value: to
-		std::map<std::string,std::string> buttons;
-		std::map<std::string,std::string> axes;
+		Map buttons;
+		Map axes;
 		
 		/// check indices & toss out any bad values
 		void check(GameController *controller);

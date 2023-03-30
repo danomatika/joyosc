@@ -29,15 +29,17 @@
 class JoystickRemapping : public tinyxml2::XMLObject {
 
 	public:
-	
+		
+		typedef std::map<int,int> Map;
+		
 		JoystickRemapping() : tinyxml2::XMLObject("remap") {}
 		
 		/// mappings from -> to
 		/// with key: from & value: to
-		std::map<int,int> buttons;
-		std::map<int,int> axes;
-		std::map<int,int> balls;
-		std::map<int,int> hats;
+		Map buttons;
+		Map axes;
+		Map balls;
+		Map hats;
 		
 		/// check indices & toss out any bad values
 		void check(Joystick *joystick);

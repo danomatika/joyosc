@@ -29,7 +29,7 @@ void JoystickRemapping::check(Joystick *joystick) {
 		return;
 	}
 
-	std::map<int,int>::iterator iter;
+	Map::iterator iter;
 	int numButtons = SDL_JoystickNumButtons(joystick->getJoystick());
 	for(iter = buttons.begin(); iter != buttons.end();) {
 		if(iter->first > numButtons || iter->second > numButtons) {
@@ -84,27 +84,27 @@ void JoystickRemapping::check(Joystick *joystick) {
 }
 
 int JoystickRemapping::mappingForButton(int button) {
-	std::map<int,int>::iterator iter = buttons.find(button);
+	Map::iterator iter = buttons.find(button);
 	return iter != buttons.end() ? iter->second : button;
 }
 
 int JoystickRemapping::mappingForAxis(int axis) {
-	std::map<int,int>::iterator iter = axes.find(axis);
+	Map::iterator iter = axes.find(axis);
 	return iter != axes.end() ? iter->second : axis;
 }
 
 int JoystickRemapping::mappingForBall(int ball) {
-	std::map<int,int>::iterator iter = balls.find(ball);
+	Map::iterator iter = balls.find(ball);
 	return iter != balls.end() ? iter->second : ball;
 }
 
 int JoystickRemapping::mappingForHat(int hat) {
-	std::map<int,int>::iterator iter = hats.find(hat);
+	Map::iterator iter = hats.find(hat);
 	return iter != hats.end() ? iter->second : hat;
 }
 
 void JoystickRemapping::print() {
-	std::map<int,int>::iterator iter;
+	Map::iterator iter;
 	for(iter = buttons.begin(); iter != buttons.end(); ++iter) {
 		LOG << "  button remap: " << iter->first
 		    << " -> " << iter->second << std::endl;
@@ -125,7 +125,7 @@ void JoystickRemapping::print() {
 
 bool JoystickRemapping::readXML(XMLElement *e) {
 	bool loaded = false;
-	std::pair<std::map<int,int>::iterator, bool> ret;
+	std::pair<Map::iterator,bool> ret;
 	std::string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
 	XMLElement *child = e->FirstChildElement();
 	while(child != NULL) {

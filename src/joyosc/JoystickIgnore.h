@@ -29,13 +29,15 @@
 class JoystickIgnore : public tinyxml2::XMLObject {
 
 	public:
-	
+
+		typedef std::set<int> Set;
+		
 		JoystickIgnore() : tinyxml2::XMLObject("ignore") {}
 		
-		std::set<int> buttons; ///< buttons ids to ignore
-		std::set<int> axes; ///< axis ids to ignore
-		std::set<int> balls; ///< ball ids to ignore
-		std::set<int> hats; ///< hat ids to ignore
+		Set buttons; ///< buttons ids to ignore
+		Set axes;    ///< axis ids to ignore
+		Set balls;   ///< ball ids to ignore
+		Set hats;    ///< hat ids to ignore
 		
 		/// check indices & toss out any bad values
 		void check(Joystick *joystick);

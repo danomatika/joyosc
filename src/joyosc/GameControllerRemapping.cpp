@@ -28,7 +28,7 @@ void GameControllerRemapping::check(GameController *controller) {
 	if(!controller){
 		return;
 	}
-	std::map<std::string,std::string>::iterator iter;
+	Map::iterator iter;
 	for(iter = buttons.begin(); iter != buttons.end();) {
 		if(SDL_GameControllerGetButtonFromString(iter->first.c_str()) == SDL_CONTROLLER_BUTTON_INVALID) {
 			LOG_WARN << "GameController " << controller->getDevName() << ": "
@@ -54,17 +54,17 @@ void GameControllerRemapping::check(GameController *controller) {
 }
 
 std::string GameControllerRemapping::mappingForButton(std::string button) {
-	std::map<std::string,std::string>::iterator iter = buttons.find(button);
+	Map::iterator iter = buttons.find(button);
 	return iter != buttons.end() ? iter->second : button;
 }
 
 std::string GameControllerRemapping::mappingForAxis(std::string axis) {
-	std::map<std::string,std::string>::iterator iter = axes.find(axis);
+	Map::iterator iter = axes.find(axis);
 	return iter != axes.end() ? iter->second : axis;
 }
 
 void GameControllerRemapping::print() {
-	std::map<std::string,std::string>::iterator iter;
+	Map::iterator iter;
 	for(iter = buttons.begin(); iter != buttons.end(); ++iter) {
 		LOG << "  button remap: " << iter->first
 		    << " -> " << iter->second << std::endl;
@@ -77,7 +77,7 @@ void GameControllerRemapping::print() {
 
 bool GameControllerRemapping::readXML(XMLElement *e) {
 	bool loaded = false;
-	std::pair<std::map<std::string,std::string>::iterator, bool> ret;
+	std::pair<Map::iterator,bool> ret;
 	std::string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
 	XMLElement *child = e->FirstChildElement();
 	while(child != NULL) {
@@ -85,7 +85,7 @@ bool GameControllerRemapping::readXML(XMLElement *e) {
 		std::string to = XML::getAttrString(child, "to", "");
 		if(from != "" && to != "") {
 			if((std::string)child->Name() == "button") {
-				ret = buttons.insert(make_pair(from, to));
+				ret = buttons.insert(std::make_pair(from, to));
 				if(!ret.second) {
 					LOG_WARN << "GameController " << devName << ": "
 					         << "mapping for button " << from
@@ -96,7 +96,7 @@ bool GameControllerRemapping::readXML(XMLElement *e) {
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "axis") {
-				ret = axes.insert(make_pair(from, to));
+				ret = axes.insert(std::make_pair(from, to));
 				if(!ret.second) {
 					LOG_WARN << "GameController " << devName << ": "
 					         << "mapping for axis " << from

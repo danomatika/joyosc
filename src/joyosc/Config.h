@@ -124,16 +124,23 @@ class Config : public tinyxml2::XMLObject {
 		bool readXML(tinyxml2::XMLElement *e);
 
 	private:
-
-		std::map<std::string,std::string> m_deviceAddresses; ///< device osc address mappings
-	
-		std::map<std::string,unsigned int> m_controllerAxisDeadZones; ///< zeroing threshold
-		std::map<std::string,GameControllerRemapping *> m_controllerRemappings; ///< joystick remappings
-		std::map<std::string,GameControllerIgnore *> m_controllerIgnores; ///< joystick button, axis, etc ignores
-	
-		std::map<std::string,unsigned int> m_joystickAxisDeadZones; ///< zeroing threshold
-		std::map<std::string,JoystickRemapping *> m_joystickRemappings; ///< joystick remappings
-		std::map<std::string,JoystickIgnore *> m_joystickIgnores; ///< joystick button, axis, etc ignores
+		
+		typedef std::map<std::string,std::string> AddressMap;
+		typedef std::map<std::string,unsigned int> AxisMap;
+		typedef std::map<std::string,GameControllerRemapping *> GCRemappingMap;
+		typedef std::map<std::string,GameControllerIgnore *> GCIgnoreMap;
+		typedef std::map<std::string,JoystickRemapping *> JSRemappingMap;
+		typedef std::map<std::string,JoystickIgnore *> JSIgnoreMap;
+		
+		AddressMap m_deviceAddresses; ///< device osc address mappings
+		
+		AxisMap m_controllerAxisDeadZones; ///< zeroing threshold
+		GCRemappingMap m_controllerRemappings; ///< joystick remappings
+		GCIgnoreMap m_controllerIgnores; ///< joystick button, axis, etc ignores
+		
+		AxisMap m_joystickAxisDeadZones; ///< zeroing threshold
+		JSRemappingMap m_joystickRemappings; ///< joystick remappings
+		JSIgnoreMap m_joystickIgnores; ///< joystick button, axis, etc ignores
 		
 		osc::OscSender m_oscSender; ///< global osc sender
 		osc::OscReceiver m_oscReceiver; ///< global osc receiver

@@ -67,15 +67,17 @@ class DeviceManager {
 		bool sendDeviceEvents; ///< send device open/close events? (default: false)
 
 	protected:
-	
+		
+		typedef std::map<int,Device *> Map;
+		
 		/// return the first available index in the active devices list
 		int firstAvailableIndex();
-	
+		
 		/// get the device type at a given index
 		Device::Type getDeviceType(int index);
 	
 		/// is an sdlIndex already in use by an active device?
 		bool sdlIndexExists(int sdlIndex);
 
-		std::map<int,Device *> m_devices; ///< active device list, mapped by instanceID
+		Map m_devices; ///< active device list, mapped by instanceID
 };

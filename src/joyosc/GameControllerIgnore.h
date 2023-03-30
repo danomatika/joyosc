@@ -29,11 +29,13 @@
 class GameControllerIgnore : public tinyxml2::XMLObject {
 
 	public:
-	
+		
+		typedef std::set<std::string> Map;
+		
 		GameControllerIgnore() : tinyxml2::XMLObject("ignore") {}
 	
-		std::set<std::string> buttons; ///< button names to ignore
-		std::set<std::string> axes; ///< axis names to ignore
+		Map buttons; ///< button names to ignore
+		Map axes; ///< axis names to ignore
 		
 		/// check names & toss out any bad values
 		void check(GameController *controller);

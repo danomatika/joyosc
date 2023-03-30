@@ -29,7 +29,7 @@ void JoystickIgnore::check(Joystick *joystick) {
 		return;
 	}
 
-	std::set<int>::iterator iter;
+	Set::iterator iter;
 	int numButtons = SDL_JoystickNumButtons(joystick->getJoystick());
 	for(iter = buttons.begin(); iter != buttons.end();) {
 		if((*iter) > numButtons) {
@@ -96,7 +96,7 @@ bool JoystickIgnore::isHatIgnored(int hat) {
 }
 
 void JoystickIgnore::print() {
-	std::set<int>::iterator iter = buttons.begin();
+	Set::iterator iter = buttons.begin();
 	for(iter = buttons.begin(); iter != buttons.end(); ++iter) {
 		LOG << "  ignore button: " << (*iter) << std::endl;
 	}
@@ -115,7 +115,7 @@ void JoystickIgnore::print() {
 
 bool JoystickIgnore::readXML(XMLElement *e) {
 	bool loaded = false;
-	std::pair<std::set<int>::iterator,bool> ret;
+	std::pair<Set::iterator,bool> ret;
 	std::string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
 	XMLElement *child = e->FirstChildElement();
 	while(child != NULL) {
