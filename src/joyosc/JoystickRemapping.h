@@ -34,10 +34,10 @@ class JoystickRemapping : public tinyxml2::XMLObject {
 		
 		/// mappings from -> to
 		/// with key: from & value: to
-		map<int,int> buttons;
-		map<int,int> axes;
-		map<int,int> balls;
-		map<int,int> hats;
+		std::map<int,int> buttons;
+		std::map<int,int> axes;
+		std::map<int,int> balls;
+		std::map<int,int> hats;
 		
 		/// check indices & toss out any bad values
 		void check(Joystick *joystick);

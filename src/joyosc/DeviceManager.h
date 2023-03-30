@@ -56,7 +56,7 @@ class DeviceManager {
 		void closeAll();
 
 		//// handle and send device event
-		bool handleEvent(SDL_Event* event);
+		bool handleEvent(SDL_Event *event);
 
 		/// print active joystick list
 		void print(bool details=false);
@@ -77,5 +77,5 @@ class DeviceManager {
 		/// is an sdlIndex already in use by an active device?
 		bool sdlIndexExists(int sdlIndex);
 
-		map<int,Device *> m_devices; ///< active device list, mapped by instanceID
+		std::map<int,Device *> m_devices; ///< active device list, mapped by instanceID
 };

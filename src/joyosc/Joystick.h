@@ -39,7 +39,7 @@ class Joystick : public Device {
 
 	public:
 
-		Joystick(string oscAddress="/joystick");
+		Joystick(std::string oscAddress="/joystick");
 
 		/// open the joystick
 		/// set the data arg to the location of an DeviceIndices struct
@@ -66,7 +66,7 @@ class Joystick : public Device {
 		inline Type getDeviceType() {return JOYSTICK;}
 	
 		/// returns device list index, name, & osc address as a string
-		string getDeviceString();
+		std::string getDeviceString();
 		
 		/// print remapping
 		void printRemapping();
@@ -105,7 +105,7 @@ class Joystick : public Device {
 		SDL_JoystickID m_instanceID; ///< unique SDL instance ID, *not* SDL index
 	
 		unsigned int m_axisDeadZone; ///< axis dead zone amount +/- center pos
-		vector<int16_t> m_prevAxisValues; ///< prev axis valus to cancel repeats
+		std::vector<int16_t> m_prevAxisValues; ///< prev axis valus to cancel repeats
 		
 		JoystickRemapping *m_remapping; ///< joystick remapping values
 		JoystickIgnore *m_ignore; ///< button, axis, etc ignores

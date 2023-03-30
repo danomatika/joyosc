@@ -28,5 +28,3 @@
 
 #include "Log.h"
 #include "Config.h"
-
-using namespace std;

@@ -25,7 +25,7 @@
 #include "JoystickIgnore.h"
 #include "JoystickRemapping.h"
 
-Joystick::Joystick(string oscAddress) :
+Joystick::Joystick(std::string oscAddress) :
 	Device(oscAddress), m_joystick(NULL), m_instanceID(-1),
 	m_axisDeadZone(3200), m_remapping(NULL), m_ignore(NULL) {
 	m_indices.index = -1;
@@ -34,7 +34,7 @@ Joystick::Joystick(string oscAddress) :
 
 bool Joystick::open(void *data) {
 	if(data == NULL) {
-		LOG_WARN << "Joystick: cannot open, index not set" << endl;
+		LOG_WARN << "Joystick: cannot open, index not set" << std::endl;
 		return false;
 	}
 	
@@ -44,13 +44,13 @@ bool Joystick::open(void *data) {
 
 	if(isOpen()) {
 		LOG_WARN << "Joystick: joystick with index "
-		         << m_indices.index << " already opened" << endl;
+		         << m_indices.index << " already opened" << std::endl;
 		return false;
 	}
 
 	m_joystick = SDL_JoystickOpen(m_indices.sdlIndex);
 	if(!m_joystick) {
-		LOG_WARN << "Joystick: open failed for index " << m_indices.index << endl;
+		LOG_WARN << "Joystick: open failed for index " << m_indices.index << std::endl;
 		return false;
 	}
 	
@@ -58,10 +58,10 @@ bool Joystick::open(void *data) {
 	m_devName = SDL_JoystickName(m_joystick);
 	
 	// try to set the address from the mapping list using the dev name
-	m_oscAddress = m_config.getDeviceAddress((string) m_devName);
+	m_oscAddress = m_config.getDeviceAddress((std::string)m_devName);
 	if(m_oscAddress == "") {
 		// not found ... set a generic name using the index
-		stringstream stream;
+		std::stringstream stream;
 		stream << "/js" << m_indices.index;
 		m_oscAddress = stream.str();
 	}
@@ -91,12 +91,12 @@ bool Joystick::open(void *data) {
 		printIgnores();
 	}
 	
-	LOG << "Joystick: opened " << getDeviceString() << endl;
+	LOG << "Joystick: opened " << getDeviceString() << std::endl;
 	if(m_joystick && Config::instance().printEvents) {
-		LOG << "  num buttons: " << SDL_JoystickNumButtons(m_joystick) << endl
-		    << "  num axes: " << SDL_JoystickNumAxes(m_joystick) << endl
-		    << "  num balls: " << SDL_JoystickNumBalls(m_joystick) << endl
-		    << "  num hats: " << SDL_JoystickNumHats(m_joystick) << endl;
+		LOG << "  num buttons: " << SDL_JoystickNumButtons(m_joystick) << std::endl
+		    << "  num axes: " << SDL_JoystickNumAxes(m_joystick) << std::endl
+		    << "  num balls: " << SDL_JoystickNumBalls(m_joystick) << std::endl
+		    << "  num hats: " << SDL_JoystickNumHats(m_joystick) << std::endl;
 	}
 	return true;
 }
@@ -106,7 +106,7 @@ void Joystick::close() {
 		if(isOpen()) {
 			SDL_JoystickClose(m_joystick);
 		}
-		LOG << "Joystick: closed " << getDeviceString() << endl;
+		LOG << "Joystick: closed " << getDeviceString() << std::endl;
 		m_joystick = NULL;
 	}
 	
@@ -141,8 +141,8 @@ bool Joystick::handleEvent(void *data) {
 
 			if(m_config.printEvents) {
 				LOG << m_oscAddress << " " << m_devName
-				    << " button: " << (int) event->jbutton.button
-				    << " " << (int) event->jbutton.state << endl;
+				    << " button: " << (int)event->jbutton.button
+				    << " " << (int)event->jbutton.state << std::endl;
 			}
 			return true;
 		}
@@ -162,8 +162,8 @@ bool Joystick::handleEvent(void *data) {
 
 			if(m_config.printEvents) {
 				LOG << m_oscAddress << " " << m_devName
-				    << " button: " << (int) event->jbutton.button
-				    << " " << (int) event->jbutton.state << endl;
+				    << " button: " << (int)event->jbutton.button
+				    << " " << (int)event->jbutton.state << std::endl;
 			}
 			return true;
 		}
@@ -177,7 +177,7 @@ bool Joystick::handleEvent(void *data) {
 			}
 			
 			// handle jitter by creating a dead zone
-			int value = (int) event->jaxis.value;
+			int value = (int)event->jaxis.value;
 			if(abs(value) < m_axisDeadZone) {
 				value = 0;
 			}
@@ -197,8 +197,8 @@ bool Joystick::handleEvent(void *data) {
 
 			if(m_config.printEvents) {
 				LOG << m_oscAddress << " " << m_devName
-				    << " axis: " << (int) event->jaxis.axis
-				    << " " << value << endl;
+				    << " axis: " << (int)event->jaxis.axis
+				    << " " << value << std::endl;
 			}
 			return true;
 		}
@@ -218,9 +218,9 @@ bool Joystick::handleEvent(void *data) {
 
 			if(m_config.printEvents) {
 				LOG << m_oscAddress << " " << m_devName
-				    << " ball: " << (int) event->jaxis.axis
-				    << " " << (int) event->jball.xrel
-				    << " " << (int) event->jball.yrel << endl;
+				    << " ball: " << (int)event->jaxis.axis
+				    << " " << (int)event->jball.xrel
+				    << " " << (int)event->jball.yrel << std::endl;
 			}
 			return true;
 		}
@@ -240,8 +240,8 @@ bool Joystick::handleEvent(void *data) {
 
 			if(m_config.printEvents) {
 				LOG << m_oscAddress << " " << m_devName
-				    << " hat: " << (int) event->jhat.hat
-				    << " " << (int) event->jhat.value << endl;
+				    << " hat: " << (int)event->jhat.hat
+				    << " " << (int)event->jhat.value << std::endl;
 			}
 			return true;
 		}
@@ -254,17 +254,17 @@ bool Joystick::isOpen() {
 }
 
 void Joystick::print() {
-	LOG << getDeviceString() << endl;
+	LOG << getDeviceString() << std::endl;
 	if(m_joystick) {
-		LOG << "  num buttons: " << SDL_JoystickNumButtons(m_joystick) << endl
-		    << "  num axes: " << SDL_JoystickNumAxes(m_joystick) << endl
-		    << "  num balls: " << SDL_JoystickNumBalls(m_joystick) << endl
-		    << "  num hats: " << SDL_JoystickNumHats(m_joystick) << endl;
+		LOG << "  num buttons: " << SDL_JoystickNumButtons(m_joystick) << std::endl
+		    << "  num axes: " << SDL_JoystickNumAxes(m_joystick) << std::endl
+		    << "  num balls: " << SDL_JoystickNumBalls(m_joystick) << std::endl
+		    << "  num hats: " << SDL_JoystickNumHats(m_joystick) << std::endl;
 	}
 }
 
-string Joystick::getDeviceString() {
-	stringstream s;
+std::string Joystick::getDeviceString() {
+	std::stringstream s;
 	s << m_indices.index << " " << m_devName << " " << m_oscAddress;
 	return s.str();
 }
@@ -284,7 +284,7 @@ void Joystick::printIgnores() {
 void Joystick::setAxisDeadZone(unsigned int zone) {
 	m_axisDeadZone = zone;
 	LOG_DEBUG << "Joystick " << getDevName() << ": "
-	          << "set axis dead zone to " << zone << endl;
+	          << "set axis dead zone to " << zone << std::endl;
 }
 
 void Joystick::setRemapping(JoystickRemapping *remapping) {

@@ -95,7 +95,7 @@ void DeviceManager::openAll() {
 }
 
 void DeviceManager::closeAll() {
-	map<int,Device *>::iterator iter;
+	std::map<int,Device *>::iterator iter;
 	for(iter = m_devices.begin(); iter != m_devices.end(); ++iter) {
 		Device *js = iter->second;
 		js->close();
@@ -109,7 +109,7 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 	switch(event->type) {
 		
 		case SDL_CONTROLLERDEVICEADDED:
-			LOG_DEBUG << "CONTROLLER ADDED sdlIndex " << event->cdevice.which << endl;
+			LOG_DEBUG << "CONTROLLER ADDED sdlIndex " << event->cdevice.which << std::endl;
 			if(open(event->cdevice.which)) {
 				#ifdef DEBUG
 					print();
@@ -118,7 +118,7 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 			return true;
 			
 		case SDL_CONTROLLERDEVICEREMAPPED:
-			LOG << "CONTROLLER REMAPPED instance ID " << event->cdevice.which << endl;
+			LOG << "CONTROLLER REMAPPED instance ID " << event->cdevice.which << std::endl;
 			return true;
 			
 		case SDL_CONTROLLERAXISMOTION:
@@ -129,7 +129,7 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 			return false;
 			
 		case SDL_CONTROLLERDEVICEREMOVED:
-			LOG_DEBUG << "CONTROLLER REMOVED instance ID " << event->cdevice.which << endl;
+			LOG_DEBUG << "CONTROLLER REMOVED instance ID " << event->cdevice.which << std::endl;
 			if(close(event->cdevice.which)) {
 				#ifdef DEBUG
 					print();
@@ -138,7 +138,7 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 			return true;
 			
 		case SDL_JOYDEVICEADDED:
-			LOG_DEBUG << "JOYSTICK ADDED sdlIndex " << event->jdevice.which << endl;
+			LOG_DEBUG << "JOYSTICK ADDED sdlIndex " << event->jdevice.which << std::endl;
 			if(open(event->jdevice.which)) {
 				#ifdef DEBUG
 					print();
@@ -154,7 +154,7 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 			return false;
 			
 		case SDL_JOYDEVICEREMOVED:
-			LOG_DEBUG << "JOYSTICK REMOVED instance ID " << event->jdevice.which << endl;
+			LOG_DEBUG << "JOYSTICK REMOVED instance ID " << event->jdevice.which << std::endl;
 			if(close(event->jdevice.which)) {
 				#ifdef DEBUG
 					print();
@@ -168,13 +168,13 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 }
 
 void DeviceManager::print(bool details) {
-	map<int,Device *>::iterator iter;
+	std::map<int,Device *>::iterator iter;
 	for(iter = m_devices.begin(); iter != m_devices.end(); ++iter) {
 		if(details) {
 			iter->second->print();
 		}
 		else {
-			LOG << iter->second->getDeviceString() << endl;
+			LOG << iter->second->getDeviceString() << std::endl;
 		}
 	}
 }
@@ -200,7 +200,7 @@ Device::Type DeviceManager::getDeviceType(int index) {
 }
 
 bool DeviceManager::sdlIndexExists(int sdlIndex) {
-	map<int,Device *>::iterator iter;
+	std::map<int,Device *>::iterator iter;
 	for(iter = m_devices.begin(); iter != m_devices.end(); ++iter) {
 		if(iter->second->getDeviceType() == Device::GAMECONTROLLER) {
 			if(((GameController *)iter->second)->getSdlIndex() == sdlIndex) {

@@ -28,12 +28,12 @@ void GameControllerRemapping::check(GameController *controller) {
 	if(!controller){
 		return;
 	}
-	map<string,string>::iterator iter;
+	std::map<std::string,std::string>::iterator iter;
 	for(iter = buttons.begin(); iter != buttons.end();) {
 		if(SDL_GameControllerGetButtonFromString(iter->first.c_str()) == SDL_CONTROLLER_BUTTON_INVALID) {
 			LOG_WARN << "GameController " << controller->getDevName() << ": "
 			         << "removing invalid button remap: "
-			         << iter->first << " -> " << iter->second << endl;
+			         << iter->first << " -> " << iter->second << std::endl;
 			iter = buttons.erase(iter);
 		}
 		else {
@@ -44,7 +44,7 @@ void GameControllerRemapping::check(GameController *controller) {
 		if(SDL_GameControllerGetAxisFromString(iter->first.c_str()) == SDL_CONTROLLER_AXIS_INVALID) {
 			LOG_WARN << "GameController " << controller->getDevName() << ": "
 			         << "removing invalid axis remap: "
-			         << iter->first << " -> " << iter->second << endl;
+			         << iter->first << " -> " << iter->second << std::endl;
 			iter = axes.erase(iter);
 		}
 		else {
@@ -53,64 +53,64 @@ void GameControllerRemapping::check(GameController *controller) {
 	}
 }
 
-string GameControllerRemapping::mappingForButton(string button) {
-	map<string,string>::iterator iter = buttons.find(button);
+std::string GameControllerRemapping::mappingForButton(std::string button) {
+	std::map<std::string,std::string>::iterator iter = buttons.find(button);
 	return iter != buttons.end() ? iter->second : button;
 }
 
-string GameControllerRemapping::mappingForAxis(string axis) {
-	map<string,string>::iterator iter = axes.find(axis);
+std::string GameControllerRemapping::mappingForAxis(std::string axis) {
+	std::map<std::string,std::string>::iterator iter = axes.find(axis);
 	return iter != axes.end() ? iter->second : axis;
 }
 
 void GameControllerRemapping::print() {
-	map<string,string>::iterator iter;
+	std::map<std::string,std::string>::iterator iter;
 	for(iter = buttons.begin(); iter != buttons.end(); ++iter) {
 		LOG << "  button remap: " << iter->first
-		    << " -> " << iter->second << endl;
+		    << " -> " << iter->second << std::endl;
 	}
 	for(iter = axes.begin(); iter != axes.end(); ++iter) {
 		LOG << "  axis remap: " << iter->first
-		    << " -> " << iter->second << endl;
+		    << " -> " << iter->second << std::endl;
 	}
 }
 
 bool GameControllerRemapping::readXML(XMLElement *e) {
 	bool loaded = false;
-	pair<map<string,string>::iterator, bool> ret;
-	string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
+	std::pair<std::map<std::string,std::string>::iterator, bool> ret;
+	std::string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
 	XMLElement *child = e->FirstChildElement();
 	while(child != NULL) {
-		string from  = XML::getAttrString(child, "from", "");
-		string to = XML::getAttrString(child, "to", "");
+		std::string from  = XML::getAttrString(child, "from", "");
+		std::string to = XML::getAttrString(child, "to", "");
 		if(from != "" && to != "") {
-			if((string)child->Name() == "button") {
+			if((std::string)child->Name() == "button") {
 				ret = buttons.insert(make_pair(from, to));
 				if(!ret.second) {
 					LOG_WARN << "GameController " << devName << ": "
 					         << "mapping for button " << from
-					         << " already exists" << endl;
+					         << " already exists" << std::endl;
 				}
 				LOG_DEBUG << "GameController " << devName << ": "
-				          << "remapped button " << from << " to " << to << endl;
+				          << "remapped button " << from << " to " << to << std::endl;
 				loaded = true;
 			}
-			else if((string)child->Name() == "axis") {
+			else if((std::string)child->Name() == "axis") {
 				ret = axes.insert(make_pair(from, to));
 				if(!ret.second) {
 					LOG_WARN << "GameController " << devName << ": "
 					         << "mapping for axis " << from
-					         << " already exists" << endl;
+					         << " already exists" << std::endl;
 				}
 				LOG_DEBUG << "GameController " << devName << ": "
-				          << "remapped axis " << from << " to " << to << endl;
+				          << "remapped axis " << from << " to " << to << std::endl;
 				loaded = true;
 			}
 		}
 		else {
 			LOG_WARN << "GameController " << devName << ": "
 			         << "ignoring invalid remap xml element: \""
-			         << child->Name() << "\"" << endl;
+			         << child->Name() << "\"" << std::endl;
 		}
 		child = child->NextSiblingElement();
 	}

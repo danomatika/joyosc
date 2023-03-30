@@ -28,11 +28,11 @@ void GameControllerIgnore::check(GameController *controller) {
 	if(!controller) {
 		return;
 	}
-	set<string>::iterator iter;
+	std::set<std::string>::iterator iter;
 	for(iter = buttons.begin(); iter != buttons.end();) {
 		if(SDL_GameControllerGetButtonFromString((*iter).c_str()) == SDL_CONTROLLER_BUTTON_INVALID) {
 			LOG_WARN << "GameController " << controller->getDevName() << ": "
-			         << "removing invalid button ignore: " << (*iter) << endl;
+			         << "removing invalid button ignore: " << (*iter) << std::endl;
 			iter = buttons.erase(iter);
 		}
 		else {
@@ -42,7 +42,7 @@ void GameControllerIgnore::check(GameController *controller) {
 	for(iter = axes.begin(); iter != axes.end();) {
 		if(SDL_GameControllerGetAxisFromString((*iter).c_str()) == SDL_CONTROLLER_AXIS_INVALID) {
 			LOG_WARN << "GameController " << controller->getDevName() << ": "
-			         << "removing invalid axis ignore: " << (*iter) << endl;
+			         << "removing invalid axis ignore: " << (*iter) << std::endl;
 			iter = axes.erase(iter);
 		}
 		else {
@@ -51,21 +51,21 @@ void GameControllerIgnore::check(GameController *controller) {
 	}
 }
 
-bool GameControllerIgnore::isButtonIgnored(string &button) {
+bool GameControllerIgnore::isButtonIgnored(std::string &button) {
 	return buttons.find(button) != buttons.end();
 }
 
-bool GameControllerIgnore::isAxisIgnored(string &axis) {
+bool GameControllerIgnore::isAxisIgnored(std::string &axis) {
 	return axes.find(axis) != axes.end();
 }
 
 void GameControllerIgnore::print() {
-	set<string>::iterator iter;
+	std::set<std::string>::iterator iter;
 	for(iter = buttons.begin(); iter != buttons.end(); ++iter) {
-		LOG << "  ignore button: " << (*iter) << endl;
+		LOG << "  ignore button: " << (*iter) << std::endl;
 	}
 	for(iter = axes.begin(); iter != axes.end(); ++iter) {
-		LOG << "  ignore axis: " << (*iter) << endl;
+		LOG << "  ignore axis: " << (*iter) << std::endl;
 	}
 }
 
@@ -73,37 +73,37 @@ void GameControllerIgnore::print() {
 
 bool GameControllerIgnore::readXML(XMLElement *e) {
 	bool loaded = false;
-	pair<set<string>::iterator,bool> ret;
-	string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
+	std::pair<std::set<std::string>::iterator,bool> ret;
+	std::string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
 	XMLElement *child = e->FirstChildElement();
 	while(child != NULL) {
-		string which  = XML::getAttrString(child, "id", "");
+		std::string which  = XML::getAttrString(child, "id", "");
 		if(which != "") {
-			if((string)child->Name() == "button") {
+			if((std::string)child->Name() == "button") {
 				ret = buttons.insert(which);
 				if(!ret.second) {
 					LOG_WARN << "GameController " << devName << ": "
-					         << "already ignoring button " << which << endl;
+					         << "already ignoring button " << which << std::endl;
 				}
 				LOG_DEBUG << "GameController " << devName << ": "
-				          << "ignoring button " << which << endl;
+				          << "ignoring button " << which << std::endl;
 				loaded = true;
 			}
-			else if((string)child->Name() == "axis") {
+			else if((std::string)child->Name() == "axis") {
 				ret = axes.insert(which);
 				if(!ret.second) {
 					LOG_WARN << "GameController " << devName << ": "
-					         << "already ignoring axis " << which << endl;
+					         << "already ignoring axis " << which << std::endl;
 				}
 				LOG_DEBUG << "GameController " << devName << ": "
-				          << "ignoring axis " << which << endl;
+				          << "ignoring axis " << which << std::endl;
 				loaded = true;
 			}
 		}
 		else {
 			LOG_WARN << "GameController " << devName << ": "
 			         << "ignoring invalid ignore xml element: \""
-			         << child->Name() << "\"" << endl;
+			         << child->Name() << "\"" << std::endl;
 		}
 		child = child->NextSiblingElement();
 	}

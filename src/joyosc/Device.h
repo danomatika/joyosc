@@ -37,7 +37,7 @@ class Device {
 			GAMECONTROLLER
 		};
 
-		Device(string oscAddress="/device") :
+		Device(std::string oscAddress="/device") :
 			m_devName(""), m_oscAddress(oscAddress),
 			m_config(Config::instance()) {}
 		virtual ~Device() {}
@@ -67,19 +67,19 @@ class Device {
 		virtual Type getDeviceType() = 0;
 	
 		/// returns basic device info as a string
-		virtual string getDeviceString() = 0;
+		virtual std::string getDeviceString() = 0;
 
 		/// get device name i.e. "/dev/input/js0"
-		inline string getDevName() {return m_devName;}
+		inline std::string getDevName() {return m_devName;}
 		
 		/// set/get the osc address of this device ie "/js0" etc
-		inline void setOscAddress(string oscAddress) {m_oscAddress = oscAddress;}
-		inline string getOscAddress() {return m_oscAddress;}
+		inline void setOscAddress(std::string oscAddress) {m_oscAddress = oscAddress;}
+		inline std::string getOscAddress() {return m_oscAddress;}
 
 	protected:
 
-		string	m_devName; ///< the device name
-		string	m_oscAddress; ///< osc address to send to
+		std::string	m_devName; ///< the device name
+		std::string	m_oscAddress; ///< osc address to send to
 		
 		Config& m_config; ///< global config access
 };

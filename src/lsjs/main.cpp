@@ -25,8 +25,6 @@
 #include <SDL.h>
 #include "Options.h"
 
-using namespace std;
-
 int main(int argc, char **argv) {
 
 	bool printDetails = false;
@@ -76,7 +74,7 @@ int main(int argc, char **argv) {
 
 	// init SDL
 	if(SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER) < 0 ) {
-		cerr << "Error: could not initialize SDL: " << SDL_GetError() << endl;
+		std::cerr << "Error: could not initialize SDL: " << SDL_GetError() << std::endl;
 		return EXIT_FAILURE;
 	}
 
@@ -86,27 +84,27 @@ int main(int argc, char **argv) {
 	for(int i = 0; i < numJoysticks; ++i) {
 		SDL_Joystick *joystick = SDL_JoystickOpen(i);
 		if(joystick) {
-			if(printDetails) {cout << endl;}
+			if(printDetails) {std::cout << std::endl;}
 			SDL_JoystickGetGUIDString(SDL_JoystickGetGUID(joystick), guidString, 33);
 			if(SDL_IsGameController(i) == SDL_TRUE && !joysticksOnly) {
-				cout << i << " Controller: \"" << SDL_GameControllerNameForIndex(i) << "\" " << guidString << endl;
+				std::cout << i << " Controller: \"" << SDL_GameControllerNameForIndex(i) << "\" " << guidString << std::endl;
 				if(printDetails) {
-					cout << "  num axes: " << SDL_JoystickNumAxes(joystick) << endl
-					     << "  num buttons: " << SDL_JoystickNumButtons(joystick) << endl;
+					std::cout << "  num axes: " << SDL_JoystickNumAxes(joystick) << std::endl
+							  << "  num buttons: " << SDL_JoystickNumButtons(joystick) << std::endl;
 					if(i == numJoysticks-1) {
-						cout << endl;
+						std::cout << std::endl;
 					}
 				}
 			}
 			else {
-				cout << i << " Joystick: \"" << SDL_JoystickNameForIndex(i) << "\" " << guidString << endl;
+				std::cout << i << " Joystick: \"" << SDL_JoystickNameForIndex(i) << "\" " << guidString << std::endl;
 				if(printDetails) {
-					cout << "  num axes: " << SDL_JoystickNumAxes(joystick) << endl
-					     << "  num buttons: " << SDL_JoystickNumButtons(joystick) << endl
-					     << "  num balls: " << SDL_JoystickNumBalls(joystick) << endl
-					     << "  num hats: " << SDL_JoystickNumHats(joystick) << endl;
+					std::cout << "  num axes: " << SDL_JoystickNumAxes(joystick) << std::endl
+							  << "  num buttons: " << SDL_JoystickNumButtons(joystick) << std::endl
+							  << "  num balls: " << SDL_JoystickNumBalls(joystick) << std::endl
+							  << "  num hats: " << SDL_JoystickNumHats(joystick) << std::endl;
 					if(i == numJoysticks-1) {
-						cout << endl;
+						std::cout << std::endl;
 					}
 				}
 			}
@@ -114,7 +112,7 @@ int main(int argc, char **argv) {
 		}
 	}
 	if(printMappings && !joysticksOnly) {
-		if(!printDetails && numJoysticks > 0) {cout << endl;}
+		if(!printDetails && numJoysticks > 0) {std::cout << std::endl;}
 		SDL_JoystickGUID guid;
 		for(int i = 0; i < numJoysticks; ++i) {
 			SDL_Joystick *joystick = SDL_JoystickOpen(i);
@@ -122,7 +120,7 @@ int main(int argc, char **argv) {
 				guid = SDL_JoystickGetGUID(joystick);
 				const char *mapping = SDL_GameControllerMappingForGUID(guid);
 				if(mapping) { // in case there is no mapping
-					cout << mapping << endl << endl;
+					std::cout << mapping << std::endl << std::endl;
 				}
 			}
 			SDL_JoystickClose(joystick);

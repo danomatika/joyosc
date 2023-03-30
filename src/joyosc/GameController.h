@@ -38,7 +38,7 @@ class GameController : public Device {
 
 	public:
 
-		GameController(string oscAddress="controller");
+		GameController(std::string oscAddress="controller");
 		
 		/// open the controller
 		/// set the data arg to the location of an DeviceIndices struct
@@ -65,7 +65,7 @@ class GameController : public Device {
 		inline Type getDeviceType() {return GAMECONTROLLER;}
 	
 		/// returns devices list index, name, & osc address as a string
-		string getDeviceString();
+		std::string getDeviceString();
 	
 		/// print remapping
 		void printRemapping();
@@ -102,23 +102,23 @@ class GameController : public Device {
 	
 		/// add a game controller mapping string to SDL,
 		/// returns 1 on add, 0 on update, & -1 on error
-		static int addMappingString(string mapping);
+		static int addMappingString(std::string mapping);
 	
 		/// add a game controller mapping file to SDL,
 		/// returns num mappings added or -1 on error
-		static int addMappingFile(string path);
+		static int addMappingFile(std::string path);
 	
 	protected:
 	
 		/// send button event
-		bool buttonPressed(string &name, int value);
+		bool buttonPressed(std::string &name, int value);
 	
 		SDL_GameController *m_controller; ///< SDL controller handle
 		DeviceIndices m_indices; ///< device list index & SDL index
 		SDL_JoystickID m_instanceID; ///< unique SDL instance ID, *not* SDL index
 	
 		unsigned int m_axisDeadZone; ///< axis dead zone amount +/- center pos
-		vector<int16_t> m_prevAxisValues; ///< prev axis valus to cancel repeats
+		std::vector<int16_t> m_prevAxisValues; ///< prev axis valus to cancel repeats
 	
 		GameControllerRemapping *m_remapping; ///< joystick remapping values
 		GameControllerIgnore *m_ignore; ///< button, axis, etc ignores

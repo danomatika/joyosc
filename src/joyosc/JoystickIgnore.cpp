@@ -29,12 +29,12 @@ void JoystickIgnore::check(Joystick *joystick) {
 		return;
 	}
 
-	set<int>::iterator iter;
+	std::set<int>::iterator iter;
 	int numButtons = SDL_JoystickNumButtons(joystick->getJoystick());
 	for(iter = buttons.begin(); iter != buttons.end();) {
 		if((*iter) > numButtons) {
 			LOG_WARN << "Joystick " << joystick->getDevName() << ": "
-			         << "removing invalid button ignore: " << (*iter) << endl;
+			         << "removing invalid button ignore: " << (*iter) << std::endl;
 			iter = buttons.erase(iter);
 		}
 		else {
@@ -46,7 +46,7 @@ void JoystickIgnore::check(Joystick *joystick) {
 	for(iter = axes.begin(); iter != axes.end();) {
 		if((*iter) > numAxes ) {
 			LOG_WARN << "Joystick " << joystick->getDevName() << ": "
-			         << "removing invalid axis ignore: " << (*iter) << endl;
+			         << "removing invalid axis ignore: " << (*iter) << std::endl;
 			iter = axes.erase(iter);
 		}
 		else {
@@ -58,7 +58,7 @@ void JoystickIgnore::check(Joystick *joystick) {
 	for(iter = balls.begin(); iter != balls.end();) {
 		if((*iter) > numBalls) {
 			LOG_WARN << "Joystick " << joystick->getDevName() << ": "
-			         << "removing invalid ball ignore: " << (*iter) << endl;
+			         << "removing invalid ball ignore: " << (*iter) << std::endl;
 			iter = balls.erase(iter);
 		}
 		else {
@@ -70,7 +70,7 @@ void JoystickIgnore::check(Joystick *joystick) {
 	for(iter = hats.begin(); iter != hats.end();) {
 		if((*iter) > numHats) {
 			LOG_WARN << "Joystick " << joystick->getDevName() << ": "
-			         << "removing invalid hat ignore: " << (*iter) << endl;
+			         << "removing invalid hat ignore: " << (*iter) << std::endl;
 			iter = hats.erase(iter);
 		}
 		else {
@@ -96,18 +96,18 @@ bool JoystickIgnore::isHatIgnored(int hat) {
 }
 
 void JoystickIgnore::print() {
-	set<int>::iterator iter = buttons.begin();
+	std::set<int>::iterator iter = buttons.begin();
 	for(iter = buttons.begin(); iter != buttons.end(); ++iter) {
-		LOG << "  ignore button: " << (*iter) << endl;
+		LOG << "  ignore button: " << (*iter) << std::endl;
 	}
 	for(iter = axes.begin(); iter != axes.end(); ++iter) {
-		LOG << "  ignore axis: " << (*iter) << endl;
+		LOG << "  ignore axis: " << (*iter) << std::endl;
 	}
 	for(iter = balls.begin(); iter != balls.end(); ++iter) {
-		LOG << "  ignore ball: " << (*iter) << endl;
+		LOG << "  ignore ball: " << (*iter) << std::endl;
 	}
 	for(iter = hats.begin(); iter != hats.end(); ++iter) {
-		LOG << "  ignore hat: " << (*iter) << endl;
+		LOG << "  ignore hat: " << (*iter) << std::endl;
 	}
 }
 
@@ -115,57 +115,57 @@ void JoystickIgnore::print() {
 
 bool JoystickIgnore::readXML(XMLElement *e) {
 	bool loaded = false;
-	pair<set<int>::iterator,bool> ret;
-	string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
+	std::pair<std::set<int>::iterator,bool> ret;
+	std::string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
 	XMLElement *child = e->FirstChildElement();
 	while(child != NULL) {
 		int which  = XML::getAttrInt(child, "id", -1);
 		if(which > -1) {
-			if((string)child->Name() == "button") {
+			if((std::string)child->Name() == "button") {
 				ret = buttons.insert(which);
 				if(!ret.second) {
 					LOG_WARN << "Joystick " << devName << ": "
-					         << "already ignoring button " << which << endl;
+					         << "already ignoring button " << which << std::endl;
 				}
 				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "ignoring button " << which << endl;
+				          << "ignoring button " << which << std::endl;
 				loaded = true;
 			}
-			else if((string)child->Name() == "axis") {
+			else if((std::string)child->Name() == "axis") {
 				ret = axes.insert(which);
 				if(!ret.second) {
 					LOG_WARN << "Joystick " << devName << ": "
-					         << "already ignoring axis " << which << endl;
+					         << "already ignoring axis " << which << std::endl;
 				}
 				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "ignoring axis " << which << endl;
+				          << "ignoring axis " << which << std::endl;
 				loaded = true;
 			}
-			else if((string)child->Name() == "ball") {
+			else if((std::string)child->Name() == "ball") {
 				ret = balls.insert(which);
 				if(!ret.second) {
 					LOG_WARN << "Joystick " << devName << ": "
-					         << "already ignoring ball " << which << endl;
+					         << "already ignoring ball " << which << std::endl;
 				}
 				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "ignoring ball " << which << endl;
+				          << "ignoring ball " << which << std::endl;
 				loaded = true;
 			}
-			else if((string)child->Name() == "hat") {
+			else if((std::string)child->Name() == "hat") {
 				ret = balls.insert(which);
 				if(!ret.second) {
 					LOG_WARN << "Joystick " << devName << ": "
-					         << "already ignoring hat " << which << endl;
+					         << "already ignoring hat " << which << std::endl;
 				}
 				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "ignoring hat " << which << endl;
+				          << "ignoring hat " << which << std::endl;
 				loaded = true;
 			}
 		}
 		else {
 			LOG_WARN << "Joystick " << devName << ": "
 			         << "ignoring invalid ignore xml element: \""
-			         << child->Name() << "\"" << endl;
+			         << child->Name() << "\"" << std::endl;
 		}
 		child = child->NextSiblingElement();
 	}

@@ -29,7 +29,7 @@ using namespace osc;
 
 App* appPtr; // global app this pointer
 
-App::App() : OscObject((string)"/"+PACKAGE), m_bRun(false),
+App::App() : OscObject((std::string)"/"+PACKAGE), m_bRun(false),
 	m_config(Config::instance()),
 	m_oscReceiver(Config::instance().getOscReceiver()),
 	m_oscSender(Config::instance().getOscSender()) {
@@ -50,8 +50,8 @@ void App::run() {
 		m_oscSender.setup(m_config.sendingIp, m_config.sendingPort);
 		m_oscReceiver.addOscObject(this);
 	}
-	catch(exception &e) {
-		LOG_ERROR << e.what() << endl;
+	catch(std::exception &e) {
+		LOG_ERROR << e.what() << std::endl;
 		exit(EXIT_FAILURE);
 	}
 
@@ -110,15 +110,15 @@ void App::run() {
 bool App::processOscMessage(const ReceivedMessage &message, const MessageSource &source) {
 	if(message.address() == oscRootAddress + "/quit") {
 		stop();
-		LOG << endl << "	" << PACKAGE << ": quit message received, exiting ..." << endl;
+		LOG << std::endl << "	" << PACKAGE << ": quit message received, exiting ..." << std::endl;
 		return true;
 	}
-	LOG << endl << "	" << PACKAGE << ": unknown message received: "
-	    << message.address() << " " << message.types() << endl;
+	LOG << std::endl << "	" << PACKAGE << ": unknown message received: "
+	    << message.address() << " " << message.types() << std::endl;
 	return false;
 }
 
 void App::signalExit(int signal) {
 	appPtr->stop();
-	LOG << endl << "	" << PACKAGE << ": signal caught, exiting ..." << endl;
+	LOG << std::endl << "	" << PACKAGE << ": signal caught, exiting ..." << std::endl;
 }

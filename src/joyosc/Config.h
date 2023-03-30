@@ -29,8 +29,6 @@
 #include <lopack/lopack.h>
 #include <tinyobject/tinyobject.h>
 
-using namespace std;
-
 class GameControllerRemapping;
 class GameControllerIgnore;
 class JoystickRemapping;
@@ -57,17 +55,17 @@ class Config : public tinyxml2::XMLObject {
 	/// \section Variables
 		
 		unsigned int listeningPort;     ///< listening port
-		string listeningMulticast;      ///< multicast listening group, "" if none
-		string listeningAddress;        ///< base listening address
+		std::string listeningMulticast; ///< multicast listening group, "" if none
+		std::string listeningAddress;   ///< base listening address
 		
-		string sendingIp;               ///< ip/hostname/multicast group to send to
+		std::string sendingIp;          ///< ip/hostname/multicast group to send to
 		unsigned int sendingPort;       ///< port to send to
 		
-		string notificationAddress;     ///< base osc sending address for notifications
-		string deviceAddress;           ///< base osc sending addess for devices
+		std::string notificationAddress;///< base osc sending address for notifications
+		std::string deviceAddress;      ///< base osc sending addess for devices
 		
 		bool printEvents;               ///< print lots of events?
-		bool joysticksOnly;				///< disable game controller support?
+		bool joysticksOnly;             ///< disable game controller support?
 		
 		int sleepUS;                    ///< how long to sleep in the run loop
 
@@ -80,37 +78,37 @@ class Config : public tinyxml2::XMLObject {
 		/// get the osc address for a given device name
 		/// deviceName is as a string ie "Logitech Logitech Dual Action"
 		/// returns mapped device addr on success, empty string "" if not found
-		string getDeviceAddress(string deviceName);
+		std::string getDeviceAddress(std::string deviceName);
 	
 		/// get the axis dead zone threshold for a given game controller name
 		/// deviceName is a string ie "Logitech Logitech Dual Action"
 		/// returns dead zone value on success, 0 if not found
-		unsigned int getControllerAxisDeadZone(string deviceName);
+		unsigned int getControllerAxisDeadZone(std::string deviceName);
 		
 		/// get the input remapping for a given game controller device name
 		/// deviceName is a string ie "Logitech Logitech Dual Action"
 		/// returns joystick remapping on success, NULL if not found
-		GameControllerRemapping* getControllerRemapping(string deviceName);
+		GameControllerRemapping* getControllerRemapping(std::string deviceName);
 		
 		/// get the button, axis, etc ignores for a given game controller  name
 		/// deviceName is a string ie "Logitech Logitech Dual Action"
 		/// returns joystick ignore on success, NULL if not found
-		GameControllerIgnore* getControllerIgnore(string deviceName);
+		GameControllerIgnore* getControllerIgnore(std::string deviceName);
 	
 		/// get the axis dead zone threshold for a given joystick device name
 		/// deviceName is a string ie "Logitech Logitech Dual Action"
 		/// returns dead zone value on success, 0 if not found
-		unsigned int getJoystickAxisDeadZone(string deviceName);
+		unsigned int getJoystickAxisDeadZone(std::string deviceName);
 		
 		/// get the remapping for a given joystick device name
 		/// deviceName is a string ie "Logitech Logitech Dual Action"
 		/// returns joystick remapping on success, NULL if not found
-		JoystickRemapping* getJoystickRemapping(string deviceName);
+		JoystickRemapping* getJoystickRemapping(std::string deviceName);
 		
 		/// get the button, axis, etc ignores for a given joystick device name
 		/// deviceName is a string ie "Logitech Logitech Dual Action"
 		/// returns joystick ignore on success, NULL if not found
-		JoystickIgnore* getJoystickIgnore(string deviceName);
+		JoystickIgnore* getJoystickIgnore(std::string deviceName);
 	
 	/// \section Actions
 	
@@ -127,15 +125,15 @@ class Config : public tinyxml2::XMLObject {
 
 	private:
 
-		map<string,string> m_deviceAddresses; ///< device osc address mappings
+		std::map<std::string,std::string> m_deviceAddresses; ///< device osc address mappings
 	
-		map<string,unsigned int> m_controllerAxisDeadZones; ///< zeroing threshold
-		map<string,GameControllerRemapping *> m_controllerRemappings; ///< joystick remappings
-		map<string,GameControllerIgnore *> m_controllerIgnores; ///< joystick button, axis, etc ignores
+		std::map<std::string,unsigned int> m_controllerAxisDeadZones; ///< zeroing threshold
+		std::map<std::string,GameControllerRemapping *> m_controllerRemappings; ///< joystick remappings
+		std::map<std::string,GameControllerIgnore *> m_controllerIgnores; ///< joystick button, axis, etc ignores
 	
-		map<string,unsigned int> m_joystickAxisDeadZones; ///< zeroing threshold
-		map<string,JoystickRemapping *> m_joystickRemappings; ///< joystick remappings
-		map<string,JoystickIgnore *> m_joystickIgnores; ///< joystick button, axis, etc ignores
+		std::map<std::string,unsigned int> m_joystickAxisDeadZones; ///< zeroing threshold
+		std::map<std::string,JoystickRemapping *> m_joystickRemappings; ///< joystick remappings
+		std::map<std::string,JoystickIgnore *> m_joystickIgnores; ///< joystick button, axis, etc ignores
 		
 		osc::OscSender m_oscSender; ///< global osc sender
 		osc::OscReceiver m_oscReceiver; ///< global osc receiver
