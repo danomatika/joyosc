@@ -66,7 +66,7 @@ GameControllerRemapping* Config::getControllerRemapping(std::string deviceName) 
 	if(iter != m_controllerRemappings.end()) {
 		return iter->second;
 	}
-	return NULL;
+	return nullptr;
 }
 
 GameControllerIgnore* Config::getControllerIgnore(std::string deviceName) {
@@ -74,7 +74,7 @@ GameControllerIgnore* Config::getControllerIgnore(std::string deviceName) {
 	if(iter != m_controllerIgnores.end()) {
 		return iter->second;
 	}
-	return NULL;
+	return nullptr;
 }
 
 unsigned int Config::getJoystickAxisDeadZone(std::string deviceName) {
@@ -90,7 +90,7 @@ JoystickRemapping* Config::getJoystickRemapping(std::string deviceName) {
 	if(iter != m_joystickRemappings.end()) {
 		return iter->second;
 	}
-	return NULL;
+	return nullptr;
 }
 
 JoystickIgnore* Config::getJoystickIgnore(std::string deviceName) {
@@ -98,7 +98,7 @@ JoystickIgnore* Config::getJoystickIgnore(std::string deviceName) {
 	if(iter != m_joystickIgnores.end()) {
 		return iter->second;
 	}
-	return NULL;
+	return nullptr;
 }
 
 bool Config::parseCommandLine(int argc, char **argv) {
@@ -353,11 +353,8 @@ bool Config::readXML(XMLElement *e) {
 
 Config::Config() :
 	XMLObject(PACKAGE),
-	listeningPort(7770), listeningMulticast(""),
-	sendingIp("127.0.0.1"), sendingPort(8880),
 	notificationAddress((std::string)"/"+PACKAGE+"/notifications"),
-	deviceAddress((std::string)"/"+PACKAGE+"/devices"),
-	printEvents(false), joysticksOnly(false), sleepUS(10000) {
+	deviceAddress((std::string)"/"+PACKAGE+"/devices") {
 
 	// attach config values to xml attributes
 	subscribeXMLAttribute("listening", "multicast", XML_TYPE_STRING, &listeningMulticast);

@@ -26,14 +26,10 @@
 #include "JoystickRemapping.h"
 
 Joystick::Joystick(std::string oscAddress) :
-	Device(oscAddress), m_joystick(NULL), m_instanceID(-1),
-	m_axisDeadZone(3200), m_remapping(NULL), m_ignore(NULL) {
-	m_indices.index = -1;
-	m_indices.sdlIndex = -1;
-}
+	Device(oscAddress) {}
 
 bool Joystick::open(void *data) {
-	if(data == NULL) {
+	if(data == nullptr) {
 		LOG_WARN << "Joystick: cannot open, index not set" << std::endl;
 		return false;
 	}
@@ -107,7 +103,7 @@ void Joystick::close() {
 			SDL_JoystickClose(m_joystick);
 		}
 		LOG << "Joystick: closed " << getDeviceString() << std::endl;
-		m_joystick = NULL;
+		m_joystick = nullptr;
 	}
 	
 	// reset variables
@@ -119,7 +115,7 @@ void Joystick::close() {
 }
 
 bool Joystick::handleEvent(void *data) {
-	if(data == NULL) {
+	if(data == nullptr) {
 		return false;
 	}
 	osc::OscSender& sender = m_config.getOscSender();

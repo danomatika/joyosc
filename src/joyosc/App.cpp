@@ -29,7 +29,7 @@ using namespace osc;
 
 App* appPtr; // global app this pointer
 
-App::App() : OscObject((std::string)"/"+PACKAGE), m_bRun(false),
+App::App() : OscObject((std::string)"/"+PACKAGE),
 	m_config(Config::instance()),
 	m_oscReceiver(Config::instance().getOscReceiver()),
 	m_oscSender(Config::instance().getOscSender()) {

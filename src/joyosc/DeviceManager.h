@@ -64,7 +64,7 @@ class DeviceManager {
 		/// return the number of devices
 		unsigned int numDevices() {return m_devices.size();}
 	
-		bool sendDeviceEvents; ///< send device open/close events? (default: false)
+		bool sendDeviceEvents = false; ///< send device open/close events? (default: false)
 
 	protected:
 		

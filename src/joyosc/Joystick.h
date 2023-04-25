@@ -100,13 +100,13 @@ class Joystick : public Device {
 
 	protected:
 
-		SDL_Joystick *m_joystick; ///< SDL joystick handle
-		DeviceIndices m_indices; ///< device list index & SDL index
-		SDL_JoystickID m_instanceID; ///< unique SDL instance ID, *not* SDL index
+		SDL_Joystick *m_joystick = nullptr; ///< SDL joystick handle
+		DeviceIndices m_indices = {.index = -1, .sdlIndex = -1}; ///< device list index & SDL index
+		SDL_JoystickID m_instanceID = -1; ///< unique SDL instance ID, *not* SDL index
 	
-		unsigned int m_axisDeadZone; ///< axis dead zone amount +/- center pos
+		unsigned int m_axisDeadZone = 3200; ///< axis dead zone amount +/- center pos
 		std::vector<int16_t> m_prevAxisValues; ///< prev axis values to cancel repeats
 		
-		JoystickRemapping *m_remapping; ///< joystick remapping values
-		JoystickIgnore *m_ignore; ///< button, axis, etc ignores
+		JoystickRemapping *m_remapping = nullptr; ///< joystick remapping values
+		JoystickIgnore *m_ignore = nullptr; ///< button, axis, etc ignores
 };

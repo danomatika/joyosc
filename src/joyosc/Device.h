@@ -45,7 +45,7 @@ class Device {
 		/// open the device,
 		/// pass implementation-specific open data via the data arg
 		/// returns true on success
-		virtual bool open(void *data=NULL) = 0;
+		virtual bool open(void *data=nullptr) = 0;
 
 		/// close the device
 		virtual void close() = 0;
@@ -55,7 +55,7 @@ class Device {
 		///
 		/// call this inside a loop, does not block, does nothing if device has
 		/// not been opened
-		virtual bool handleEvent(void *data=NULL) = 0;
+		virtual bool handleEvent(void *data=nullptr) = 0;
 
 		/// print device info
 		virtual void print() = 0;
@@ -81,7 +81,7 @@ class Device {
 		std::string	m_devName; ///< the device name
 		std::string	m_oscAddress; ///< osc address to send to
 		
-		Config& m_config; ///< global config access
+		Config &m_config; ///< global config access
 };
 
 /// \class DeviceIndices

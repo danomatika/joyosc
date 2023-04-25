@@ -27,14 +27,10 @@
 #include "Path.h"
 
 GameController::GameController(std::string oscAddress) :
-	Device(oscAddress), m_controller(NULL), m_instanceID(-1),
-	m_axisDeadZone(3200), m_remapping(NULL), m_ignore(NULL) {
-	m_indices.index = -1;
-	m_indices.sdlIndex = -1;
-}
+	Device(oscAddress) {}
 
 bool GameController::open(void *data) {
-	if(data == NULL) {
+	if(data == nullptr) {
 		LOG_WARN << "GameController: cannot open, index not set" << std::endl;
 		return false;
 	}
@@ -110,7 +106,7 @@ void GameController::close() {
 		LOG << "GameController: closed " << m_indices.index
 		    << " " << m_devName << " with address "
 		    << m_oscAddress << std::endl;
-		m_controller = NULL;
+		m_controller = nullptr;
 	}
 	
 	// reset variables
@@ -122,7 +118,7 @@ void GameController::close() {
 }
 
 bool GameController::handleEvent(void *data) {
-	if(data == NULL) {
+	if(data == nullptr) {
 		return false;
 	}
 	osc::OscSender& sender = m_config.getOscSender();
@@ -219,7 +215,7 @@ SDL_Joystick* GameController::getJoystick() {
 	if(m_controller) {
 		return SDL_GameControllerGetJoystick(m_controller);
 	}
-	return NULL;
+	return nullptr;
 }
 
 void GameController::setAxisDeadZone(unsigned int zone) {

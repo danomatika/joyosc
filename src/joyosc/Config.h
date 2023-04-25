@@ -54,20 +54,19 @@ class Config : public tinyxml2::XMLObject {
 		
 	/// \section Variables
 		
-		unsigned int listeningPort;     ///< listening port
-		std::string listeningMulticast; ///< multicast listening group, "" if none
-		std::string listeningAddress;   ///< base listening address
+		unsigned int listeningPort = 7770; ///< listening port
+		std::string listeningMulticast = ""; ///< multicast listening group, "" if none
 		
-		std::string sendingIp;          ///< ip/hostname/multicast group to send to
-		unsigned int sendingPort;       ///< port to send to
+		std::string sendingIp = "127.0.0.1"; ///< ip/hostname/multicast group to send to
+		unsigned int sendingPort = 8880; ///< port to send to
 		
-		std::string notificationAddress;///< base osc sending address for notifications
-		std::string deviceAddress;      ///< base osc sending addess for devices
+		std::string notificationAddress = "/notifications"; ///< base osc sending address for notifications
+		std::string deviceAddress = "/devices"; ///< base osc sending addess for devices
 		
-		bool printEvents;               ///< print lots of events?
-		bool joysticksOnly;             ///< disable game controller support?
+		bool printEvents = false; ///< print lots of events?
+		bool joysticksOnly = false; ///< disable game controller support?
 		
-		int sleepUS;                    ///< how long to sleep in the run loop
+		int sleepUS = 10000; ///< how long to sleep in the run loop
 
 	/// \section Getters
 
@@ -87,12 +86,12 @@ class Config : public tinyxml2::XMLObject {
 		
 		/// get the input remapping for a given game controller device name
 		/// deviceName is a string ie "Logitech Logitech Dual Action"
-		/// returns joystick remapping on success, NULL if not found
+		/// returns joystick remapping on success, nullptr if not found
 		GameControllerRemapping* getControllerRemapping(std::string deviceName);
 		
 		/// get the button, axis, etc ignores for a given game controller  name
 		/// deviceName is a string ie "Logitech Logitech Dual Action"
-		/// returns joystick ignore on success, NULL if not found
+		/// returns joystick ignore on success, nullptr if not found
 		GameControllerIgnore* getControllerIgnore(std::string deviceName);
 	
 		/// get the axis dead zone threshold for a given joystick device name
@@ -102,12 +101,12 @@ class Config : public tinyxml2::XMLObject {
 		
 		/// get the remapping for a given joystick device name
 		/// deviceName is a string ie "Logitech Logitech Dual Action"
-		/// returns joystick remapping on success, NULL if not found
+		/// returns joystick remapping on success, nullptr if not found
 		JoystickRemapping* getJoystickRemapping(std::string deviceName);
 		
 		/// get the button, axis, etc ignores for a given joystick device name
 		/// deviceName is a string ie "Logitech Logitech Dual Action"
-		/// returns joystick ignore on success, NULL if not found
+		/// returns joystick ignore on success, nullptr if not found
 		JoystickIgnore* getJoystickIgnore(std::string deviceName);
 	
 	/// \section Actions
@@ -146,7 +145,7 @@ class Config : public tinyxml2::XMLObject {
 		osc::OscReceiver m_oscReceiver; ///< global osc receiver
 		
 		// hide all the constructors, copy functions here
-		Config();                           // singleton constructor
-		Config(Config const&);              // not defined, not copyable
-		Config& operator = (Config const&); // not defined, not assignable
+		Config();                            // singleton constructor
+		Config(Config const &);              // not defined, not copyable
+		Config& operator = (Config const &); // not defined, not assignable
 };

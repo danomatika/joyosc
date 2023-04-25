@@ -48,7 +48,7 @@ class App : public osc::OscObject {
 		/// signal callback
 		static void signalExit(int signal);
 
-		bool m_bRun; ///< is the main loop running?
+		bool m_bRun = false; ///< is the main loop running?
 		
 		DeviceManager m_deviceManager; ///< controller & joystick device manager
 		

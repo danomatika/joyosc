@@ -25,7 +25,7 @@
 #include "Joystick.h"
 #include "GameController.h"
 
-DeviceManager::DeviceManager(): sendDeviceEvents(false) {}
+DeviceManager::DeviceManager() {}
 
 bool DeviceManager::open(int sdlIndex) {
 	if(sdlIndexExists(sdlIndex)) {
