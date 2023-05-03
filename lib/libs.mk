@@ -16,15 +16,5 @@ LOPACK_INCLUDE =
 LOPACK_LIBS = -llopack
 endif
 
-# tinyobject
-if LOCAL_TINYOBJECT
-LIB_SUBDIRS += tinyobject
-TINYOBJECT_INCLUDE = -I$(top_srcdir)/lib/tinyobject/src
-TINYOBJECT_LIBS = $(top_builddir)/lib/tinyobject/src/tinyobject/.libs/libtinyobject.la
-else
-TINYOBJECT_INCLUDE =
-TINYOBJECT_LIBS = -ltinyobject
-endif
-
 # cpphelpers
 HELPERS_INCLUDE = -I$(top_srcdir)/lib/cpphelpers

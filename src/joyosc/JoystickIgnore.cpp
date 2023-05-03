@@ -26,10 +26,12 @@ using namespace tinyxml2;
 
 bool JoystickIgnore::readXML(XMLElement *e) {
 	bool loaded = false;
-	std::string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
+	XMLElement *parent = e->Parent()->ToElement();
+	std::string devName = "unknown";
+	if(parent->Attribute("name")) {devName = std::string(parent->Attribute("name"));}
 	XMLElement *child = e->FirstChildElement();
 	while(child != NULL) {
-		int which  = XML::getAttrInt(child, "id", -1);
+		int which = child->IntAttribute("id", -1);
 		if(which > -1) {
 			if((std::string)child->Name() == "button") {
 				auto ret = buttons.insert(which);

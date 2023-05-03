@@ -26,11 +26,13 @@ using namespace tinyxml2;
 
 bool JoystickRemapping::readXML(XMLElement *e) {
 	bool loaded = false;
-	std::string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
+	XMLElement *parent = e->Parent()->ToElement();
+	std::string devName = "unknown";
+	if(parent->Attribute("name")) {devName = std::string(parent->Attribute("name"));}
 	XMLElement *child = e->FirstChildElement();
 	while(child != NULL) {
-		int from  = XML::getAttrInt(child, "from", -1);
-		int to = XML::getAttrInt(child, "to", -1);
+		int from = child->IntAttribute("from", -1);
+		int to = child->IntAttribute("to", -1);
 		if(from > -1 && to > -1) {
 			if((std::string)child->Name() == "button") {
 				auto ret = buttons.insert(std::make_pair(from, to));

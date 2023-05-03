@@ -27,7 +27,7 @@
 #include <set>
 
 #include <lopack/lopack.h>
-#include <tinyobject/XML.h>
+#include <tinyxml2.h>
 
 class GameControllerRemapping;
 class GameControllerIgnore;
@@ -66,7 +66,7 @@ class Config {
 		bool printEvents = false; ///< print lots of events?
 		bool joysticksOnly = false; ///< disable game controller support?
 		
-		int sleepUS = 10000; ///< how long to sleep in the run loop
+		unsigned int sleepUS = 10000; ///< how long to sleep in the run loop
 
 	/// \section Getters
 

@@ -26,10 +26,13 @@ using namespace tinyxml2;
 
 bool GameControllerIgnore::readXML(XMLElement *e) {
 	bool loaded = false;
-	std::string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
+	XMLElement *parent = e->Parent()->ToElement();
+	std::string devName = "unknown";
+	if(parent->Attribute("name")) {devName = std::string(parent->Attribute("name"));}
 	XMLElement *child = e->FirstChildElement();
 	while(child != NULL) {
-		std::string which  = XML::getAttrString(child, "id", "");
+		std::string which = "";
+		if(child->Attribute("id")) {which = std::string(child->Attribute("id"));}
 		if(which != "") {
 			if((std::string)child->Name() == "button") {
 				auto ret = buttons.insert(which);

@@ -56,7 +56,7 @@ PKG_CHECK_MODULES(LO, liblo >= 0.23, [],
 	AC_MSG_ERROR([lo library >= 0.23 not found]))
 
 PKG_CHECK_MODULES(TINYXML2, tinyxml2, [],
-	AC_MSG_ERROR([tinyxml2 library >= 2.0.0 not found]))
+	AC_MSG_ERROR([tinyxml2 library >= 6.0.0 not found]))
 
 #########################################
 ##### External Libraries #####
@@ -88,23 +88,6 @@ else
 		AC_MSG_ERROR([lopack libary not found]))
 fi
 AM_CONDITIONAL([LOCAL_LOPACK], [test x"$with_local_lopack" = x"yes"])
-
-# tinyobject
-AC_MSG_CHECKING([whether to build & install local tinyobject library])
-AC_ARG_WITH([local-tinyobject],
-	[AS_HELP_STRING([--with-local-tinyobject],
-		[build & install local tinyobject lib [default=yes]])],
-	[with_local_tinyobject="$withval"],
-	[with_local_tinyobject="yes"])
-AC_MSG_RESULT([$with_local_tinyobject])
-
-if test x"$with_local_tinyobject" = x"yes"; then
-	AC_CONFIG_SUBDIRS([lib/tinyobject])
-else
-	AC_CHECK_HEADER([tinyobject/tinyobject.h], [],
-		AC_MSG_ERROR([tinyobject libary not found]))
-fi
-AM_CONDITIONAL([LOCAL_TINYOBJECT], [test x"$with_local_tinyobject" = x"yes"])
 
 # reset CXXFLAGS if building with local libs
 if test x"$with_local_lopack" = x"yes" ; then
@@ -161,6 +144,5 @@ AC_MSG_RESULT([
 	Installation prefix:  $prefix
 	C++ compiler:         $CXX $CXXFLAGS $LDFLAGS
 	Local lopack:         $with_local_lopack
-	Local tinyobject:     $with_local_tinyobject
 	Debug build:          $enable_debug
 ])

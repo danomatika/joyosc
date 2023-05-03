@@ -26,11 +26,14 @@ using namespace tinyxml2;
 
 bool GameControllerRemapping::readXML(XMLElement *e) {
 	bool loaded = false;
-	std::string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
+	XMLElement *parent = e->Parent()->ToElement();
+	std::string devName = "unknown";
+	if(parent->Attribute("name")) {devName = std::string(parent->Attribute("name"));}
 	XMLElement *child = e->FirstChildElement();
 	while(child != NULL) {
-		std::string from  = XML::getAttrString(child, "from", "");
-		std::string to = XML::getAttrString(child, "to", "");
+		std::string from = "", to = "";
+		if(child->Attribute("from")) {from = std::string(child->Attribute("from"));}
+		if(child->Attribute("to")) {to = std::string(child->Attribute("to"));}
 		if(from != "" && to != "") {
 			if((std::string)child->Name() == "button") {
 				auto ret = buttons.insert(std::make_pair(from, to));

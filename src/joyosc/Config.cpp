@@ -176,7 +176,8 @@ bool Config::loadXMLFile(const std::string &path) {
 	int ret = doc->LoadFile(path.c_str());
 	if(ret != XML_SUCCESS) {
 		LOG_ERROR << "XML \"" << PACKAGE << "\": could not load \"" << path
-		          << "\": " << XML::getErrorString(doc) << std::endl;
+		          << "\": " << doc->ErrorName() << " " << doc->ErrorStr()
+		          << std::endl;
 		goto error;
 	}
 
@@ -191,21 +192,29 @@ bool Config::loadXMLFile(const std::string &path) {
 	child = root->FirstChildElement();
 	while(child) {
 		if((std::string)child->Name() == "listening") {
-			listeningMulticast = XML::getAttrString(child, "multicast", listeningMulticast);
-			listeningPort = XML::getAttrUInt(child, "port", listeningPort);
+			if(child->Attribute("multicast")) {
+				listeningMulticast = std::string(child->Attribute("multicast"));
+			}
+			child->QueryUnsignedAttribute("port", &listeningPort);
 		}
 		else if((std::string)child->Name() == "sending") {
-			sendingIp = XML::getAttrString(child, "ip");
-			sendingPort = XML::getAttrUInt(child, "port");
+			if(child->Attribute("ip")) {
+				sendingIp = std::string(child->Attribute("ip"));
+			}
+			child->QueryUnsignedAttribute("port", &sendingPort);
 		}
 		else if((std::string)child->Name() == "osc") {
-			notificationAddress = XML::getAttrString(child, "notificationAddress");
-			deviceAddress = XML::getAttrString(child, "deviceAddress");
+			if(child->Attribute("notificationAddress")) {
+				notificationAddress = std::string(child->Attribute("notificationAddress"));
+			}
+			if(child->Attribute("deviceAddress")) {
+				deviceAddress = std::string(child->Attribute("deviceAddress"));
+			}
 		}
 		else if((std::string)child->Name() == "config") {
-			printEvents = XML::getAttrBool(child, "printEvents");
-			joysticksOnly = XML::getAttrBool(child, "joysticksOnly");
-			sleepUS = XML::getAttrUInt(child, "sleepUS");
+			child->QueryBoolAttribute("printEvents", &printEvents);
+			child->QueryBoolAttribute("joysticksOnly", &joysticksOnly);
+			child->QueryUnsignedAttribute("sleepUS", &sleepUS);
 		}
 		else if((std::string)child->Name() == "devices") {
 			readXMLDevices(child);
@@ -236,8 +245,8 @@ void Config::print() {
 	    << "sending port:    " << sendingPort << std::endl
 	    << "sending address for notifications: " << notificationAddress << std::endl
 	    << "sending address for devices:       " << deviceAddress << std::endl
-	    << "print events?:   " << (printEvents ? "yes" : "no") << std::endl
-	    << "joysticks only?: " << (joysticksOnly ? "yes" : "no") << std::endl
+	    << "print events?:   " << (printEvents ? "true" : "false") << std::endl
+	    << "joysticks only?: " << (joysticksOnly ? "true" : "false") << std::endl
 	    << "sleep us:        " << sleepUS << std::endl
 	    << "device addresses: " << m_deviceAddresses.size() << std::endl;
 	int index = 0;
@@ -269,8 +278,9 @@ void Config::readXMLDevices(XMLElement *e) {
 }
 
 void Config::readXMLController(XMLElement *e) {
-	std::string name = XML::getAttrString(e, "name");
-	std::string addr = XML::getAttrString(e, "address");
+	std::string name = "", addr = "";
+	if(e->Attribute("name")) {name = std::string(e->Attribute("name"));}
+	if(e->Attribute("address")) {addr = std::string(e->Attribute("address"));}
 	if(name == "" || addr == "") {
 		LOG_WARN << "Config: ignoring game controller without name or address"
 		         << std::endl;
@@ -286,7 +296,7 @@ void Config::readXMLController(XMLElement *e) {
 	XMLElement *child = e->FirstChildElement();
 	while(child) {
 		if((std::string)child->Name() == "thresholds") {
-			unsigned int deadZone = XML::getAttrUInt(child, "axisDeadZone", 0);
+			unsigned int deadZone = child->UnsignedAttribute("axisDeadZone", 0);
 			if(deadZone > 0) {
 				auto threshRet = m_controllerAxisDeadZones.insert(std::make_pair(name, deadZone));
 				if(!threshRet.second) {
@@ -330,8 +340,9 @@ void Config::readXMLController(XMLElement *e) {
 }
 
 void Config::readXMLJoystick(XMLElement *e) {
-	std::string name = XML::getAttrString(e, "name");
-	std::string addr = XML::getAttrString(e, "address");
+	std::string name = "", addr = "";
+	if(e->Attribute("name")) {name = std::string(e->Attribute("name"));}
+	if(e->Attribute("address")) {addr = std::string(e->Attribute("address"));}
 	if(name == "" || addr == "") {
 		LOG_WARN << "Config: ignoring joystick without name or address"
 		         << std::endl;
@@ -347,7 +358,7 @@ void Config::readXMLJoystick(XMLElement *e) {
 	XMLElement *child = e->FirstChildElement();
 	while(child) {
 		if((std::string)child->Name() == "thresholds") {
-			unsigned int deadZone = XML::getAttrUInt(child, "axisDeadZone", 0);
+			unsigned int deadZone = child->UnsignedAttribute("axisDeadZone", 0);
 			if(deadZone > 0) {
 				auto threshRet = m_joystickAxisDeadZones.insert(std::make_pair(name, deadZone));
 				if(!threshRet.second) {
@@ -394,7 +405,8 @@ void Config::readXMLMappings(XMLElement *e, const std::string &dir) {
 	XMLElement *child = e->FirstChildElement();
 	while(child) {
 		if((std::string)child->Name() == "mapping") {
-			std::string mapping = XML::getTextString(child);
+			std::string mapping = "";
+			if(child->GetText()) {mapping = std::string(child->GetText());}
 			int ret = GameController::addMappingString(mapping);
 			if(ret == 0) {
 				LOG_DEBUG << "Config: updated mapping: \""
@@ -406,7 +418,8 @@ void Config::readXMLMappings(XMLElement *e, const std::string &dir) {
 			}
 		}
 		else if((std::string)child->Name() == "file") {
-			std::string mpath = XML::getTextString(child);
+			std::string mpath = "";
+			if(child->GetText()) {mpath = std::string(child->GetText());}
 			if(!Path::isAbsolute(mpath)) {
 				mpath = Path::append(dir, Path::lastComponent(mpath));
 			}
