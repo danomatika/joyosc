@@ -114,11 +114,26 @@ class Config {
 		/// parse the commandline options & load a given config file
 		bool parseCommandLine(int argc, char **argv);
 
-		/// load from an XML file, returns true on success or false on failure
+		/// load from an XML file, expects <joyosc> root element
+		/// returns true on success or false on failure
 		bool loadXMLFile(const std::string &path);
 
 		/// print the current config values
 		void print();
+
+	protected:
+
+		/// read <devices></devices>
+		void readXMLDevices(tinyxml2::XMLElement *e);
+
+		/// read <controller></controller>
+		void readXMLController(tinyxml2::XMLElement *e);
+
+		/// read <joystick></joystick>
+		void readXMLJoystick(tinyxml2::XMLElement *e);
+
+		/// read <mappings></mappings>
+		void readXMLMappings(tinyxml2::XMLElement *e, const std::string &dir);
 
 	private:
 		
