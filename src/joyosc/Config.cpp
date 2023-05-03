@@ -212,7 +212,7 @@ bool Config::readXML(XMLElement *e) {
 					unsigned int deadZone = XML::getAttrUInt(thresholdsChild, "axisDeadZone", 0);
 					if(deadZone > 0) {
 						std::pair<AxisMap::iterator,bool> threshRet;
-						threshRet= m_joystickAxisDeadZones.insert(std::make_pair(name, deadZone));
+						threshRet = m_controllerAxisDeadZones.insert(std::make_pair(name, deadZone));
 						if(!threshRet.second) {
 							LOG_WARN << "Config: game controller axis deadzone for "
 							         << name << " already exists" << std::endl;
