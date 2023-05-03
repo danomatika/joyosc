@@ -95,9 +95,8 @@ void DeviceManager::openAll() {
 }
 
 void DeviceManager::closeAll() {
-	Map::iterator iter;
-	for(iter = m_devices.begin(); iter != m_devices.end(); ++iter) {
-		Device *js = iter->second;
+	for(auto &dev : m_devices) {
+		Device *js = dev.second;
 		js->close();
 		delete js;
 	}
@@ -168,13 +167,12 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 }
 
 void DeviceManager::print(bool details) {
-	Map::iterator iter;
-	for(iter = m_devices.begin(); iter != m_devices.end(); ++iter) {
+	for(auto &dev : m_devices) {
 		if(details) {
-			iter->second->print();
+			dev.second->print();
 		}
 		else {
-			LOG << iter->second->getDeviceString() << std::endl;
+			LOG << dev.second->getDeviceString() << std::endl;
 		}
 	}
 }
@@ -200,15 +198,14 @@ Device::Type DeviceManager::getDeviceType(int index) {
 }
 
 bool DeviceManager::sdlIndexExists(int sdlIndex) {
-	Map::iterator iter;
-	for(iter = m_devices.begin(); iter != m_devices.end(); ++iter) {
-		if(iter->second->getDeviceType() == Device::GAMECONTROLLER) {
-			if(((GameController *)iter->second)->getSdlIndex() == sdlIndex) {
+	for(auto &dev : m_devices) {
+		if(dev.second->getDeviceType() == Device::GAMECONTROLLER) {
+			if(((GameController *)dev.second)->getSdlIndex() == sdlIndex) {
 				return true;
 			}
 		}
-		else if(iter->second->getDeviceType() == Device::JOYSTICK) {
-			if(((Joystick *)iter->second)->getSdlIndex() == sdlIndex) {
+		else if(dev.second->getDeviceType() == Device::JOYSTICK) {
+			if(((Joystick *)dev.second)->getSdlIndex() == sdlIndex) {
 				return true;
 			}
 		}

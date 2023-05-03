@@ -26,7 +26,6 @@ using namespace tinyxml2;
 
 bool JoystickRemapping::readXML(XMLElement *e) {
 	bool loaded = false;
-	std::pair<Map::iterator,bool> ret;
 	std::string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
 	XMLElement *child = e->FirstChildElement();
 	while(child != NULL) {
@@ -34,7 +33,7 @@ bool JoystickRemapping::readXML(XMLElement *e) {
 		int to = XML::getAttrInt(child, "to", -1);
 		if(from > -1 && to > -1) {
 			if((std::string)child->Name() == "button") {
-				ret = buttons.insert(std::make_pair(from, to));
+				auto ret = buttons.insert(std::make_pair(from, to));
 				if(!ret.second) {
 					LOG_WARN << "Joystick " << devName << ": "
 					         << "mapping for button " << from
@@ -45,7 +44,7 @@ bool JoystickRemapping::readXML(XMLElement *e) {
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "axis") {
-				ret = axes.insert(std::make_pair(from, to));
+				auto ret = axes.insert(std::make_pair(from, to));
 				if(!ret.second) {
 					LOG_WARN << "Joystick " << devName << ": "
 					         << "mapping for axis " << from
@@ -56,7 +55,7 @@ bool JoystickRemapping::readXML(XMLElement *e) {
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "ball") {
-				ret = balls.insert(std::make_pair(from, to));
+				auto ret = balls.insert(std::make_pair(from, to));
 				if(!ret.second) {
 					LOG_WARN << "Joystick " << devName << ": "
 					         << "mapping for ball " << from
@@ -67,7 +66,7 @@ bool JoystickRemapping::readXML(XMLElement *e) {
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "hat") {
-				ret = balls.insert(std::make_pair(from, to));
+				auto ret = balls.insert(std::make_pair(from, to));
 				if(!ret.second) {
 					LOG_WARN << "Joystick " << devName << ": "
 					         << "mapping for hat " << from
@@ -168,21 +167,16 @@ int JoystickRemapping::mappingForHat(int hat) {
 }
 
 void JoystickRemapping::print() {
-	Map::iterator iter;
-	for(iter = buttons.begin(); iter != buttons.end(); ++iter) {
-		LOG << "  button remap: " << iter->first
-		    << " -> " << iter->second << std::endl;
+	for(auto &b : buttons) {
+		LOG << "  button remap: " << b.first << " -> " << b.second << std::endl;
 	}
-	for(iter = axes.begin(); iter != axes.end(); ++iter) {
-		LOG << "  axis remap: " << iter->first
-		    << " -> " << iter->second << std::endl;
+	for(auto &a : axes) {
+		LOG << "  axis remap: " << a.first << " -> " << a.second << std::endl;
 	}
-	for(iter = balls.begin(); iter != balls.end(); ++iter) {
-		LOG << "  ball remap: " << iter->first
-		    << " -> " << iter->second << std::endl;
+	for(auto &b : balls) {
+		LOG << "  ball remap: " << b.first << " -> " << b.second << std::endl;
 	}
-	for(iter = hats.begin(); iter != hats.end(); ++iter) {
-		LOG << "  hat remap: " << iter->first
-		    << " -> " << iter->second << std::endl;
+	for(auto &h : hats) {
+		LOG << "  hat remap: " << h.first << " -> " << h.second << std::endl;
 	}
 }

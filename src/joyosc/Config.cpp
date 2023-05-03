@@ -217,8 +217,7 @@ bool Config::loadXMLFile(const std::string &path) {
 				std::string name = XML::getAttrString(child2, "name");
 				std::string addr = XML::getAttrString(child2, "address");
 				
-				std::pair<AddressMap::iterator,bool> ret;
-				ret = m_deviceAddresses.insert(std::make_pair(name, addr));
+				auto ret = m_deviceAddresses.insert(std::make_pair(name, addr));
 				if(!ret.second) {
 					LOG_WARN << "Config: game controller name " << name
 					         << " already exists" << std::endl;
@@ -228,8 +227,7 @@ bool Config::loadXMLFile(const std::string &path) {
 				if(thresholdsChild) {
 					unsigned int deadZone = XML::getAttrUInt(thresholdsChild, "axisDeadZone", 0);
 					if(deadZone > 0) {
-						std::pair<AxisMap::iterator,bool> threshRet;
-						threshRet = m_controllerAxisDeadZones.insert(std::make_pair(name, deadZone));
+						auto threshRet = m_controllerAxisDeadZones.insert(std::make_pair(name, deadZone));
 						if(!threshRet.second) {
 							LOG_WARN << "Config: game controller axis deadzone for "
 							         << name << " already exists" << std::endl;
@@ -248,8 +246,7 @@ bool Config::loadXMLFile(const std::string &path) {
 						LOG_WARN << "Config: ignoring empty game controller remap for "
 						         << name << std::endl;
 					}
-					std::pair<GCRemappingMap::iterator,bool> remapRet;
-					remapRet = m_controllerRemappings.insert(std::make_pair(name, remap));
+					auto remapRet = m_controllerRemappings.insert(std::make_pair(name, remap));
 					if(!remapRet.second) {
 						LOG_WARN << "Config: game controller remapping for "
 						         << name << " already exists" << std::endl;
@@ -263,8 +260,7 @@ bool Config::loadXMLFile(const std::string &path) {
 						LOG_WARN << "Config: ignoring empty game controller ignore for "
 						         << name << std::endl;
 					}
-					std::pair<GCIgnoreMap::iterator,bool> ignoreRet;
-					ignoreRet = m_controllerIgnores.insert(std::make_pair(name, ignore));
+					auto ignoreRet = m_controllerIgnores.insert(std::make_pair(name, ignore));
 					if(!ignoreRet.second) {
 						LOG_WARN << "Config: game controller ignore for "
 						         << name << " already exists" << std::endl;
@@ -275,8 +271,7 @@ bool Config::loadXMLFile(const std::string &path) {
 				std::string name = XML::getAttrString(child2, "name");
 				std::string addr = XML::getAttrString(child2, "address");
 				
-				std::pair<AddressMap::iterator,bool> ret;
-				ret = m_deviceAddresses.insert(std::make_pair(name, addr));
+				auto ret = m_deviceAddresses.insert(std::make_pair(name, addr));
 				if(!ret.second) {
 					LOG_WARN << "Config: joystick name " << name
 					         << " already exists" << std::endl;
@@ -286,8 +281,7 @@ bool Config::loadXMLFile(const std::string &path) {
 				if(thresholdsChild) {
 					unsigned int deadZone = XML::getAttrUInt(thresholdsChild, "axisDeadZone", 0);
 					if(deadZone > 0) {
-						std::pair<AxisMap::iterator,bool> threshRet;
-						threshRet = m_joystickAxisDeadZones.insert(std::make_pair(name, deadZone));
+						auto threshRet = m_joystickAxisDeadZones.insert(std::make_pair(name, deadZone));
 						if(!threshRet.second) {
 							LOG_WARN << "Config: joystick axis deadzone for "
 							         << name << " already exists" << std::endl;
@@ -306,8 +300,7 @@ bool Config::loadXMLFile(const std::string &path) {
 						LOG_WARN << "Config: ignoring empty joystick remap for "
 						         << name << std::endl;
 					}
-					std::pair<JSRemappingMap::iterator,bool> remapRet;
-					remapRet = m_joystickRemappings.insert(std::make_pair(name, remap));
+					auto remapRet = m_joystickRemappings.insert(std::make_pair(name, remap));
 					if(!remapRet.second) {
 						LOG_WARN << "Config: joystick remapping for "
 						         << name << " already exists" << std::endl;
@@ -321,8 +314,7 @@ bool Config::loadXMLFile(const std::string &path) {
 						LOG_WARN << "Config: ignoring empty joystick ignore for "
 						         << name << std::endl;
 					}
-					std::pair<JSIgnoreMap::iterator,bool> ignoreRet;
-					ignoreRet = m_joystickIgnores.insert(std::make_pair(name, ignore));
+					auto ignoreRet = m_joystickIgnores.insert(std::make_pair(name, ignore));
 					if(!ignoreRet.second) {
 						LOG_WARN << "Config: joystick ignore for "
 						         << name << " already exists" << std::endl;

@@ -26,14 +26,13 @@ using namespace tinyxml2;
 
 bool JoystickIgnore::readXML(XMLElement *e) {
 	bool loaded = false;
-	std::pair<Set::iterator,bool> ret;
 	std::string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
 	XMLElement *child = e->FirstChildElement();
 	while(child != NULL) {
 		int which  = XML::getAttrInt(child, "id", -1);
 		if(which > -1) {
 			if((std::string)child->Name() == "button") {
-				ret = buttons.insert(which);
+				auto ret = buttons.insert(which);
 				if(!ret.second) {
 					LOG_WARN << "Joystick " << devName << ": "
 					         << "already ignoring button " << which << std::endl;
@@ -43,7 +42,7 @@ bool JoystickIgnore::readXML(XMLElement *e) {
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "axis") {
-				ret = axes.insert(which);
+				auto ret = axes.insert(which);
 				if(!ret.second) {
 					LOG_WARN << "Joystick " << devName << ": "
 					         << "already ignoring axis " << which << std::endl;
@@ -53,7 +52,7 @@ bool JoystickIgnore::readXML(XMLElement *e) {
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "ball") {
-				ret = balls.insert(which);
+				auto ret = balls.insert(which);
 				if(!ret.second) {
 					LOG_WARN << "Joystick " << devName << ": "
 					         << "already ignoring ball " << which << std::endl;
@@ -63,7 +62,7 @@ bool JoystickIgnore::readXML(XMLElement *e) {
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "hat") {
-				ret = balls.insert(which);
+				auto ret = balls.insert(which);
 				if(!ret.second) {
 					LOG_WARN << "Joystick " << devName << ": "
 					         << "already ignoring hat " << which << std::endl;
@@ -155,17 +154,16 @@ bool JoystickIgnore::isHatIgnored(int hat) {
 }
 
 void JoystickIgnore::print() {
-	Set::iterator iter = buttons.begin();
-	for(iter = buttons.begin(); iter != buttons.end(); ++iter) {
-		LOG << "  ignore button: " << (*iter) << std::endl;
+	for(auto &b : buttons) {
+		LOG << "  ignore button: " << b << std::endl;
 	}
-	for(iter = axes.begin(); iter != axes.end(); ++iter) {
-		LOG << "  ignore axis: " << (*iter) << std::endl;
+	for(auto &a : axes) {
+		LOG << "  ignore axis: " << a << std::endl;
 	}
-	for(iter = balls.begin(); iter != balls.end(); ++iter) {
-		LOG << "  ignore ball: " << (*iter) << std::endl;
+	for(auto &b : balls) {
+		LOG << "  ignore ball: " << b << std::endl;
 	}
-	for(iter = hats.begin(); iter != hats.end(); ++iter) {
-		LOG << "  ignore hat: " << (*iter) << std::endl;
+	for(auto &h : hats) {
+		LOG << "  ignore hat: " << h << std::endl;
 	}
 }

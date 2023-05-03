@@ -26,14 +26,13 @@ using namespace tinyxml2;
 
 bool GameControllerIgnore::readXML(XMLElement *e) {
 	bool loaded = false;
-	std::pair<Map::iterator,bool> ret;
 	std::string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
 	XMLElement *child = e->FirstChildElement();
 	while(child != NULL) {
 		std::string which  = XML::getAttrString(child, "id", "");
 		if(which != "") {
 			if((std::string)child->Name() == "button") {
-				ret = buttons.insert(which);
+				auto ret = buttons.insert(which);
 				if(!ret.second) {
 					LOG_WARN << "GameController " << devName << ": "
 					         << "already ignoring button " << which << std::endl;
@@ -43,7 +42,7 @@ bool GameControllerIgnore::readXML(XMLElement *e) {
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "axis") {
-				ret = axes.insert(which);
+				auto ret = axes.insert(which);
 				if(!ret.second) {
 					LOG_WARN << "GameController " << devName << ": "
 					         << "already ignoring axis " << which << std::endl;
@@ -100,10 +99,10 @@ bool GameControllerIgnore::isAxisIgnored(std::string &axis) {
 
 void GameControllerIgnore::print() {
 	Map::iterator iter;
-	for(iter = buttons.begin(); iter != buttons.end(); ++iter) {
-		LOG << "  ignore button: " << (*iter) << std::endl;
+	for(auto &b : buttons) {
+		LOG << "  ignore button: " << b << std::endl;
 	}
-	for(iter = axes.begin(); iter != axes.end(); ++iter) {
-		LOG << "  ignore axis: " << (*iter) << std::endl;
+	for(auto &a : axes) {
+		LOG << "  ignore axis: " << a << std::endl;
 	}
 }
