@@ -26,13 +26,16 @@
 
 /// \class JoystickIgnore
 /// \brief defines which joystick buttons, axes, balls, or hats to ignore
-class JoystickIgnore : public tinyxml2::XMLObject {
+class JoystickIgnore {
 
 	public:
 
 		typedef std::set<int> Set;
 		
-		JoystickIgnore() : tinyxml2::XMLObject("ignore") {}
+		JoystickIgnore() {}
+
+		/// load from XML element, returns true on success
+		bool readXML(tinyxml2::XMLElement *e);
 		
 		Set buttons; ///< buttons ids to ignore
 		Set axes;    ///< axis ids to ignore
@@ -50,9 +53,4 @@ class JoystickIgnore : public tinyxml2::XMLObject {
 	
 		/// print the current ignore values
 		void print();
-		
-	protected:
-	
-		/// XMLObject callback
-		bool readXML(tinyxml2::XMLElement *e);
 };

@@ -27,7 +27,7 @@
 
 using namespace osc;
 
-App* appPtr; // global app this pointer
+static App *appPtr; // global app this pointer
 
 App::App() : OscObject((std::string)"/"+PACKAGE),
 	m_config(Config::instance()),

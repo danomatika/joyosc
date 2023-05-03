@@ -24,6 +24,70 @@
 
 using namespace tinyxml2;
 
+bool JoystickRemapping::readXML(XMLElement *e) {
+	bool loaded = false;
+	std::pair<Map::iterator,bool> ret;
+	std::string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
+	XMLElement *child = e->FirstChildElement();
+	while(child != NULL) {
+		int from  = XML::getAttrInt(child, "from", -1);
+		int to = XML::getAttrInt(child, "to", -1);
+		if(from > -1 && to > -1) {
+			if((std::string)child->Name() == "button") {
+				ret = buttons.insert(std::make_pair(from, to));
+				if(!ret.second) {
+					LOG_WARN << "Joystick " << devName << ": "
+					         << "mapping for button " << from
+					         << " already exists" << std::endl;
+				}
+				LOG_DEBUG << "Joystick " << devName << ": "
+				          << "remapped button " << from << " to " << to << std::endl;
+				loaded = true;
+			}
+			else if((std::string)child->Name() == "axis") {
+				ret = axes.insert(std::make_pair(from, to));
+				if(!ret.second) {
+					LOG_WARN << "Joystick " << devName << ": "
+					         << "mapping for axis " << from
+					         << " already exists" << std::endl;
+				}
+				LOG_DEBUG << "Joystick " << devName << ": "
+				          << "remapped axis " << from << " to " << to << std::endl;
+				loaded = true;
+			}
+			else if((std::string)child->Name() == "ball") {
+				ret = balls.insert(std::make_pair(from, to));
+				if(!ret.second) {
+					LOG_WARN << "Joystick " << devName << ": "
+					         << "mapping for ball " << from
+					         << " already exists" << std::endl;
+				}
+				LOG_DEBUG << "Joystick " << devName << ": "
+				          << "remapped ball " << from << " to " << to << std::endl;
+				loaded = true;
+			}
+			else if((std::string)child->Name() == "hat") {
+				ret = balls.insert(std::make_pair(from, to));
+				if(!ret.second) {
+					LOG_WARN << "Joystick " << devName << ": "
+					         << "mapping for hat " << from
+					         << " already exists" << std::endl;
+				}
+				LOG_DEBUG << "Joystick " << devName << ": "
+				          << "remapped hat " << from << " to " << to << std::endl;
+				loaded = true;
+			}
+		}
+		else {
+			LOG_WARN << "Joystick " << devName << ": "
+			         << "ignoring invalid remap xml element: \""
+			         << child->Name() << "\"" << std::endl;
+		}
+		child = child->NextSiblingElement();
+	}
+	return loaded;
+}
+
 void JoystickRemapping::check(Joystick *joystick) {
 	if(!joystick){
 		return;
@@ -121,68 +185,4 @@ void JoystickRemapping::print() {
 		LOG << "  hat remap: " << iter->first
 		    << " -> " << iter->second << std::endl;
 	}
-}
-
-bool JoystickRemapping::readXML(XMLElement *e) {
-	bool loaded = false;
-	std::pair<Map::iterator,bool> ret;
-	std::string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
-	XMLElement *child = e->FirstChildElement();
-	while(child != NULL) {
-		int from  = XML::getAttrInt(child, "from", -1);
-		int to = XML::getAttrInt(child, "to", -1);
-		if(from > -1 && to > -1) {
-			if((std::string)child->Name() == "button") {
-				ret = buttons.insert(std::make_pair(from, to));
-				if(!ret.second) {
-					LOG_WARN << "Joystick " << devName << ": "
-					         << "mapping for button " << from
-					         << " already exists" << std::endl;
-				}
-				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "remapped button " << from << " to " << to << std::endl;
-				loaded = true;
-			}
-			else if((std::string)child->Name() == "axis") {
-				ret = axes.insert(std::make_pair(from, to));
-				if(!ret.second) {
-					LOG_WARN << "Joystick " << devName << ": "
-					         << "mapping for axis " << from
-					         << " already exists" << std::endl;
-				}
-				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "remapped axis " << from << " to " << to << std::endl;
-				loaded = true;
-			}
-			else if((std::string)child->Name() == "ball") {
-				ret = balls.insert(std::make_pair(from, to));
-				if(!ret.second) {
-					LOG_WARN << "Joystick " << devName << ": "
-					         << "mapping for ball " << from
-					         << " already exists" << std::endl;
-				}
-				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "remapped ball " << from << " to " << to << std::endl;
-				loaded = true;
-			}
-			else if((std::string)child->Name() == "hat") {
-				ret = balls.insert(std::make_pair(from, to));
-				if(!ret.second) {
-					LOG_WARN << "Joystick " << devName << ": "
-					         << "mapping for hat " << from
-					         << " already exists" << std::endl;
-				}
-				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "remapped hat " << from << " to " << to << std::endl;
-				loaded = true;
-			}
-		}
-		else {
-			LOG_WARN << "Joystick " << devName << ": "
-			         << "ignoring invalid remap xml element: \""
-			         << child->Name() << "\"" << std::endl;
-		}
-		child = child->NextSiblingElement();
-	}
-	return loaded;
 }

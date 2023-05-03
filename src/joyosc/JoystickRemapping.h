@@ -26,13 +26,16 @@
 
 /// \class JoystickRemapping
 /// \brief defines joystick button, axis, ball, & hat remappings
-class JoystickRemapping : public tinyxml2::XMLObject {
+class JoystickRemapping {
 
 	public:
 		
 		typedef std::map<int,int> Map;
 		
-		JoystickRemapping() : tinyxml2::XMLObject("remap") {}
+		JoystickRemapping() {}
+
+		/// load from XML element, returns true on success
+		bool readXML(tinyxml2::XMLElement *e);
 		
 		/// mappings from -> to
 		/// with key: from & value: to
@@ -52,9 +55,4 @@ class JoystickRemapping : public tinyxml2::XMLObject {
 	
 		/// print the current mappings
 		void print();
-		
-	protected:
-	
-		/// XMLObject callback
-		bool readXML(tinyxml2::XMLElement *e);
 };

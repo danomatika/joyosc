@@ -24,6 +24,48 @@
 
 using namespace tinyxml2;
 
+bool GameControllerRemapping::readXML(XMLElement *e) {
+	bool loaded = false;
+	std::pair<Map::iterator,bool> ret;
+	std::string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
+	XMLElement *child = e->FirstChildElement();
+	while(child != NULL) {
+		std::string from  = XML::getAttrString(child, "from", "");
+		std::string to = XML::getAttrString(child, "to", "");
+		if(from != "" && to != "") {
+			if((std::string)child->Name() == "button") {
+				ret = buttons.insert(std::make_pair(from, to));
+				if(!ret.second) {
+					LOG_WARN << "GameController " << devName << ": "
+					         << "mapping for button " << from
+					         << " already exists" << std::endl;
+				}
+				LOG_DEBUG << "GameController " << devName << ": "
+				          << "remapped button " << from << " to " << to << std::endl;
+				loaded = true;
+			}
+			else if((std::string)child->Name() == "axis") {
+				ret = axes.insert(std::make_pair(from, to));
+				if(!ret.second) {
+					LOG_WARN << "GameController " << devName << ": "
+					         << "mapping for axis " << from
+					         << " already exists" << std::endl;
+				}
+				LOG_DEBUG << "GameController " << devName << ": "
+				          << "remapped axis " << from << " to " << to << std::endl;
+				loaded = true;
+			}
+		}
+		else {
+			LOG_WARN << "GameController " << devName << ": "
+			         << "ignoring invalid remap xml element: \""
+			         << child->Name() << "\"" << std::endl;
+		}
+		child = child->NextSiblingElement();
+	}
+	return loaded;
+}
+
 void GameControllerRemapping::check(GameController *controller) {
 	if(!controller){
 		return;
@@ -73,46 +115,4 @@ void GameControllerRemapping::print() {
 		LOG << "  axis remap: " << iter->first
 		    << " -> " << iter->second << std::endl;
 	}
-}
-
-bool GameControllerRemapping::readXML(XMLElement *e) {
-	bool loaded = false;
-	std::pair<Map::iterator,bool> ret;
-	std::string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
-	XMLElement *child = e->FirstChildElement();
-	while(child != NULL) {
-		std::string from  = XML::getAttrString(child, "from", "");
-		std::string to = XML::getAttrString(child, "to", "");
-		if(from != "" && to != "") {
-			if((std::string)child->Name() == "button") {
-				ret = buttons.insert(std::make_pair(from, to));
-				if(!ret.second) {
-					LOG_WARN << "GameController " << devName << ": "
-					         << "mapping for button " << from
-					         << " already exists" << std::endl;
-				}
-				LOG_DEBUG << "GameController " << devName << ": "
-				          << "remapped button " << from << " to " << to << std::endl;
-				loaded = true;
-			}
-			else if((std::string)child->Name() == "axis") {
-				ret = axes.insert(std::make_pair(from, to));
-				if(!ret.second) {
-					LOG_WARN << "GameController " << devName << ": "
-					         << "mapping for axis " << from
-					         << " already exists" << std::endl;
-				}
-				LOG_DEBUG << "GameController " << devName << ": "
-				          << "remapped axis " << from << " to " << to << std::endl;
-				loaded = true;
-			}
-		}
-		else {
-			LOG_WARN << "GameController " << devName << ": "
-			         << "ignoring invalid remap xml element: \""
-			         << child->Name() << "\"" << std::endl;
-		}
-		child = child->NextSiblingElement();
-	}
-	return loaded;
 }

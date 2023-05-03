@@ -150,10 +150,11 @@ bool Config::parseCommandLine(int argc, char **argv) {
 
 	// load the config file (if one exists)
 	if(options.numArguments() > 0) { // load the config file (if one exists)
-		setXMLFilename(Path::absolutePath(options.getArgumentString(0)));
-		LOG << "Config: loading " << getXMLFilename() << std::endl;
-		loadXMLFile();
-		closeXMLFile();
+		auto path = Path::absolutePath(options.getArgumentString(0));
+		LOG << "Config: loading " << path << std::endl;
+		if(!loadXMLFile(path.c_str())) {
+			return false;
+		}
 	}
 
 	// read option values if set
@@ -168,31 +169,47 @@ bool Config::parseCommandLine(int argc, char **argv) {
 	return true;
 }
 
-void Config::print() {
-	LOG << "listening port:	 " << listeningPort << std::endl
-	    << "listening multicast group: " << (listeningMulticast == "" ? "none" : listeningMulticast) << std::endl
-	    << "listening addr:  " << "/" << PACKAGE << std::endl
-	    << "sending ip:      " << sendingIp << std::endl
-	    << "sending port:    " << sendingPort << std::endl
-	    << "sending address for notifications: " << notificationAddress << std::endl
-	    << "sending address for devices:       " << deviceAddress << std::endl
-	    << "print events?:   " << (printEvents ? "yes" : "no") << std::endl
-	    << "joysticks only?: " << (joysticksOnly ? "yes" : "no") << std::endl
-	    << "sleep us:        " << sleepUS << std::endl
-	    << "device addresses: " << m_deviceAddresses.size() << std::endl;
-	int index = 0;
-	AddressMap::iterator iter;
-	for(iter = m_deviceAddresses.begin(); iter != m_deviceAddresses.end(); iter++) {
-		LOG << "  " << index << " " << iter->first
-		    << " : " << iter->second << std::endl;
-		++index;
+bool Config::loadXMLFile(const std::string &path) {
+	XMLElement *root = NULL, *child = NULL;
+
+	XMLDocument *doc = new XMLDocument;
+	int ret = doc->LoadFile(path.c_str());
+	if(ret != XML_SUCCESS) {
+		LOG_ERROR << "XML \"" << PACKAGE << "\": could not load \"" << path
+		          << "\": " << XML::getErrorString(doc) << std::endl;
+		goto error;
 	}
-}
 
-// PROTECTED
+	root = doc->RootElement();
+	if(!root || (std::string)root->Name() != PACKAGE) {
+		LOG_ERROR << "XML \"" << PACKAGE << "\": xml file \"" << path
+		          << "\" does not have \"" << PACKAGE << "\" as the root element"
+		          << std::endl;
+		goto error;
+	}
 
-bool Config::readXML(XMLElement *e) {
-	XMLElement *child = getXMLChild("devices");
+	child = XML::getChild(root, "listening");
+	if(child != NULL) {
+		listeningMulticast = XML::getAttrString(child, "multicast", listeningMulticast);
+		listeningPort = XML::getAttrUInt(child, "port", listeningPort);
+	}
+	child = XML::getChild(root, "sending", 0);
+	if(child != NULL) {
+		sendingIp = XML::getAttrString(child, "ip");
+		sendingPort = XML::getAttrUInt(child, "port");
+	}
+	child = XML::getChild(root, "osc");
+	if(child != NULL) {
+		notificationAddress = XML::getAttrString(child, "notificationAddress");
+		deviceAddress = XML::getAttrString(child, "deviceAddress");
+	}
+	child = XML::getChild(root, "config");
+	if(child != NULL) {
+		printEvents = XML::getAttrBool(child, "printEvents");
+		joysticksOnly = XML::getAttrBool(child, "joysticksOnly");
+		sleepUS = XML::getAttrUInt(child, "sleepUS");
+	}
+	child = XML::getChild(root, "devices");
 	if(child != NULL) {
 		XMLElement *child2 = child->FirstChildElement();
 		while(child2 != NULL) {
@@ -217,13 +234,17 @@ bool Config::readXML(XMLElement *e) {
 							LOG_WARN << "Config: game controller axis deadzone for "
 							         << name << " already exists" << std::endl;
 						}
+						else {
+							LOG_DEBUG << "GameController " << name << ": "
+							          << "axis deadzone " << deadZone << std::endl;
+						}
 					}
 				}
 				
 				XMLElement *remapChild = XML::getChild(child2, "remap");
 				if(remapChild) {
 					GameControllerRemapping *remap = new GameControllerRemapping;
-					if(!remap->loadXML(remapChild)) {
+					if(!remap->readXML(remapChild)) {
 						LOG_WARN << "Config: ignoring empty game controller remap for "
 						         << name << std::endl;
 					}
@@ -238,7 +259,7 @@ bool Config::readXML(XMLElement *e) {
 				XMLElement *ignoreChild = XML::getChild(child2, "ignore");
 				if(ignoreChild) {
 					GameControllerIgnore *ignore = new GameControllerIgnore;
-					if(!ignore->loadXML(ignoreChild)) {
+					if(!ignore->readXML(ignoreChild)) {
 						LOG_WARN << "Config: ignoring empty game controller ignore for "
 						         << name << std::endl;
 					}
@@ -271,13 +292,17 @@ bool Config::readXML(XMLElement *e) {
 							LOG_WARN << "Config: joystick axis deadzone for "
 							         << name << " already exists" << std::endl;
 						}
+						else {
+							LOG_DEBUG << "Joystick " << name << ": "
+							          << "axis deadzone " << deadZone << std::endl;
+						}
 					}
 				}
 				
 				XMLElement *remapChild = XML::getChild(child2, "remap");
 				if(remapChild) {
 					JoystickRemapping *remap = new JoystickRemapping;
-					if(!remap->loadXML(remapChild)) {
+					if(!remap->readXML(remapChild)) {
 						LOG_WARN << "Config: ignoring empty joystick remap for "
 						         << name << std::endl;
 					}
@@ -292,7 +317,7 @@ bool Config::readXML(XMLElement *e) {
 				XMLElement *ignoreChild = XML::getChild(child2, "ignore");
 				if(ignoreChild) {
 					JoystickIgnore *ignore = new JoystickIgnore;
-					if(!ignore->loadXML(ignoreChild)) {
+					if(!ignore->readXML(ignoreChild)) {
 						LOG_WARN << "Config: ignoring empty joystick ignore for "
 						         << name << std::endl;
 					}
@@ -310,7 +335,7 @@ bool Config::readXML(XMLElement *e) {
 			}
 			child2 = child2->NextSiblingElement();
 		}
-		child = getXMLChild("mappings");
+		child = XML::getChild(root, "mappings");
 		if(child != NULL) {
 			XMLElement *child2 = child->FirstChildElement();
 			while(child2 != NULL) {
@@ -327,14 +352,14 @@ bool Config::readXML(XMLElement *e) {
 					}
 				}
 				else if((std::string)child2->Name() == "file") {
-					std::string path = XML::getTextString(child2);
-					if(!Path::isAbsolute(path)) {
-						path = Path::append(Path::withoutLastComponent(getXMLFilename()), Path::lastComponent(path));
+					std::string mpath = XML::getTextString(child2);
+					if(!Path::isAbsolute(mpath)) {
+						mpath = Path::append(Path::withoutLastComponent(path), Path::lastComponent(mpath));
 					}
-					int ret = GameController::addMappingFile(path);
+					int ret = GameController::addMappingFile(mpath);
 					if(ret >= 0) {
 						LOG_DEBUG << "Config: added " << ret << " mappings from: "
-						          << "\"" << path << "\"" << std::endl;
+						          << "\"" << mpath << "\"" << std::endl;
 					}
 				}
 				else {
@@ -344,29 +369,39 @@ bool Config::readXML(XMLElement *e) {
 				child2 = child2->NextSiblingElement();
 			}
 		}
-		return true;
 	}
+
+	if(doc) {delete doc;}
+	return true;
+
+error:
+	if(doc) {delete doc;}
 	return false;
+}
+
+void Config::print() {
+	LOG << "listening port:	 " << listeningPort << std::endl
+	    << "listening multicast group: " << (listeningMulticast == "" ? "none" : listeningMulticast) << std::endl
+	    << "listening addr:  " << "/" << PACKAGE << std::endl
+	    << "sending ip:      " << sendingIp << std::endl
+	    << "sending port:    " << sendingPort << std::endl
+	    << "sending address for notifications: " << notificationAddress << std::endl
+	    << "sending address for devices:       " << deviceAddress << std::endl
+	    << "print events?:   " << (printEvents ? "yes" : "no") << std::endl
+	    << "joysticks only?: " << (joysticksOnly ? "yes" : "no") << std::endl
+	    << "sleep us:        " << sleepUS << std::endl
+	    << "device addresses: " << m_deviceAddresses.size() << std::endl;
+	int index = 0;
+	AddressMap::iterator iter;
+	for(auto &dev : m_deviceAddresses) {
+		LOG << "  " << index << " " << dev.first
+		    << " : " << dev.second << std::endl;
+		++index;
+	}
 }
 
 // PRIVATE
 
 Config::Config() :
-	XMLObject(PACKAGE),
 	notificationAddress((std::string)"/"+PACKAGE+"/notifications"),
-	deviceAddress((std::string)"/"+PACKAGE+"/devices") {
-
-	// attach config values to xml attributes
-	subscribeXMLAttribute("listening", "multicast", XML_TYPE_STRING, &listeningMulticast);
-	subscribeXMLAttribute("listening", "port", XML_TYPE_UINT, &listeningPort);
-	
-	subscribeXMLAttribute("sending", "ip", XML_TYPE_STRING, &sendingIp);
-	subscribeXMLAttribute("sending", "port", XML_TYPE_UINT, &sendingPort);
-	
-	subscribeXMLAttribute("osc", "notificationAddress", XML_TYPE_STRING, &notificationAddress);
-	subscribeXMLAttribute("osc", "deviceAddress", XML_TYPE_STRING, &deviceAddress);
-	
-	subscribeXMLAttribute("config", "printEvents", XML_TYPE_BOOL, &printEvents);
-	subscribeXMLAttribute("config", "joysticksOnly", XML_TYPE_BOOL, &joysticksOnly);
-	subscribeXMLAttribute("config", "sleepUS", XML_TYPE_UINT, &sleepUS);
-}
+	deviceAddress((std::string)"/"+PACKAGE+"/devices") {}

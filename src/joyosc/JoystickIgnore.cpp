@@ -24,6 +24,65 @@
 
 using namespace tinyxml2;
 
+bool JoystickIgnore::readXML(XMLElement *e) {
+	bool loaded = false;
+	std::pair<Set::iterator,bool> ret;
+	std::string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
+	XMLElement *child = e->FirstChildElement();
+	while(child != NULL) {
+		int which  = XML::getAttrInt(child, "id", -1);
+		if(which > -1) {
+			if((std::string)child->Name() == "button") {
+				ret = buttons.insert(which);
+				if(!ret.second) {
+					LOG_WARN << "Joystick " << devName << ": "
+					         << "already ignoring button " << which << std::endl;
+				}
+				LOG_DEBUG << "Joystick " << devName << ": "
+				          << "ignoring button " << which << std::endl;
+				loaded = true;
+			}
+			else if((std::string)child->Name() == "axis") {
+				ret = axes.insert(which);
+				if(!ret.second) {
+					LOG_WARN << "Joystick " << devName << ": "
+					         << "already ignoring axis " << which << std::endl;
+				}
+				LOG_DEBUG << "Joystick " << devName << ": "
+				          << "ignoring axis " << which << std::endl;
+				loaded = true;
+			}
+			else if((std::string)child->Name() == "ball") {
+				ret = balls.insert(which);
+				if(!ret.second) {
+					LOG_WARN << "Joystick " << devName << ": "
+					         << "already ignoring ball " << which << std::endl;
+				}
+				LOG_DEBUG << "Joystick " << devName << ": "
+				          << "ignoring ball " << which << std::endl;
+				loaded = true;
+			}
+			else if((std::string)child->Name() == "hat") {
+				ret = balls.insert(which);
+				if(!ret.second) {
+					LOG_WARN << "Joystick " << devName << ": "
+					         << "already ignoring hat " << which << std::endl;
+				}
+				LOG_DEBUG << "Joystick " << devName << ": "
+				          << "ignoring hat " << which << std::endl;
+				loaded = true;
+			}
+		}
+		else {
+			LOG_WARN << "Joystick " << devName << ": "
+			         << "ignoring invalid ignore xml element: \""
+			         << child->Name() << "\"" << std::endl;
+		}
+		child = child->NextSiblingElement();
+	}
+	return loaded;
+}
+
 void JoystickIgnore::check(Joystick *joystick) {
 	if(!joystick) {
 		return;
@@ -109,65 +168,4 @@ void JoystickIgnore::print() {
 	for(iter = hats.begin(); iter != hats.end(); ++iter) {
 		LOG << "  ignore hat: " << (*iter) << std::endl;
 	}
-}
-
-// PROTECTED
-
-bool JoystickIgnore::readXML(XMLElement *e) {
-	bool loaded = false;
-	std::pair<Set::iterator,bool> ret;
-	std::string devName = XML::getAttrString(e->Parent()->ToElement(), "name", "unknown");
-	XMLElement *child = e->FirstChildElement();
-	while(child != NULL) {
-		int which  = XML::getAttrInt(child, "id", -1);
-		if(which > -1) {
-			if((std::string)child->Name() == "button") {
-				ret = buttons.insert(which);
-				if(!ret.second) {
-					LOG_WARN << "Joystick " << devName << ": "
-					         << "already ignoring button " << which << std::endl;
-				}
-				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "ignoring button " << which << std::endl;
-				loaded = true;
-			}
-			else if((std::string)child->Name() == "axis") {
-				ret = axes.insert(which);
-				if(!ret.second) {
-					LOG_WARN << "Joystick " << devName << ": "
-					         << "already ignoring axis " << which << std::endl;
-				}
-				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "ignoring axis " << which << std::endl;
-				loaded = true;
-			}
-			else if((std::string)child->Name() == "ball") {
-				ret = balls.insert(which);
-				if(!ret.second) {
-					LOG_WARN << "Joystick " << devName << ": "
-					         << "already ignoring ball " << which << std::endl;
-				}
-				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "ignoring ball " << which << std::endl;
-				loaded = true;
-			}
-			else if((std::string)child->Name() == "hat") {
-				ret = balls.insert(which);
-				if(!ret.second) {
-					LOG_WARN << "Joystick " << devName << ": "
-					         << "already ignoring hat " << which << std::endl;
-				}
-				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "ignoring hat " << which << std::endl;
-				loaded = true;
-			}
-		}
-		else {
-			LOG_WARN << "Joystick " << devName << ": "
-			         << "ignoring invalid ignore xml element: \""
-			         << child->Name() << "\"" << std::endl;
-		}
-		child = child->NextSiblingElement();
-	}
-	return loaded;
 }

@@ -26,13 +26,16 @@
 
 /// \class GameControllerIgnore
 /// \brief defines which game controller button & axis names to ignore
-class GameControllerIgnore : public tinyxml2::XMLObject {
+class GameControllerIgnore {
 
 	public:
 		
 		typedef std::set<std::string> Map;
 		
-		GameControllerIgnore() : tinyxml2::XMLObject("ignore") {}
+		GameControllerIgnore() {}
+
+		/// load from XML element, returns true on success
+		bool readXML(tinyxml2::XMLElement *e);
 	
 		Map buttons; ///< button names to ignore
 		Map axes; ///< axis names to ignore
@@ -46,9 +49,4 @@ class GameControllerIgnore : public tinyxml2::XMLObject {
 	
 		/// print the current ignore values
 		void print();
-		
-	protected:
-	
-		/// XMLObject callback
-		bool readXML(tinyxml2::XMLElement *e);
 };

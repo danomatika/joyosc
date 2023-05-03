@@ -27,7 +27,7 @@
 #include <set>
 
 #include <lopack/lopack.h>
-#include <tinyobject/tinyobject.h>
+#include <tinyobject/XML.h>
 
 class GameControllerRemapping;
 class GameControllerIgnore;
@@ -42,7 +42,7 @@ class JoystickIgnore;
 ///
 /// no initialization is needed, just use Config::instance() to access
 /// member functions & data
-class Config : public tinyxml2::XMLObject {
+class Config {
 	
 	public:
 
@@ -114,13 +114,11 @@ class Config : public tinyxml2::XMLObject {
 		/// parse the commandline options & load a given config file
 		bool parseCommandLine(int argc, char **argv);
 
+		/// load from an XML file, returns true on success or false on failure
+		bool loadXMLFile(const std::string &path);
+
 		/// print the current config values
 		void print();
-
-	protected:
-	
-		/// XMLObject callback
-		bool readXML(tinyxml2::XMLElement *e);
 
 	private:
 		

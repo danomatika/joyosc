@@ -26,14 +26,17 @@
 
 /// \class GameControllerRemapping
 /// \brief defines game controller button & axis remappings
-class GameControllerRemapping : public tinyxml2::XMLObject {
+class GameControllerRemapping { // : public tinyxml2::XMLObject {
 
 	public:
 		
 		typedef std::map<std::string,std::string> Map;
 		
-		GameControllerRemapping() : tinyxml2::XMLObject("remap") {}
+		GameControllerRemapping() {}
 		
+		/// load from XML element, returns true on success
+		bool readXML(tinyxml2::XMLElement *e);
+
 		/// mappings from -> to
 		/// with key: from & value: to
 		Map buttons;
@@ -48,9 +51,4 @@ class GameControllerRemapping : public tinyxml2::XMLObject {
 	
 		/// print the current mappings
 		void print();
-		
-	protected:
-	
-		/// XMLObject callback
-		bool readXML(tinyxml2::XMLElement *e);
 };
