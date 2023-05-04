@@ -3,7 +3,7 @@ joyosc
 
 joystick & game controller hid device event to Open Sound Control daemon and associated tools
 
-Copyright (c) [Dan Wilcox](danomatika.com) 2007 - 2021
+Copyright (c) [Dan Wilcox](danomatika.com) 2007 - 2023
 
 DESCRIPTION
 -----------
@@ -147,28 +147,9 @@ By default, the configure script installs to `/usr/local`. To change this behavi
 
     ./configure --prefix=/path/to/install/dir
 
-If using Macports on macOS, it is recommended to use the Macports default prefix of `/opt/local`. Homebrew installs to `/usr/local` so you won't need to set the prefix.
+### macOS
 
-### lopack & tinyobject libraries
-
-Two helper libraries are included with joysoc in the `lib` folder: lopack & tinyobject. By default, these libraries are built and installed along with joyosc. If you happen to have either installed separately (not likely), you can disable the use of the local library when building via:
-
-    ./configure --without-local-lopack --without-local-tinyobject
-
-### Loading shared libraries error
-
-On some Linux systems, the install may finish successfully, but running joyosc will fail with the following error:
-
-~~~
-$ joyosc
-joyosc: error while loading shared libraries: liblopack.so.0: cannot open shared object file: No such file or directory
-~~~
-
-This can happen if installing to `/usr/local` and can be fixed by regenerating the system's lib cache by running:
-
-```shell
-sudo ldconfig
-```
+If using Macports on macOS, it is recommended to use the Macports default prefix of `/opt/local`. Similarly, new Homebrew installs (Apple Silicon) also use `/opt/local`. In the case of older Homebrew installs (Intel), `/usr/local` is used so you won't need to set the prefix. To check the Hombrew prefix, use `brew --prefix`.
 
 USAGE
 -----
