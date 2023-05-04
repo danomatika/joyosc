@@ -1,3 +1,15 @@
+2023-05-05 Dan Wilcox <danomatika@gmail.com>
+
+	0.5.0
+
+	* refactored to remove lopack and tinyobject lib dependencies (1)
+	* fixed controller axis deadzone added as joystick axis deadzone
+	* added override for game controller variable trigger buttons as axes via
+	  <trigger asAxes="true"> in config file (requested by polymorphicengine)
+
+	1: make sure to run "make uninstall" using a previous version source dist to
+	   ensure both are removed from your system before building and installing
+
 2021-08-19 Dan Wilcox <danomatika@gmail.com>
 
 	0.4.5
