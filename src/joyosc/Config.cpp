@@ -45,7 +45,7 @@ Config& Config::instance() {
 	return *pointerToTheSingletonInstance;
 }
 
-std::string Config::getDeviceAddress(std::string deviceName) {
+std::string Config::getDeviceAddress(const std::string &deviceName) {
 	AddressMap::iterator iter = m_deviceAddresses.find(deviceName);
 	if(iter != m_deviceAddresses.end()) {
 		return iter->second;
@@ -53,7 +53,7 @@ std::string Config::getDeviceAddress(std::string deviceName) {
 	return "";
 }
 
-unsigned int Config::getControllerAxisDeadZone(std::string deviceName) {
+unsigned int Config::getControllerAxisDeadZone(const std::string &deviceName) {
 	AxisMap::iterator iter = m_controllerAxisDeadZones.find(deviceName);
 	if(iter != m_controllerAxisDeadZones.end()) {
 		return iter->second;
@@ -61,7 +61,7 @@ unsigned int Config::getControllerAxisDeadZone(std::string deviceName) {
 	return 0;
 }
 
-bool Config::getControllerTriggersAsAxes(std::string deviceName) {
+bool Config::getControllerTriggersAsAxes(const std::string &deviceName) {
 	BoolMap::iterator iter = m_controllerTriggersAsAxes.find(deviceName);
 	if(iter != m_controllerTriggersAsAxes.end()) {
 		return iter->second;
@@ -69,7 +69,7 @@ bool Config::getControllerTriggersAsAxes(std::string deviceName) {
 	return false;
 }
 
-GameControllerRemapping* Config::getControllerRemapping(std::string deviceName) {
+GameControllerRemapping* Config::getControllerRemapping(const std::string &deviceName) {
 	GCRemappingMap::iterator iter = m_controllerRemappings.find(deviceName);
 	if(iter != m_controllerRemappings.end()) {
 		return iter->second;
@@ -77,7 +77,7 @@ GameControllerRemapping* Config::getControllerRemapping(std::string deviceName) 
 	return nullptr;
 }
 
-GameControllerIgnore* Config::getControllerIgnore(std::string deviceName) {
+GameControllerIgnore* Config::getControllerIgnore(const std::string &deviceName) {
 	GCIgnoreMap::iterator iter = m_controllerIgnores.find(deviceName);
 	if(iter != m_controllerIgnores.end()) {
 		return iter->second;
@@ -85,7 +85,7 @@ GameControllerIgnore* Config::getControllerIgnore(std::string deviceName) {
 	return nullptr;
 }
 
-unsigned int Config::getJoystickAxisDeadZone(std::string deviceName) {
+unsigned int Config::getJoystickAxisDeadZone(const std::string &deviceName) {
 	AxisMap::iterator iter = m_joystickAxisDeadZones.find(deviceName);
 	if(iter != m_joystickAxisDeadZones.end()) {
 		return iter->second;
@@ -93,7 +93,7 @@ unsigned int Config::getJoystickAxisDeadZone(std::string deviceName) {
 	return 0;
 }
 
-JoystickRemapping* Config::getJoystickRemapping(std::string deviceName) {
+JoystickRemapping* Config::getJoystickRemapping(const std::string &deviceName) {
 	JSRemappingMap::iterator iter = m_joystickRemappings.find(deviceName);
 	if(iter != m_joystickRemappings.end()) {
 		return iter->second;
@@ -101,7 +101,7 @@ JoystickRemapping* Config::getJoystickRemapping(std::string deviceName) {
 	return nullptr;
 }
 
-JoystickIgnore* Config::getJoystickIgnore(std::string deviceName) {
+JoystickIgnore* Config::getJoystickIgnore(const std::string &deviceName) {
 	JSIgnoreMap::iterator iter = m_joystickIgnores.find(deviceName);
 	if(iter != m_joystickIgnores.end()) {
 		return iter->second;
@@ -321,7 +321,7 @@ void Config::readXMLController(XMLElement *e) {
 		if((std::string)child->Name() == "triggers") {
 			bool asAxes = false;
 			if(child->QueryBoolAttribute("asAxes", &asAxes) == XML_SUCCESS) {
-				auto axesRet = m_controllerTriggersAsAxes.insert(std::make_pair(name, asAxes));
+				m_controllerTriggersAsAxes.insert(std::make_pair(name, asAxes));
 				LOG_DEBUG << "GameController " << name << ": "
 				          << "triggers as axes " << asAxes << std::endl;
 			}

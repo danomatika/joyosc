@@ -80,42 +80,42 @@ class Config {
 		/// get the osc address for a given device name
 		/// deviceName is as a string ie "Logitech Logitech Dual Action"
 		/// returns mapped device addr on success, empty string "" if not found
-		std::string getDeviceAddress(std::string deviceName);
+		std::string getDeviceAddress(const std::string &deviceName);
 	
 		/// get the axis dead zone threshold for a given game controller name
 		/// deviceName is a string ie "Logitech Logitech Dual Action"
 		/// returns dead zone value on success, 0 if not found
-		unsigned int getControllerAxisDeadZone(std::string deviceName);
+		unsigned int getControllerAxisDeadZone(const std::string &deviceName);
 
 		/// get the triggers as axes state for a given game controller name
 		/// deviceName is a string ie "Logitech Logitech Dual Action"
 		/// returns state on success, false if not found
-		bool getControllerTriggersAsAxes(std::string deviceName);
+		bool getControllerTriggersAsAxes(const std::string &deviceName);
 		
 		/// get the input remapping for a given game controller device name
 		/// deviceName is a string ie "Logitech Logitech Dual Action"
 		/// returns joystick remapping on success, nullptr if not found
-		GameControllerRemapping* getControllerRemapping(std::string deviceName);
+		GameControllerRemapping* getControllerRemapping(const std::string &deviceName);
 		
 		/// get the button, axis, etc ignores for a given game controller  name
 		/// deviceName is a string ie "Logitech Logitech Dual Action"
 		/// returns joystick ignore on success, nullptr if not found
-		GameControllerIgnore* getControllerIgnore(std::string deviceName);
+		GameControllerIgnore* getControllerIgnore(const std::string &deviceName);
 
 		/// get the axis dead zone threshold for a given joystick device name
 		/// deviceName is a string ie "Logitech Logitech Dual Action"
 		/// returns dead zone value on success, 0 if not found
-		unsigned int getJoystickAxisDeadZone(std::string deviceName);
+		unsigned int getJoystickAxisDeadZone(const std::string &deviceName);
 		
 		/// get the remapping for a given joystick device name
 		/// deviceName is a string ie "Logitech Logitech Dual Action"
 		/// returns joystick remapping on success, nullptr if not found
-		JoystickRemapping* getJoystickRemapping(std::string deviceName);
+		JoystickRemapping* getJoystickRemapping(const std::string &deviceName);
 		
 		/// get the button, axis, etc ignores for a given joystick device name
 		/// deviceName is a string ie "Logitech Logitech Dual Action"
 		/// returns joystick ignore on success, nullptr if not found
-		JoystickIgnore* getJoystickIgnore(std::string deviceName);
+		JoystickIgnore* getJoystickIgnore(const std::string &deviceName);
 	
 	/// \section Actions
 	

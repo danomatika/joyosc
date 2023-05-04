@@ -54,7 +54,7 @@
 			             and joyosc treats them as binary buttons by default,
 			             disable this by setting asAxes to true
 			-->
-			<!-- <triggers asAxes="true"/> -->
+			<triggers asAxes="true"/>
 			
 			<!-- remap buttons, axes, etc; useful when trying to
 			     match different controllers to send the same button presses
