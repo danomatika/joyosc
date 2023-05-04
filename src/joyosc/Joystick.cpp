@@ -118,7 +118,7 @@ bool Joystick::handleEvent(void *data) {
 	if(data == nullptr) {
 		return false;
 	}
-	osc::OscSender& sender = m_config.getOscSender();
+	lo::Address *sender = m_config.getOscSender();
 	SDL_Event *event = (SDL_Event *)data;
 	switch(event->type) {
 		
@@ -129,11 +129,9 @@ bool Joystick::handleEvent(void *data) {
 			if(m_remapping) {
 				event->jbutton.button = m_remapping->mappingForButton(event->jbutton.button);
 			}
-			
-			sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/button")
-			       << event->jbutton.button << event->jbutton.state
-			       << osc::EndMessage();
-			sender.send();
+
+			sender->send(m_config.deviceAddress + m_oscAddress + "/button",
+				"ii", (int)event->jbutton.button, (int)event->jbutton.state);
 
 			if(m_config.printEvents) {
 				LOG << m_oscAddress << " " << m_devName
@@ -150,11 +148,9 @@ bool Joystick::handleEvent(void *data) {
 			if(m_remapping) {
 				event->jbutton.button = m_remapping->mappingForButton(event->jbutton.button);
 			}
-			
-			sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/button")
-			       << event->jbutton.button << event->jbutton.state
-			       << osc::EndMessage();
-			sender.send();
+
+			sender->send(m_config.deviceAddress + m_oscAddress + "/button",
+				"ii", (int)event->jbutton.button, (int)event->jbutton.state);
 
 			if(m_config.printEvents) {
 				LOG << m_oscAddress << " " << m_devName
@@ -182,12 +178,10 @@ bool Joystick::handleEvent(void *data) {
 			if(m_prevAxisValues[event->jaxis.axis] == value) {
 				return true;
 			}
-			
-			sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/axis")
-			       << event->jaxis.axis << value
-			       << osc::EndMessage();
-			sender.send();
-			
+
+			sender->send(m_config.deviceAddress + m_oscAddress + "/axis",
+				"ii", (int)event->jaxis.axis, value);
+
 			// store value
 			m_prevAxisValues[event->jaxis.axis] = value;
 
@@ -206,11 +200,9 @@ bool Joystick::handleEvent(void *data) {
 			if(m_remapping) {
 				event->jball.ball = m_remapping->mappingForBall(event->jball.ball);
 			}
-				
-			sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/ball")
-			       << event->jball.ball << event->jball.xrel << event->jball.yrel
-			       << osc::EndMessage();
-			sender.send();
+
+			sender->send(m_config.deviceAddress + m_oscAddress + "/ball",
+				"iii", (int)event->jball.ball, (int)event->jball.xrel, (int)event->jball.yrel);
 
 			if(m_config.printEvents) {
 				LOG << m_oscAddress << " " << m_devName
@@ -228,11 +220,9 @@ bool Joystick::handleEvent(void *data) {
 			if(m_remapping) {
 				event->jhat.hat = m_remapping->mappingForHat(event->jhat.hat);
 			}
-				
-			sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/hat")
-			       << event->jhat.hat << event->jhat.value
-			       << osc::EndMessage();
-			sender.send();
+
+			sender->send(m_config.deviceAddress + m_oscAddress + "/hat",
+				"ii", (int)event->jhat.hat, (int)event->jhat.value);
 
 			if(m_config.printEvents) {
 				LOG << m_oscAddress << " " << m_devName

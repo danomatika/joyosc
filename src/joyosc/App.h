@@ -27,7 +27,7 @@
 
 /// \class App
 /// \brief the main application class
-class App : public osc::OscObject {
+class App {
 
 	public:
 
@@ -42,8 +42,10 @@ class App : public osc::OscObject {
 	protected:
 
 		/// received osc message callback
-		bool processOscMessage(const osc::ReceivedMessage &message,
-							   const osc::MessageSource &source);
+		int OscReceived(const std::string &address, const lo::Message &message);
+
+		/// osc server error callback
+		static void OscError(int num, const char *msg, const char *where);
 
 		/// signal callback
 		static void signalExit(int signal);
@@ -53,6 +55,6 @@ class App : public osc::OscObject {
 		DeviceManager m_deviceManager; ///< controller & joystick device manager
 		
 		Config &m_config; ///< reference to global config
-		osc::OscReceiver &m_oscReceiver; ///< reference to global osc receiver
-		osc::OscSender &m_oscSender; ///< reference to global osc sender
+		lo::ServerThread *m_oscReceiver = nullptr; ///< osc receiver
+		lo::Address *m_oscSender = nullptr; ///< osc sender
 };

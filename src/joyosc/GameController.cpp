@@ -121,7 +121,6 @@ bool GameController::handleEvent(void *data) {
 	if(data == nullptr) {
 		return false;
 	}
-	osc::OscSender& sender = m_config.getOscSender();
 	SDL_Event *event = (SDL_Event *)data;
 	switch(event->type) {
 		
@@ -162,10 +161,9 @@ bool GameController::handleEvent(void *data) {
 				return true;
 			}
 			
-			sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/axis")
-			       << axis << value
-			       << osc::EndMessage();
-			sender.send();
+			lo::Address *sender = m_config.getOscSender();
+			sender->send(m_config.deviceAddress + m_oscAddress + "/axis",
+				"si", axis.c_str(), value);
 			
 			// store value
 			m_prevAxisValues[event->caxis.axis] = value;
@@ -265,11 +263,9 @@ bool GameController::buttonPressed(std::string &button, int value) {
 		button = m_remapping->mappingForButton(button);
 	}
 
-	osc::OscSender &sender = m_config.getOscSender();
-	sender << osc::BeginMessage(m_config.deviceAddress + m_oscAddress + "/button")
-	       << button << value
-	       << osc::EndMessage();
-	sender.send();
+	lo::Address *sender = m_config.getOscSender();
+	sender->send(m_config.deviceAddress + m_oscAddress + "/button",
+		"si", button.c_str(), value);
 	
 	if(m_config.printEvents) {
 		LOG << m_oscAddress << " " << m_devName

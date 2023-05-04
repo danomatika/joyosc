@@ -1,6 +1,3 @@
-[submodule "lib/lopack"]
-	path = lib/lopack
-	url = https://github.com/danomatika/lopack.git
 [submodule "lib/cpphelpers"]
 	path = lib/cpphelpers
 	url = https://github.com/danomatika/cpphelpers.git

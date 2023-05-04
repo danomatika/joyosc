@@ -59,45 +59,6 @@ PKG_CHECK_MODULES(TINYXML2, tinyxml2, [],
 	AC_MSG_ERROR([tinyxml2 library >= 6.0.0 not found]))
 
 #########################################
-##### External Libraries #####
-
-# external libraries with configure scripts
-#
-# since these are included in the distribution, check to see if they are already
-# installed in the system before building and installing
-#
-# also set automake conditional variables for use in lib/libs.mk
-
-# add include path for AC_CHECK_HEADER
-ORIG_CXXFLAGS="$CXXFLAGS"
-CXXFLAGS="-I${prefix}/include $CXXFLAGS"
-
-# lopack
-AC_MSG_CHECKING([whether to build & install local lopack library])
-AC_ARG_WITH([local-lopack],
-	[AS_HELP_STRING([--with-local-lopack],
-		[build & install local lopack lib [default=yes]])],
-	[with_local_lopack="$withval"],
-	[with_local_lopack="yes"])
-AC_MSG_RESULT([$with_local_lopack])
-
-if test x"$with_local_lopack" = x"yes"; then
-	AC_CONFIG_SUBDIRS([lib/lopack])
-else
-	AC_CHECK_HEADER([lopack/lopack.h], [],
-		AC_MSG_ERROR([lopack libary not found]))
-fi
-AM_CONDITIONAL([LOCAL_LOPACK], [test x"$with_local_lopack" = x"yes"])
-
-# reset CXXFLAGS if building with local libs
-if test x"$with_local_lopack" = x"yes" ; then
-	if test x"$with_local_tinyobject" = x"yes" ; then 
-		CXXFLAGS="$ORIG_CXXFLAGS"
-	fi
-fi
-ORIG_CXXFLAGS=
-
-#########################################
 ##### Build options #####
 
 # debug build switch
@@ -143,6 +104,5 @@ AC_MSG_RESULT([
 	Source directory:     $srcdir
 	Installation prefix:  $prefix
 	C++ compiler:         $CXX $CXXFLAGS $LDFLAGS
-	Local lopack:         $with_local_lopack
 	Debug build:          $enable_debug
 ])

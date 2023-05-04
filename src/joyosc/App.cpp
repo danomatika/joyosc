@@ -25,14 +25,10 @@
 #include <signal.h> // signal handling
 #include <unistd.h>
 
-using namespace osc;
-
 static App *appPtr; // global app this pointer
 
-App::App() : OscObject((std::string)"/"+PACKAGE),
-	m_config(Config::instance()),
-	m_oscReceiver(Config::instance().getOscReceiver()),
-	m_oscSender(Config::instance().getOscSender()) {
+App::App() :
+	m_config(Config::instance()) {
 	appPtr = this;
 }
 		
@@ -42,22 +38,25 @@ void App::run() {
 	// setup osc interface
 	try {
 		if(m_config.listeningMulticast == "") {
-			m_oscReceiver.setup(m_config.listeningPort);
+			m_oscReceiver = new lo::ServerThread(m_config.listeningPort, 0, &App::OscError);
 		}
 		else {
-			m_oscReceiver.setupMulticast(m_config.listeningMulticast, m_config.listeningPort);
+			m_oscReceiver = new lo::ServerThread(m_config.listeningMulticast, m_config.listeningPort, "", "", &App::OscError);
 		}
-		m_oscSender.setup(m_config.sendingIp, m_config.sendingPort);
-		m_oscReceiver.addOscObject(this);
+		m_oscReceiver->add_method(nullptr, nullptr, [this](const char *address, const lo::Message &message) {
+			return this->OscReceived(std::string(address), message);
+		});
+		m_oscSender = new lo::Address(m_config.sendingIp, m_config.sendingPort);
+		m_config.setOscSender(m_oscSender);
 	}
-	catch(std::exception &e) {
-		LOG_ERROR << e.what() << std::endl;
+	catch(lo::Invalid &e) {
+		exit(EXIT_FAILURE);
+	}
+	catch(lo::Error &e) {
 		exit(EXIT_FAILURE);
 	}
 
-	m_oscSender << BeginMessage(m_config.notificationAddress + "/startup")
-	            << EndMessage();
-	m_oscSender.send();
+	m_oscSender->send(m_config.notificationAddress + "/startup");
 
 	// set signal handling
 	signal(SIGTERM, signalExit); // terminate
@@ -70,15 +69,11 @@ void App::run() {
 	m_deviceManager.openAll();
 	m_deviceManager.sendDeviceEvents = true;
 
-	m_oscSender << BeginMessage(m_config.notificationAddress + "/ready")
-	            << EndMessage();
-	m_oscSender.send();
+	m_oscSender->send(m_config.notificationAddress + "/ready");
 	
+	m_oscReceiver->start();
 	m_bRun = true;
 	while(m_bRun) {
-
-		// handle any incoming osc messages
-		m_config.getOscReceiver().handleMessages();
 		
 		// handle any joystick events
 		SDL_Event event;
@@ -95,27 +90,34 @@ void App::run() {
 		// and 2 cents for the scheduler ...
 		usleep(m_config.sleepUS);
 	}
+	m_oscReceiver->stop();
 	
 	// close all opened devices
 	m_deviceManager.sendDeviceEvents = false;
 	m_deviceManager.closeAll();
 	
-	m_oscSender << BeginMessage(m_config.notificationAddress + "/shutdown")
-				<< EndMessage();
-	m_oscSender.send();
+	m_oscSender->send(m_config.notificationAddress + "/shutdown");
 }
 
 // PROTECTED
 
-bool App::processOscMessage(const ReceivedMessage &message, const MessageSource &source) {
-	if(message.address() == oscRootAddress + "/quit") {
+int App::OscReceived(const std::string &address, const lo::Message &message) {
+	if(address == PACKAGE "/quit") {
 		stop();
 		LOG << std::endl << "	" << PACKAGE << ": quit message received, exiting ..." << std::endl;
-		return true;
+		return 0; // handled
 	}
-	LOG << std::endl << "	" << PACKAGE << ": unknown message received: "
-	    << message.address() << " " << message.types() << std::endl;
-	return false;
+	LOG << PACKAGE << ": unknown message received: "
+	    << address << " " << message.types() << std::endl;
+	return 1; // not handled
+}
+
+void App::OscError(int num, const char *msg, const char *where) {
+	std::stringstream stream;
+	stream << "liblo server thread error " << num;
+	if(msg) {stream << ": " << msg;}     // might be NULL
+	if(where) {stream << ": " << where;} // might be NULL
+	LOG_ERROR << stream.str() << std::endl;
 }
 
 void App::signalExit(int signal) {

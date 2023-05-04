@@ -40,9 +40,8 @@ bool DeviceManager::open(int sdlIndex) {
 		if(gc->open(&indices)) {
 			m_devices[gc->getInstanceID()] = gc;
 			if(sendDeviceEvents) {
-				config.getOscSender() << osc::BeginMessage(config.notificationAddress + "/open")
-									  << "controller" << indices.index << osc::EndMessage();
-				config.getOscSender().send();
+				config.getOscSender()->send(config.notificationAddress + "/open",
+					"si", "controller", indices.index);
 			}
 			return true;
 		}
@@ -53,9 +52,8 @@ bool DeviceManager::open(int sdlIndex) {
 			m_devices[js->getInstanceID()] = js;
 			if(sendDeviceEvents) {
 				Config &config = Config::instance();
-				config.getOscSender() << osc::BeginMessage(config.notificationAddress + "/open")
-									  << "joystick" << indices.index << osc::EndMessage();
-				config.getOscSender().send();
+				config.getOscSender()->send(config.notificationAddress + "/open",
+					"si", "joystick", indices.index);
 			}
 			return true;
 		}
@@ -68,17 +66,16 @@ bool DeviceManager::close(SDL_JoystickID instanceID) {
 		Device *js = m_devices[instanceID];
 		if(sendDeviceEvents) {
 			Config &config = Config::instance();
-			config.getOscSender() << osc::BeginMessage(config.notificationAddress + "/close");
 			switch(js->getDeviceType()) {
 				case Device::GAMECONTROLLER:
-					config.getOscSender() << "controller" << ((GameController *)js)->getIndex();
+					config.getOscSender()->send(config.notificationAddress + "/close",
+						"si", "controller", ((GameController *)js)->getIndex());
 					break;
 				default: // JOYSTICK, should never be UNKNOWN
-					config.getOscSender() << "joystick" << ((Joystick *)js)->getIndex();
+					config.getOscSender()->send(config.notificationAddress + "/close",
+						"si", "joystick", ((Joystick *)js)->getIndex());
 					break;
 			}
-			config.getOscSender() << osc::EndMessage();
-			config.getOscSender().send();
 		}
 		js->close();
 		delete js;

@@ -23,10 +23,13 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <map>
 #include <set>
 
-#include <lopack/lopack.h>
+#define LO_USE_EXCEPTIONS
+#include <lo/lo.h>
+#include <lo/lo_cpp.h>
 #include <tinyxml2.h>
 
 class GameControllerRemapping;
@@ -70,9 +73,9 @@ class Config {
 
 	/// \section Getters
 
-		/// get a reference to the OscSender and OscReceiver
-		inline osc::OscSender& getOscSender() {return m_oscSender;}
-		inline osc::OscReceiver& getOscReceiver() {return m_oscReceiver;}
+		/// get/set the OscSender
+		inline lo::Address* getOscSender() {return m_oscSender;}
+		inline void setOscSender(lo::Address *sender) {m_oscSender = sender;}
 
 		/// get the osc address for a given device name
 		/// deviceName is as a string ie "Logitech Logitech Dual Action"
@@ -154,8 +157,7 @@ class Config {
 		JSRemappingMap m_joystickRemappings; ///< joystick remappings
 		JSIgnoreMap m_joystickIgnores; ///< joystick button, axis, etc ignores
 		
-		osc::OscSender m_oscSender; ///< global osc sender
-		osc::OscReceiver m_oscReceiver; ///< global osc receiver
+		lo::Address *m_oscSender = nullptr; ///< global osc sender
 		
 		// hide all the constructors, copy functions here
 		Config();                            // singleton constructor
