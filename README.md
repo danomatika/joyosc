@@ -40,19 +40,16 @@ On the macOS command line, use Homebrew to install libraries, then build and ins
     make
     make install
 
-and the same goes for Ubuntu/Debian with the additional call to `ldconfig` or shared helper libraries may not be found after install\*: 
+and the same goes for Ubuntu/Debian:
 
     sudo apt-get install libsdl2-dev liblo-dev libtinyxml2-dev
     ./configure
     make
     sudo make install
-    sudo ldconfig
 
 If everything finished successfully, you're good to go.
 
 If you're using Pure Data, check out the joyosc abstraction library in `data/pd` and installed into `$(prefix)/share/doc/joyosc/pd/joyosc`.
-
-\*: See the "Loading shared libraries error" section for more info
 
 BUILD REQUIREMENTS
 ------------------
