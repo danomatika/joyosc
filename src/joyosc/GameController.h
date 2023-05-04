@@ -91,7 +91,11 @@ class GameController : public Device {
 		/// set/get axis dead zone, used to set an ignore threshold around 0
 		void setAxisDeadZone(unsigned int zone);
 		inline int getAxisDeadZone() {return m_axisDeadZone;}
-	
+
+		/// set/get triggers as axes, default: false for buttons
+		void setTriggersAsAxes(bool asAxes);
+		inline int getTriggersAsAxes() {return m_triggersAsAxes;}
+
 		/// set/get button. axis, etc remappings
 		void setRemapping(GameControllerRemapping *remapping);
 		inline GameControllerRemapping* getRemapping() {return m_remapping;}
@@ -119,6 +123,7 @@ class GameController : public Device {
 	
 		unsigned int m_axisDeadZone = 3200; ///< axis dead zone amount +/- center pos
 		std::vector<int16_t> m_prevAxisValues; ///< prev axis values to cancel repeats
+		bool m_triggersAsAxes = false; ///< treat left & right triggers as axes? otherwise buttons
 	
 		GameControllerRemapping *m_remapping = nullptr; ///< joystick remapping values
 		GameControllerIgnore *m_ignore = nullptr; ///< button, axis, etc ignores

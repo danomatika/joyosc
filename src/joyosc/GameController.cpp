@@ -70,27 +70,30 @@ bool GameController::open(void *data) {
 	}
 	
 	// set axis dead zone if one exists
-	int axisDeadZone = Config::instance().getControllerAxisDeadZone(getDevName());
+	int axisDeadZone = m_config.getControllerAxisDeadZone(getDevName());
 	if(axisDeadZone > 0) {
 		setAxisDeadZone(axisDeadZone);
 	}
+
+	// triggers as axes override
+	m_triggersAsAxes = m_config.getControllerTriggersAsAxes(getDevName());
 	
 	// set remapping if one exists
-	GameControllerRemapping *remap = Config::instance().getControllerRemapping(getDevName());
+	GameControllerRemapping *remap = m_config.getControllerRemapping(getDevName());
 	if(remap) {
 		setRemapping(remap);
 		printRemapping();
 	}
 	
 	// set ignore if one exists
-	GameControllerIgnore *ignore = Config::instance().getControllerIgnore(getDevName());
+	GameControllerIgnore *ignore = m_config.getControllerIgnore(getDevName());
 	if(ignore) {
 		setIgnore(ignore);
 		printIgnores();
 	}
 	
 	LOG << "GameController: opened " << getDeviceString() << std::endl;
-	if(m_controller && Config::instance().printEvents) {
+	if(m_controller && m_config.printEvents) {
 		SDL_Joystick *joystick = SDL_GameControllerGetJoystick(m_controller);
 		LOG << "  num buttons: " << SDL_JoystickNumButtons(joystick) << std::endl
 		    << "  num axes: " << SDL_JoystickNumAxes(joystick) << std::endl;
@@ -137,9 +140,9 @@ bool GameController::handleEvent(void *data) {
 		case SDL_CONTROLLERAXISMOTION: {
 			std::string axis = SDL_GameControllerGetStringForAxis((SDL_GameControllerAxis)event->caxis.axis);
 			
-			// there seems to be a bug (at last on OSX) where trigger buttons for some
-			// devices are reported as axis values, so catch them here for now
-			if(axis == "lefttrigger" || axis == "righttrigger") {
+			// trigger buttons for some devices are reported as axis values,
+			// forward them as buttons unless desired as axes
+			if(!m_triggersAsAxes && (axis == "lefttrigger" || axis == "righttrigger")) {
 				return buttonPressed(axis, (event->caxis.value > 0 ? 1 : 0));
 			}
 			
@@ -220,6 +223,10 @@ void GameController::setAxisDeadZone(unsigned int zone) {
 	m_axisDeadZone = zone;
 	LOG_DEBUG << "GameController \"" << getDevName() << "\": "
 	          << "set axis dead zone to " << zone << std::endl;
+}
+
+void GameController::setTriggersAsAxes(bool asAxes) {
+	m_triggersAsAxes = asAxes;
 }
 
 void GameController::setRemapping(GameControllerRemapping *remapping) {

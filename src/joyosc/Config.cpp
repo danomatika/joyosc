@@ -61,6 +61,14 @@ unsigned int Config::getControllerAxisDeadZone(std::string deviceName) {
 	return 0;
 }
 
+bool Config::getControllerTriggersAsAxes(std::string deviceName) {
+	BoolMap::iterator iter = m_controllerTriggersAsAxes.find(deviceName);
+	if(iter != m_controllerTriggersAsAxes.end()) {
+		return iter->second;
+	}
+	return false;
+}
+
 GameControllerRemapping* Config::getControllerRemapping(std::string deviceName) {
 	GCRemappingMap::iterator iter = m_controllerRemappings.find(deviceName);
 	if(iter != m_controllerRemappings.end()) {
@@ -307,6 +315,15 @@ void Config::readXMLController(XMLElement *e) {
 					LOG_DEBUG << "GameController " << name << ": "
 					          << "axis deadzone " << deadZone << std::endl;
 				}
+			}
+		}
+
+		if((std::string)child->Name() == "triggers") {
+			bool asAxes = false;
+			if(child->QueryBoolAttribute("asAxes", &asAxes) == XML_SUCCESS) {
+				auto axesRet = m_controllerTriggersAsAxes.insert(std::make_pair(name, asAxes));
+				LOG_DEBUG << "GameController " << name << ": "
+				          << "triggers as axes " << asAxes << std::endl;
 			}
 		}
 

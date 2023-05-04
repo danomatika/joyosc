@@ -86,6 +86,11 @@ class Config {
 		/// deviceName is a string ie "Logitech Logitech Dual Action"
 		/// returns dead zone value on success, 0 if not found
 		unsigned int getControllerAxisDeadZone(std::string deviceName);
+
+		/// get the triggers as axes state for a given game controller name
+		/// deviceName is a string ie "Logitech Logitech Dual Action"
+		/// returns state on success, false if not found
+		bool getControllerTriggersAsAxes(std::string deviceName);
 		
 		/// get the input remapping for a given game controller device name
 		/// deviceName is a string ie "Logitech Logitech Dual Action"
@@ -96,7 +101,7 @@ class Config {
 		/// deviceName is a string ie "Logitech Logitech Dual Action"
 		/// returns joystick ignore on success, nullptr if not found
 		GameControllerIgnore* getControllerIgnore(std::string deviceName);
-	
+
 		/// get the axis dead zone threshold for a given joystick device name
 		/// deviceName is a string ie "Logitech Logitech Dual Action"
 		/// returns dead zone value on success, 0 if not found
@@ -142,6 +147,7 @@ class Config {
 		
 		typedef std::map<std::string,std::string> AddressMap;
 		typedef std::map<std::string,unsigned int> AxisMap;
+		typedef std::map<std::string,bool> BoolMap;
 		typedef std::map<std::string,GameControllerRemapping *> GCRemappingMap;
 		typedef std::map<std::string,GameControllerIgnore *> GCIgnoreMap;
 		typedef std::map<std::string,JoystickRemapping *> JSRemappingMap;
@@ -150,6 +156,7 @@ class Config {
 		AddressMap m_deviceAddresses; ///< device osc address mappings
 		
 		AxisMap m_controllerAxisDeadZones; ///< zeroing threshold
+		BoolMap m_controllerTriggersAsAxes; ///< treat triggers as axes?
 		GCRemappingMap m_controllerRemappings; ///< joystick remappings
 		GCIgnoreMap m_controllerIgnores; ///< joystick button, axis, etc ignores
 		

@@ -49,6 +49,12 @@
 			                   documentation)
 			-->
 			<thresholds axisDeadZone="4000"/>
+
+			<!-- asAxes: some controllers report variable triggers as axes
+			             and joyosc treats them as binary buttons by default,
+			             disable this by setting asAxes to true
+			-->
+			<!-- <triggers asAxes="true"/> -->
 			
 			<!-- remap buttons, axes, etc; useful when trying to
 			     match different controllers to send the same button presses
@@ -88,7 +94,7 @@
 		<!-- joysticks: base hoystick device
 
 		    these are joysticks devices w/out game controller mappings or when
-		    the game controller api is disabled via the --joysticks only option
+		    the game controller api is disabled via the joysticks only option
 		-->
 		<joystick name="Saitek P990 Dual Analog Pad" address="/bbox"/>
 		<joystick name="Logitech Dual Action" address="/ps2black"/>
