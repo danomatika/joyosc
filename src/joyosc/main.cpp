@@ -31,13 +31,18 @@ int main(int argc, char **argv) {
 	}
 
 	// init SDL
-	if(SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER) < 0 ) {
+	if(SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER) < 0) {
 		std::cerr << "Error: could not initialize SDL: " << SDL_GetError() << std::endl;
 		return EXIT_FAILURE;
 	}
 	if(SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1") == SDL_FALSE) {
 		LOG_WARN << "could not set joystick background events" << std::endl;
 	}
+#ifdef __APPLE__
+	if(SDL_SetHint(SDL_HINT_MAC_BACKGROUND_APP, "1") == SDL_FALSE) {
+		LOG_WARN << "could not set mac background app" << std::endl;
+	}
+#endif
 
 	// run the application
 	App app;
