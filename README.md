@@ -358,19 +358,27 @@ If you want to customize an SDL game controller mapping, you can print the defau
   -j, --joysticks-only Disable game controller support, joystick interface only
 ~~~
 
-----
-### Console Error
+PURE DATA LIBRARY
+-----------------
+
+A small library of Pure Data abstractions is provided in the `data/pd` folder for OSC message parsing when using the Pd 0.46+ oscparse object. This library set is also installed to `share/doc/joyosc/pd/joyosc`.
+
+KNOWN ISSUES
+------------
+
+### macOS "MFI" Controllers Not Detected On Start
+
+As of spring 2024, game controllers designed to work with iOS, ie. Apple "MFi-certified", are supported by SDL2 on newer versions of macOS circa 10.15+, however they are often not detected if connected *before* starting joyosc. For best reliability, disconnect the game controller(s), start joyosc, then reconnect.
+
+Hopefully this issue will be improved or resolved in the upcoming SDL3.
+
+### Console Error on SSH
 
 As joyosc & lsjs use SDL, they will not work over a SSH connection and you'll get the following error:
 
     Error: could not init SDL: Unable to open a console terminal
 
 Run them from a real terminal on the machine.
-
-PURE DATA LIBRARY
------------------
-
-A small library of Pure Data abstractions is provided in the `data/pd` folder for OSC message parsing when using the Pd 0.46+ oscparse object. This library set is also installed to `share/doc/joyosc/pd/joyosc`.
 
 DEVELOPING
 ----------
