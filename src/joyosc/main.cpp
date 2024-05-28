@@ -39,9 +39,12 @@ int main(int argc, char **argv) {
 		LOG_WARN << "could not set joystick background events" << std::endl;
 	}
 #ifdef __APPLE__
-	if(SDL_SetHint(SDL_HINT_MAC_BACKGROUND_APP, "1") == SDL_FALSE) {
-		LOG_WARN << "could not set mac background app" << std::endl;
-	}
+	// TODO: rethink this. by being in the background GCController events get
+	//       sent to other apps which may not handle them correctly,
+	//       ie. another app using GLFW seems to crash
+	// if(SDL_SetHint(SDL_HINT_MAC_BACKGROUND_APP, "1") == SDL_FALSE) {
+	// 	LOG_WARN << "could not set mac background app" << std::endl;
+	// }
 #endif
 
 	// run the application
