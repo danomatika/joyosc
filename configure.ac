@@ -37,7 +37,6 @@ AC_PROG_CXX
 AM_PROG_AR # allow non-POSIX libs
 
 # libtool
-AC_PROG_LIBTOOL
 LT_INIT
 AC_SUBST([LIBTOOL_DEPS])
 
