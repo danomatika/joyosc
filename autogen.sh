@@ -1,10 +1,7 @@
-#! /bin/bash
+#! /bin/sh
 #
 # generate autotools files
 #
-PATH=/sw/bin:$PATH
-
-PWD=${0%/*}
 
 case `uname -s` in
     MINGW*)
