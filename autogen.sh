@@ -6,9 +6,6 @@ PATH=/sw/bin:$PATH
 
 PWD=${0%/*}
 
-cd lib/lopack && ./autogen.sh && cd ../../
-cd lib/tinyobject && ./autogen.sh && cd ../../
-
 case `uname -s` in
     MINGW*)
         # autoreconf doesn't always work on MinGW

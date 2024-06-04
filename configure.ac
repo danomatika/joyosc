@@ -49,13 +49,13 @@ AX_CXX_COMPILE_STDCXX_11([noext], [optional]) # C++11
 AC_CHECK_INCLUDES_DEFAULT
 
 # check for headers & libs
-PKG_CHECK_MODULES(SDL, sdl2 >= 2.0, [],
+PKG_CHECK_MODULES([SDL], [sdl2 >= 2.0], [],
 	AC_MSG_ERROR([SDL library >= 2.0 not found]))
 	
-PKG_CHECK_MODULES(LO, liblo >= 0.23, [],
+PKG_CHECK_MODULES([LO], [liblo >= 0.23], [],
 	AC_MSG_ERROR([lo library >= 0.23 not found]))
 
-PKG_CHECK_MODULES(TINYXML2, tinyxml2, [],
+PKG_CHECK_MODULES([TINYXML2], [tinyxml2 >= 6], [],
 	AC_MSG_ERROR([tinyxml2 library >= 6.0.0 not found]))
 
 #########################################
