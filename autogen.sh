@@ -3,6 +3,8 @@
 # generate autotools files
 #
 
+set -x
+
 case `uname -s` in
     MINGW*)
         # autoreconf doesn't always work on MinGW
