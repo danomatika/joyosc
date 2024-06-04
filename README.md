@@ -66,7 +66,7 @@ Install the required development versions of the libraries using your distro's p
 
 For Debian/Ubuntu, you can use use `apt-get` on the command line:
 
-    sudo apt-get libsdl2-dev liblo-dev tinyxml2-dev
+    sudo apt-get install libsdl2-dev liblo-dev tinyxml2-dev
 
 ### macOS
 
@@ -106,11 +106,11 @@ Open an Msys2 shell and install the compiler chain & autotools via:
 
     # 32 bit
     pacman -S mingw-w64-i686-toolchain mingw-w64-i686-clang \
-              make pkgconfig autoconf automake libtool
+              make autotools libtool mingw-w64-i686-pkg-config
 
     # 64 bit
     pacman -S mingw-w64-x86_64-toolchain mingw-w64-x86_64-clang \
-              make pkgconfig autoconf automake libtool
+              make autotools libtool mingw-w64-x86_64-pkg-config
 
 Next install SDL2 and TinyXML2:
 

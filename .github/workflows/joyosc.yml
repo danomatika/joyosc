@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: dependencies
-      run: sudo apt-get libsdl2-dev liblo-dev tinyxml2-dev
+      run: sudo apt-get install libsdl2-dev liblo-dev tinyxml2-dev
     - name: autogen
       run: ./autogen.sh
     - name: configure
@@ -40,13 +40,13 @@ jobs:
         with:
           msystem: UCRT64
           update: true
-          install: git mingw-w64-ucrt-x86_64-gcc
+          install: git mingw-w64-ucrt-x86_64-clang
 
       # the rest is for joyosc
       - name: dependencies
         run: |
-          pacman -S --noconfirm --noprogressbar make pkgconfig autotools libtool
-          pacman -S --noconfirm --noprogressbar mingw-w64-i686-SDL2 mingw-w64-i686-tinyxml2
+          pacman -S --noconfirm --noprogressbar make autotools libtool mingw-w64-ucrt-x86_64-pkg-config
+          pacman -S --noconfirm --noprogressbar mingw-w64-ucrt-x86_64-SDL2 mingw-w64-ucrt-x86_64-tinyxml2
           cd liblo-0.32
           ./configure --disable-debug --disable-dependency-tracking --disable-tests --disable-network-tests --disable-tools --disable-examples
           make
