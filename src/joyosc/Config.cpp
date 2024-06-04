@@ -38,8 +38,6 @@
 #endif
 #include <unistd.h>
 
-using namespace tinyxml2;
-
 Config& Config::instance() {
 	static Config *pointerToTheSingletonInstance = new Config;
 	return *pointerToTheSingletonInstance;
@@ -178,11 +176,11 @@ bool Config::parseCommandLine(int argc, char **argv) {
 }
 
 bool Config::loadXMLFile(const std::string &path) {
-	XMLElement *root = NULL, *child = NULL;
+	tinyxml2::XMLElement *root = NULL, *child = NULL;
 
-	XMLDocument *doc = new XMLDocument;
+	tinyxml2::XMLDocument *doc = new tinyxml2::XMLDocument;
 	int ret = doc->LoadFile(path.c_str());
-	if(ret != XML_SUCCESS) {
+	if(ret != tinyxml2::XML_SUCCESS) {
 		LOG_ERROR << "XML \"" << PACKAGE << "\": could not load \"" << path
 		          << "\": " << doc->ErrorName() << " " << doc->ErrorStr()
 		          << std::endl;
@@ -268,8 +266,8 @@ void Config::print() {
 
 // PROTECTED
 
-void Config::readXMLDevices(XMLElement *e) {
-	XMLElement *child = e->FirstChildElement();
+void Config::readXMLDevices(tinyxml2::XMLElement *e) {
+	tinyxml2::XMLElement *child = e->FirstChildElement();
 	while(child) {
 		if((std::string)child->Name() == "controller") {
 			readXMLController(child);
@@ -285,7 +283,7 @@ void Config::readXMLDevices(XMLElement *e) {
 	}
 }
 
-void Config::readXMLController(XMLElement *e) {
+void Config::readXMLController(tinyxml2::XMLElement *e) {
 	std::string name = "", addr = "";
 	if(e->Attribute("name")) {name = std::string(e->Attribute("name"));}
 	if(e->Attribute("address")) {addr = std::string(e->Attribute("address"));}
@@ -301,7 +299,7 @@ void Config::readXMLController(XMLElement *e) {
 		         << " already exists" << std::endl;
 	}
 
-	XMLElement *child = e->FirstChildElement();
+	tinyxml2::XMLElement *child = e->FirstChildElement();
 	while(child) {
 		if((std::string)child->Name() == "thresholds") {
 			unsigned int deadZone = child->UnsignedAttribute("axisDeadZone", 0);
@@ -320,7 +318,7 @@ void Config::readXMLController(XMLElement *e) {
 
 		if((std::string)child->Name() == "triggers") {
 			bool asAxes = false;
-			if(child->QueryBoolAttribute("asAxes", &asAxes) == XML_SUCCESS) {
+			if(child->QueryBoolAttribute("asAxes", &asAxes) == tinyxml2::XML_SUCCESS) {
 				m_controllerTriggersAsAxes.insert(std::make_pair(name, asAxes));
 				LOG_DEBUG << "GameController " << name << ": "
 				          << "triggers as axes " << asAxes << std::endl;
@@ -356,7 +354,7 @@ void Config::readXMLController(XMLElement *e) {
 	}
 }
 
-void Config::readXMLJoystick(XMLElement *e) {
+void Config::readXMLJoystick(tinyxml2::XMLElement *e) {
 	std::string name = "", addr = "";
 	if(e->Attribute("name")) {name = std::string(e->Attribute("name"));}
 	if(e->Attribute("address")) {addr = std::string(e->Attribute("address"));}
@@ -372,7 +370,7 @@ void Config::readXMLJoystick(XMLElement *e) {
 		         << " already exists" << std::endl;
 	}
 
-	XMLElement *child = e->FirstChildElement();
+	tinyxml2::XMLElement *child = e->FirstChildElement();
 	while(child) {
 		if((std::string)child->Name() == "thresholds") {
 			unsigned int deadZone = child->UnsignedAttribute("axisDeadZone", 0);
@@ -418,8 +416,8 @@ void Config::readXMLJoystick(XMLElement *e) {
 	}
 }
 
-void Config::readXMLMappings(XMLElement *e, const std::string &dir) {
-	XMLElement *child = e->FirstChildElement();
+void Config::readXMLMappings(tinyxml2::XMLElement *e, const std::string &dir) {
+	tinyxml2::XMLElement *child = e->FirstChildElement();
 	while(child) {
 		if((std::string)child->Name() == "mapping") {
 			std::string mapping = "";
