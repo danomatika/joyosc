@@ -45,12 +45,12 @@ jobs:
       # the rest is for joyosc
       - name: dependencies
         run: |
-        pacman -S --noconfirm --noprogressbar make pkgconfig autotools libtool
-        pacman -S --noconfirm --noprogressbar mingw-w64-i686-SDL2 mingw-w64-i686-tinyxml2
-        cd liblo-0.32
-        ./configure --disable-debug --disable-dependency-tracking --disable-tests --disable-network-tests --disable-tools --disable-examples
-        make
-        make install
+          pacman -S --noconfirm --noprogressbar make pkgconfig autotools libtool
+          pacman -S --noconfirm --noprogressbar mingw-w64-i686-SDL2 mingw-w64-i686-tinyxml2
+          cd liblo-0.32
+          ./configure --disable-debug --disable-dependency-tracking --disable-tests --disable-network-tests --disable-tools --disable-examples
+          make
+          make install
       - name: autogen
         run: ./autogen.sh
       - name: configure
