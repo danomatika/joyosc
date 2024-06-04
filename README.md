@@ -66,7 +66,7 @@ Install the required development versions of the libraries using your distro's p
 
 For Debian/Ubuntu, you can use use `apt-get` on the command line:
 
-    sudo apt-get install libsdl2-dev liblo-dev tinyxml2-dev
+    sudo apt-get install libsdl2-dev liblo-dev libtinyxml2-dev
 
 ### macOS
 

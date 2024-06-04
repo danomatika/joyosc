@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: dependencies
-      run: sudo apt-get install libsdl2-dev liblo-dev tinyxml2-dev
+      run: sudo apt-get install libsdl2-dev liblo-dev libtinyxml2-dev
     - name: autogen
       run: ./autogen.sh
     - name: configure
