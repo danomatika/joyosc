@@ -14,9 +14,8 @@ case `uname -s` in
         # automake --add-missing --copy --force-missing && \
         # true
         aclocal --force -I m4
-        libtoolize --install --force
-        autoconf --force
-        automake --add-missing --copy --force-missing
+        automake --add-missing
+        autoreconf --install --force
     ;;
     *)
         aclocal --force -I m4
