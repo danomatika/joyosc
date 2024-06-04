@@ -1,9 +1,7 @@
-#! /bin/bash
+#! /bin/sh
 #
 # clean autotools files, use this in addition to make distclean
 #
-
-cd lib/lopack && ./autoclean.sh && cd ../../
 
 rm -rf autom4te.cache config dist
 rm -f m4/libtool.m4 m4/lt*.m4
