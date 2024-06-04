@@ -7,11 +7,14 @@ on:
     branches: [ "master" ]
 
 jobs:
+
   build-ubuntu:
     name: Ubuntu
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+    - name: dependencies
+      run: sudo apt-get libsdl2-dev liblo-dev tinyxml2-dev
     - name: autogen
       run: ./autogen.sh
     - name: configure
@@ -22,18 +25,39 @@ jobs:
       run: make check
     - name: make distcheck
       run: make distcheck
-  build-windows:
-    name: Windows
+
+  build-msys2:
+    name: Windows MSYS2
+
+    # following taken from: https://www.msys2.org/docs/ci/
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
     steps:
-    - uses: actions/checkout@v4
-    - name: autogen
-      run: ./autogen.sh
-    - name: configure
-      run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+      - uses: actions/checkout@v3
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: git mingw-w64-ucrt-x86_64-gcc
+
+      # the rest is for joyosc
+      - name: dependencies
+        run: |
+        pacman -S --noconfirm --noprogressbar make pkgconfig autotools libtool
+        pacman -S --noconfirm --noprogressbar mingw-w64-i686-SDL2 mingw-w64-i686-tinyxml2
+        cd liblo-0.32
+        ./configure --disable-debug --disable-dependency-tracking --disable-tests --disable-network-tests --disable-tools --disable-examples
+        make
+        make install
+      - name: autogen
+        run: ./autogen.sh
+      - name: configure
+        run: ./configure
+      - name: make
+        run: make
+      - name: make check
+        run: make check
+      - name: make distcheck
+        run: make distcheck
