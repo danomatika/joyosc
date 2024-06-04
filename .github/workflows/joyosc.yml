@@ -14,7 +14,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: dependencies
-      run: sudo apt-get install libsdl2-dev liblo-dev libtinyxml2-dev
+      run: |
+        sudo apt-get install libsdl2-dev liblo-dev libtinyxml2-dev
+        git submodule init
+        git submodule update
     - name: autogen
       run: ./autogen.sh
     - name: configure
@@ -47,10 +50,15 @@ jobs:
         run: |
           pacman -S --noconfirm --noprogressbar make autotools libtool mingw-w64-ucrt-x86_64-pkg-config
           pacman -S --noconfirm --noprogressbar mingw-w64-ucrt-x86_64-SDL2 mingw-w64-ucrt-x86_64-tinyxml2
-          cd liblo-0.32
+          git clone https://github.com/radarsat1/liblo
+          cd liblo
+          git checkout 0.32
           ./configure --disable-debug --disable-dependency-tracking --disable-tests --disable-network-tests --disable-tools --disable-examples
           make
           make install
+          cd ../
+          git submodule init
+          git submodule update
       - name: autogen
         run: ./autogen.sh
       - name: configure
