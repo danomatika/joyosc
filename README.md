@@ -105,12 +105,10 @@ _Note: Msys2 development seems to change frequently, so some of the package name
 Open an Msys2 shell and install the compiler chain & autotools via:
 
     # 32 bit
-    pacman -S mingw-w64-i686-toolchain mingw-w64-i686-clang \
-              make autotools libtool mingw-w64-i686-pkg-config
+    pacman -S mingw-w64-i686-toolchain mingw-w64-i686-clang autotools
 
     # 64 bit
-    pacman -S mingw-w64-x86_64-toolchain mingw-w64-x86_64-clang \
-              make autotools libtool mingw-w64-x86_64-pkg-config
+    pacman -S mingw-w64-x86_64-toolchain mingw-w64-x86_64-clang autotools
 
 Next install SDL2 and TinyXML2:
 
@@ -120,7 +118,7 @@ Next install SDL2 and TinyXML2:
     # 64 bit
     pacman -S mingw-w64-x86_64-SDL2 mingw-w64-x86_64-liblo mingw-w64-x86_64-tinyxml2
 
-If your version of Msys2 does not have a package for liblo, you can  download the source from https://github.com/radarsat1/liblo/releases then build & install it manually:
+If your version of Msys2 does not have a package for liblo, you can download the source from https://github.com/radarsat1/liblo/releases then build & install it manually, for example:
 
     cd liblo-0.32
     ./configure --disable-debug --disable-dependency-tracking --disable-tests --disable-network-tests --disable-tools --disable-examples
