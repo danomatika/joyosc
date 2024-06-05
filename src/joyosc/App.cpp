@@ -102,7 +102,7 @@ void App::run() {
 // PROTECTED
 
 int App::OscReceived(const std::string &address, const lo::Message &message) {
-	if(address == PACKAGE "/quit") {
+	if(address == "/"PACKAGE"/quit") {
 		stop();
 		LOG << std::endl << "	" << PACKAGE << ": quit message received, exiting ..." << std::endl;
 		return 0; // handled
