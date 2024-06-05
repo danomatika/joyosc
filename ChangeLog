@@ -1,3 +1,18 @@
+TBD Dan Wilcox <danomatika@gmail.com>
+
+	0.5.1
+
+	* fixed Windows build due to tinyxml2 namespace issue (reported by Streupfeffer)
+	* fixed /joyosc/quit message being ignored (reported by Streupfeffer)
+
+	* added Github CI builds for Linux (Ubuntu) and Windows (Msys2)
+	* added info about macOS + MFi controllers
+
+	* autogen now calls autoreconf on Windows
+
+	* removed readme note about ldconfig as lib depends are now gone
+	* removed calls to autogen and autoclean on former dependencies
+
 2023-05-05 Dan Wilcox <danomatika@gmail.com>
 
 	0.5.0
