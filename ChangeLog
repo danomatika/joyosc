@@ -4,9 +4,10 @@
 
 	* fixed Windows build due to tinyxml2 namespace issue (reported by Streupfeffer)
 	* fixed /joyosc/quit message being ignored (reported by Streupfeffer)
-	* added Github CI builds for Linux (Ubuntu) and Windows (Msys2)
+	* added GitHub CI builds for Linux (Ubuntu) and Windows (Msys2)
 	* added info about macOS + MFi controllers
 	* autogen now calls autoreconf on Windows
+	* removed old premake4 projet files
 	* removed readme note about ldconfig as lib depends are now gone
 	* removed calls to autogen and autoclean on former dependencies
 

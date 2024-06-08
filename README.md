@@ -57,7 +57,7 @@ BUILD REQUIREMENTS
 The following libraries are required:
 
 * **SDL2**: input device events
-* **liblo**: OSC
+* **liblo**: OSC (Open Sound Control) communication
 * **tinyxml2**: XML file reading
 
 ### Linux
@@ -381,15 +381,19 @@ Run them from a real terminal on the machine.
 DEVELOPING
 ----------
 
-A Premake4 script and IDE files can be found in the prj folder. Premake4 can generate IDE files from a given lua script. Download Premake4 from http://industriousone.com/premake.
+This is an GNU autotools project. When working with the git repo directly, the configure script must be generated using autoconf:
 
-Make sure the external libraries are built by calling make in the `lib` directory.
+    ./autogen.sh
 
 You can enable a debug build using:
 
     ./configure --enable-debug
 
-I develop using an IDE, then update the autotools files when the sources are finished. I run `make distcheck` to make sure the distributable package can be built successfully.
+After making changes, run `make distcheck` to make sure the distributable package can be built successfully.
+
+To ensure a full clean when making changes to configure.ac, etc run:
+
+    ./autoclean.sh
 
 FUTURE IDEAS/IMPROVEMENTS
 -------------------------
