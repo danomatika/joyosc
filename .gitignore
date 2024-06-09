@@ -36,16 +36,11 @@ m4/lt~obsolete.m4
 *.lo
 *.la
 
-# premake
-prj/obj
-
 # distribution tarballs
 joyosc-*.tar.gz
 
 # OSX
 .DS_Store
-*xcuserdata
-*.xcworkspace
 
 # temp files
 *~
