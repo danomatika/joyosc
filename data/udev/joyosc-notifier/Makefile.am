@@ -9,7 +9,7 @@ bin_PROGRAMS = joyosc-notifier
 joyosc_notifier_SOURCES = main.cpp
 
 # include paths
-AM_CPPFLAGS = $(SDL_CFLAGS) $(LO_CFLAGS) $(LOPACK_INCLUDE) $(TCLAP_INCLUDE)
+AM_CPPFLAGS = $(LO_CFLAGS) $(HELPERS_INCLUDE)
 
 # libs to link
-AM_LDFLAGS = $(SDL_LIBS) $(LO_LIBS) $(LOPACK_LIBS)
+AM_LDFLAGS = $(LO_LIBS)

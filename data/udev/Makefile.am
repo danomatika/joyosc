@@ -3,7 +3,7 @@
 thisdir = $(srcdir)
 
 # include files
-dist_configfiles_DATA = 85-joyosc.rules
+dist_configfiles_DATA = 85-joyosc.rules.source
 configfilesdir = $(docdir)
 
 # need to process the udev config file to insert the proper bin path
