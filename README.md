@@ -188,7 +188,7 @@ You can also specify values on the command line which override values in the con
   -e, --events         Print incoming events, useful for debugging
   -j, --joysticks-only Disable game controller support, joystick interface only
   -w, --window         Open window, helps on some platforms if device events are
-                       not being received, ex. MFI controllers on macOS
+                       not being found, ex. MFI controllers on macOS
   -s, --sleep          Sleep time in usecs (default: 10000)
 ~~~
 
@@ -356,6 +356,8 @@ If you want to customize an SDL game controller mapping, you can print the defau
   -d, --details        Print device details (buttons, axes, GUIDs, etc)
   -m, --mappings       Print game controller mappings
   -j, --joysticks-only Disable game controller support, joystick interface only
+  -w, --window         Open window, helps on some platforms if device events are
+                       not being found, ex. MFI controllers on macOS
 ~~~
 
 PURE DATA LIBRARY
@@ -368,7 +370,7 @@ KNOWN ISSUES
 
 ### macOS "MFI" Controllers Not Detected On Start
 
-As of spring 2024, game controllers designed to work with iOS, ie. Apple "MFi-certified", are supported by SDL2 on newer versions of macOS circa 10.15+, however they are often not detected if connected *before* starting joyosc. In order for controllers to be recognized, open joyosc with an optional window in order using the `-w/--window` flag for the OS to deliver events:
+As of spring 2024, game controllers designed to work with iOS, ie. Apple "MFi-certified", are supported by SDL2 on newer versions of macOS circa 10.15+, however they are often not detected if connected *before* starting joyosc. In order for controllers to be recognized, open joyosc or lsjs with an optional window using the `-w/--window` flag in order the OS to deliver events:
 
     joyosc --window
 

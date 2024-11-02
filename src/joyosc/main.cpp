@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
 		if(window == nullptr) {
 			LOG_ERROR << "could not create window: " << SDL_GetError() << std::endl;
 			SDL_Quit();
-			return 1;
+			return EXIT_FAILURE;
 		}
 	}
 
