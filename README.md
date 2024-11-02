@@ -155,13 +155,13 @@ All applications have a full help usage printout, use -h or --help.
 
 ### joyosc
 
-	% joyosc
+	joyosc
 
 Starts device daemon with the default settings.
 
 #### Config File
 
-    % joyosc config_file.xml
+    joyosc config_file.xml
 
 Starts device daemon using the given config file.
 
@@ -187,6 +187,8 @@ You can also specify values on the command line which override values in the con
   -p, --port           Port to send to (default: 8880)
   -e, --events         Print incoming events, useful for debugging
   -j, --joysticks-only Disable game controller support, joystick interface only
+  -w, --window         Open window, helps on some platforms if device events are
+                       not being received, ex. MFI controllers on macOS
   -s, --sleep          Sleep time in usecs (default: 10000)
 ~~~
 
@@ -366,9 +368,11 @@ KNOWN ISSUES
 
 ### macOS "MFI" Controllers Not Detected On Start
 
-As of spring 2024, game controllers designed to work with iOS, ie. Apple "MFi-certified", are supported by SDL2 on newer versions of macOS circa 10.15+, however they are often not detected if connected *before* starting joyosc. For best reliability, disconnect the game controller(s), start joyosc, then reconnect.
+As of spring 2024, game controllers designed to work with iOS, ie. Apple "MFi-certified", are supported by SDL2 on newer versions of macOS circa 10.15+, however they are often not detected if connected *before* starting joyosc. In order for controllers to be recognized, open joyosc with an optional window in order using the `-w/--window` flag for the OS to deliver events:
 
-Hopefully this issue will be improved or resolved in the upcoming SDL3.
+    joyosc --window
+
+_This requirement may change in the future._
 
 ### Console Error on SSH
 

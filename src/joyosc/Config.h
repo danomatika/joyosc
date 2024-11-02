@@ -68,7 +68,8 @@ class Config {
 		
 		bool printEvents = false; ///< print lots of events?
 		bool joysticksOnly = false; ///< disable game controller support?
-		
+		bool openWindow = false; ///< open window? helps to receive events on some platforms
+
 		unsigned int sleepUS = 10000; ///< how long to sleep in the run loop
 
 	/// \section Getters

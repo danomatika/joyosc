@@ -47,11 +47,26 @@ int main(int argc, char **argv) {
 	// }
 #endif
 
+	// open optional window?
+	SDL_Window *window = nullptr;
+	if(Config::instance().openWindow) {
+		window = SDL_CreateWindow("joyosc", 50, 100, 160, 120, 0);
+		if(window == nullptr) {
+			LOG_ERROR << "could not create window: " << SDL_GetError() << std::endl;
+			SDL_Quit();
+			return 1;
+		}
+	}
+
 	// run the application
 	App app;
 	app.run();
 	
 	// cleanup SDL
+	if(window) {
+		SDL_DestroyWindow(window);
+		window = nullptr;
+	}
 	SDL_Quit();
 
 	return EXIT_SUCCESS;

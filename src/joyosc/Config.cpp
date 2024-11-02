@@ -120,6 +120,7 @@ bool Config::parseCommandLine(int argc, char **argv) {
 		MULTICAST,
 		EVENTS,
 		JSONLY,
+		WINDOW,
 		SLEEP
 	};
 
@@ -134,6 +135,7 @@ bool Config::parseCommandLine(int argc, char **argv) {
 		{PORT, 0, "p", "port", Options::Arg::Integer, "  -p, --port \tPort to send to (default: 8880)"},
 		{EVENTS, 0, "e", "events", Options::Arg::None, "  -e, --events \tPrint incoming events, useful for debugging"},
 		{JSONLY, 0, "j", "joysticks-only", Options::Arg::None, "  -j, --joysticks-only \tDisable game controller support, joystick interface only"},
+		{WINDOW, 0, "w", "window", Options::Arg::None, "  -w, --window \tOpen window, helps on some platforms if device events are not being received, ex. MFI controllers on macOS"},
 		{SLEEP, 0, "s", "sleep", Options::Arg::Integer, "  -s, --sleep \tSleep time in usecs (default: 10000)"},
 		{UNKNOWN, 0, "", "", Options::Arg::Unknown, "\nArguments:"},
 		{UNKNOWN, 0, "", "", Options::Arg::None, "  FILE \tOptional XML config file"},
@@ -170,6 +172,7 @@ bool Config::parseCommandLine(int argc, char **argv) {
 	if(options.isSet(MULTICAST))  {listeningMulticast = options.getString(MULTICAST);}
 	if(options.isSet(EVENTS))     {printEvents = true;}
 	if(options.isSet(JSONLY))     {joysticksOnly = true;}
+	if(options.isSet(WINDOW))     {openWindow = true;}
 	if(options.isSet(SLEEP))      {sleepUS = options.getUInt(SLEEP);}
 
 	return true;
@@ -220,6 +223,7 @@ bool Config::loadXMLFile(const std::string &path) {
 		else if((std::string)child->Name() == "config") {
 			child->QueryBoolAttribute("printEvents", &printEvents);
 			child->QueryBoolAttribute("joysticksOnly", &joysticksOnly);
+			child->QueryBoolAttribute("openWindow", &openWindow);
 			child->QueryUnsignedAttribute("sleepUS", &sleepUS);
 		}
 		else if((std::string)child->Name() == "devices") {
