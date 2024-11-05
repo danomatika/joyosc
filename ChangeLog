@@ -1,3 +1,16 @@
+2024-11-06 Dan Wilcox <danomatika@gmail.com>
+
+	0.6.0
+
+	* added joyosc and lsjs -w/--window option to open window which helps
+	  receiving MFI controller events on macOS
+	* added device name exclusion via <exclude> tag
+	* updated udev joyosc-notifier in case it's needed in the future
+	* remap event should use LOG_DEBUG
+	* no longer ignore premake or xcode files as premake support has been removed
+	* remove *.in and ~ files when autocleaning
+	* remove header tmp ~ and src .deps when autocleaning
+
 2024-06-08 Dan Wilcox <danomatika@gmail.com>
 
 	0.5.1
