@@ -23,6 +23,7 @@
 #pragma once
 
 #include <set>
+#include <string>
 #include <tinyxml2.h>
 
 /// \class DeviceExclusion
