@@ -117,7 +117,7 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 			return true;
 			
 		case SDL_CONTROLLERDEVICEREMAPPED:
-			LOG << "CONTROLLER REMAPPED instance ID " << event->cdevice.which << std::endl;
+			LOG_DEBUG << "CONTROLLER REMAPPED instance ID " << event->cdevice.which << std::endl;
 			return true;
 			
 		case SDL_CONTROLLERAXISMOTION:
