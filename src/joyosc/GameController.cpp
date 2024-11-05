@@ -40,7 +40,7 @@ bool GameController::open(void *data) {
 	m_indices.sdlIndex = indices->sdlIndex;
 
 	if(isOpen()) {
-		LOG_WARN << "GameController: joystick with index "
+		LOG_WARN << "GameController: controller with index "
 		         << m_indices.index << " already opened" << std::endl;
 		return false;
 	}

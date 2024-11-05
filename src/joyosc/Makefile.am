@@ -7,7 +7,8 @@ bin_PROGRAMS = joyosc
 
 # program's sources
 joyosc_SOURCES = main.cpp Common.h App.h App.cpp Config.h Config.cpp \
-				 Device.h DeviceManager.h DeviceManager.cpp \
+				 Device.h DeviceExclusion.h DeviceExclusion.cpp \
+				 DeviceManager.h DeviceManager.cpp \
 				 Joystick.h Joystick.cpp \
 				 JoystickIgnore.h JoystickIgnore.cpp \
 				 JoystickRemapping.h JoystickRemapping.cpp \

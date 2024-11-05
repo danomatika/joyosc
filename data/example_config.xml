@@ -137,6 +137,16 @@
 				<axis id="1"/>
 			</ignore>
 		</joystick>
+
+			<!-- exclude controllers or joysticks by name; useful if a device appears
+			     multiple times or is in use by another application and should not
+			     generate events in joyosc
+
+				  types: controller, joystick
+			-->
+			<exclude>
+				<controller name="Dreamcast Controller"/>
+			</exclude>
 	</devices>
 
 	<!-- mappings: custom SDL game controller mappings to add at runtime

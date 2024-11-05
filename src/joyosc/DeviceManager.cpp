@@ -36,26 +36,29 @@ bool DeviceManager::open(int sdlIndex) {
 	indices.index = firstAvailableIndex();
 	indices.sdlIndex = sdlIndex;
 	if(SDL_IsGameController(sdlIndex) == SDL_TRUE && !config.joysticksOnly) {
-		GameController *gc = new GameController();
-		if(gc->open(&indices)) {
-			m_devices[gc->getInstanceID()] = gc;
-			if(sendDeviceEvents) {
-				config.getOscSender()->send(config.notificationAddress + "/open",
-					"si", "controller", indices.index);
+		if(!config.getDeviceExclusion().isGameControllerExcluded(sdlIndex)) {
+			GameController *gc = new GameController();
+			if(gc->open(&indices)) {
+				m_devices[gc->getInstanceID()] = gc;
+				if(sendDeviceEvents) {
+					config.getOscSender()->send(config.notificationAddress + "/open",
+						"si", "controller", indices.index);
+				}
+				return true;
 			}
-			return true;
 		}
 	}
 	else {
-		Joystick *js = new Joystick();
-		if(js->open(&indices)) {
-			m_devices[js->getInstanceID()] = js;
-			if(sendDeviceEvents) {
-				Config &config = Config::instance();
-				config.getOscSender()->send(config.notificationAddress + "/open",
-					"si", "joystick", indices.index);
+		if(!config.getDeviceExclusion().isJoystickExcluded(sdlIndex)) {
+			Joystick *js = new Joystick();
+			if(js->open(&indices)) {
+				m_devices[js->getInstanceID()] = js;
+				if(sendDeviceEvents) {
+					config.getOscSender()->send(config.notificationAddress + "/open",
+						"si", "joystick", indices.index);
+				}
+				return true;
 			}
-			return true;
 		}
 	}
 	return false;

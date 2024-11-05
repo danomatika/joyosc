@@ -32,6 +32,7 @@
 #include <lo/lo_cpp.h>
 #include <tinyxml2.h>
 
+#include "DeviceExclusion.h"
 class GameControllerRemapping;
 class GameControllerIgnore;
 class JoystickRemapping;
@@ -83,6 +84,9 @@ class Config {
 		/// returns mapped device addr on success, empty string "" if not found
 		std::string getDeviceAddress(const std::string &deviceName);
 	
+		/// get the device exclusions
+		DeviceExclusion& getDeviceExclusion();
+
 		/// get the axis dead zone threshold for a given game controller name
 		/// deviceName is a string ie "Logitech Logitech Dual Action"
 		/// returns dead zone value on success, 0 if not found
@@ -155,6 +159,7 @@ class Config {
 		typedef std::map<std::string,JoystickIgnore *> JSIgnoreMap;
 		
 		AddressMap m_deviceAddresses; ///< device osc address mappings
+		DeviceExclusion m_deviceExclusion; ///< device exclusions
 		
 		AxisMap m_controllerAxisDeadZones; ///< zeroing threshold
 		BoolMap m_controllerTriggersAsAxes; ///< treat triggers as axes?

@@ -51,6 +51,10 @@ std::string Config::getDeviceAddress(const std::string &deviceName) {
 	return "";
 }
 
+DeviceExclusion& Config::getDeviceExclusion() {
+	return m_deviceExclusion;
+}
+
 unsigned int Config::getControllerAxisDeadZone(const std::string &deviceName) {
 	AxisMap::iterator iter = m_controllerAxisDeadZones.find(deviceName);
 	if(iter != m_controllerAxisDeadZones.end()) {
@@ -266,6 +270,7 @@ void Config::print() {
 		    << " : " << dev.second << std::endl;
 		++index;
 	}
+	m_deviceExclusion.print();
 }
 
 // PROTECTED
@@ -278,6 +283,11 @@ void Config::readXMLDevices(tinyxml2::XMLElement *e) {
 		}
 		else if((std::string)child->Name() == "joystick") {
 			readXMLJoystick(child);
+		}
+		else if((std::string)child->Name() == "exclude") {
+			if(!m_deviceExclusion.readXML(child)) {
+				LOG_WARN << "Config: ignoring empty device exclude" << std::endl;
+			}
 		}
 		else {
 			LOG_WARN << "Config: unknown device xml element: \""
