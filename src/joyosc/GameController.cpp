@@ -142,7 +142,7 @@ bool GameController::handleEvent(void *data) {
 			
 			// trigger buttons for some devices are reported as axis values,
 			// forward them as buttons unless desired as axes
-			if(!m_triggersAsAxes && (axis == "lefttrigger" || axis == "righttrigger")) {
+			if(!m_config.triggersAsAxes && !m_triggersAsAxes && (axis == "lefttrigger" || axis == "righttrigger")) {
 				return buttonPressed(axis, (event->caxis.value > 0 ? 1 : 0));
 			}
 			

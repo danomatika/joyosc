@@ -125,7 +125,8 @@ bool Config::parseCommandLine(int argc, char **argv) {
 		EVENTS,
 		JSONLY,
 		WINDOW,
-		SLEEP
+		SLEEP,
+		TRIGGER
 	};
 
 	// option and usage print descriptors
@@ -141,6 +142,7 @@ bool Config::parseCommandLine(int argc, char **argv) {
 		{JSONLY, 0, "j", "joysticks-only", Options::Arg::None, "  -j, --joysticks-only \tDisable game controller support, joystick interface only"},
 		{WINDOW, 0, "w", "window", Options::Arg::None, "  -w, --window \tOpen window, helps on some platforms if device events are not being found, ex. MFI controllers on macOS"},
 		{SLEEP, 0, "s", "sleep", Options::Arg::Integer, "  -s, --sleep \tSleep time in usecs (default: 10000)"},
+		{TRIGGER, 0, "t", "triggers-as-axes", Options::Arg::None, "  -t, --triggers-as-axes \tReport trigger buttons as axis values"},
 		{UNKNOWN, 0, "", "", Options::Arg::Unknown, "\nArguments:"},
 		{UNKNOWN, 0, "", "", Options::Arg::None, "  FILE \tOptional XML config file"},
 		{0, 0, 0, 0, 0, 0}
@@ -178,6 +180,7 @@ bool Config::parseCommandLine(int argc, char **argv) {
 	if(options.isSet(JSONLY))     {joysticksOnly = true;}
 	if(options.isSet(WINDOW))     {openWindow = true;}
 	if(options.isSet(SLEEP))      {sleepUS = options.getUInt(SLEEP);}
+	if(options.isSet(TRIGGER))     {triggersAsAxes = true;}
 
 	return true;
 }
