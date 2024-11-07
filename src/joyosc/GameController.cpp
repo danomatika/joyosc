@@ -139,13 +139,7 @@ bool GameController::handleEvent(void *data) {
 
 		case SDL_CONTROLLERAXISMOTION: {
 			std::string axis = SDL_GameControllerGetStringForAxis((SDL_GameControllerAxis)event->caxis.axis);
-			
-			// trigger buttons for some devices are reported as axis values,
-			// forward them as buttons unless desired as axes
-			if(!m_config.triggersAsAxes && !m_triggersAsAxes && (axis == "lefttrigger" || axis == "righttrigger")) {
-				return buttonPressed(axis, (event->caxis.value > 0 ? 1 : 0));
-			}
-			
+
 			if(m_ignore && m_ignore->isAxisIgnored(axis)) {
 				break;
 			}
@@ -158,18 +152,32 @@ bool GameController::handleEvent(void *data) {
 			if(abs(value) < m_axisDeadZone) {
 				value = 0;
 			}
+
+			// trigger buttons for some devices are reported as axis values,
+			// forward them as buttons unless desired as axes
+			bool isButton = (!m_config.triggersAsAxes && !m_triggersAsAxes &&
+                       (axis == "lefttrigger" || axis == "righttrigger"));
+			if(isButton) {
+				value = (event->caxis.value > 0 ? 1 : 0);
+			}
 			
 			// make sure we don't report a value more then once
 			if(m_prevAxisValues[event->caxis.axis] == value) {
 				return true;
 			}
-			
+
+			// store value
+			m_prevAxisValues[event->caxis.axis] = value;
+
+			// send
+			if(isButton) {
+				m_prevAxisValues[event->caxis.axis] = value;
+				return buttonPressed(axis, value);
+			}
+
 			lo::Address *sender = m_config.getOscSender();
 			sender->send(m_config.deviceAddress + m_oscAddress + "/axis",
 				"si", axis.c_str(), value);
-			
-			// store value
-			m_prevAxisValues[event->caxis.axis] = value;
 
 			if(m_config.printEvents) {
 				LOG << m_oscAddress << " " << m_devName
