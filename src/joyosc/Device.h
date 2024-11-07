@@ -32,9 +32,9 @@ class Device {
 
 		/// supported device types
 		enum Type {
-			UNKNOWN,
-			JOYSTICK,
-			GAMECONTROLLER
+			UNKNOWN        = 0,
+			JOYSTICK       = 1,
+			GAMECONTROLLER = 2
 		};
 
 		Device(std::string oscAddress="/device") :

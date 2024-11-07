@@ -56,7 +56,7 @@ bool GameController::open(void *data) {
 	m_devName = SDL_GameControllerName(m_controller);
 	
 	// try to set the address from the mapping list using the dev name
-	m_oscAddress = m_config.getDeviceAddress((std::string)m_devName);
+	m_oscAddress = m_config.getDeviceAddress((std::string)m_devName, (int)Device::GAMECONTROLLER);
 	if(m_oscAddress == "") {
 		// not found ... set a generic name using the index
 		std::stringstream stream;
@@ -126,12 +126,12 @@ bool GameController::handleEvent(void *data) {
 	}
 	SDL_Event *event = (SDL_Event *)data;
 	switch(event->type) {
-		
+
 		case SDL_CONTROLLERBUTTONDOWN: {
 			std::string button = SDL_GameControllerGetStringForButton((SDL_GameControllerButton)event->cbutton.button);
 			return buttonPressed(button, event->cbutton.state);
 		}
-		
+
 		case SDL_CONTROLLERBUTTONUP: {
 			std::string button = SDL_GameControllerGetStringForButton((SDL_GameControllerButton)event->cbutton.button);
 			return buttonPressed(button, event->cbutton.state);
@@ -155,12 +155,11 @@ bool GameController::handleEvent(void *data) {
 
 			// trigger buttons for some devices are reported as axis values,
 			// forward them as buttons unless desired as axes
-			bool isButton = (!m_config.triggersAsAxes && !m_triggersAsAxes &&
-			                 (axis == "lefttrigger" || axis == "righttrigger"));
+			bool isButton = (!m_triggersAsAxes && (axis == "lefttrigger" || axis == "righttrigger"));
 			if(isButton) {
 				value = (event->caxis.value > 0 ? 1 : 0);
 			}
-			
+
 			// make sure we don't report a value more then once
 			if(m_prevAxisValues[event->caxis.axis] == value) {
 				return true;

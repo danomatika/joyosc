@@ -54,7 +54,7 @@ bool Joystick::open(void *data) {
 	m_devName = SDL_JoystickName(m_joystick);
 	
 	// try to set the address from the mapping list using the dev name
-	m_oscAddress = m_config.getDeviceAddress((std::string)m_devName);
+	m_oscAddress = m_config.getDeviceAddress((std::string)m_devName, (int)Device::JOYSTICK);
 	if(m_oscAddress == "") {
 		// not found ... set a generic name using the index
 		std::stringstream stream;

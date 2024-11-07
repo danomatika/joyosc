@@ -81,9 +81,10 @@ class Config {
 
 		/// get the osc address for a given device name
 		/// deviceName is as a string ie "Logitech Logitech Dual Action"
+		/// type is the Device::Type enum: 0 any, 1 controller, 2 joystick
 		/// returns mapped device addr on success, empty string "" if not found
-		std::string getDeviceAddress(const std::string &deviceName);
-	
+		std::string getDeviceAddress(const std::string &deviceName, int type=0);
+
 		/// get the device exclusions
 		DeviceExclusion& getDeviceExclusion();
 
@@ -150,7 +151,11 @@ class Config {
 
 	private:
 		
-		typedef std::map<std::string,std::string> AddressMap;
+		struct DeviceAddress {
+			std::string addr; ///< OSC address
+			int type; ///< Device::Type enum
+		};
+		typedef std::map<std::string,DeviceAddress> AddressMap;
 		typedef std::map<std::string,unsigned int> AxisMap;
 		typedef std::map<std::string,bool> BoolMap;
 		typedef std::map<std::string,GameControllerRemapping *> GCRemappingMap;

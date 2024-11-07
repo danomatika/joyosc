@@ -43,10 +43,14 @@ Config& Config::instance() {
 	return *pointerToTheSingletonInstance;
 }
 
-std::string Config::getDeviceAddress(const std::string &deviceName) {
+std::string Config::getDeviceAddress(const std::string &deviceName, int type) {
 	AddressMap::iterator iter = m_deviceAddresses.find(deviceName);
 	if(iter != m_deviceAddresses.end()) {
-		return iter->second;
+		DeviceAddress &da = (DeviceAddress &)(iter->second);
+		if(type > 0 && da.type != type) {
+			return ""; // wrong type
+		}
+		return da.addr;
 	}
 	return "";
 }
@@ -68,7 +72,7 @@ bool Config::getControllerTriggersAsAxes(const std::string &deviceName) {
 	if(iter != m_controllerTriggersAsAxes.end()) {
 		return iter->second;
 	}
-	return false;
+	return triggersAsAxes;
 }
 
 GameControllerRemapping* Config::getControllerRemapping(const std::string &deviceName) {
@@ -232,6 +236,7 @@ bool Config::loadXMLFile(const std::string &path) {
 			child->QueryBoolAttribute("joysticksOnly", &joysticksOnly);
 			child->QueryBoolAttribute("openWindow", &openWindow);
 			child->QueryUnsignedAttribute("sleepUS", &sleepUS);
+			child->QueryBoolAttribute("triggersAsAxes", &triggersAsAxes);
 		}
 		else if((std::string)child->Name() == "devices") {
 			readXMLDevices(child);
@@ -265,12 +270,25 @@ void Config::print() {
 	    << "print events?:   " << (printEvents ? "true" : "false") << std::endl
 	    << "joysticks only?: " << (joysticksOnly ? "true" : "false") << std::endl
 	    << "sleep us:        " << sleepUS << std::endl
+	    << "triggers as axes?: " << (triggersAsAxes ? "true" : "false") << std::endl
 	    << "device addresses: " << m_deviceAddresses.size() << std::endl;
 	int index = 0;
 	AddressMap::iterator iter;
 	for(auto &dev : m_deviceAddresses) {
-		LOG << "  " << index << " " << dev.first
-		    << " : " << dev.second << std::endl;
+		DeviceAddress &da = (DeviceAddress &)(dev.second);
+		LOG << "  " << index;
+		switch(da.type) {
+			case Device::GAMECONTROLLER:
+				LOG << " C ";
+				break;
+			case Device::JOYSTICK:
+				LOG << " J ";
+				break;
+			default:
+				LOG << " ? ";
+				break;
+		}
+		LOG << dev.first << " " << da.addr << std::endl;
 		++index;
 	}
 	m_deviceExclusion.print();
@@ -304,17 +322,17 @@ void Config::readXMLController(tinyxml2::XMLElement *e) {
 	std::string name = "", addr = "";
 	if(e->Attribute("name")) {name = std::string(e->Attribute("name"));}
 	if(e->Attribute("address")) {addr = std::string(e->Attribute("address"));}
-	if(name == "" || addr == "") {
-		LOG_WARN << "Config: ignoring game controller without name or address"
+	if(name == "") {
+		LOG_WARN << "Config: ignoring game controller without name"
 		         << std::endl;
 		return;
 	}
 
-	auto ret = m_deviceAddresses.insert(std::make_pair(name, addr));
-	if(!ret.second) {
+	if(m_deviceAddresses.find(name) == m_deviceAddresses.end()) {
 		LOG_WARN << "Config: game controller name " << name
 		         << " already exists" << std::endl;
 	}
+	m_deviceAddresses[name] = {.addr = addr, .type = (int)Device::GAMECONTROLLER};
 
 	tinyxml2::XMLElement *child = e->FirstChildElement();
 	while(child) {
@@ -375,17 +393,17 @@ void Config::readXMLJoystick(tinyxml2::XMLElement *e) {
 	std::string name = "", addr = "";
 	if(e->Attribute("name")) {name = std::string(e->Attribute("name"));}
 	if(e->Attribute("address")) {addr = std::string(e->Attribute("address"));}
-	if(name == "" || addr == "") {
-		LOG_WARN << "Config: ignoring joystick without name or address"
+	if(name == "") {
+		LOG_WARN << "Config: ignoring joystick without name"
 		         << std::endl;
 		return;
 	}
 
-	auto ret = m_deviceAddresses.insert(std::make_pair(name, addr));
-	if(!ret.second) {
+	if(m_deviceAddresses.find(name) == m_deviceAddresses.end()) {
 		LOG_WARN << "Config: joystick name " << name
 		         << " already exists" << std::endl;
 	}
+	m_deviceAddresses[name] = {.addr = addr, .type = (int)Device::JOYSTICK};
 
 	tinyxml2::XMLElement *child = e->FirstChildElement();
 	while(child) {
