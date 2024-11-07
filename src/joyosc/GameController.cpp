@@ -139,7 +139,7 @@ bool GameController::handleEvent(void *data) {
 
 		case SDL_CONTROLLERAXISMOTION: {
 			std::string axis = SDL_GameControllerGetStringForAxis((SDL_GameControllerAxis)event->caxis.axis);
-			
+
 			if(m_ignore && m_ignore->isAxisIgnored(axis)) {
 				break;
 			}
@@ -155,7 +155,8 @@ bool GameController::handleEvent(void *data) {
 
 			// trigger buttons for some devices are reported as axis values,
 			// forward them as buttons unless desired as axes
-			bool isButton = (!m_triggersAsAxes && (axis == "lefttrigger" || axis == "righttrigger"));
+			bool isButton = (!m_config.triggersAsAxes && !m_triggersAsAxes &&
+                       (axis == "lefttrigger" || axis == "righttrigger"));
 			if(isButton) {
 				value = (event->caxis.value > 0 ? 1 : 0);
 			}

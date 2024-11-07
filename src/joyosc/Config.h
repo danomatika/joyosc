@@ -68,6 +68,7 @@ class Config {
 		std::string deviceAddress = "/devices"; ///< base osc sending addess for devices
 		
 		bool printEvents = false; ///< print lots of events?
+		bool triggersAsAxes = false; ///< report trigger buttons as axis values
 		bool joysticksOnly = false; ///< disable game controller support?
 		bool openWindow = false; ///< open window? helps to receive events on some platforms
 
