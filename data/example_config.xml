@@ -14,18 +14,23 @@
 	<!-- <sending ip="239.200.200.200" port="8880"/> -->
 	
 	<!-- printEvents: print live events to to console? bool "true" or "false"
-		              (default: false)
+	                  (default: false)
 
-	     joysticksOnly: disable game controller support, use joystick
-                        interface only (default: false)
+	      joysticksOnly: disable game controller support, use joystick
+	                     interface only (default: false)
 
-         openWindow: open window, helps on some platforms if device events are
-                     not being received, ex. MFI controllers on macOS
-    
-	     sleepUS: how often to poll for new events in micro seconds, a smaller
+	      openWindow: open window, helps on some platforms if device events are
+	                  not being received, ex. MFI controllers on macOS
+
+	      sleepUS: how often to poll for new events in micro seconds, a smaller
 	              number means faster events but more CPU time (default: 10000)
+
+	      triggersAsAxes: report trigger values as button presses (default: true)
+	                      note: this can be overridden per controller with the
+	                      controller <triggers> tag, see below
 	 -->
-	<config printEvents="true" joysticksOnly="false" openWindow="true" sleepUS="20000"/>
+	<config printEvents="true" joysticksOnly="false" openWindow="true"
+	        sleepUS="20000" triggersAsAxes="false"/>
 
 	<!-- device types to for mapping names to OSC send addresses and adding
 	     event customizations, use lsjs to get the names of the devices
@@ -39,6 +44,8 @@
 
 		    you can provide a custom mapping to add or override existing
 		    mappings using the <mappings> element further below
+
+		    name is required, address is optional
 		-->
 		<controller name="Logitech F310 Gamepad (DInput)" address="/F310"/>
 		<controller name="PS3 Controller" address="/ps3"/>
@@ -55,7 +62,7 @@
 
 			<!-- asAxes: some controllers report variable triggers as axes
 			             and joyosc treats them as binary buttons by default,
-			             disable this by setting asAxes to true
+			             disable this per controller by setting asAxes to true
 			-->
 			<triggers asAxes="true"/>
 			
