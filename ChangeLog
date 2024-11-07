@@ -1,9 +1,14 @@
 TBD
 
-	0.6.1
+	0.7.0
 
 	* flush after printing on windows to avoid console output buffering issues
 	  (reported by Albert Graef)
+	* fixed device name check matching both controller and joystick types
+	* added -t/--triggers-as-axes option to disable treating triggers as buttons
+	  (Albert Graef)
+	* set device triggersAsAxes using config value ie. option new -t flag
+	* allow device <controler> and <joystick> xml tags without address attribute
 
 2024-11-06 Dan Wilcox <danomatika@gmail.com>
 
