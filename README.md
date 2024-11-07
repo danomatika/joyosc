@@ -3,7 +3,7 @@ joyosc
 
 joystick & game controller hid device event to Open Sound Control daemon and associated tools
 
-Copyright (c) [Dan Wilcox](danomatika.com) 2007 - 2023
+Copyright (c) [Dan Wilcox](https://danomatika.com) 2007 - 2024
 
 DESCRIPTION
 -----------
@@ -18,12 +18,12 @@ The joyosc package contains the following parts:
 This group of tools allows any OSC capable program to receive joystick & game controller event data aka button presses, axis movements, etc. Specific joysticks & game controllers can be mapped by name to specific OSC send addresses and button, axis, etc ids can be remapped or ignored.
 
 These tools were developed for the robotcowboy project, a wearable computer
-music system using [Pure Data](http://puredata.info) in GNU/Linux. See <http://robotcowboy.com>
+music system using [Pure Data](https://puredata.info) in GNU/Linux, macOS, and [iOS](https://danomatika.com/code/pdparty). See <https://robotcowboy.com> and the initial version, then named "rc-unitd" in _[robotcowboy: A One Man Band Musical Cyborg](https://danomatika.com/publications/robotcowboy_thesis_07.pdf)_ Master’s thesis, Chalmers University of Technology 2007.
 
 QUICK START
 -----------
 
-Download a release tarball from <http://docs.danomatika.com/releases/joyosc>. _Do not download a release zip from GitHub as the submodule files will not be included._
+Download a release tarball from <https://docs.danomatika.com/releases/joyosc>. _Do not download a release zip from GitHub as the submodule files will not be included._
 
 Otherwise, if cloning this repo, you will also need to check out the submodules using then run `autogen.sh` to create the configure script:
 
@@ -144,7 +144,7 @@ By default, the configure script installs to `/usr/local`. To change this behavi
 
 ### macOS
 
-If using Macports on macOS, it is recommended to use the Macports default prefix of `/opt/local`. Similarly, new Homebrew installs (Apple Silicon) also use `/opt/local`. In the case of older Homebrew installs (Intel), `/usr/local` is used so you won't need to set the prefix. To check the Hombrew prefix, use `brew --prefix`.
+If using Macports on macOS, it is recommended to use the Macports default prefix of `/opt/local`. Similarly, new Homebrew installs (Apple Silicon) also use `/opt/local`. In the case of older Homebrew installs (Intel), `/usr/local` is used so you won't need to set the prefix. To check the Homebrew prefix, use `brew --prefix`.
 
 USAGE
 -----
@@ -178,18 +178,32 @@ Look at the `example_config.xml` file installed to the doc folder or in the `dat
 
 #### Options
 
-You can also specify values on the command line which override values in the config file:
+You can also specify values on the command line which override values in the config file.
+
+The `joyosc` help output:
 ~~~
-  -l, --listening-port Listening port (default: 7770)
-  -m, --multicast      Multicast listening group address (off by default)
-  -i, --ip             IP address, hostname, or multicast group to send to
-                       (default: 127.0.0.1)
-  -p, --port           Port to send to (default: 8880)
-  -e, --events         Print incoming events, useful for debugging
-  -j, --joysticks-only Disable game controller support, joystick interface only
-  -w, --window         Open window, helps on some platforms if device events are
-                       not being found, ex. MFI controllers on macOS
-  -s, --sleep          Sleep time in usecs (default: 10000)
+Usage: ./src/joyosc/joyosc [options] [FILE]
+
+  joystick device event to osc bridge
+
+Options:
+  -h, --help             Print usage and exit
+  --version              Print version and exit
+  -l, --listening-port   Listening port (default: 7770)
+  -m, --multicast        Multicast listening group address (off by default)
+  -i, --ip               IP address, hostname, or multicast group to send to
+                         (default: 127.0.0.1)
+  -p, --port             Port to send to (default: 8880)
+  -e, --events           Print incoming events, useful for debugging
+  -j, --joysticks-only   Disable game controller support, joystick interface
+                         only
+  -w, --window           Open window, helps on some platforms if device events
+                         are not being found, ex. MFI controllers on macOS
+  -s, --sleep            Sleep time in usecs (default: 10000)
+  -t, --triggers-as-axes Report trigger buttons as axis values
+
+Arguments:
+  FILE                   Optional XML config file
 ~~~
 
 Note: Enabling event printing is useful when debugging:
@@ -254,7 +268,7 @@ If you do not want to use the Game Controller interface and stick with Joysticks
 
 #### Event Streaming
 
-See the [Pure Data](http://puredata.info) patches installed to the system doc folder or the `data/pd` folder of the source distribution for info on how to receive events from joyosc, although any software that can receive Open Sound Control messages will work.
+See the [Pure Data](https://puredata.info) patches installed to the system doc folder or the `data/pd` folder of the source distribution for info on how to receive events from joyosc, although any software that can receive Open Sound Control messages will work.
 
 joyosc streams device event information in the following OSC address format:
 
@@ -352,6 +366,7 @@ If you want to customize an SDL game controller mapping, you can print the defau
 
 #### Options
 
+The `lsjs` help output:
 ~~~
   -d, --details        Print device details (buttons, axes, GUIDs, etc)
   -m, --mappings       Print game controller mappings
