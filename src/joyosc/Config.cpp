@@ -180,7 +180,7 @@ bool Config::parseCommandLine(int argc, char **argv) {
 	if(options.isSet(JSONLY))     {joysticksOnly = true;}
 	if(options.isSet(WINDOW))     {openWindow = true;}
 	if(options.isSet(SLEEP))      {sleepUS = options.getUInt(SLEEP);}
-	if(options.isSet(TRIGGER))     {triggersAsAxes = true;}
+	if(options.isSet(TRIGGER))    {triggersAsAxes = true;}
 
 	return true;
 }
