@@ -41,7 +41,7 @@ class DeviceManager {
 		/// ignores duplicates which will occur since both the GameController &
 		/// the Joystick subsystems will report an add event for the same device
 		bool open(int sdlIndex);
-	
+
 		/// close game controller or joystick with SDL instance ID (different from index),
 		/// returns true on success
 		///
@@ -60,20 +60,20 @@ class DeviceManager {
 
 		/// print active joystick list
 		void print(bool details=false);
-	
+
 		/// return the number of devices
 		unsigned int numDevices() {return m_devices.size();}
-	
+
 		bool sendDeviceEvents = false; ///< send device open/close events? (default: false)
 
 	protected:
-		
+
 		/// return the first available index in the active devices list
 		int firstAvailableIndex();
-		
+
 		/// get the device type at a given index
 		Device::Type getDeviceType(int index);
-	
+
 		/// is an sdlIndex already in use by an active device?
 		bool sdlIndexExists(int sdlIndex);
 

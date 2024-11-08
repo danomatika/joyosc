@@ -34,7 +34,7 @@ bool GameController::open(void *data) {
 		LOG_WARN << "GameController: cannot open, index not set" << std::endl;
 		return false;
 	}
-	
+
 	DeviceIndices *indices = (DeviceIndices *)data;
 	m_indices.index = indices->index;
 	m_indices.sdlIndex = indices->sdlIndex;
@@ -50,7 +50,7 @@ bool GameController::open(void *data) {
 		LOG_WARN << "GameController: open failed for index " << m_indices.index << std::endl;
 		return false;
 	}
-	
+
 	SDL_Joystick *joystick = SDL_GameControllerGetJoystick(m_controller);
 	m_instanceID = SDL_JoystickInstanceID(joystick);
 	m_devName = SDL_GameControllerName(m_controller);
@@ -92,7 +92,7 @@ bool GameController::open(void *data) {
 		stream << "/gc" << m_indices.index;
 		m_oscAddress = stream.str();
 	}
-	
+
 	LOG << "GameController: opened " << getDeviceString() << std::endl;
 	if(m_controller && m_config.printEvents) {
 		SDL_Joystick *joystick = SDL_GameControllerGetJoystick(m_controller);
@@ -112,7 +112,7 @@ void GameController::close() {
 		    << m_oscAddress << std::endl;
 		m_controller = nullptr;
 	}
-	
+
 	// reset variables
 	m_indices.index = -1;
 	m_indices.sdlIndex = -1;

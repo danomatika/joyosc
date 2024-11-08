@@ -29,22 +29,22 @@
 class GameControllerIgnore {
 
 	public:
-		
+
 		GameControllerIgnore() {}
 
 		/// load from XML element, returns true on success
 		bool readXML(tinyxml2::XMLElement *e);
-	
+
 		std::set<std::string> buttons; ///< button names to ignore
 		std::set<std::string> axes; ///< axis names to ignore
-		
+
 		/// check names & toss out any bad values
 		void check(GameController *controller);
-	
+
 		/// check ignore status
 		bool isButtonIgnored(std::string &button);
 		bool isAxisIgnored(std::string &axis);
-	
+
 		/// print the current ignore values
 		void print();
 };

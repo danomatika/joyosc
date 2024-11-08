@@ -79,16 +79,16 @@ class Device {
 
 		/// returns true if device is open
 		virtual bool isOpen() = 0;
-	
+
 		/// returns the device type enum value
 		virtual Type getDeviceType() = 0;
-	
+
 		/// returns basic device info as a string
 		virtual std::string getDeviceString() = 0;
 
 		/// get device name i.e. "/dev/input/js0"
 		inline std::string getDevName() {return m_devName;}
-		
+
 		/// set/get the osc address of this device ie "/js0" etc
 		inline void setOscAddress(std::string oscAddress) {m_oscAddress = oscAddress;}
 		inline std::string getOscAddress() {return m_oscAddress;}
@@ -103,6 +103,6 @@ class Device {
 
 		unsigned int m_axisDeadZone = 3200; ///< axis dead zone amount +/- center pos
 		std::vector<int16_t> m_prevAxisValues; ///< prev axis values to cancel repeats
-		
+
 		Config &m_config; ///< global config access
 };

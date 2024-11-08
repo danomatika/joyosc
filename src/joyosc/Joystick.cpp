@@ -33,7 +33,7 @@ bool Joystick::open(void *data) {
 		LOG_WARN << "Joystick: cannot open, index not set" << std::endl;
 		return false;
 	}
-	
+
 	DeviceIndices *indices = (DeviceIndices *)data;
 	m_indices.index = indices->index;
 	m_indices.sdlIndex = indices->sdlIndex;
@@ -49,7 +49,7 @@ bool Joystick::open(void *data) {
 		LOG_WARN << "Joystick: open failed for index " << m_indices.index << std::endl;
 		return false;
 	}
-	
+
 	m_instanceID = SDL_JoystickInstanceID(m_joystick);
 	m_devName = SDL_JoystickName(m_joystick);
 
@@ -87,7 +87,7 @@ bool Joystick::open(void *data) {
 		stream << "/js" << m_indices.index;
 		m_oscAddress = stream.str();
 	}
-	
+
 	LOG << "Joystick: opened " << getDeviceString() << std::endl;
 	if(m_joystick && Config::instance().printEvents) {
 		LOG << "  num buttons: " << SDL_JoystickNumButtons(m_joystick) << std::endl
@@ -106,7 +106,7 @@ void Joystick::close() {
 		LOG << "Joystick: closed " << getDeviceString() << std::endl;
 		m_joystick = nullptr;
 	}
-	
+
 	// reset variables
 	m_indices.index = -1;
 	m_indices.sdlIndex = -1;
@@ -141,7 +141,7 @@ bool Joystick::handleEvent(void *data) {
 			}
 			return true;
 		}
-		
+
 		case SDL_JOYBUTTONUP: {
 			if(m_ignore && m_ignore->isButtonIgnored(event->jbutton.button)) {
 				break;
@@ -168,13 +168,13 @@ bool Joystick::handleEvent(void *data) {
 			if(m_remapping) {
 				event->jaxis.axis = m_remapping->mappingForAxis(event->jaxis.axis);
 			}
-			
+
 			// handle jitter by creating a dead zone
 			int value = (int)event->jaxis.value;
 			if(abs(value) < m_axisDeadZone) {
 				value = 0;
 			}
-			
+
 			// make sure we don't report a value more than once
 			if(m_prevAxisValues[event->jaxis.axis] == value) {
 				return true;
@@ -194,7 +194,7 @@ bool Joystick::handleEvent(void *data) {
 
 			return true;
 		}
-		
+
 		case SDL_JOYBALLMOTION: {
 			if(m_ignore && m_ignore->isBallIgnored(event->jball.ball)) {
 				break;
@@ -214,7 +214,7 @@ bool Joystick::handleEvent(void *data) {
 			}
 			return true;
 		}
-		
+
 		case SDL_JOYHATMOTION: {
 			if(m_ignore && m_ignore->isHatIgnored(event->jhat.hat)) {
 				break;

@@ -61,39 +61,39 @@ class Joystick : public Device {
 
 		/// print joystick info
 		void print();
-	
+
 		/// returns the device type enum value
 		inline Type getDeviceType() {return JOYSTICK;}
-	
+
 		/// returns device list index, name, & osc address as a string
 		std::string getDeviceString();
-		
+
 		/// print remapping
 		void printRemapping();
-		
+
 		/// print button, axis, etc ignores
 		void printIgnores();
-		
+
 		/// get index in the devices list
 		inline int getIndex() {return m_indices.index;}
-	
+
 		/// get the SDL index, different from index
 		inline int getSdlIndex() {return m_indices.sdlIndex;}
-	
+
 		/// get the SDL instance ID, different from index
 		inline SDL_JoystickID getInstanceID() {return m_instanceID;}
-	
+
 		/// get the underlying SDL joystick handle
 		inline SDL_Joystick* getJoystick() {return m_joystick;}
-		
+
 		/// set/get axis dead zone, used to set an ignore threshold around 0
 		void setAxisDeadZone(unsigned int zone);
 		inline int getAxisDeadZone() {return m_axisDeadZone;}
-		
+
 		/// set/get button. axis, etc remappings
 		void setRemapping(JoystickRemapping *remapping);
 		inline JoystickRemapping* getRemapping() {return m_remapping;}
-		
+
 		/// set/get button, axis, etc ignores
 		void setIgnore(JoystickIgnore *ignore);
 		inline JoystickIgnore* getIgnore() {return m_ignore;}
@@ -101,7 +101,7 @@ class Joystick : public Device {
 	protected:
 
 		SDL_Joystick *m_joystick = nullptr; ///< SDL joystick handle
-		
+
 		JoystickRemapping *m_remapping = nullptr; ///< joystick remapping values
 		JoystickIgnore *m_ignore = nullptr; ///< button, axis, etc ignores
 };

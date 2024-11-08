@@ -29,26 +29,26 @@
 class JoystickIgnore {
 
 	public:
-		
+
 		JoystickIgnore() {}
 
 		/// load from XML element, returns true on success
 		bool readXML(tinyxml2::XMLElement *e);
-		
+
 		std::set<int> buttons; ///< buttons ids to ignore
 		std::set<int> axes;    ///< axis ids to ignore
 		std::set<int> balls;   ///< ball ids to ignore
 		std::set<int> hats;    ///< hat ids to ignore
-		
+
 		/// check indices & toss out any bad values
 		void check(Joystick *joystick);
-	
+
 		/// check ignore status
 		bool isButtonIgnored(int button);
 		bool isAxisIgnored(int axis);
 		bool isBallIgnored(int ball);
 		bool isHatIgnored(int hat);
-	
+
 		/// print the current ignore values
 		void print();
 };

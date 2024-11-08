@@ -35,7 +35,7 @@ class App {
 	
 		/// setup resources, run the main loop, then cleanup on exit
 		void run();
-	
+
 		/// stop the main loop
 		inline void stop() {m_bRun = false;}
 

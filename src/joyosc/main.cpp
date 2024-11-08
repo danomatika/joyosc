@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
 	// run the application
 	App app;
 	app.run();
-	
+
 	// cleanup SDL
 	if(window) {
 		SDL_DestroyWindow(window);

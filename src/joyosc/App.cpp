@@ -34,7 +34,7 @@ App::App() :
 		
 void App::run() {
 	m_config.print();
-	
+
 	// setup osc interface
 	try {
 		if(m_config.listeningMulticast == "") {
@@ -74,7 +74,7 @@ void App::run() {
 	m_oscReceiver->start();
 	m_bRun = true;
 	while(m_bRun) {
-		
+
 		// handle any joystick events
 		SDL_Event event;
 		while(SDL_PollEvent(&event)) {
@@ -86,16 +86,16 @@ void App::run() {
 				}
 			}
 		}
-		
+
 		// and 2 cents for the scheduler ...
 		usleep(m_config.sleepUS);
 	}
 	m_oscReceiver->stop();
-	
+
 	// close all opened devices
 	m_deviceManager.sendDeviceEvents = false;
 	m_deviceManager.closeAll();
-	
+
 	m_oscSender->send(m_config.notificationAddress + "/shutdown");
 }
 

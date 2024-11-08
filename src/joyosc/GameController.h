@@ -54,40 +54,40 @@ class GameController : public Device {
 		/// call this inside a loop, does not block, does nothing if device has
 		/// not been opened
 		bool handleEvent(void *data);
-	
+
 		/// returns true if the controller is open
 		bool isOpen();
 
 		/// print controller info
 		void print();
-	
+
 		/// returns the device type enum value
 		inline Type getDeviceType() {return GAMECONTROLLER;}
-	
+
 		/// returns devices list index, name, & osc address as a string
 		std::string getDeviceString();
-	
+
 		/// print remapping
 		void printRemapping();
-		
+
 		/// print button, axis, etc ignores
 		void printIgnores();
-	
+
 		/// get index in the devices list
 		inline int getIndex() {return m_indices.index;}
-	
+
 		/// get the SDL index, different from index
 		inline int getSdlIndex() {return m_indices.sdlIndex;}
-	
+
 		/// get the SDL instance ID, different from index
 		inline SDL_JoystickID getInstanceID() {return m_instanceID;}
-	
+
 		/// get the underlying SDL game controller handle
 		inline SDL_GameController* getController() {return m_controller;}
-	
+
 		/// get the underlying SDL joystick handle, converted from game controller
 		SDL_Joystick* getJoystick();
-	
+
 		/// set/get axis dead zone, used to set an ignore threshold around 0
 		void setAxisDeadZone(unsigned int zone);
 		inline int getAxisDeadZone() {return m_axisDeadZone;}
@@ -99,27 +99,27 @@ class GameController : public Device {
 		/// set/get button. axis, etc remappings
 		void setRemapping(GameControllerRemapping *remapping);
 		inline GameControllerRemapping* getRemapping() {return m_remapping;}
-	
+
 		/// set/get button, axis, etc ignores
 		void setIgnore(GameControllerIgnore *ignore);
 		inline GameControllerIgnore* getIgnore() {return m_ignore;}
-	
+
 		/// add a game controller mapping string to SDL,
 		/// returns 1 on add, 0 on update, & -1 on error
 		static int addMappingString(std::string mapping);
-	
+
 		/// add a game controller mapping file to SDL,
 		/// returns num mappings added or -1 on error
 		static int addMappingFile(std::string path);
-	
+
 	protected:
-	
+
 		/// send button event
 		bool buttonPressed(std::string &name, int value);
-	
+
 		SDL_GameController *m_controller = nullptr; ///< SDL controller handle
 		bool m_triggersAsAxes = false; ///< treat left & right triggers as axes? otherwise buttons
-	
+
 		GameControllerRemapping *m_remapping = nullptr; ///< joystick remapping values
 		GameControllerIgnore *m_ignore = nullptr; ///< button, axis, etc ignores
 };

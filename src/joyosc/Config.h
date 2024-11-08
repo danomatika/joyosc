@@ -57,16 +57,16 @@ class Config {
 		static Config& instance();
 		
 	/// \section Variables
-		
+
 		unsigned int listeningPort = 7770; ///< listening port
 		std::string listeningMulticast = ""; ///< multicast listening group, "" if none
-		
+
 		std::string sendingIp = "127.0.0.1"; ///< ip/hostname/multicast group to send to
 		unsigned int sendingPort = 8880; ///< port to send to
-		
+
 		std::string notificationAddress = "/notifications"; ///< base osc sending address for notifications
 		std::string deviceAddress = "/devices"; ///< base osc sending addess for devices
-		
+
 		bool printEvents = false; ///< print lots of events?
 		bool joysticksOnly = false; ///< disable game controller support?
 		bool openWindow = false; ///< open window? helps to receive events on some platforms
@@ -106,9 +106,9 @@ class Config {
 
 		/// get the device exclusions
 		DeviceExclusion& getDeviceExclusion();
-	
+
 	/// \section Actions
-	
+
 		/// parse the commandline options & load a given config file
 		bool parseCommandLine(int argc, char **argv);
 
@@ -137,9 +137,9 @@ class Config {
 
 		std::map<std::string,DeviceSettings> m_devices; ///< device settings
 		DeviceExclusion m_deviceExclusion; ///< device exclusions
-		
+
 		lo::Address *m_oscSender = nullptr; ///< global osc sender
-		
+
 		// hide all the constructors, copy functions here
 		Config();                            // singleton constructor
 		Config(Config const &);              // not defined, not copyable

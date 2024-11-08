@@ -29,28 +29,28 @@
 class JoystickRemapping {
 
 	public:
-		
+
 		JoystickRemapping() {}
 
 		/// load from XML element, returns true on success
 		bool readXML(tinyxml2::XMLElement *e);
-		
+
 		/// mappings from -> to
 		/// with key: from & value: to
 		std::map<int,int> buttons;
 		std::map<int,int> axes;
 		std::map<int,int> balls;
 		std::map<int,int>hats;
-		
+
 		/// check indices & toss out any bad values
 		void check(Joystick *joystick);
-	
+
 		/// get mapping for an id, returns the id if no mapping found
 		int mappingForButton(int button);
 		int mappingForAxis(int axis);
 		int mappingForBall(int ball);
 		int mappingForHat(int hat);
-	
+
 		/// print the current mappings
 		void print();
 };

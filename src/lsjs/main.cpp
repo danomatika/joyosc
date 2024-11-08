@@ -101,7 +101,7 @@ int main(int argc, char **argv) {
 	bool printMappings = false;
 	bool joysticksOnly = false;
 	bool openWindow = false;
-	
+
 	// option index enum
 	enum optionNames {
 		UNKNOWN,
@@ -139,7 +139,7 @@ int main(int argc, char **argv) {
 		std::cout << VERSION << std::endl;
 		return EXIT_SUCCESS;
 	}
-	
+
 	// read option values if set
 	if(options.isSet(DETAILS))  {printDetails = true;}
 	if(options.isSet(MAPPINGS)) {printMappings = true;}
@@ -185,7 +185,7 @@ int main(int argc, char **argv) {
 		// try once
 		printDevices(printDetails, printMappings, joysticksOnly);
 	}
-	
+
 	// cleanup SDL
 	if(window) {
 		SDL_DestroyWindow(window);

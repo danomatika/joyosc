@@ -107,7 +107,7 @@ void JoystickRemapping::check(Joystick *joystick) {
 			++iter;
 		}
 	}
-	
+
 	int numAxes = SDL_JoystickNumAxes(joystick->getJoystick());
 	for(iter = axes.begin(); iter != axes.end();) {
 		if(iter->first > numAxes || iter->second > numAxes) {
@@ -120,7 +120,7 @@ void JoystickRemapping::check(Joystick *joystick) {
 			++iter;
 		}
 	}
-	
+
 	int numBalls = SDL_JoystickNumBalls(joystick->getJoystick());
 	for(iter = balls.begin(); iter != balls.end();) {
 		if(iter->first > numBalls || iter->second > numBalls) {
@@ -133,7 +133,7 @@ void JoystickRemapping::check(Joystick *joystick) {
 			++iter;
 		}
 	}
-	
+
 	int numHats = SDL_JoystickNumHats(joystick->getJoystick());
 	for(iter = hats.begin(); iter != hats.end();) {
 		if(iter->first > numHats || iter->second > numHats) {
