@@ -52,39 +52,40 @@ bool Joystick::open(void *data) {
 	
 	m_instanceID = SDL_JoystickInstanceID(m_joystick);
 	m_devName = SDL_JoystickName(m_joystick);
-	
-	// try to set the address from the mapping list using the dev name
-	m_oscAddress = m_config.getDeviceAddress((std::string)m_devName, (int)Device::JOYSTICK);
+
+	// create prev axis values
+	for(int i = 0; i < SDL_JoystickNumAxes(m_joystick); ++i) {
+		m_prevAxisValues.push_back(0);
+	}
+
+	Config::DeviceSettings *settings = m_config.getDeviceSettings((std::string)m_devName, (int)Device::JOYSTICK);
+	if(settings) {
+
+		// try to set the address from the mapping list using the dev name
+		m_oscAddress = settings->address;
+
+		// set axis dead zone if one exists
+		if(settings->axes.deadZone > 0) {
+			setAxisDeadZone(settings->axes.deadZone);
+		}
+
+		// set remapping if one exists
+		if(settings->remap.joystick) {
+			setRemapping(settings->remap.joystick);
+			printRemapping();
+		}
+
+		// set ignore if one exists
+		if(settings->ignore.joystick) {
+			setIgnore(settings->ignore.joystick);
+			printIgnores();
+		}
+	}
 	if(m_oscAddress == "") {
 		// not found ... set a generic name using the index
 		std::stringstream stream;
 		stream << "/js" << m_indices.index;
 		m_oscAddress = stream.str();
-	}
-	
-	// create prev axis values
-	for(int i = 0; i < SDL_JoystickNumAxes(m_joystick); ++i) {
-		m_prevAxisValues.push_back(0);
-	}
-	
-	// set axis dead zone if one exists
-	int axisDeadZone = Config::instance().getJoystickAxisDeadZone(getDevName());
-	if(axisDeadZone > 0) {
-		setAxisDeadZone(axisDeadZone);
-	}
-	
-	// set remapping if one exists
-	JoystickRemapping *remap = Config::instance().getJoystickRemapping(getDevName());
-	if(remap) {
-		setRemapping(remap);
-		printRemapping();
-	}
-	
-	// set ignore if one exists
-	JoystickIgnore *ignore = Config::instance().getJoystickIgnore(getDevName());
-	if(ignore) {
-		setIgnore(ignore);
-		printIgnores();
 	}
 	
 	LOG << "Joystick: opened " << getDeviceString() << std::endl;

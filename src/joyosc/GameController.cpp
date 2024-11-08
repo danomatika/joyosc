@@ -54,42 +54,43 @@ bool GameController::open(void *data) {
 	SDL_Joystick *joystick = SDL_GameControllerGetJoystick(m_controller);
 	m_instanceID = SDL_JoystickInstanceID(joystick);
 	m_devName = SDL_GameControllerName(m_controller);
-	
-	// try to set the address from the mapping list using the dev name
-	m_oscAddress = m_config.getDeviceAddress((std::string)m_devName, (int)Device::GAMECONTROLLER);
-	if(m_oscAddress == "") {
-		// not found ... set a generic name using the index
-		std::stringstream stream;
-		stream << "/gc" << m_indices.index;
-		m_oscAddress = stream.str();
-	}
-			
+
 	// create prev axis values
 	for(int i = 0; i < SDL_JoystickNumAxes(joystick); ++i) {
 		m_prevAxisValues.push_back(0);
 	}
 
-	// overrides
-	m_triggersAsAxes = m_config.getControllerTriggersAsAxes(getDevName());
-	
-	// set axis dead zone if one exists
-	int axisDeadZone = m_config.getControllerAxisDeadZone(getDevName());
-	if(axisDeadZone > 0) {
-		setAxisDeadZone(axisDeadZone);
+	Config::DeviceSettings *settings = m_config.getDeviceSettings((std::string)m_devName, (int)Device::GAMECONTROLLER);
+	if(settings) {
+
+		// try to set the address from the mapping list using the dev name
+		m_oscAddress = settings->address;
+
+		// overrides
+		m_triggersAsAxes = settings->axes.triggers;
+
+		// set axis dead zone if one exists
+		if(settings->axes.deadZone > 0) {
+			setAxisDeadZone(settings->axes.deadZone);
+		}
+
+		// set remapping if one exists
+		if(settings->remap.controller) {
+			setRemapping(settings->remap.controller);
+			printRemapping();
+		}
+
+		// set ignore if one exists
+		if(settings->ignore.controller) {
+			setIgnore(settings->ignore.controller);
+			printIgnores();
+		}
 	}
-	
-	// set remapping if one exists
-	GameControllerRemapping *remap = m_config.getControllerRemapping(getDevName());
-	if(remap) {
-		setRemapping(remap);
-		printRemapping();
-	}
-	
-	// set ignore if one exists
-	GameControllerIgnore *ignore = m_config.getControllerIgnore(getDevName());
-	if(ignore) {
-		setIgnore(ignore);
-		printIgnores();
+	if(m_oscAddress == "") {
+		// not found ... set a generic name using the index
+		std::stringstream stream;
+		stream << "/gc" << m_indices.index;
+		m_oscAddress = stream.str();
 	}
 	
 	LOG << "GameController: opened " << getDeviceString() << std::endl;

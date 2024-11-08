@@ -38,7 +38,7 @@ bool DeviceExclusion::readXML(XMLElement *e) {
 					LOG_WARN << "DeviceExclusion: already excluding controller name "
 					         << name << std::endl;
 				}
-				LOG_DEBUG << "DeviceExclusion: excluding controller name "
+				LOG_DEBUG << "DeviceExclusion: exclude controller name "
 				          << name << std::endl;
 				loaded = true;
 			}
@@ -51,7 +51,7 @@ bool DeviceExclusion::readXML(XMLElement *e) {
 					LOG_WARN << "DeviceExclusion: already excluding joystick name "
 					         << name << std::endl;
 				}
-				LOG_DEBUG << "DeviceExclusion: excluding joystick name "
+				LOG_DEBUG << "DeviceExclusion: exclude joystick name "
 				          << name << std::endl;
 				loaded = true;
 			}

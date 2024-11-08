@@ -69,7 +69,7 @@
 			<axes deadZone="4000" triggers="false"/>
 
 			<!-- axisDeadZone: old version of <axes deadZone> -->
-			<!-- <thresholds axisDeadZone="4000"/> -->
+			<!-- <thresholds axisDeadZone="3000"/> -->
 
 			<!-- asAxes: old version of <axes triggers> -->
 			<!-- <triggers asAxes="true"/> -->
@@ -130,7 +130,7 @@
 			<axes deadZone="4000"/>
 
 			<!-- axisDeadZone: old version of <axes deadZone> -->
-			<!-- <thresholds axisDeadZone="4000"/> -->
+			<!-- <thresholds axisDeadZone="3000"/> -->
 			
 			<!-- remap buttons, axes, etc; useful when trying to
 			     match different joysticks to send the same button presses

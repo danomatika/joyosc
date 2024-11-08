@@ -43,76 +43,20 @@ Config& Config::instance() {
 	return *pointerToTheSingletonInstance;
 }
 
-std::string Config::getDeviceAddress(const std::string &deviceName, int type) {
-	AddressMap::iterator iter = m_deviceAddresses.find(deviceName);
-	if(iter != m_deviceAddresses.end()) {
-		DeviceAddress &da = (DeviceAddress &)(iter->second);
-		if(type > 0 && da.type != type) {
-			return ""; // wrong type
+Config::DeviceSettings* Config::getDeviceSettings(const std::string &deviceName, int type) {
+	auto iter = m_devices.find(deviceName);
+	if(iter != m_devices.end()) {
+		DeviceSettings &settings = (DeviceSettings &)(iter->second);
+		if(type > 0 && settings.type != type) {
+			return nullptr; // wrong type
 		}
-		return da.addr;
+		return &settings;
 	}
-	return "";
+	return nullptr;
 }
 
 DeviceExclusion& Config::getDeviceExclusion() {
 	return m_deviceExclusion;
-}
-
-unsigned int Config::getControllerAxisDeadZone(const std::string &deviceName) {
-	AxisMap::iterator iter = m_controllerAxisDeadZones.find(deviceName);
-	if(iter != m_controllerAxisDeadZones.end()) {
-		return iter->second;
-	}
-	return 0;
-}
-
-bool Config::getControllerTriggersAsAxes(const std::string &deviceName) {
-	BoolMap::iterator iter = m_controllerTriggersAsAxes.find(deviceName);
-	if(iter != m_controllerTriggersAsAxes.end()) {
-		return iter->second;
-	}
-	return triggersAsAxes;
-}
-
-GameControllerRemapping* Config::getControllerRemapping(const std::string &deviceName) {
-	GCRemappingMap::iterator iter = m_controllerRemappings.find(deviceName);
-	if(iter != m_controllerRemappings.end()) {
-		return iter->second;
-	}
-	return nullptr;
-}
-
-GameControllerIgnore* Config::getControllerIgnore(const std::string &deviceName) {
-	GCIgnoreMap::iterator iter = m_controllerIgnores.find(deviceName);
-	if(iter != m_controllerIgnores.end()) {
-		return iter->second;
-	}
-	return nullptr;
-}
-
-unsigned int Config::getJoystickAxisDeadZone(const std::string &deviceName) {
-	AxisMap::iterator iter = m_joystickAxisDeadZones.find(deviceName);
-	if(iter != m_joystickAxisDeadZones.end()) {
-		return iter->second;
-	}
-	return 0;
-}
-
-JoystickRemapping* Config::getJoystickRemapping(const std::string &deviceName) {
-	JSRemappingMap::iterator iter = m_joystickRemappings.find(deviceName);
-	if(iter != m_joystickRemappings.end()) {
-		return iter->second;
-	}
-	return nullptr;
-}
-
-JoystickIgnore* Config::getJoystickIgnore(const std::string &deviceName) {
-	JSIgnoreMap::iterator iter = m_joystickIgnores.find(deviceName);
-	if(iter != m_joystickIgnores.end()) {
-		return iter->second;
-	}
-	return nullptr;
 }
 
 bool Config::parseCommandLine(int argc, char **argv) {
@@ -271,13 +215,12 @@ void Config::print() {
 	    << "joysticks only?: " << (joysticksOnly ? "true" : "false") << std::endl
 	    << "sleep us:        " << sleepUS << std::endl
 	    << "triggers as axes?: " << (triggersAsAxes ? "true" : "false") << std::endl
-	    << "device addresses: " << m_deviceAddresses.size() << std::endl;
+	    << "device addresses: " << m_devices.size() << std::endl;
 	int index = 0;
-	AddressMap::iterator iter;
-	for(auto &dev : m_deviceAddresses) {
-		DeviceAddress &da = (DeviceAddress &)(dev.second);
+	for(auto &device : m_devices) {
+		DeviceSettings &settings = (DeviceSettings &)(device.second);
 		LOG << "  " << index;
-		switch(da.type) {
+		switch(settings.type) {
 			case Device::GAMECONTROLLER:
 				LOG << " C ";
 				break;
@@ -288,7 +231,7 @@ void Config::print() {
 				LOG << " ? ";
 				break;
 		}
-		LOG << dev.first << " " << da.addr << std::endl;
+		LOG << device.first << " " << settings.address << std::endl;
 		++index;
 	}
 	m_deviceExclusion.print();
@@ -327,48 +270,48 @@ void Config::readXMLController(tinyxml2::XMLElement *e) {
 		         << std::endl;
 		return;
 	}
-
-	if(m_deviceAddresses.find(name) == m_deviceAddresses.end()) {
+	if(getDeviceSettings(name, (int)Device::GAMECONTROLLER)) {
 		LOG_WARN << "Config: game controller name " << name
 		         << " already exists" << std::endl;
+		return;
 	}
-	m_deviceAddresses[name] = {.addr = addr, .type = (int)Device::GAMECONTROLLER};
+	DeviceSettings device = {
+		.address = addr,
+		.type = (int)Device::GAMECONTROLLER,
+		.axes = {.deadZone = 0, .triggers = triggersAsAxes},
+		.remap = {nullptr},
+		.ignore = {nullptr}
+	};
 
 	tinyxml2::XMLElement *child = e->FirstChildElement();
 	while(child) {
 
+		if((std::string)child->Name() == "axes") {
+			device.axes.deadZone = child->UnsignedAttribute("deadZone", 0);
+			if(device.axes.deadZone > 0) {
+				LOG_DEBUG << "GameController " << name << ": "
+				          << "axis deadzone " << device.axes.deadZone << std::endl;
+			}
+			if(child->QueryBoolAttribute("triggers", &device.axes.triggers) == tinyxml2::XML_SUCCESS) {
+				LOG_DEBUG << "GameController " << name << ": "
+				          << "triggers as axes " << device.axes.triggers << std::endl;
+			}
+		}
+
 		// deprecated
 		if((std::string)child->Name() == "thresholds") {
-			unsigned int deadZone = child->UnsignedAttribute("axisDeadZone", 0);
-			if(deadZone > 0) {
-				m_controllerAxisDeadZones.insert(std::make_pair(name, deadZone));
+			device.axes.deadZone = child->UnsignedAttribute("axisDeadZone", 0);
+			if(device.axes.deadZone > 0) {
 				LOG_DEBUG << "GameController " << name << ": "
-				          << "axis deadzone " << deadZone << std::endl;
+				          << "axis deadzone " << device.axes.deadZone << std::endl;
 			}
 		}
 
 		// deprecated
 		if((std::string)child->Name() == "triggers") {
-			bool asAxes = false;
-			if(child->QueryBoolAttribute("asAxes", &asAxes) == tinyxml2::XML_SUCCESS) {
-				m_controllerTriggersAsAxes.insert(std::make_pair(name, asAxes));
+			if(child->QueryBoolAttribute("asAxes", &device.axes.triggers) == tinyxml2::XML_SUCCESS) {
 				LOG_DEBUG << "GameController " << name << ": "
-				          << "triggers as axes " << asAxes << std::endl;
-			}
-		}
-
-		if((std::string)child->Name() == "axes") {
-			bool triggers = false;
-			if(child->QueryBoolAttribute("triggers", &triggers) == tinyxml2::XML_SUCCESS) {
-				m_controllerTriggersAsAxes.insert(std::make_pair(name, triggers));
-				LOG_DEBUG << "GameController " << name << ": "
-				          << "triggers as axes " << triggers << std::endl;
-			}
-			unsigned int deadZone = child->UnsignedAttribute("deadZone", 0);
-			if(deadZone > 0) {
-				m_controllerAxisDeadZones.insert(std::make_pair(name, deadZone));
-				LOG_DEBUG << "GameController " << name << ": "
-				          << "axis deadzone " << deadZone << std::endl;
+				          << "triggers as axes " << device.axes.triggers << std::endl;
 			}
 		}
 
@@ -378,10 +321,13 @@ void Config::readXMLController(tinyxml2::XMLElement *e) {
 				LOG_WARN << "Config: ignoring empty game controller remap for "
 				         << name << std::endl;
 			}
-			auto remapRet = m_controllerRemappings.insert(std::make_pair(name, remap));
-			if(!remapRet.second) {
-				LOG_WARN << "Config: game controller remapping for "
-				         << name << " already exists" << std::endl;
+			else {
+				if(device.remap.controller) {
+					delete device.remap.controller;
+					LOG_WARN << "Config: game controller remapping for "
+					         << name << " already exists" << std::endl;
+				}
+				device.remap.controller = remap;
 			}
 		}
 
@@ -391,14 +337,19 @@ void Config::readXMLController(tinyxml2::XMLElement *e) {
 				LOG_WARN << "Config: ignoring empty game controller ignore for "
 				         << name << std::endl;
 			}
-			auto ignoreRet = m_controllerIgnores.insert(std::make_pair(name, ignore));
-			if(!ignoreRet.second) {
-				LOG_WARN << "Config: game controller ignore for "
-				         << name << " already exists" << std::endl;
+			else {
+				if(device.ignore.controller) {
+					delete device.ignore.controller;
+					LOG_WARN << "Config: game controller ignore for "
+					         << name << " already exists" << std::endl;
+				}
+				device.ignore.controller = ignore;
 			}
 		}
 		child = child->NextSiblingElement();
 	}
+
+	m_devices[name] = device;
 }
 
 void Config::readXMLJoystick(tinyxml2::XMLElement *e) {
@@ -410,32 +361,36 @@ void Config::readXMLJoystick(tinyxml2::XMLElement *e) {
 		         << std::endl;
 		return;
 	}
-
-	if(m_deviceAddresses.find(name) == m_deviceAddresses.end()) {
+	if(getDeviceSettings(name, (int)Device::JOYSTICK)) {
 		LOG_WARN << "Config: joystick name " << name
 		         << " already exists" << std::endl;
+		return;
 	}
-	m_deviceAddresses[name] = {.addr = addr, .type = (int)Device::JOYSTICK};
+	DeviceSettings device = {
+		.address = addr,
+		.type = (int)Device::JOYSTICK,
+		.axes = {0, 0},
+		.remap = {nullptr},
+		.ignore = {nullptr}
+	};
 
 	tinyxml2::XMLElement *child = e->FirstChildElement();
 	while(child) {
 
-		// deprecated
-		if((std::string)child->Name() == "thresholds") {
-			unsigned int deadZone = child->UnsignedAttribute("axisDeadZone", 0);
-			if(deadZone > 0) {
-				m_joystickAxisDeadZones.insert(std::make_pair(name, deadZone));
+		if((std::string)child->Name() == "axes") {
+			device.axes.deadZone = child->UnsignedAttribute("deadZone", 0);
+			if(device.axes.deadZone > 0) {
 				LOG_DEBUG << "Joystick " << name << ": "
-				          << "axis deadzone " << deadZone << std::endl;
+				          << "axis deadzone " << device.axes.deadZone << std::endl;
 			}
 		}
 
-		if((std::string)child->Name() == "axes") {
-			unsigned int deadZone = child->UnsignedAttribute("deadZone", 0);
-			if(deadZone > 0) {
-				m_joystickAxisDeadZones.insert(std::make_pair(name, deadZone));
+		// deprecated
+		if((std::string)child->Name() == "thresholds") {
+			device.axes.deadZone = child->UnsignedAttribute("axisDeadZone", 0);
+			if(device.axes.deadZone > 0) {
 				LOG_DEBUG << "Joystick " << name << ": "
-				          << "axis deadzone " << deadZone << std::endl;
+				          << "axis deadzone " << device.axes.deadZone << std::endl;
 			}
 		}
 
@@ -445,10 +400,13 @@ void Config::readXMLJoystick(tinyxml2::XMLElement *e) {
 				LOG_WARN << "Config: ignoring empty joystick remap for "
 				         << name << std::endl;
 			}
-			auto remapRet = m_joystickRemappings.insert(std::make_pair(name, remap));
-			if(!remapRet.second) {
-				LOG_WARN << "Config: joystick remapping for "
-				         << name << " already exists" << std::endl;
+			else {
+				if(device.remap.joystick) {
+					delete device.remap.joystick;
+					LOG_WARN << "Config: joystick remapping for "
+					         << name << " already exists" << std::endl;
+				}
+				device.remap.joystick = remap;
 			}
 		}
 
@@ -458,14 +416,19 @@ void Config::readXMLJoystick(tinyxml2::XMLElement *e) {
 				LOG_WARN << "Config: ignoring empty joystick ignore for "
 				         << name << std::endl;
 			}
-			auto ignoreRet = m_joystickIgnores.insert(std::make_pair(name, ignore));
-			if(!ignoreRet.second) {
-				LOG_WARN << "Config: joystick ignore for "
-				         << name << " already exists" << std::endl;
+			else {
+				if(device.ignore.controller) {
+					delete device.ignore.controller;
+					LOG_WARN << "Config: joystick ignore for "
+					         << name << " already exists" << std::endl;
+				}
+				device.ignore.joystick = ignore;
 			}
 		}
 		child = child->NextSiblingElement();
 	}
+
+	m_devices[name] = device;
 }
 
 void Config::readXMLMappings(tinyxml2::XMLElement *e, const std::string &dir) {

@@ -95,8 +95,8 @@ class Device {
 
 	protected:
 
-		std::string	m_devName; ///< the device name
-		std::string	m_oscAddress; ///< osc address to send to
+		std::string	m_devName = ""; ///< the device name
+		std::string	m_oscAddress = ""; ///< osc address to send to
 
 		DeviceIndices m_indices = {.index = -1, .sdlIndex = -1}; ///< device list index & SDL index
 		SDL_JoystickID m_instanceID = -1; ///< unique SDL instance ID, *not* SDL index
