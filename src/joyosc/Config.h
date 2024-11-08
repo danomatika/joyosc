@@ -79,21 +79,23 @@ class Config {
 			int type; ///< Device::Type enum
 			std::string address; ///< OSC address
 			struct {
-				unsigned int deadZone;
-				bool triggers;
-			} axes;
+				unsigned int deadZone; ///< zeroing threshold
+				bool triggers; ///< treat triggers as axes?
+			} axes; ///< axis behavior
 			union {
 				GameControllerRemapping *controller;
 				JoystickRemapping *joystick;
-			} remap;
+			} remap; ///< event remappings
 			union {
 				GameControllerIgnore *controller;
 				JoystickIgnore *joystick;
-			} ignore;
+			} ignore; ///< event ignore rules
 		};
 
-		/// get/set the OscSender
+		/// get osc sender instance
 		inline lo::Address* getOscSender() {return m_oscSender;}
+
+		/// set osc sender instance
 		inline void setOscSender(lo::Address *sender) {m_oscSender = sender;}
 
 		/// get the config settings for a given device name
