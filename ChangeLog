@@ -7,6 +7,7 @@ TBD
 	* fixed device name check matching both controller and joystick types
 	* fixed trigger as button not filtering prev values
 
+	* added ability to load multiple config files
 	* added -t/--triggers option to disable treating triggers as buttons
 	  (Albert Graef)
 	* added <config triggersAsAxes> attribute
