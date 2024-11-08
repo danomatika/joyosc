@@ -182,28 +182,27 @@ You can also specify values on the command line which override values in the con
 
 The `joyosc` help output:
 ~~~
-Usage: ./src/joyosc/joyosc [options] [FILE]
+Usage: joyosc [options] [FILE]
 
   joystick device event to osc bridge
 
 Options:
-  -h, --help             Print usage and exit
-  --version              Print version and exit
-  -l, --listening-port   Listening port (default: 7770)
-  -m, --multicast        Multicast listening group address (off by default)
-  -i, --ip               IP address, hostname, or multicast group to send to
-                         (default: 127.0.0.1)
-  -p, --port             Port to send to (default: 8880)
-  -e, --events           Print incoming events, useful for debugging
-  -j, --joysticks-only   Disable game controller support, joystick interface
-                         only
-  -w, --window           Open window, helps on some platforms if device events
-                         are not being found, ex. MFI controllers on macOS
-  -s, --sleep            Sleep time in usecs (default: 10000)
-  -t, --triggers-as-axes Report trigger buttons as axis values
+  -h, --help           Print usage and exit
+  --version            Print version and exit
+  -l, --listening-port Listening port (default: 7770)
+  -m, --multicast      Multicast listening group address (off by default)
+  -i, --ip             IP address, hostname, or multicast group to send to
+                       (default: 127.0.0.1)
+  -p, --port           Port to send to (default: 8880)
+  -e, --events         Print incoming events, useful for debugging
+  -j, --joysticks-only Disable game controller support, joystick interface only
+  -w, --window         Open window, helps on some platforms if device events are
+                       not being found, ex. MFI controllers on macOS
+  -s, --sleep          Sleep time in usecs (default: 10000)
+  -t, --triggers       Report trigger buttons as axis values
 
 Arguments:
-  FILE                   Optional XML config file
+  FILE                 Optional XML config file
 ~~~
 
 Note: Enabling event printing is useful when debugging:
@@ -368,11 +367,18 @@ If you want to customize an SDL game controller mapping, you can print the defau
 
 The `lsjs` help output:
 ~~~
+Usage: lsjs [options]
+
+  print the available joysticks & game controllers
+
+Options:
+  -h, --help           Print usage and exit
+  --version            Print version and exit
   -d, --details        Print device details (buttons, axes, GUIDs, etc)
   -m, --mappings       Print game controller mappings
   -j, --joysticks-only Disable game controller support, joystick interface only
-  -w, --window         Open window, helps on some platforms if device events are
-                       not being found, ex. MFI controllers on macOS
+  -w, --window         Open window, helps on some platforms if devices are not
+                       being found, ex. MFI controllers on macOS
 ~~~
 
 PURE DATA LIBRARY
