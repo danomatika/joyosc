@@ -23,7 +23,7 @@ TBD
 	0.6.0
 
 	* added joyosc and lsjs -w/--window option to open window which helps
-	  receiving events on some platforms, ex. MFI controllers on macOS
+	  receiving events on some platforms, ex. MFi controllers on macOS
 	* added device name exclusion via <exclude> tag
 	* updated udev joyosc-notifier in case it's needed in the future
 	* remap event should use LOG_DEBUG

@@ -182,7 +182,7 @@ You can also specify values on the command line which override values in the con
 
 The `joyosc` help output:
 ~~~
-Usage: joyosc [options] [FILE]
+Usage: joyosc [options] [FILE...]
 
   joystick device event to osc bridge
 
@@ -197,12 +197,12 @@ Options:
   -e, --events         Print incoming events, useful for debugging
   -j, --joysticks-only Disable game controller support, joystick interface only
   -w, --window         Open window, helps on some platforms if device events are
-                       not being found, ex. MFI controllers on macOS
+                       not being found, ex. MFi controllers on macOS
   -s, --sleep          Sleep time in usecs (default: 10000)
   -t, --triggers       Report trigger buttons as axis values
 
 Arguments:
-  FILE                 Optional XML config file
+  FILE                 Optional XML config file(s)
 ~~~
 
 Note: Enabling event printing is useful when debugging:
@@ -378,7 +378,7 @@ Options:
   -m, --mappings       Print game controller mappings
   -j, --joysticks-only Disable game controller support, joystick interface only
   -w, --window         Open window, helps on some platforms if devices are not
-                       being found, ex. MFI controllers on macOS
+                       being found, ex. MFi controllers on macOS
 ~~~
 
 PURE DATA LIBRARY
@@ -389,7 +389,7 @@ A small library of Pure Data abstractions is provided in the `data/pd` folder fo
 KNOWN ISSUES
 ------------
 
-### macOS "MFI" Controllers Not Detected On Start
+### macOS "MFi" Controllers Not Detected On Start
 
 As of spring 2024, game controllers designed to work with iOS, ie. Apple "MFi-certified", are supported by SDL2 on newer versions of macOS circa 10.15+, however they are often not detected if connected *before* starting joyosc. In order for controllers to be recognized, open joyosc or lsjs with an optional window using the `-w/--window` flag in order the OS to deliver events:
 

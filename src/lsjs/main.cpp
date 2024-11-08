@@ -122,7 +122,7 @@ int main(int argc, char **argv) {
 		{DETAILS, 0, "d", "details", Options::Arg::None, "  -d, --details \tPrint device details (buttons, axes, GUIDs, etc)"},
 		{MAPPINGS, 0, "m", "mappings", Options::Arg::None, "  -m, --mappings \tPrint game controller mappings"},
 		{JSONLY, 0, "j", "joysticks-only", Options::Arg::None, "  -j, --joysticks-only \tDisable game controller support, joystick interface only"},
-		{WINDOW, 0, "w", "window", Options::Arg::None, "  -w, --window \tOpen window, helps on some platforms if devices are not being found, ex. MFI controllers on macOS"},
+		{WINDOW, 0, "w", "window", Options::Arg::None, "  -w, --window \tOpen window, helps on some platforms if devices are not being found, ex. MFi controllers on macOS"},
 		{0, 0, 0, 0, 0, 0}
 	};
 

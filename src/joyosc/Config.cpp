@@ -88,11 +88,11 @@ bool Config::parseCommandLine(int argc, char **argv) {
 		{PORT, 0, "p", "port", Options::Arg::Integer, "  -p, --port \tPort to send to (default: 8880)"},
 		{EVENTS, 0, "e", "events", Options::Arg::None, "  -e, --events \tPrint incoming events, useful for debugging"},
 		{JSONLY, 0, "j", "joysticks-only", Options::Arg::None, "  -j, --joysticks-only \tDisable game controller support, joystick interface only"},
-		{WINDOW, 0, "w", "window", Options::Arg::None, "  -w, --window \tOpen window, helps on some platforms if device events are not being found, ex. MFI controllers on macOS"},
+		{WINDOW, 0, "w", "window", Options::Arg::None, "  -w, --window \tOpen window, helps on some platforms if device events are not being found, ex. MFi controllers on macOS"},
 		{SLEEP, 0, "s", "sleep", Options::Arg::Integer, "  -s, --sleep \tSleep time in usecs (default: 10000)"},
 		{TRIGGER, 0, "t", "triggers", Options::Arg::None, "  -t, --triggers \tReport trigger buttons as axis values"},
 		{UNKNOWN, 0, "", "", Options::Arg::Unknown, "\nArguments:"},
-		{UNKNOWN, 0, "", "", Options::Arg::None, "  FILE \tOptional XML config file"},
+		{UNKNOWN, 0, "", "", Options::Arg::None, "  FILE \tOptional XML config file(s)"},
 		{0, 0, 0, 0, 0, 0}
 	};
 
