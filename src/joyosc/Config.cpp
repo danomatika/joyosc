@@ -102,7 +102,7 @@ bool Config::parseCommandLine(int argc, char **argv) {
 		return false;
 	}
 	if(options.isSet(HELP)) {
-		options.printUsage(usage, "[FILE]");
+		options.printUsage(usage, "[FILE...]");
 		return false;
 	}
 	if(options.isSet(VERS)) {
@@ -110,9 +110,9 @@ bool Config::parseCommandLine(int argc, char **argv) {
 		return false;
 	}
 
-	// load the config file (if one exists)
-	if(options.numArguments() > 0) { // load the config file (if one exists)
-		auto path = Path::absolutePath(options.getArgumentString(0));
+	// load config file(s)
+	for(int i = 0; i < options.numArguments(); ++i) {
+		auto path = Path::absolutePath(options.getArgumentString(i));
 		LOG << "Config: loading " << path << std::endl;
 		if(!loadXMLFile(path.c_str())) {
 			return false;
