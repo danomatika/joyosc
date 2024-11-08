@@ -89,9 +89,9 @@ void JoystickIgnore::check(Joystick *joystick) {
 		return;
 	}
 
-	Set::iterator iter;
+	auto iter = buttons.begin();
 	int numButtons = SDL_JoystickNumButtons(joystick->getJoystick());
-	for(iter = buttons.begin(); iter != buttons.end();) {
+	for(; iter != buttons.end();) {
 		if((*iter) > numButtons) {
 			LOG_WARN << "Joystick " << joystick->getDevName() << ": "
 			         << "removing invalid button ignore: " << (*iter) << std::endl;

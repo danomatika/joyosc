@@ -68,8 +68,6 @@ class DeviceManager {
 
 	protected:
 		
-		typedef std::map<int,Device *> Map;
-		
 		/// return the first available index in the active devices list
 		int firstAvailableIndex();
 		
@@ -79,5 +77,5 @@ class DeviceManager {
 		/// is an sdlIndex already in use by an active device?
 		bool sdlIndexExists(int sdlIndex);
 
-		Map m_devices; ///< active device list, mapped by instanceID
+		std::map<int,Device *> m_devices; ///< active device list, mapped by instanceID
 };

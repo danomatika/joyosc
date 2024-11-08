@@ -69,8 +69,8 @@ void GameControllerIgnore::check(GameController *controller) {
 	if(!controller) {
 		return;
 	}
-	Map::iterator iter;
-	for(iter = buttons.begin(); iter != buttons.end();) {
+	auto iter = buttons.begin();
+	for(; iter != buttons.end();) {
 		if(SDL_GameControllerGetButtonFromString((*iter).c_str()) == SDL_CONTROLLER_BUTTON_INVALID) {
 			LOG_WARN << "GameController " << controller->getDevName() << ": "
 			         << "removing invalid button ignore: " << (*iter) << std::endl;
@@ -101,7 +101,6 @@ bool GameControllerIgnore::isAxisIgnored(std::string &axis) {
 }
 
 void GameControllerIgnore::print() {
-	Map::iterator iter;
 	for(auto &b : buttons) {
 		LOG << "  ignore button: " << b << std::endl;
 	}

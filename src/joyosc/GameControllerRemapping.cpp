@@ -72,8 +72,8 @@ void GameControllerRemapping::check(GameController *controller) {
 	if(!controller){
 		return;
 	}
-	Map::iterator iter;
-	for(iter = buttons.begin(); iter != buttons.end();) {
+	auto iter = buttons.begin();
+	for(; iter != buttons.end();) {
 		if(SDL_GameControllerGetButtonFromString(iter->first.c_str()) == SDL_CONTROLLER_BUTTON_INVALID) {
 			LOG_WARN << "GameController " << controller->getDevName() << ": "
 			         << "removing invalid button remap: "
@@ -98,17 +98,16 @@ void GameControllerRemapping::check(GameController *controller) {
 }
 
 std::string GameControllerRemapping::mappingForButton(std::string button) {
-	Map::iterator iter = buttons.find(button);
+	auto iter = buttons.find(button);
 	return iter != buttons.end() ? iter->second : button;
 }
 
 std::string GameControllerRemapping::mappingForAxis(std::string axis) {
-	Map::iterator iter = axes.find(axis);
+	auto iter = axes.find(axis);
 	return iter != axes.end() ? iter->second : axis;
 }
 
 void GameControllerRemapping::print() {
-	Map::iterator iter;
 	for(auto &b : buttons) {
 		LOG << "  button remap: " << b.first << " -> " << b.second << std::endl;
 	}

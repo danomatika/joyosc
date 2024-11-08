@@ -30,8 +30,6 @@ class GameControllerRemapping { // : public tinyxml2::XMLObject {
 
 	public:
 		
-		typedef std::map<std::string,std::string> Map;
-		
 		GameControllerRemapping() {}
 		
 		/// load from XML element, returns true on success
@@ -39,8 +37,8 @@ class GameControllerRemapping { // : public tinyxml2::XMLObject {
 
 		/// mappings from -> to
 		/// with key: from & value: to
-		Map buttons;
-		Map axes;
+		std::map<std::string,std::string> buttons;
+		std::map<std::string,std::string> axes;
 		
 		/// check indices & toss out any bad values
 		void check(GameController *controller);

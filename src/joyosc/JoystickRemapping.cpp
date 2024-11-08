@@ -94,7 +94,7 @@ void JoystickRemapping::check(Joystick *joystick) {
 		return;
 	}
 
-	Map::iterator iter;
+	auto iter = buttons.begin();
 	int numButtons = SDL_JoystickNumButtons(joystick->getJoystick());
 	for(iter = buttons.begin(); iter != buttons.end();) {
 		if(iter->first > numButtons || iter->second > numButtons) {
@@ -149,22 +149,22 @@ void JoystickRemapping::check(Joystick *joystick) {
 }
 
 int JoystickRemapping::mappingForButton(int button) {
-	Map::iterator iter = buttons.find(button);
+	auto iter = buttons.find(button);
 	return iter != buttons.end() ? iter->second : button;
 }
 
 int JoystickRemapping::mappingForAxis(int axis) {
-	Map::iterator iter = axes.find(axis);
+	auto iter = axes.find(axis);
 	return iter != axes.end() ? iter->second : axis;
 }
 
 int JoystickRemapping::mappingForBall(int ball) {
-	Map::iterator iter = balls.find(ball);
+	auto iter = balls.find(ball);
 	return iter != balls.end() ? iter->second : ball;
 }
 
 int JoystickRemapping::mappingForHat(int hat) {
-	Map::iterator iter = hats.find(hat);
+	auto iter = hats.find(hat);
 	return iter != hats.end() ? iter->second : hat;
 }
 

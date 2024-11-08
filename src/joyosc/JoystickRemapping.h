@@ -30,8 +30,6 @@ class JoystickRemapping {
 
 	public:
 		
-		typedef std::map<int,int> Map;
-		
 		JoystickRemapping() {}
 
 		/// load from XML element, returns true on success
@@ -39,10 +37,10 @@ class JoystickRemapping {
 		
 		/// mappings from -> to
 		/// with key: from & value: to
-		Map buttons;
-		Map axes;
-		Map balls;
-		Map hats;
+		std::map<int,int> buttons;
+		std::map<int,int> axes;
+		std::map<int,int> balls;
+		std::map<int,int>hats;
 		
 		/// check indices & toss out any bad values
 		void check(Joystick *joystick);
