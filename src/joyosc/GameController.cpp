@@ -54,6 +54,7 @@ bool GameController::open(void *data) {
 	SDL_Joystick *joystick = SDL_GameControllerGetJoystick(m_controller);
 	m_instanceID = SDL_JoystickInstanceID(joystick);
 	m_devName = SDL_GameControllerName(m_controller);
+	m_triggersAsAxes = m_config.triggersAsAxes;
 
 	// create prev axis values
 	for(int i = 0; i < SDL_JoystickNumAxes(joystick); ++i) {
