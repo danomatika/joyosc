@@ -5,10 +5,18 @@ TBD
 	* flush after printing on windows to avoid console output buffering issues
 	  (reported by Albert Graef)
 	* fixed device name check matching both controller and joystick types
-	* added -t/--triggers-as-axes option to disable treating triggers as buttons
+	* fixed trigger as button not filtering prev values
+
+	* added -t/--triggers option to disable treating triggers as buttons
 	  (Albert Graef)
-	* set device triggersAsAxes using config value ie. option new -t flag
-	* allow device <controler> and <joystick> xml tags without address attribute
+	* added <config triggersAsAxes> attribute
+	* added <axes> tag with attributes: <axes deadZone triggers>, this is a
+	  replacement for the <threshold axisDeadZone> and <triggers asAxes> tags
+	  note: <threshold> and <triggers> read, but may be deprecated in the future
+
+	* allow device <controller> and <joystick> xml tags without address attribute
+	* updated example config file
+	* various refactors and cleanups
 
 2024-11-06 Dan Wilcox <danomatika@gmail.com>
 
@@ -41,9 +49,10 @@ TBD
 	0.5.0
 
 	* refactored to remove lopack and tinyobject lib dependencies (1)
-	* fixed controller axis deadzone added as joystick axis deadzone
+	* fixed controller axis deadzone
+	* added as joystick axis deadzone
 	* added override for game controller variable trigger buttons as axes via
-	  <trigger asAxes="true"> in config file (requested by polymorphicengine)
+	  <triggers asAxes="true"> in config file (requested by polymorphicengine)
 
 	1: make sure to run "make uninstall" using a previous version source dist to
 	   ensure both are removed from your system before building and installing
