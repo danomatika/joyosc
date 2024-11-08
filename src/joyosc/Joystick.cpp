@@ -81,7 +81,7 @@ bool Joystick::open(void *data) {
 			printIgnores();
 		}
 	}
-	if(m_oscAddress == "") {
+	if(!settings || m_oscAddress == "") {
 		// not found ... set a generic name using the index
 		std::stringstream stream;
 		stream << "/js" << m_indices.index;
