@@ -75,6 +75,7 @@ class Config {
 
 	/// \section Getters
 
+		/// device settings loaded from config file
 		struct DeviceSettings {
 			int type; ///< Device::Type enum
 			std::string address; ///< OSC address
