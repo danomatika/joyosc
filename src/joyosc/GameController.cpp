@@ -68,15 +68,15 @@ bool GameController::open(void *data) {
 	for(int i = 0; i < SDL_JoystickNumAxes(joystick); ++i) {
 		m_prevAxisValues.push_back(0);
 	}
+
+	// overrides
+	m_triggersAsAxes = m_config.getControllerTriggersAsAxes(getDevName());
 	
 	// set axis dead zone if one exists
 	int axisDeadZone = m_config.getControllerAxisDeadZone(getDevName());
 	if(axisDeadZone > 0) {
 		setAxisDeadZone(axisDeadZone);
 	}
-
-	// triggers as axes override
-	m_triggersAsAxes = m_config.getControllerTriggersAsAxes(getDevName());
 	
 	// set remapping if one exists
 	GameControllerRemapping *remap = m_config.getControllerRemapping(getDevName());
@@ -160,7 +160,7 @@ bool GameController::handleEvent(void *data) {
 				value = (event->caxis.value > 0 ? 1 : 0);
 			}
 
-			// make sure we don't report a value more then once
+			// make sure we don't report a value more than once
 			if(m_prevAxisValues[event->caxis.axis] == value) {
 				return true;
 			}
@@ -173,15 +173,14 @@ bool GameController::handleEvent(void *data) {
 				m_prevAxisValues[event->caxis.axis] = value;
 				return buttonPressed(axis, value);
 			}
-
 			lo::Address *sender = m_config.getOscSender();
 			sender->send(m_config.deviceAddress + m_oscAddress + "/axis",
 				"si", axis.c_str(), value);
-
 			if(m_config.printEvents) {
 				LOG << m_oscAddress << " " << m_devName
 				    << " axis: " << axis << " " << value << std::endl;
 			}
+
 			return true;
 		}
 	}

@@ -16,18 +16,19 @@
 	<!-- printEvents: print live events to to console? bool "true" or "false"
 	                  (default: false)
 
-	      joysticksOnly: disable game controller support, use joystick
-	                     interface only (default: false)
+	     joysticksOnly: disable game controller support, use joystick
+	                    interface only (default: false)
 
-	      openWindow: open window, helps on some platforms if device events are
-	                  not being received, ex. MFI controllers on macOS
+	     openWindow: open window, helps on some platforms if device events are
+	                 not being received, ex. MFI controllers on macOS
 
-	      sleepUS: how often to poll for new events in micro seconds, a smaller
+	     sleepUS: how often to poll for new events in micro seconds, a smaller
 	              number means faster events but more CPU time (default: 10000)
 
-	      triggersAsAxes: report trigger values as button presses (default: true)
-	                      note: this can be overridden per controller with the
-	                      controller <triggers> tag, see below
+	     triggersAsAxes: report controller trigger values as button presses
+	                     (default: false)
+	                     note: this can be overridden per controller with the
+	                     controller <axes> tag, see below
 	 -->
 	<config printEvents="true" joysticksOnly="false" openWindow="false"
 	        sleepUS="20000" triggersAsAxes="false"/>
@@ -40,12 +41,12 @@
 
 		<!-- game controllers: higher level joystick with input mappings
 
-		    these are joysticks with a default SDL button & axis mapping
+		     these are joysticks with a default SDL button & axis mapping
 
-		    you can provide a custom mapping to add or override existing
-		    mappings using the <mappings> element further below
+		     you can provide a custom mapping to add or override existing
+		     mappings using the <mappings> element further below
 
-		    name is required, address is optional
+		     name is required, address is optional
 		-->
 		<controller name="Logitech F310 Gamepad (DInput)" address="/F310"/>
 		<controller name="PS3 Controller" address="/ps3"/>
@@ -53,18 +54,25 @@
 		<!-- you can also customize a specific controller -->
 		<controller name="Logitech F510 Gamepad (DInput)" address="/F510">
 
-			<!-- axisDeadZone: +/- area around the 0 point when centering an
-			                   axis, some devices are jittery and require a
-			                   larger number, (default: 3200, as per SDL
-			                   documentation)
-			-->
-			<thresholds axisDeadZone="4000"/>
+			<!-- axis behavior
 
-			<!-- asAxes: some controllers report variable triggers as axes
-			             and joyosc treats them as binary buttons by default,
-			             disable this per controller by setting asAxes to true
+			     deadZone: +/- area around the 0 point when centering an
+			               axis, some devices are jittery and require a
+			               larger number, (default: 3200, as per SDL
+			               documentation)
+
+			     triggers: some controllers report variable triggers as axes
+			              and joyosc treats them as binary buttons by default,
+			               disable this per controller by setting triggers to true
+			               (default: false)
 			-->
-			<triggers asAxes="true"/>
+			<axes deadZone="4000" triggers="false"/>
+
+			<!-- axisDeadZone: old version of <axes deadZone> -->
+			<!-- <thresholds axisDeadZone="4000"/> -->
+
+			<!-- asAxes: old version of <axes triggers> -->
+			<!-- <triggers asAxes="true"/> -->
 			
 			<!-- remap buttons, axes, etc; useful when trying to
 			     match different controllers to send the same button presses
@@ -112,12 +120,17 @@
 		<!-- like controllers, you can also customize a specific joystick -->
 		<joystick name="PLAYSTATION(R)3 Controller" address="/js0">
 
-			<!-- axisDeadZone: +/- area around the 0 point when centering an
-			                   axis, some devices are jittery and require a
-			                   larger number, (default: 3200, as per SDL
-			                   documentation)
+			<!-- axis behavior
+
+			     deadZone: +/- area around the 0 point when centering an
+			               axis, some devices are jittery and require a
+			               larger number, (default: 3200, as per SDL
+			               documentation)
 			-->
-			<thresholds axisDeadZone="4000"/>
+			<axes deadZone="4000"/>
+
+			<!-- axisDeadZone: old version of <axes deadZone> -->
+			<!-- <thresholds axisDeadZone="4000"/> -->
 			
 			<!-- remap buttons, axes, etc; useful when trying to
 			     match different joysticks to send the same button presses
@@ -145,15 +158,15 @@
 			</ignore>
 		</joystick>
 
-			<!-- exclude controllers or joysticks by name; useful if a device appears
-			     multiple times or is in use by another application and should not
-			     generate events in joyosc
+		<!-- exclude controllers or joysticks by name; useful if a device appears
+		     multiple times or is in use by another application and should not
+		     generate events in joyosc
 
-				  types: controller, joystick
-			-->
-			<exclude>
-				<controller name="Dreamcast Controller"/>
-			</exclude>
+			  types: controller, joystick
+		-->
+		<exclude>
+			<controller name="Dreamcast Controller"/>
+		</exclude>
 	</devices>
 
 	<!-- mappings: custom SDL game controller mappings to add at runtime

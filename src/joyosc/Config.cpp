@@ -336,27 +336,39 @@ void Config::readXMLController(tinyxml2::XMLElement *e) {
 
 	tinyxml2::XMLElement *child = e->FirstChildElement();
 	while(child) {
+
+		// deprecated
 		if((std::string)child->Name() == "thresholds") {
 			unsigned int deadZone = child->UnsignedAttribute("axisDeadZone", 0);
 			if(deadZone > 0) {
-				auto threshRet = m_controllerAxisDeadZones.insert(std::make_pair(name, deadZone));
-				if(!threshRet.second) {
-					LOG_WARN << "Config: game controller axis deadzone for "
-					         << name << " already exists" << std::endl;
-				}
-				else {
-					LOG_DEBUG << "GameController " << name << ": "
-					          << "axis deadzone " << deadZone << std::endl;
-				}
+				m_controllerAxisDeadZones.insert(std::make_pair(name, deadZone));
+				LOG_DEBUG << "GameController " << name << ": "
+				          << "axis deadzone " << deadZone << std::endl;
 			}
 		}
 
+		// deprecated
 		if((std::string)child->Name() == "triggers") {
 			bool asAxes = false;
 			if(child->QueryBoolAttribute("asAxes", &asAxes) == tinyxml2::XML_SUCCESS) {
 				m_controllerTriggersAsAxes.insert(std::make_pair(name, asAxes));
 				LOG_DEBUG << "GameController " << name << ": "
 				          << "triggers as axes " << asAxes << std::endl;
+			}
+		}
+
+		if((std::string)child->Name() == "axes") {
+			bool triggers = false;
+			if(child->QueryBoolAttribute("triggers", &triggers) == tinyxml2::XML_SUCCESS) {
+				m_controllerTriggersAsAxes.insert(std::make_pair(name, triggers));
+				LOG_DEBUG << "GameController " << name << ": "
+				          << "triggers as axes " << triggers << std::endl;
+			}
+			unsigned int deadZone = child->UnsignedAttribute("deadZone", 0);
+			if(deadZone > 0) {
+				m_controllerAxisDeadZones.insert(std::make_pair(name, deadZone));
+				LOG_DEBUG << "GameController " << name << ": "
+				          << "axis deadzone " << deadZone << std::endl;
 			}
 		}
 
@@ -407,18 +419,23 @@ void Config::readXMLJoystick(tinyxml2::XMLElement *e) {
 
 	tinyxml2::XMLElement *child = e->FirstChildElement();
 	while(child) {
+
+		// deprecated
 		if((std::string)child->Name() == "thresholds") {
 			unsigned int deadZone = child->UnsignedAttribute("axisDeadZone", 0);
 			if(deadZone > 0) {
-				auto threshRet = m_joystickAxisDeadZones.insert(std::make_pair(name, deadZone));
-				if(!threshRet.second) {
-					LOG_WARN << "Config: joystick axis deadzone for "
-					         << name << " already exists" << std::endl;
-				}
-				else {
-					LOG_DEBUG << "Joystick " << name << ": "
-					          << "axis deadzone " << deadZone << std::endl;
-				}
+				m_joystickAxisDeadZones.insert(std::make_pair(name, deadZone));
+				LOG_DEBUG << "Joystick " << name << ": "
+				          << "axis deadzone " << deadZone << std::endl;
+			}
+		}
+
+		if((std::string)child->Name() == "axes") {
+			unsigned int deadZone = child->UnsignedAttribute("deadZone", 0);
+			if(deadZone > 0) {
+				m_joystickAxisDeadZones.insert(std::make_pair(name, deadZone));
+				LOG_DEBUG << "Joystick " << name << ": "
+				          << "axis deadzone " << deadZone << std::endl;
 			}
 		}
 

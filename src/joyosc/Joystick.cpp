@@ -174,22 +174,23 @@ bool Joystick::handleEvent(void *data) {
 				value = 0;
 			}
 			
-			// make sure we don't report a value more then once
+			// make sure we don't report a value more than once
 			if(m_prevAxisValues[event->jaxis.axis] == value) {
 				return true;
 			}
 
-			sender->send(m_config.deviceAddress + m_oscAddress + "/axis",
-				"ii", (int)event->jaxis.axis, value);
-
 			// store value
 			m_prevAxisValues[event->jaxis.axis] = value;
 
+			// send
+			sender->send(m_config.deviceAddress + m_oscAddress + "/axis",
+				"ii", (int)event->jaxis.axis, value);
 			if(m_config.printEvents) {
 				LOG << m_oscAddress << " " << m_devName
 				    << " axis: " << (int)event->jaxis.axis
 				    << " " << value << std::endl;
 			}
+
 			return true;
 		}
 		

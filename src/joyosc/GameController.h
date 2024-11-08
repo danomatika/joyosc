@@ -118,11 +118,6 @@ class GameController : public Device {
 		bool buttonPressed(std::string &name, int value);
 	
 		SDL_GameController *m_controller = nullptr; ///< SDL controller handle
-		DeviceIndices m_indices = {.index = -1, .sdlIndex = -1}; ///< device list index & SDL index
-		SDL_JoystickID m_instanceID = -1; ///< unique SDL instance ID, *not* SDL index
-	
-		unsigned int m_axisDeadZone = 3200; ///< axis dead zone amount +/- center pos
-		std::vector<int16_t> m_prevAxisValues; ///< prev axis values to cancel repeats
 		bool m_triggersAsAxes = false; ///< treat left & right triggers as axes? otherwise buttons
 	
 		GameControllerRemapping *m_remapping = nullptr; ///< joystick remapping values
