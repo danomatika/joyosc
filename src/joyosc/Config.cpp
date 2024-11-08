@@ -276,8 +276,8 @@ void Config::readXMLController(tinyxml2::XMLElement *e) {
 		return;
 	}
 	DeviceSettings device = {
-		.address = addr,
 		.type = (int)Device::GAMECONTROLLER,
+		.address = addr,
 		.axes = {.deadZone = 0, .triggers = triggersAsAxes},
 		.remap = {nullptr},
 		.ignore = {nullptr}
@@ -367,8 +367,8 @@ void Config::readXMLJoystick(tinyxml2::XMLElement *e) {
 		return;
 	}
 	DeviceSettings device = {
-		.address = addr,
 		.type = (int)Device::JOYSTICK,
+		.address = addr,
 		.axes = {0, 0},
 		.remap = {nullptr},
 		.ignore = {nullptr}
