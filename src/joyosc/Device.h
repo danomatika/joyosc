@@ -89,8 +89,10 @@ class Device {
 		/// get device name i.e. "/dev/input/js0"
 		inline std::string getDevName() {return m_devName;}
 
-		/// set/get the osc address of this device ie "/js0" etc
+		/// set the osc address of this device ie "/js0" etc
 		inline void setOscAddress(std::string oscAddress) {m_oscAddress = oscAddress;}
+
+		/// get the osc address of this device ie "/js0" etc
 		inline std::string getOscAddress() {return m_oscAddress;}
 
 	protected:

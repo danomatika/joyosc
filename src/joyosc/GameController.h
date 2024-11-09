@@ -88,20 +88,28 @@ class GameController : public Device {
 		/// get the underlying SDL joystick handle, converted from game controller
 		SDL_Joystick* getJoystick();
 
-		/// set/get axis dead zone, used to set an ignore threshold around 0
+		/// set axis dead zone, used to set an ignore threshold around 0
 		void setAxisDeadZone(unsigned int zone);
+
+		/// get axis dead zone
 		inline int getAxisDeadZone() {return m_axisDeadZone;}
 
-		/// set/get triggers as axes, default: false for buttons
+		/// set triggers as axes, default: false for buttons
 		void setTriggersAsAxes(bool asAxes);
+
+		/// get triggers as axes value
 		inline int getTriggersAsAxes() {return m_triggersAsAxes;}
 
-		/// set/get button. axis, etc remappings
+		/// set button. axis, etc remappings
 		void setRemapping(GameControllerRemapping *remapping);
+
+		/// get button. axis, etc remappings
 		inline GameControllerRemapping* getRemapping() {return m_remapping;}
 
-		/// set/get button, axis, etc ignores
+		/// set button, axis, etc ignores
 		void setIgnore(GameControllerIgnore *ignore);
+
+		/// get button, axis, etc ignores
 		inline GameControllerIgnore* getIgnore() {return m_ignore;}
 
 		/// add a game controller mapping string to SDL,

@@ -43,10 +43,16 @@ class JoystickIgnore {
 		/// check indices & toss out any bad values
 		void check(Joystick *joystick);
 
-		/// check ignore status
+		/// check button ignore status
 		bool isButtonIgnored(int button);
+
+		/// check axis ignore status
 		bool isAxisIgnored(int axis);
+
+		/// check ball ignore status
 		bool isBallIgnored(int ball);
+
+		/// check hat ignore status
 		bool isHatIgnored(int hat);
 
 		/// print the current ignore values

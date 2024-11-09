@@ -41,8 +41,10 @@ class GameControllerIgnore {
 		/// check names & toss out any bad values
 		void check(GameController *controller);
 
-		/// check ignore status
+		/// check button ignore status
 		bool isButtonIgnored(std::string &button);
+
+		/// check axis ignore status
 		bool isAxisIgnored(std::string &axis);
 
 		/// print the current ignore values

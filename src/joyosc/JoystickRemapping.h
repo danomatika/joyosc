@@ -35,20 +35,31 @@ class JoystickRemapping {
 		/// load from XML element, returns true on success
 		bool readXML(tinyxml2::XMLElement *e);
 
-		/// mappings from -> to
-		/// with key: from & value: to
+		/// button mappings from -> to by id
 		std::map<int,int> buttons;
+
+		/// axis mappings from -> to by id
 		std::map<int,int> axes;
+
+		/// ball mappings from -> to by id
 		std::map<int,int> balls;
+
+		/// hat mappings from -> to by id
 		std::map<int,int>hats;
 
 		/// check indices & toss out any bad values
 		void check(Joystick *joystick);
 
-		/// get mapping for an id, returns the id if no mapping found
+		/// get button mapping for an id, returns the id if no mapping found
 		int mappingForButton(int button);
+
+		/// get axis mapping for an id, returns the id if no mapping found
 		int mappingForAxis(int axis);
+
+		/// get ball mapping for an id, returns the id if no mapping found
 		int mappingForBall(int ball);
+
+		/// get hat mapping for an id, returns the id if no mapping found
 		int mappingForHat(int hat);
 
 		/// print the current mappings

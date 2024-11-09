@@ -86,16 +86,22 @@ class Joystick : public Device {
 		/// get the underlying SDL joystick handle
 		inline SDL_Joystick* getJoystick() {return m_joystick;}
 
-		/// set/get axis dead zone, used to set an ignore threshold around 0
+		/// set axis dead zone, used to set an ignore threshold around 0
 		void setAxisDeadZone(unsigned int zone);
+
+		/// get axis dead zone value
 		inline int getAxisDeadZone() {return m_axisDeadZone;}
 
-		/// set/get button. axis, etc remappings
+		/// set button. axis, etc remappings
 		void setRemapping(JoystickRemapping *remapping);
+
+		/// get button. axis, etc remappings
 		inline JoystickRemapping* getRemapping() {return m_remapping;}
 
-		/// set/get button, axis, etc ignores
+		/// set button, axis, etc ignores
 		void setIgnore(JoystickIgnore *ignore);
+
+		/// get button, axis, etc ignores
 		inline JoystickIgnore* getIgnore() {return m_ignore;}
 
 	protected:
