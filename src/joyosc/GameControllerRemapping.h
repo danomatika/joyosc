@@ -26,7 +26,7 @@
 
 /// \class GameControllerRemapping
 /// \brief defines game controller button & axis remappings
-class GameControllerRemapping { // : public tinyxml2::XMLObject {
+class GameControllerRemapping {
 
 	public:
 
