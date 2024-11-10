@@ -33,7 +33,7 @@ static const char *GetSensorName(SDL_SensorType sensor)
         return "accelerometer";
     case SDL_SENSOR_GYRO:
         return "gyro";
-#if 0 // these are only in newer SDL versions, disabled for now
+#if HAVE_DECL_SDL_SENSOR_ACCEL_L
     case SDL_SENSOR_ACCEL_L:
         return "accelerometer (L)";
     case SDL_SENSOR_GYRO_L:
@@ -122,7 +122,7 @@ bool GameController::open(void *data) {
 	  SDL_SensorType sensors[] = {
 	    SDL_SENSOR_ACCEL,
 	    SDL_SENSOR_GYRO,
-#if 0 // these are only in newer SDL versions, disabled for now
+#if HAVE_DECL_SDL_SENSOR_ACCEL_L
 	    SDL_SENSOR_ACCEL_L,
 	    SDL_SENSOR_GYRO_L,
 	    SDL_SENSOR_ACCEL_R,
