@@ -30,18 +30,18 @@ static const char *GetSensorName(SDL_SensorType sensor)
 {
     switch (sensor) {
     case SDL_SENSOR_ACCEL:
-        return "accelerometer";
+        return "accel";
     case SDL_SENSOR_GYRO:
         return "gyro";
 #if HAVE_DECL_SDL_SENSOR_ACCEL_L
     case SDL_SENSOR_ACCEL_L:
-        return "accelerometer (L)";
+        return "leftaccel";
     case SDL_SENSOR_GYRO_L:
-        return "gyro (L)";
+        return "leftgyro";
     case SDL_SENSOR_ACCEL_R:
-        return "accelerometer (R)";
+        return "rightaccel";
     case SDL_SENSOR_GYRO_R:
-        return "gyro (R)";
+        return "rightgyro";
 #endif
     default:
         return "UNKNOWN";
