@@ -152,7 +152,7 @@ bool JoystickIgnore::isBallIgnored(int ball) {
 }
 
 bool JoystickIgnore::isHatIgnored(int hat) {
-	return axes.find(hat) != axes.end();
+	return hats.find(hat) != hats.end();
 }
 
 void JoystickIgnore::print() {
