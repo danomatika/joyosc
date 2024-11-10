@@ -26,7 +26,7 @@
 
 /// \class GameControllerIgnore
 /// \brief defines which game controller button & axis names to ignore
-class GameControllerIgnore {
+class GameControllerIgnore : public EventIgnore {
 
 	public:
 
@@ -39,13 +39,10 @@ class GameControllerIgnore {
 		std::set<std::string> axes; ///< axis names to ignore
 
 		/// check names & toss out any bad values
-		void check(GameController *controller);
+		void check(Device *device);
 
-		/// check button ignore status
-		bool isButtonIgnored(std::string &button);
-
-		/// check axis ignore status
-		bool isAxisIgnored(std::string &axis);
+		/// check input ignore status
+		bool isIgnored(EventType type, const std::string &button);
 
 		/// print the current ignore values
 		void print();

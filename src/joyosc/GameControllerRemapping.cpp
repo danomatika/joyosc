@@ -68,8 +68,9 @@ bool GameControllerRemapping::readXML(XMLElement *e) {
 	return loaded;
 }
 
-void GameControllerRemapping::check(GameController *controller) {
-	if(!controller){
+void GameControllerRemapping::check(Device *device) {
+	GameController *controller = (GameController *)device;
+	if(!controller) {
 		return;
 	}
 	auto iter = buttons.begin();
@@ -97,14 +98,19 @@ void GameControllerRemapping::check(GameController *controller) {
 	}
 }
 
-std::string GameControllerRemapping::mappingForButton(std::string button) {
-	auto iter = buttons.find(button);
-	return iter != buttons.end() ? iter->second : button;
-}
-
-std::string GameControllerRemapping::mappingForAxis(std::string axis) {
-	auto iter = axes.find(axis);
-	return iter != axes.end() ? iter->second : axis;
+const std::string& GameControllerRemapping::mappingFor(EventType type, const std::string &name) {
+	switch(type) {
+		case BUTTON: {
+			auto iter = buttons.find(name);
+			return iter != buttons.end() ? iter->second : name;
+		}
+		case AXIS: {
+			auto iter = axes.find(name);
+			return iter != axes.end() ? iter->second : name;
+		}
+		default:
+			return name;
+	}
 }
 
 void GameControllerRemapping::print() {

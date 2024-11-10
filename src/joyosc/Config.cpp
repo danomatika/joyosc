@@ -221,10 +221,10 @@ void Config::print() {
 		DeviceSettings &settings = (DeviceSettings &)(device.second);
 		LOG << "  " << index;
 		switch(settings.type) {
-			case Device::GAMECONTROLLER:
+			case GAMECONTROLLER:
 				LOG << " C ";
 				break;
-			case Device::JOYSTICK:
+			case JOYSTICK:
 				LOG << " J ";
 				break;
 			default:
@@ -270,13 +270,13 @@ void Config::readXMLController(tinyxml2::XMLElement *e) {
 		         << std::endl;
 		return;
 	}
-	if(getDeviceSettings(name, (int)Device::GAMECONTROLLER)) {
+	if(getDeviceSettings(name, (int)GAMECONTROLLER)) {
 		LOG_WARN << "Config: game controller name " << name
 		         << " already exists" << std::endl;
 		return;
 	}
 	DeviceSettings device = {
-		.type = (int)Device::GAMECONTROLLER,
+		.type = (int)GAMECONTROLLER,
 		.address = addr,
 		.axes = {.deadZone = 0, .triggers = triggersAsAxes},
 		.remap = {nullptr},
@@ -361,13 +361,13 @@ void Config::readXMLJoystick(tinyxml2::XMLElement *e) {
 		         << std::endl;
 		return;
 	}
-	if(getDeviceSettings(name, (int)Device::JOYSTICK)) {
+	if(getDeviceSettings(name, (int)JOYSTICK)) {
 		LOG_WARN << "Config: joystick name " << name
 		         << " already exists" << std::endl;
 		return;
 	}
 	DeviceSettings device = {
-		.type = (int)Device::JOYSTICK,
+		.type = (int)JOYSTICK,
 		.address = addr,
 		.axes = {0, 0},
 		.remap = {nullptr},

@@ -23,6 +23,7 @@
 #pragma once
 
 #include "Device.h"
+#include "Event.h"
 
 class JoystickIndices;
 class JoystickRemapping;
@@ -63,7 +64,7 @@ class Joystick : public Device {
 		void print();
 
 		/// returns the device type enum value
-		inline Type getDeviceType() {return JOYSTICK;}
+		inline DeviceType getDeviceType() {return JOYSTICK;}
 
 		/// returns device list index, name, & osc address as a string
 		std::string getDeviceString();

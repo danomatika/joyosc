@@ -58,7 +58,7 @@ bool Joystick::open(void *data) {
 		m_prevAxisValues.push_back(0);
 	}
 
-	Config::DeviceSettings *settings = m_config.getDeviceSettings((std::string)m_devName, (int)Device::JOYSTICK);
+	Config::DeviceSettings *settings = m_config.getDeviceSettings((std::string)m_devName, (int)JOYSTICK);
 	if(settings) {
 
 		// try to set the address from the mapping list using the dev name
@@ -124,11 +124,11 @@ bool Joystick::handleEvent(void *data) {
 	switch(event->type) {
 		
 		case SDL_JOYBUTTONDOWN: {
-			if(m_ignore && m_ignore->isButtonIgnored(event->jbutton.button)) {
+			if(m_ignore && m_ignore->isIgnored(BUTTON, event->jbutton.button)) {
 				break;
 			}
 			if(m_remapping) {
-				event->jbutton.button = m_remapping->mappingForButton(event->jbutton.button);
+				event->jbutton.button = m_remapping->mappingFor(BUTTON, event->jbutton.button);
 			}
 
 			sender->send(m_config.deviceAddress + m_oscAddress + "/button",
@@ -143,11 +143,11 @@ bool Joystick::handleEvent(void *data) {
 		}
 
 		case SDL_JOYBUTTONUP: {
-			if(m_ignore && m_ignore->isButtonIgnored(event->jbutton.button)) {
+			if(m_ignore && m_ignore->isIgnored(BUTTON, event->jbutton.button)) {
 				break;
 			}
 			if(m_remapping) {
-				event->jbutton.button = m_remapping->mappingForButton(event->jbutton.button);
+				event->jbutton.button = m_remapping->mappingFor(BUTTON, event->jbutton.button);
 			}
 
 			sender->send(m_config.deviceAddress + m_oscAddress + "/button",
@@ -162,11 +162,11 @@ bool Joystick::handleEvent(void *data) {
 		}
 
 		case SDL_JOYAXISMOTION: {
-			if(m_ignore && m_ignore->isAxisIgnored(event->jaxis.axis)) {
+			if(m_ignore && m_ignore->isIgnored(AXIS, event->jaxis.axis)) {
 				break;
 			}
 			if(m_remapping) {
-				event->jaxis.axis = m_remapping->mappingForAxis(event->jaxis.axis);
+				event->jaxis.axis = m_remapping->mappingFor(AXIS, event->jaxis.axis);
 			}
 
 			// handle jitter by creating a dead zone
@@ -196,11 +196,11 @@ bool Joystick::handleEvent(void *data) {
 		}
 
 		case SDL_JOYBALLMOTION: {
-			if(m_ignore && m_ignore->isBallIgnored(event->jball.ball)) {
+			if(m_ignore && m_ignore->isIgnored(BALL, event->jball.ball)) {
 				break;
 			}
 			if(m_remapping) {
-				event->jball.ball = m_remapping->mappingForBall(event->jball.ball);
+				event->jball.ball = m_remapping->mappingFor(BALL, event->jball.ball);
 			}
 
 			sender->send(m_config.deviceAddress + m_oscAddress + "/ball",
@@ -216,11 +216,11 @@ bool Joystick::handleEvent(void *data) {
 		}
 
 		case SDL_JOYHATMOTION: {
-			if(m_ignore && m_ignore->isHatIgnored(event->jhat.hat)) {
+			if(m_ignore && m_ignore->isIgnored(HAT, event->jhat.hat)) {
 				break;
 			}
 			if(m_remapping) {
-				event->jhat.hat = m_remapping->mappingForHat(event->jhat.hat);
+				event->jhat.hat = m_remapping->mappingFor(HAT, event->jhat.hat);
 			}
 
 			sender->send(m_config.deviceAddress + m_oscAddress + "/hat",

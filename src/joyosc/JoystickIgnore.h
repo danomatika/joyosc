@@ -26,7 +26,7 @@
 
 /// \class JoystickIgnore
 /// \brief defines which joystick buttons, axes, balls, or hats to ignore
-class JoystickIgnore {
+class JoystickIgnore : public EventIgnore {
 
 	public:
 
@@ -41,19 +41,10 @@ class JoystickIgnore {
 		std::set<int> hats;    ///< hat ids to ignore
 
 		/// check indices & toss out any bad values
-		void check(Joystick *joystick);
+		void check(Device *device);
 
-		/// check button ignore status
-		bool isButtonIgnored(int button);
-
-		/// check axis ignore status
-		bool isAxisIgnored(int axis);
-
-		/// check ball ignore status
-		bool isBallIgnored(int ball);
-
-		/// check hat ignore status
-		bool isHatIgnored(int hat);
+		/// check input index ignore status
+		bool isIgnored(EventType type, int index);
 
 		/// print the current ignore values
 		void print();

@@ -65,7 +65,8 @@ bool GameControllerIgnore::readXML(XMLElement *e) {
 	return loaded;
 }
 
-void GameControllerIgnore::check(GameController *controller) {
+void GameControllerIgnore::check(Device *device) {
+	GameController *controller = (GameController *)device;
 	if(!controller) {
 		return;
 	}
@@ -92,12 +93,15 @@ void GameControllerIgnore::check(GameController *controller) {
 	}
 }
 
-bool GameControllerIgnore::isButtonIgnored(std::string &button) {
-	return buttons.find(button) != buttons.end();
-}
-
-bool GameControllerIgnore::isAxisIgnored(std::string &axis) {
-	return axes.find(axis) != axes.end();
+bool GameControllerIgnore::isIgnored(EventType type, const std::string &name) {
+	switch(type) {
+		case BUTTON:
+			return buttons.find(name) != buttons.end();
+		case AXIS:
+			return axes.find(name) != axes.end();
+		default:
+			return false;
+	}
 }
 
 void GameControllerIgnore::print() {

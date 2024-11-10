@@ -23,6 +23,7 @@
 #pragma once
 
 #include "Device.h"
+#include "Event.h"
 
 class GameControllerRemapping;
 class GameControllerIgnore;
@@ -62,7 +63,7 @@ class GameController : public Device {
 		void print();
 
 		/// returns the device type enum value
-		inline Type getDeviceType() {return GAMECONTROLLER;}
+		inline DeviceType getDeviceType() {return GAMECONTROLLER;}
 
 		/// returns devices list index, name, & osc address as a string
 		std::string getDeviceString();

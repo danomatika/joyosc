@@ -89,8 +89,9 @@ bool JoystickRemapping::readXML(XMLElement *e) {
 	return loaded;
 }
 
-void JoystickRemapping::check(Joystick *joystick) {
-	if(!joystick){
+void JoystickRemapping::check(Device *device) {
+	Joystick *joystick = (Joystick *)device;
+	if(!joystick) {
 		return;
 	}
 
@@ -148,24 +149,27 @@ void JoystickRemapping::check(Joystick *joystick) {
 	}
 }
 
-int JoystickRemapping::mappingForButton(int button) {
-	auto iter = buttons.find(button);
-	return iter != buttons.end() ? iter->second : button;
-}
-
-int JoystickRemapping::mappingForAxis(int axis) {
-	auto iter = axes.find(axis);
-	return iter != axes.end() ? iter->second : axis;
-}
-
-int JoystickRemapping::mappingForBall(int ball) {
-	auto iter = balls.find(ball);
-	return iter != balls.end() ? iter->second : ball;
-}
-
-int JoystickRemapping::mappingForHat(int hat) {
-	auto iter = hats.find(hat);
-	return iter != hats.end() ? iter->second : hat;
+int JoystickRemapping::mappingFor(EventType type, int index) {
+	switch(type) {
+		case BUTTON: {
+			auto iter = buttons.find(index);
+			return iter != buttons.end() ? iter->second : index;
+		}
+		case AXIS: {
+			auto iter = axes.find(index);
+			return iter != axes.end() ? iter->second : index;
+		}
+		case BALL: {
+			auto iter = balls.find(index);
+			return iter != balls.end() ? iter->second : index;
+		}
+		case HAT: {
+			auto iter = hats.find(index);
+			return iter != hats.end() ? iter->second : index;
+		}
+		default:
+			return index;
+	}
 }
 
 void JoystickRemapping::print() {

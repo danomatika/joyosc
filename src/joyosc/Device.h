@@ -24,6 +24,8 @@
 
 #include "Common.h"
 
+// class Device;
+
 /// \class DeviceIndices
 /// \brief index struct for opening a game controller or joystick
 ///
@@ -41,18 +43,18 @@ struct DeviceIndices {
 	int sdlIndex; ///< SDL index
 };
 
+/// supported device types
+enum DeviceType {
+	UNKNOWN        = 0,
+	JOYSTICK       = 1,
+	GAMECONTROLLER = 2
+};
+
 /// \class Device
 /// \brief a baseclass for an event-based input device
 class Device {
 
 	public:
-
-		/// supported device types
-		enum Type {
-			UNKNOWN        = 0,
-			JOYSTICK       = 1,
-			GAMECONTROLLER = 2
-		};
 
 		Device(std::string oscAddress="/device") :
 			m_devName(""), m_oscAddress(oscAddress),
@@ -81,7 +83,7 @@ class Device {
 		virtual bool isOpen() = 0;
 
 		/// returns the device type enum value
-		virtual Type getDeviceType() = 0;
+		virtual DeviceType getDeviceType() = 0;
 
 		/// returns basic device info as a string
 		virtual std::string getDeviceString() = 0;

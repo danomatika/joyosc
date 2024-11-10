@@ -26,7 +26,7 @@
 
 /// \class GameControllerRemapping
 /// \brief defines game controller button & axis remappings
-class GameControllerRemapping {
+class GameControllerRemapping : EventRemapping {
 
 	public:
 
@@ -42,13 +42,10 @@ class GameControllerRemapping {
 		std::map<std::string,std::string> axes;
 
 		/// check indices & toss out any bad values
-		void check(GameController *controller);
+		void check(Device *device);
 
-		/// get button mapping, returns the name if no mapping found
-		std::string mappingForButton(std::string button);
-
-		/// get mapping, returns the name if no mapping found
-		std::string mappingForAxis(std::string axis);
+		/// get name mapping, returns the given name if no mapping found
+		const std::string& mappingFor(EventType type, const std::string &name);
 
 		/// print the current mappings
 		void print();

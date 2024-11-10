@@ -61,7 +61,7 @@ bool GameController::open(void *data) {
 		m_prevAxisValues.push_back(0);
 	}
 
-	Config::DeviceSettings *settings = m_config.getDeviceSettings((std::string)m_devName, (int)Device::GAMECONTROLLER);
+	Config::DeviceSettings *settings = m_config.getDeviceSettings((std::string)m_devName, (int)GAMECONTROLLER);
 	if(settings) {
 
 		// try to set the address from the mapping list using the dev name
@@ -142,11 +142,11 @@ bool GameController::handleEvent(void *data) {
 		case SDL_CONTROLLERAXISMOTION: {
 			std::string axis = SDL_GameControllerGetStringForAxis((SDL_GameControllerAxis)event->caxis.axis);
 
-			if(m_ignore && m_ignore->isAxisIgnored(axis)) {
+			if(m_ignore && m_ignore->isIgnored(AXIS, axis)) {
 				break;
 			}
 			if(m_remapping) {
-				axis = m_remapping->mappingForAxis(axis);
+				axis = m_remapping->mappingFor(AXIS, axis);
 			}
 
 			// handle jitter by creating a dead zone
@@ -271,11 +271,11 @@ int GameController::addMappingFile(std::string path) {
 // PROTECTED
 
 bool GameController::buttonPressed(std::string &button, int value) {
-	if(m_ignore && m_ignore->isButtonIgnored(button)) {
+	if(m_ignore && m_ignore->isIgnored(BUTTON, button)) {
 		return false;
 	}
 	if(m_remapping) {
-		button = m_remapping->mappingForButton(button);
+		button = m_remapping->mappingFor(BUTTON, button);
 	}
 
 	lo::Address *sender = m_config.getOscSender();

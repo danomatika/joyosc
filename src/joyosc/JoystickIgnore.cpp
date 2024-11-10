@@ -84,7 +84,8 @@ bool JoystickIgnore::readXML(XMLElement *e) {
 	return loaded;
 }
 
-void JoystickIgnore::check(Joystick *joystick) {
+void JoystickIgnore::check(Device *device) {
+	Joystick *joystick = (Joystick *)device;
 	if(!joystick) {
 		return;
 	}
@@ -139,20 +140,19 @@ void JoystickIgnore::check(Joystick *joystick) {
 	}
 }
 
-bool JoystickIgnore::isButtonIgnored(int button) {
-	return buttons.find(button) != buttons.end();
-}
-
-bool JoystickIgnore::isAxisIgnored(int axis) {
-	return axes.find(axis) != axes.end();
-}
-
-bool JoystickIgnore::isBallIgnored(int ball) {
-	return balls.find(ball) != balls.end();
-}
-
-bool JoystickIgnore::isHatIgnored(int hat) {
-	return hats.find(hat) != hats.end();
+bool JoystickIgnore::isIgnored(EventType type, int index) {
+	switch(type) {
+		case BUTTON:
+			return buttons.find(index) != buttons.end();
+		case AXIS:
+			return axes.find(index) != axes.end();
+		case BALL:
+			return balls.find(index) != balls.end();
+		case HAT:
+			return hats.find(index) != hats.end();
+		default:
+			return false;
+	}
 }
 
 void JoystickIgnore::print() {

@@ -26,7 +26,7 @@
 
 /// \class JoystickRemapping
 /// \brief defines joystick button, axis, ball, & hat remappings
-class JoystickRemapping {
+class JoystickRemapping : public EventRemapping {
 
 	public:
 
@@ -48,19 +48,10 @@ class JoystickRemapping {
 		std::map<int,int>hats;
 
 		/// check indices & toss out any bad values
-		void check(Joystick *joystick);
+		void check(Device *device);
 
-		/// get button mapping for an id, returns the id if no mapping found
-		int mappingForButton(int button);
-
-		/// get axis mapping for an id, returns the id if no mapping found
-		int mappingForAxis(int axis);
-
-		/// get ball mapping for an id, returns the id if no mapping found
-		int mappingForBall(int ball);
-
-		/// get hat mapping for an id, returns the id if no mapping found
-		int mappingForHat(int hat);
+		/// get index mapping, returns the given index if no mapping found
+		int mappingFor(EventType type, int index);
 
 		/// print the current mappings
 		void print();

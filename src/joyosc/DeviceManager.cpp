@@ -70,7 +70,7 @@ bool DeviceManager::close(SDL_JoystickID instanceID) {
 		if(sendDeviceEvents) {
 			Config &config = Config::instance();
 			switch(js->getDeviceType()) {
-				case Device::GAMECONTROLLER:
+				case GAMECONTROLLER:
 					config.getOscSender()->send(config.notificationAddress + "/close",
 						"si", "controller", ((GameController *)js)->getIndex());
 					break;
@@ -106,7 +106,7 @@ void DeviceManager::closeAll() {
 // controller hotplugging: https://gist.github.com/urkle/6701236
 bool DeviceManager::handleEvent(SDL_Event *event) {
 	switch(event->type) {
-		
+
 		case SDL_CONTROLLERDEVICEADDED:
 			LOG_DEBUG << "CONTROLLER ADDED sdlIndex " << event->cdevice.which << std::endl;
 			if(open(event->cdevice.which)) {
@@ -115,18 +115,18 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 				#endif
 			}
 			return true;
-			
+
 		case SDL_CONTROLLERDEVICEREMAPPED:
 			LOG_DEBUG << "CONTROLLER REMAPPED instance ID " << event->cdevice.which << std::endl;
 			return true;
-			
+
 		case SDL_CONTROLLERAXISMOTION:
 		case SDL_CONTROLLERBUTTONDOWN: case SDL_CONTROLLERBUTTONUP:
-			if(getDeviceType(event->cdevice.which) == Device::GAMECONTROLLER) {
+			if(getDeviceType(event->cdevice.which) == GAMECONTROLLER) {
 				return m_devices[event->cdevice.which]->handleEvent(event);
 			}
 			return false;
-			
+
 		case SDL_CONTROLLERDEVICEREMOVED:
 			LOG_DEBUG << "CONTROLLER REMOVED instance ID " << event->cdevice.which << std::endl;
 			if(close(event->cdevice.which)) {
@@ -135,7 +135,7 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 				#endif
 			}
 			return true;
-			
+
 		case SDL_JOYDEVICEADDED:
 			LOG_DEBUG << "JOYSTICK ADDED sdlIndex " << event->jdevice.which << std::endl;
 			if(open(event->jdevice.which)) {
@@ -144,14 +144,14 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 				#endif
 			}
 			return true;
-			
+
 		case SDL_JOYBUTTONDOWN: case SDL_JOYBUTTONUP:
 		case SDL_JOYAXISMOTION: case SDL_JOYBALLMOTION: case SDL_JOYHATMOTION:
-			if(getDeviceType(event->jdevice.which) == Device::JOYSTICK) {
+			if(getDeviceType(event->jdevice.which) == JOYSTICK) {
 				return m_devices[event->jdevice.which]->handleEvent(event);
 			}
 			return false;
-			
+
 		case SDL_JOYDEVICEREMOVED:
 			LOG_DEBUG << "JOYSTICK REMOVED instance ID " << event->jdevice.which << std::endl;
 			if(close(event->jdevice.which)) {
@@ -160,7 +160,7 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 				#endif
 			}
 			return true;
-			
+
 		default:
 			return false;
 	}
@@ -190,21 +190,21 @@ int DeviceManager::firstAvailableIndex() {
 	return m_devices.size();
 }
 
-Device::Type DeviceManager::getDeviceType(int index) {
+DeviceType DeviceManager::getDeviceType(int index) {
 	if(m_devices.find(index) != m_devices.end()) {
 		return m_devices[index]->getDeviceType();
 	}
-	return Device::UNKNOWN;
+	return UNKNOWN;
 }
 
 bool DeviceManager::sdlIndexExists(int sdlIndex) {
 	for(auto &dev : m_devices) {
-		if(dev.second->getDeviceType() == Device::GAMECONTROLLER) {
+		if(dev.second->getDeviceType() == GAMECONTROLLER) {
 			if(((GameController *)dev.second)->getSdlIndex() == sdlIndex) {
 				return true;
 			}
 		}
-		else if(dev.second->getDeviceType() == Device::JOYSTICK) {
+		else if(dev.second->getDeviceType() == JOYSTICK) {
 			if(((Joystick *)dev.second)->getSdlIndex() == sdlIndex) {
 				return true;
 			}
