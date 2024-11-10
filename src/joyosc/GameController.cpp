@@ -33,6 +33,7 @@ static const char *GetSensorName(SDL_SensorType sensor)
         return "accelerometer";
     case SDL_SENSOR_GYRO:
         return "gyro";
+#if 0 // these are only in newer SDL versions, disabled for now
     case SDL_SENSOR_ACCEL_L:
         return "accelerometer (L)";
     case SDL_SENSOR_GYRO_L:
@@ -41,6 +42,7 @@ static const char *GetSensorName(SDL_SensorType sensor)
         return "accelerometer (R)";
     case SDL_SENSOR_GYRO_R:
         return "gyro (R)";
+#endif
     default:
         return "UNKNOWN";
     }
@@ -120,10 +122,12 @@ bool GameController::open(void *data) {
 	  SDL_SensorType sensors[] = {
 	    SDL_SENSOR_ACCEL,
 	    SDL_SENSOR_GYRO,
+#if 0 // these are only in newer SDL versions, disabled for now
 	    SDL_SENSOR_ACCEL_L,
 	    SDL_SENSOR_GYRO_L,
 	    SDL_SENSOR_ACCEL_R,
 	    SDL_SENSOR_GYRO_R
+#endif
 	  };
 	  for (unsigned int i = 0; i < SDL_arraysize(sensors); ++i) {
 	    SDL_SensorType sensor = sensors[i];
