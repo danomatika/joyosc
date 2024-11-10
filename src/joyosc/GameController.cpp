@@ -26,6 +26,26 @@
 #include "GameControllerIgnore.h"
 #include "Path.h"
 
+static const char *GetSensorName(SDL_SensorType sensor)
+{
+    switch (sensor) {
+    case SDL_SENSOR_ACCEL:
+        return "accelerometer";
+    case SDL_SENSOR_GYRO:
+        return "gyro";
+    case SDL_SENSOR_ACCEL_L:
+        return "accelerometer (L)";
+    case SDL_SENSOR_GYRO_L:
+        return "gyro (L)";
+    case SDL_SENSOR_ACCEL_R:
+        return "accelerometer (R)";
+    case SDL_SENSOR_GYRO_R:
+        return "gyro (R)";
+    default:
+        return "UNKNOWN";
+    }
+}
+
 GameController::GameController(std::string oscAddress) :
 	Device(oscAddress) {}
 
@@ -95,6 +115,28 @@ bool GameController::open(void *data) {
 	}
 
 	LOG << "GameController: opened " << getDeviceString() << std::endl;
+	if(m_controller && m_config.enableSensors) {
+	  // enable available sensors
+	  SDL_SensorType sensors[] = {
+	    SDL_SENSOR_ACCEL,
+	    SDL_SENSOR_GYRO,
+	    SDL_SENSOR_ACCEL_L,
+	    SDL_SENSOR_GYRO_L,
+	    SDL_SENSOR_ACCEL_R,
+	    SDL_SENSOR_GYRO_R
+	  };
+	  for (unsigned int i = 0; i < SDL_arraysize(sensors); ++i) {
+	    SDL_SensorType sensor = sensors[i];
+
+	    if (SDL_GameControllerHasSensor(m_controller, sensor)) {
+	      LOG << "  enabling "
+		  << GetSensorName(sensor)
+		  << " at " << SDL_GameControllerGetSensorDataRate(m_controller, sensor)
+		  << "Hz" << std::endl;
+	      SDL_GameControllerSetSensorEnabled(m_controller, sensor, SDL_TRUE);
+	    }
+	  }
+	}
 	if(m_controller && m_config.printEvents) {
 		SDL_Joystick *joystick = SDL_GameControllerGetJoystick(m_controller);
 		LOG << "  num buttons: " << SDL_JoystickNumButtons(joystick) << std::endl
@@ -137,6 +179,22 @@ bool GameController::handleEvent(void *data) {
 		case SDL_CONTROLLERBUTTONUP: {
 			std::string button = SDL_GameControllerGetStringForButton((SDL_GameControllerButton)event->cbutton.button);
 			return buttonPressed(button, event->cbutton.state);
+		}
+
+		case SDL_CONTROLLERSENSORUPDATE: {
+			std::string sensor = GetSensorName((SDL_SensorType)event->csensor.sensor);
+			lo::Address *sender = m_config.getOscSender();
+			sender->send(m_config.deviceAddress + m_oscAddress + "/sensor",
+				"sfff", sensor.c_str(),
+				event->csensor.data[0],
+				event->csensor.data[1],
+				event->csensor.data[2]);
+			if(m_config.printEvents) {
+				LOG << m_oscAddress << " " << m_devName
+				    << " sensor: " << sensor << " " << event->csensor.data[0] << " " << event->csensor.data[1] << " " << event->csensor.data[2] << std::endl;
+			}
+
+			return true;
 		}
 
 		case SDL_CONTROLLERAXISMOTION: {
