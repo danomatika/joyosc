@@ -58,6 +58,10 @@ PKG_CHECK_MODULES([TINYXML2], [tinyxml2 >= 6], [],
 	AC_MSG_ERROR([tinyxml2 library >= 6.0.0 not found]))
 
 # check for sensor constants
+if test `uname -s` = Darwin; then
+# make sure that the SDL2 headers from Homebrew are found on Darwin arm64
+CPPFLAGS="-I/opt/homebrew/include ${CPPFLAGS}"
+fi
 AC_CHECK_DECLS(SDL_SENSOR_ACCEL_L, , , [#include <SDL2/SDL_sensor.h>])
 
 #########################################
