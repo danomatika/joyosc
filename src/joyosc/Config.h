@@ -33,10 +33,8 @@
 #include <tinyxml2.h>
 
 #include "DeviceExclusion.h"
-class GameControllerRemapping;
-class GameControllerIgnore;
-class JoystickRemapping;
-class JoystickIgnore;
+class EventRemapping;
+class EventIgnore;
 
 /// \class Config
 /// \brief global, per-application instance state variable container class
@@ -83,14 +81,8 @@ class Config {
 				unsigned int deadZone; ///< zeroing threshold
 				bool triggers; ///< treat triggers as axes?
 			} axes; ///< axis behavior
-			union {
-				GameControllerRemapping *controller;
-				JoystickRemapping *joystick;
-			} remap; ///< event remappings
-			union {
-				GameControllerIgnore *controller;
-				JoystickIgnore *joystick;
-			} ignore; ///< event ignore rules
+			EventRemapping *remap; ///< event remappings
+			EventIgnore *ignore; ///< event ignore rules
 		};
 
 		/// get osc sender instance

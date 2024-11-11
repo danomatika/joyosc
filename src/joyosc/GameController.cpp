@@ -76,14 +76,14 @@ bool GameController::open(void *data) {
 		}
 
 		// set remapping if one exists
-		if(settings->remap.controller) {
-			setRemapping(settings->remap.controller);
+		if(settings->remap) {
+			setRemapping((GameControllerRemapping *)settings->remap);
 			printRemapping();
 		}
 
 		// set ignore if one exists
-		if(settings->ignore.controller) {
-			setIgnore(settings->ignore.controller);
+		if(settings->ignore) {
+			setIgnore((GameControllerIgnore *)settings->ignore);
 			printIgnores();
 		}
 	}

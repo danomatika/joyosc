@@ -26,7 +26,7 @@
 
 /// \class GameControllerRemapping
 /// \brief defines game controller button & axis remappings
-class GameControllerRemapping : EventRemapping {
+class GameControllerRemapping : public EventRemapping {
 
 	public:
 

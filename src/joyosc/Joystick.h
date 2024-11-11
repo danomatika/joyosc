@@ -25,7 +25,7 @@
 #include "Device.h"
 #include "Event.h"
 
-class JoystickIndices;
+class JoystickIgnore;
 class JoystickRemapping;
 
 /// \class Joystick

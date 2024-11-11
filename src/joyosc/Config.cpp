@@ -279,8 +279,8 @@ void Config::readXMLController(tinyxml2::XMLElement *e) {
 		.type = (int)GAMECONTROLLER,
 		.address = addr,
 		.axes = {.deadZone = 0, .triggers = triggersAsAxes},
-		.remap = {nullptr},
-		.ignore = {nullptr}
+		.remap = nullptr,
+		.ignore = nullptr
 	};
 
 	tinyxml2::XMLElement *child = e->FirstChildElement();
@@ -322,12 +322,12 @@ void Config::readXMLController(tinyxml2::XMLElement *e) {
 				         << name << std::endl;
 			}
 			else {
-				if(device.remap.controller) {
-					delete device.remap.controller;
+				if(device.remap) {
+					delete device.remap;
 					LOG_WARN << "Config: game controller remapping for "
 					         << name << " already exists" << std::endl;
 				}
-				device.remap.controller = remap;
+				device.remap = remap;
 			}
 		}
 
@@ -338,12 +338,12 @@ void Config::readXMLController(tinyxml2::XMLElement *e) {
 				         << name << std::endl;
 			}
 			else {
-				if(device.ignore.controller) {
-					delete device.ignore.controller;
+				if(device.ignore) {
+					delete device.ignore;
 					LOG_WARN << "Config: game controller ignore for "
 					         << name << " already exists" << std::endl;
 				}
-				device.ignore.controller = ignore;
+				device.ignore = ignore;
 			}
 		}
 		child = child->NextSiblingElement();
@@ -370,8 +370,8 @@ void Config::readXMLJoystick(tinyxml2::XMLElement *e) {
 		.type = (int)JOYSTICK,
 		.address = addr,
 		.axes = {0, 0},
-		.remap = {nullptr},
-		.ignore = {nullptr}
+		.remap = nullptr,
+		.ignore = nullptr
 	};
 
 	tinyxml2::XMLElement *child = e->FirstChildElement();
@@ -401,12 +401,12 @@ void Config::readXMLJoystick(tinyxml2::XMLElement *e) {
 				         << name << std::endl;
 			}
 			else {
-				if(device.remap.joystick) {
-					delete device.remap.joystick;
+				if(device.remap) {
+					delete device.remap;
 					LOG_WARN << "Config: joystick remapping for "
 					         << name << " already exists" << std::endl;
 				}
-				device.remap.joystick = remap;
+				device.remap = remap;
 			}
 		}
 
@@ -417,12 +417,12 @@ void Config::readXMLJoystick(tinyxml2::XMLElement *e) {
 				         << name << std::endl;
 			}
 			else {
-				if(device.ignore.controller) {
-					delete device.ignore.controller;
+				if(device.ignore) {
+					delete device.ignore;
 					LOG_WARN << "Config: joystick ignore for "
 					         << name << " already exists" << std::endl;
 				}
-				device.ignore.joystick = ignore;
+				device.ignore = ignore;
 			}
 		}
 		child = child->NextSiblingElement();

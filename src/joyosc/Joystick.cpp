@@ -70,14 +70,14 @@ bool Joystick::open(void *data) {
 		}
 
 		// set remapping if one exists
-		if(settings->remap.joystick) {
-			setRemapping(settings->remap.joystick);
+		if(settings->remap) {
+			setRemapping((JoystickRemapping *)settings->remap);
 			printRemapping();
 		}
 
 		// set ignore if one exists
-		if(settings->ignore.joystick) {
-			setIgnore(settings->ignore.joystick);
+		if(settings->ignore) {
+			setIgnore((JoystickIgnore *)settings->ignore);
 			printIgnores();
 		}
 	}
