@@ -23,7 +23,6 @@
 #pragma once
 
 #include "Device.h"
-#include "Event.h"
 
 class JoystickIgnore;
 class JoystickRemapping;
@@ -43,9 +42,8 @@ class Joystick : public Device {
 		Joystick(std::string oscAddress="/joystick");
 
 		/// open the joystick
-		/// set the data arg to the location of an DeviceIndices struct
 		/// returns	true on success
-		bool open(void *data);
+		bool open(DeviceIndex index);
 
 		/// close the joystick
 		void close();
@@ -55,7 +53,7 @@ class Joystick : public Device {
 		///
 		/// call this inside a loop, does not block, does nothing if device has
 		/// not been opened
-		bool handleEvent(void *data);
+		bool handleEvent(SDL_Event *event);
 
 		/// returns true if the joystick is open
 		bool isOpen();
@@ -69,46 +67,10 @@ class Joystick : public Device {
 		/// returns device list index, name, & osc address as a string
 		std::string getDeviceString();
 
-		/// print remapping
-		void printRemapping();
-
-		/// print button, axis, etc ignores
-		void printIgnores();
-
-		/// get index in the devices list
-		inline int getIndex() {return m_indices.index;}
-
-		/// get the SDL index, different from index
-		inline int getSdlIndex() {return m_indices.sdlIndex;}
-
-		/// get the SDL instance ID, different from index
-		inline SDL_JoystickID getInstanceID() {return m_instanceID;}
-
 		/// get the underlying SDL joystick handle
 		inline SDL_Joystick* getJoystick() {return m_joystick;}
-
-		/// set axis dead zone, used to set an ignore threshold around 0
-		void setAxisDeadZone(unsigned int zone);
-
-		/// get axis dead zone value
-		inline int getAxisDeadZone() {return m_axisDeadZone;}
-
-		/// set button. axis, etc remappings
-		void setRemapping(JoystickRemapping *remapping);
-
-		/// get button. axis, etc remappings
-		inline JoystickRemapping* getRemapping() {return m_remapping;}
-
-		/// set button, axis, etc ignores
-		void setIgnore(JoystickIgnore *ignore);
-
-		/// get button, axis, etc ignores
-		inline JoystickIgnore* getIgnore() {return m_ignore;}
 
 	protected:
 
 		SDL_Joystick *m_joystick = nullptr; ///< SDL joystick handle
-
-		JoystickRemapping *m_remapping = nullptr; ///< joystick remapping values
-		JoystickIgnore *m_ignore = nullptr; ///< button, axis, etc ignores
 };

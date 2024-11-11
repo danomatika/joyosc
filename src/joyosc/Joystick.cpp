@@ -28,25 +28,23 @@
 Joystick::Joystick(std::string oscAddress) :
 	Device(oscAddress) {}
 
-bool Joystick::open(void *data) {
-	if(data == nullptr) {
+bool Joystick::open(DeviceIndex index) {
+	if(!index.isValid()) {
 		LOG_WARN << "Joystick: cannot open, index not set" << std::endl;
 		return false;
 	}
 
-	DeviceIndices *indices = (DeviceIndices *)data;
-	m_indices.index = indices->index;
-	m_indices.sdlIndex = indices->sdlIndex;
+	m_index = index;
 
 	if(isOpen()) {
 		LOG_WARN << "Joystick: joystick with index "
-		         << m_indices.index << " already opened" << std::endl;
+		         << m_index.index << " already opened" << std::endl;
 		return false;
 	}
 
-	m_joystick = SDL_JoystickOpen(m_indices.sdlIndex);
+	m_joystick = SDL_JoystickOpen(m_index.sdlIndex);
 	if(!m_joystick) {
-		LOG_WARN << "Joystick: open failed for index " << m_indices.index << std::endl;
+		LOG_WARN << "Joystick: open failed for index " << m_index.index << std::endl;
 		return false;
 	}
 
@@ -84,7 +82,7 @@ bool Joystick::open(void *data) {
 	if(!settings || m_oscAddress == "") {
 		// not found ... set a generic name using the index
 		std::stringstream stream;
-		stream << "/js" << m_indices.index;
+		stream << "/js" << m_index.index;
 		m_oscAddress = stream.str();
 	}
 
@@ -108,19 +106,17 @@ void Joystick::close() {
 	}
 
 	// reset variables
-	m_indices.index = -1;
-	m_indices.sdlIndex = -1;
+	m_index.clear();
 	m_instanceID = -1;
 	m_devName = "";
 	m_prevAxisValues.clear();
 }
 
-bool Joystick::handleEvent(void *data) {
-	if(data == nullptr) {
+bool Joystick::handleEvent(SDL_Event *event) {
+	if(event == nullptr) {
 		return false;
 	}
 	lo::Address *sender = m_config.getOscSender();
-	SDL_Event *event = (SDL_Event *)data;
 	switch(event->type) {
 		
 		case SDL_JOYBUTTONDOWN: {
@@ -253,38 +249,6 @@ void Joystick::print() {
 
 std::string Joystick::getDeviceString() {
 	std::stringstream s;
-	s << m_indices.index << " " << m_devName << " " << m_oscAddress;
+	s << m_index.index << " " << m_devName << " " << m_oscAddress;
 	return s.str();
-}
-	
-void Joystick::printRemapping() {
-	if(m_joystick && m_remapping) {
-		m_remapping->print();
-	}
-}
-
-void Joystick::printIgnores() {
-	if(m_joystick && m_ignore) {
-		m_ignore->print();
-	}
-}
-
-void Joystick::setAxisDeadZone(unsigned int zone) {
-	m_axisDeadZone = zone;
-	LOG_DEBUG << "Joystick " << getDevName() << ": "
-	          << "set axis dead zone to " << zone << std::endl;
-}
-
-void Joystick::setRemapping(JoystickRemapping *remapping) {
-	m_remapping = remapping;
-	if(m_remapping) {
-		m_remapping->check(this);
-	}
-}
-
-void Joystick::setIgnore(JoystickIgnore *ignore) {
-	m_ignore = ignore;
-	if(m_ignore) {
-		m_ignore->check(this);
-	}
 }

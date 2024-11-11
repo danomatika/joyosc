@@ -29,25 +29,23 @@
 GameController::GameController(std::string oscAddress) :
 	Device(oscAddress) {}
 
-bool GameController::open(void *data) {
-	if(data == nullptr) {
+bool GameController::open(DeviceIndex index) {
+	if(!index.isValid()) {
 		LOG_WARN << "GameController: cannot open, index not set" << std::endl;
 		return false;
 	}
 
-	DeviceIndices *indices = (DeviceIndices *)data;
-	m_indices.index = indices->index;
-	m_indices.sdlIndex = indices->sdlIndex;
+	m_index = index;
 
 	if(isOpen()) {
 		LOG_WARN << "GameController: controller with index "
-		         << m_indices.index << " already opened" << std::endl;
+		         << m_index.index << " already opened" << std::endl;
 		return false;
 	}
 
-	m_controller = SDL_GameControllerOpen(m_indices.sdlIndex);
+	m_controller = SDL_GameControllerOpen(m_index.sdlIndex);
 	if(!m_controller) {
-		LOG_WARN << "GameController: open failed for index " << m_indices.index << std::endl;
+		LOG_WARN << "GameController: open failed for index " << m_index.index << std::endl;
 		return false;
 	}
 
@@ -90,7 +88,7 @@ bool GameController::open(void *data) {
 	if(!settings || m_oscAddress == "") {
 		// not found ... set a generic name using the index
 		std::stringstream stream;
-		stream << "/gc" << m_indices.index;
+		stream << "/gc" << m_index.index;
 		m_oscAddress = stream.str();
 	}
 
@@ -108,25 +106,23 @@ void GameController::close() {
 		if(isOpen()) {
 			SDL_GameControllerClose(m_controller);
 		}
-		LOG << "GameController: closed " << m_indices.index
+		LOG << "GameController: closed " << m_index.index
 		    << " " << m_devName << " with address "
 		    << m_oscAddress << std::endl;
 		m_controller = nullptr;
 	}
 
 	// reset variables
-	m_indices.index = -1;
-	m_indices.sdlIndex = -1;
+	m_index.clear();
 	m_instanceID = -1;
 	m_devName = "";
 	m_prevAxisValues.clear();
 }
 
-bool GameController::handleEvent(void *data) {
-	if(data == nullptr) {
+bool GameController::handleEvent(SDL_Event *event) {
+	if(event == nullptr) {
 		return false;
 	}
-	SDL_Event *event = (SDL_Event *)data;
 	switch(event->type) {
 
 		case SDL_CONTROLLERBUTTONDOWN: {
@@ -204,20 +200,8 @@ void GameController::print() {
 
 std::string GameController::getDeviceString() {
 	std::stringstream s;
-	s << m_indices.index << " " << m_devName << " " << m_oscAddress;
+	s << m_index.index << " " << m_devName << " " << m_oscAddress;
 	return s.str();
-}
-
-void GameController::printRemapping() {
-	if(m_controller && m_remapping) {
-		m_remapping->print();
-	}
-}
-
-void GameController::printIgnores() {
-	if(m_controller && m_ignore) {
-		m_ignore->print();
-	}
 }
 
 SDL_Joystick* GameController::getJoystick() {
@@ -227,28 +211,8 @@ SDL_Joystick* GameController::getJoystick() {
 	return nullptr;
 }
 
-void GameController::setAxisDeadZone(unsigned int zone) {
-	m_axisDeadZone = zone;
-	LOG_DEBUG << "GameController \"" << getDevName() << "\": "
-	          << "set axis dead zone to " << zone << std::endl;
-}
-
 void GameController::setTriggersAsAxes(bool asAxes) {
 	m_triggersAsAxes = asAxes;
-}
-
-void GameController::setRemapping(GameControllerRemapping *remapping) {
-	m_remapping = remapping;
-	if(m_remapping) {
-		m_remapping->check(this);
-	}
-}
-
-void GameController::setIgnore(GameControllerIgnore *ignore) {
-	m_ignore = ignore;
-	if(m_ignore) {
-		m_ignore->check(this);
-	}
 }
 
 int GameController::addMappingString(std::string mapping) {

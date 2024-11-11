@@ -23,7 +23,6 @@
 #pragma once
 
 #include "Device.h"
-#include "Event.h"
 
 class GameControllerRemapping;
 class GameControllerIgnore;
@@ -42,9 +41,8 @@ class GameController : public Device {
 		GameController(std::string oscAddress="controller");
 		
 		/// open the controller
-		/// set the data arg to the location of an DeviceIndices struct
 		/// returns	true on success
-		bool open(void *data);
+		bool open(DeviceIndex index);
 
 		/// close the controller
 		void close();
@@ -54,7 +52,7 @@ class GameController : public Device {
 		///
 		/// call this inside a loop, does not block, does nothing if device has
 		/// not been opened
-		bool handleEvent(void *data);
+		bool handleEvent(SDL_Event *event);
 
 		/// returns true if the controller is open
 		bool isOpen();
@@ -68,50 +66,17 @@ class GameController : public Device {
 		/// returns devices list index, name, & osc address as a string
 		std::string getDeviceString();
 
-		/// print remapping
-		void printRemapping();
-
-		/// print button, axis, etc ignores
-		void printIgnores();
-
-		/// get index in the devices list
-		inline int getIndex() {return m_indices.index;}
-
-		/// get the SDL index, different from index
-		inline int getSdlIndex() {return m_indices.sdlIndex;}
-
-		/// get the SDL instance ID, different from index
-		inline SDL_JoystickID getInstanceID() {return m_instanceID;}
-
 		/// get the underlying SDL game controller handle
 		inline SDL_GameController* getController() {return m_controller;}
 
 		/// get the underlying SDL joystick handle, converted from game controller
 		SDL_Joystick* getJoystick();
 
-		/// set axis dead zone, used to set an ignore threshold around 0
-		void setAxisDeadZone(unsigned int zone);
-
-		/// get axis dead zone
-		inline int getAxisDeadZone() {return m_axisDeadZone;}
-
 		/// set triggers as axes, default: false for buttons
 		void setTriggersAsAxes(bool asAxes);
 
 		/// get triggers as axes value
 		inline int getTriggersAsAxes() {return m_triggersAsAxes;}
-
-		/// set button. axis, etc remappings
-		void setRemapping(GameControllerRemapping *remapping);
-
-		/// get button. axis, etc remappings
-		inline GameControllerRemapping* getRemapping() {return m_remapping;}
-
-		/// set button, axis, etc ignores
-		void setIgnore(GameControllerIgnore *ignore);
-
-		/// get button, axis, etc ignores
-		inline GameControllerIgnore* getIgnore() {return m_ignore;}
 
 		/// add a game controller mapping string to SDL,
 		/// returns 1 on add, 0 on update, & -1 on error
@@ -126,9 +91,9 @@ class GameController : public Device {
 		/// send button event
 		bool buttonPressed(std::string &name, int value);
 
-		SDL_GameController *m_controller = nullptr; ///< SDL controller handle
-		bool m_triggersAsAxes = false; ///< treat left & right triggers as axes? otherwise buttons
+		/// SDL controller handle
+		SDL_GameController *m_controller = nullptr;
 
-		GameControllerRemapping *m_remapping = nullptr; ///< joystick remapping values
-		GameControllerIgnore *m_ignore = nullptr; ///< button, axis, etc ignores
+		/// treat left & right triggers as axes? otherwise buttons
+		bool m_triggersAsAxes = false;
 };

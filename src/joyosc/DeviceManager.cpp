@@ -32,17 +32,17 @@ bool DeviceManager::open(int sdlIndex) {
 		return false; // ignore duplicates
 	}
 	Config &config = Config::instance();
-	DeviceIndices indices;
-	indices.index = firstAvailableIndex();
-	indices.sdlIndex = sdlIndex;
+	DeviceIndex index;
+	index.index = firstAvailableIndex();
+	index.sdlIndex = sdlIndex;
 	if(SDL_IsGameController(sdlIndex) == SDL_TRUE && !config.joysticksOnly) {
 		if(!config.getDeviceExclusion().isGameControllerExcluded(sdlIndex)) {
 			GameController *gc = new GameController();
-			if(gc->open(&indices)) {
+			if(gc->open(index)) {
 				m_devices[gc->getInstanceID()] = gc;
 				if(sendDeviceEvents) {
 					config.getOscSender()->send(config.notificationAddress + "/open",
-						"si", "controller", indices.index);
+						"si", "controller", index.index);
 				}
 				return true;
 			}
@@ -51,11 +51,11 @@ bool DeviceManager::open(int sdlIndex) {
 	else {
 		if(!config.getDeviceExclusion().isJoystickExcluded(sdlIndex)) {
 			Joystick *js = new Joystick();
-			if(js->open(&indices)) {
+			if(js->open(index)) {
 				m_devices[js->getInstanceID()] = js;
 				if(sendDeviceEvents) {
 					config.getOscSender()->send(config.notificationAddress + "/open",
-						"si", "joystick", indices.index);
+						"si", "joystick", index.index);
 				}
 				return true;
 			}
@@ -66,22 +66,22 @@ bool DeviceManager::open(int sdlIndex) {
 
 bool DeviceManager::close(SDL_JoystickID instanceID) {
 	if(m_devices.find(instanceID) != m_devices.end()) {
-		Device *js = m_devices[instanceID];
+		Device *dev = m_devices[instanceID];
 		if(sendDeviceEvents) {
 			Config &config = Config::instance();
-			switch(js->getDeviceType()) {
+			switch(dev->getDeviceType()) {
 				case GAMECONTROLLER:
 					config.getOscSender()->send(config.notificationAddress + "/close",
-						"si", "controller", ((GameController *)js)->getIndex());
+						"si", "controller", ((GameController *)dev)->getIndex());
 					break;
 				default: // JOYSTICK, should never be UNKNOWN
 					config.getOscSender()->send(config.notificationAddress + "/close",
-						"si", "joystick", ((Joystick *)js)->getIndex());
+						"si", "joystick", ((Joystick *)dev)->getIndex());
 					break;
 			}
 		}
-		js->close();
-		delete js;
+		dev->close();
+		delete dev;
 		m_devices.erase(instanceID);
 		return true;
 	}
