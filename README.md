@@ -200,6 +200,7 @@ Options:
                        not being found, ex. MFi controllers on macOS
   -s, --sleep          Sleep time in usecs (default: 10000)
   -t, --triggers       Report trigger buttons as axis values
+  -r, --sensors        Report sensor values (gyro, accelerometer)
 
 Arguments:
   FILE                 Optional XML config file(s)
@@ -261,6 +262,8 @@ SDL Game Controller button names: a, b, x, y, start, back, guide, leftshoulder, 
 
 SDL Game Controller axis names: leftx, lefty, rightx, righty
 
+Also, joyosc can report x, y, z motion (acceleration and gyro aka rotation) data on devices which support this when invoked with the `--sensors` option. These use the following sensor names: accel, gyro (also leftaccel, leftgyro and rightaccel, rightgyro on some devices). _Note: These will generate lots of data when enabled._
+
 _Note: Game Controller names seem to follow the general Playstation DualShock layout. Devices with more than 4 axes and ~20 buttons are probably best used as Joysticks._
 
 If you do not want to use the Game Controller interface and stick with Joysticks only, use the `--joysticks-only` commandline option.
@@ -274,11 +277,12 @@ joyosc streams device event information in the following OSC address format:
     /joyosc/devices/DEVICE_NAME/INPUT_TYPE ID VALUE
 
 * _DEVICE_NAME_ is the mapped name to the device as specified in the config file, otherwise it is "gc#" or "js#" with # being the current device id
-* _INPUT_TYPE_ can be `button`, `axis`, `ball`, or `hat` for joysticks and `button` or `axis` for game controllers
-* _ID_ is the joystick id number or game controller name string for the control (aka joystick button 1, axis 2, etc / game controller button x, axis lefty, etc); these are likely different between joystick devices but largely the same between game controllers
+* _INPUT_TYPE_ can be `button`, `axis`, `ball`, or `hat` for joysticks and `button`, `axis`, or `sensor` for game controllers
+* _ID_ is the joystick id number or game controller name string for the control (aka joystick button 1, axis 2, etc / game controller button x, axis lefty, sensor gyro, etc); these are likely different between joystick devices but largely the same between game controllers
 * _VALUE_ is the current value of the control:
   * button state values are 1 or 0 for pressed & released
   * axis values are -32767 to 32767 (signed 16 bit)
+  * sensor values are triples of x, y, z floating point values in m/s^2 (accelerometer) or radians/s (gyro), see the [SDL docs](https://wiki.libsdl.org/SDL2/SDL_SensorType#remarks) for details
   * hat values are binary bits representing the hat button aka: 0, 2, 4, 8
   * (track)ball values are relative x & y movement in pixels (I think, SDL docs don't go into details)
 
@@ -295,9 +299,9 @@ Example game controller messages:
 /joyosc/devices/gc0/button lefttrigger 0
 /joyosc/devices/gc0/axis righty 32767
 ~~~
- 
+
 #### Notifications
- 
+
 joyosc also sends status notification messages:
 ~~~
 /joyosc/notifications/startup
