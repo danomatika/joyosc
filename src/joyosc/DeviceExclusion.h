@@ -22,9 +22,7 @@
 ==============================================================================*/
 #pragma once
 
-#include <set>
-#include <string>
-#include <tinyxml2.h>
+#include "Device.h"
 
 /// \class DeviceExclusion
 /// \brief defines which devices to exclude
@@ -32,22 +30,17 @@ class DeviceExclusion {
 
 	public:
 
-		typedef std::set<std::string> Set;
-
 		DeviceExclusion() {}
 
 		/// load from XML element, returns true on success
 		bool readXML(tinyxml2::XMLElement *e);
 
-		Set controllerNames; ///< game controller names to exclude
-		Set joystickNames;   ///< joystick names to exclude
-
-		/// check game controller exclude status
-		bool isGameControllerExcluded(int sdlIndex);
-
-		/// check joystick exclude status
-		bool isJoystickExcluded(int sdlIndex);
+		/// check device exclude status
+		bool isExcluded(DeviceType type, int sdlIndex);
 
 		/// print current exclude values
 		void print();
+
+		std::set<std::string> controllerNames; ///< game controller names to exclude
+		std::set<std::string> joystickNames;   ///< joystick names to exclude
 };

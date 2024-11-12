@@ -66,7 +66,7 @@ bool DeviceManager::open(int sdlIndex) {
 	index.index = firstAvailableIndex();
 	index.sdlIndex = sdlIndex;
 	if(SDL_IsGameController(sdlIndex) == SDL_TRUE && !joysticksOnly) {
-		if(!m_deviceExclusion.isGameControllerExcluded(sdlIndex)) {
+		if(!m_deviceExclusion.isExcluded(GAMECONTROLLER, sdlIndex)) {
 			std::string devname = SDL_GameControllerNameForIndex(sdlIndex);
 			DeviceSettings *settings = getDeviceSettings(devname, (int)GAMECONTROLLER);
 			GameController *gc = new GameController();
@@ -81,7 +81,7 @@ bool DeviceManager::open(int sdlIndex) {
 		}
 	}
 	else {
-		if(!m_deviceExclusion.isJoystickExcluded(sdlIndex)) {
+		if(!m_deviceExclusion.isExcluded(JOYSTICK, sdlIndex)) {
 			std::string devname = SDL_JoystickNameForIndex(sdlIndex);
 			DeviceSettings *settings = getDeviceSettings(devname, (int)JOYSTICK);
 			Joystick *js = new Joystick();

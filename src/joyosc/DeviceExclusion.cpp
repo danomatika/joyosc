@@ -34,12 +34,10 @@ bool DeviceExclusion::readXML(XMLElement *e) {
 			std::string name = child->Attribute("name");
 			if(name != "") {
 				auto ret = controllerNames.insert(name);
-				if(!ret.second) {
-					LOG_WARN << "DeviceExclusion: already excluding controller name "
-					         << name << std::endl;
+				if(ret.second) {
+					LOG_DEBUG << "DeviceExclusion: exclude controller name "
+					          << name << std::endl;
 				}
-				LOG_DEBUG << "DeviceExclusion: exclude controller name "
-				          << name << std::endl;
 				loaded = true;
 			}
 		}
@@ -47,12 +45,10 @@ bool DeviceExclusion::readXML(XMLElement *e) {
 			std::string name = child->Attribute("name");
 			if(name != "") {
 				auto ret = joystickNames.insert(name);
-				if(!ret.second) {
-					LOG_WARN << "DeviceExclusion: already excluding joystick name "
-					         << name << std::endl;
+				if(ret.second) {
+					LOG_DEBUG << "DeviceExclusion: exclude joystick name "
+					          << name << std::endl;
 				}
-				LOG_DEBUG << "DeviceExclusion: exclude joystick name "
-				          << name << std::endl;
 				loaded = true;
 			}
 		}
@@ -65,16 +61,18 @@ bool DeviceExclusion::readXML(XMLElement *e) {
 	return loaded;
 }
 
-bool DeviceExclusion::isGameControllerExcluded(int sdlIndex) {
-	const char *name = SDL_GameControllerNameForIndex(sdlIndex);
-	if(!name) {return false;}
-	return controllerNames.find(std::string(name)) != controllerNames.end();
-}
-
-bool DeviceExclusion::isJoystickExcluded(int sdlIndex) {
-	const char *name = SDL_JoystickNameForIndex(sdlIndex);
-	if(!name) {return false;}
-	return joystickNames.find(std::string(name)) != joystickNames.end();
+bool DeviceExclusion::isExcluded(DeviceType type, int sdlIndex) {
+	if(type == GAMECONTROLLER) {
+		const char *name = SDL_GameControllerNameForIndex(sdlIndex);
+		if(!name) {return false;}
+		return controllerNames.find(std::string(name)) != controllerNames.end();
+	}
+	else if(type == JOYSTICK) {
+		const char *name = SDL_JoystickNameForIndex(sdlIndex);
+		if(!name) {return false;}
+		return joystickNames.find(std::string(name)) != joystickNames.end();
+	}
+	return false;
 }
 
 void DeviceExclusion::print() {
