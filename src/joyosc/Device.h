@@ -53,20 +53,30 @@ enum DeviceType {
 	GAMECONTROLLER = 2
 };
 
+/// device settings loaded from config file
+struct DeviceSettings {
+	int type; ///< Device::Type enum
+	std::string address; ///< OSC address
+	struct {
+		unsigned int deadZone; ///< zeroing threshold
+		bool triggers; ///< treat triggers as axes?
+	} axes; ///< axis behavior
+	EventRemapping *remap; ///< event remappings
+	EventIgnore *ignore; ///< event ignore rules
+};
+
 /// \class Device
 /// \brief a baseclass for an event-based input device
 class Device {
 
 	public:
 
-		Device(std::string oscAddress="/device") :
-			m_devName(""), m_oscAddress(oscAddress),
-			m_config(Config::instance()) {}
+		Device(std::string oscAddress="/device");
 		virtual ~Device() {}
 
 		/// open the device
 		/// returns true on success
-		virtual bool open(DeviceIndex index) = 0;
+		virtual bool open(DeviceIndex index, DeviceSettings *settings=nullptr) = 0;
 
 		/// close the device
 		virtual void close() = 0;
@@ -111,42 +121,33 @@ class Device {
 		inline SDL_JoystickID getInstanceID() {return m_instanceID;}
 
 		/// set axis dead zone, used to set an ignore threshold around 0
-		void setAxisDeadZone(unsigned int zone) {
-			m_axisDeadZone = zone;
-			LOG_DEBUG << getDeviceString() << " \"" << getDevName() << "\": "
-			          << "set axis dead zone to " << zone << std::endl;
-		}
+		void setAxisDeadZone(unsigned int zone);
 
 		/// get axis dead zone
 		inline int getAxisDeadZone() {return m_axisDeadZone;}
 
 		/// set button, axis, etc remappings
-		void setRemapping(EventRemapping *remapping) {
-			m_remapping = remapping;
-			if(m_remapping) {m_remapping->check(this);}
-		}
+		void setRemapping(EventRemapping *remapping);
 
 		/// get button, axis, etc remappings
 		inline EventRemapping* getRemapping() {return m_remapping;}
 
 		/// set button, axis, etc ignores
-		void setIgnore(EventIgnore *ignore) {
-			m_ignore = ignore;
-			if(m_ignore) {m_ignore->check(this);}
-		}
+		void setIgnore(EventIgnore *ignore);
 
 		/// get button, axis, etc ignores
 		inline EventIgnore* getIgnore() {return m_ignore;}
 
 		/// print button, axis, etc remapping
-		void printRemapping() {
-			if(m_remapping) {m_remapping->print();}
-		}
+		void printRemapping();
 
 		/// print button, axis, etc ignores
-		void printIgnores() {
-			if(m_ignore) {m_ignore->print();}
-		}
+		void printIgnores();
+
+		static std::string notificationAddress; ///< base osc sending address for notifications
+		static std::string deviceAddress; ///< base osc sending addess for devices
+		static bool printEvents; ///< print lots of events?
+		static lo::Address *sender; ///< shared osc sender, required!
 
 	protected:
 
@@ -161,6 +162,4 @@ class Device {
 
 		EventRemapping *m_remapping = nullptr; ///< button, axis, etc remappings
 		EventIgnore *m_ignore = nullptr; ///< button, axis, etc ignores
-
-		Config &m_config; ///< global config access
 };

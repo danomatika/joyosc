@@ -22,7 +22,9 @@
 ==============================================================================*/
 #pragma once
 
+#include <string>
 #include "Device.h"
+#include "DeviceExclusion.h"
 
 /// \class DeviceManager
 /// \brief Manages a list of the currently active game controller & joystick devices
@@ -30,7 +32,10 @@ class DeviceManager {
 
 	public:
 
-		DeviceManager();
+		DeviceManager() {};
+
+		/// load from XML element, returns true on success
+		bool readXML(tinyxml2::XMLElement *e);
 
 		/// open game controller or joystick at SDL index,
 		/// returns true on success
@@ -58,15 +63,32 @@ class DeviceManager {
 		//// handle and send device event
 		bool handleEvent(SDL_Event *event);
 
-		/// print active joystick list
-		void print(bool details=false);
-
 		/// return the number of devices
 		unsigned int numDevices() {return m_devices.size();}
 
-		bool sendDeviceEvents = false; ///< send device open/close events? (default: false)
+		/// get the settings for a given device name
+		/// deviceName is as a string ie. "Logitech Logitech Dual Action"
+		/// type is the DeviceType enum: 0 any, 1 controller, 2 joystick
+		/// returns settings pointer on success, nullptr if not found
+		DeviceSettings* getDeviceSettings(const std::string &deviceName, int type=0);
+
+		/// print known device settings list
+		void printKnownDevices();
+
+		/// print device exlucsions
+		inline void printExclusions() {m_deviceExclusion.print();}
+
+		/// print active joystick list
+		void print(bool details=false);
+
+		bool joysticksOnly = false; ///< disable game controller support?
+		bool sendDeviceEvents = false; ///< send device open/close events?
 
 	protected:
+
+		bool readXMLJoystick(tinyxml2::XMLElement *e);
+
+		bool readXMLController(tinyxml2::XMLElement *e);
 
 		/// return the first available index in the active devices list
 		int firstAvailableIndex();
@@ -76,6 +98,9 @@ class DeviceManager {
 
 		/// is an sdlIndex already in use by an active device?
 		bool sdlIndexExists(int sdlIndex);
+
+		std::map<std::string,DeviceSettings> m_knownDevices;
+		DeviceExclusion m_deviceExclusion; ///< device exclusions
 
 		std::map<int,Device *> m_devices; ///< active device list, mapped by instanceID
 };

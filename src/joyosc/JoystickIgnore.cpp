@@ -30,7 +30,7 @@ bool JoystickIgnore::readXML(XMLElement *e) {
 	std::string devName = "unknown";
 	if(parent->Attribute("name")) {devName = std::string(parent->Attribute("name"));}
 	XMLElement *child = e->FirstChildElement();
-	while(child != NULL) {
+	while(child) {
 		int which = child->IntAttribute("id", -1);
 		if(which > -1) {
 			if((std::string)child->Name() == "button") {

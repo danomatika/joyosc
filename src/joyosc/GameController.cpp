@@ -26,15 +26,17 @@
 #include "GameControllerIgnore.h"
 #include "Path.h"
 
-GameController::GameController(std::string oscAddress) :
-	Device(oscAddress) {}
+bool GameController::triggersAsAxes = false;
 
-bool GameController::open(DeviceIndex index) {
+GameController::GameController(std::string oscAddress) : Device(oscAddress) {
+	m_triggersAsAxes = GameController::triggersAsAxes;
+}
+
+bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
 	if(!index.isValid()) {
 		LOG_WARN << "GameController: cannot open, index not set" << std::endl;
 		return false;
 	}
-
 	m_index = index;
 
 	if(isOpen()) {
@@ -52,14 +54,13 @@ bool GameController::open(DeviceIndex index) {
 	SDL_Joystick *joystick = SDL_GameControllerGetJoystick(m_controller);
 	m_instanceID = SDL_JoystickInstanceID(joystick);
 	m_devName = SDL_GameControllerName(m_controller);
-	m_triggersAsAxes = m_config.triggersAsAxes;
 
 	// create prev axis values
 	for(int i = 0; i < SDL_JoystickNumAxes(joystick); ++i) {
 		m_prevAxisValues.push_back(0);
 	}
 
-	Config::DeviceSettings *settings = m_config.getDeviceSettings((std::string)m_devName, (int)GAMECONTROLLER);
+	// apply settings?
 	if(settings) {
 
 		// try to set the address from the mapping list using the dev name
@@ -93,7 +94,7 @@ bool GameController::open(DeviceIndex index) {
 	}
 
 	LOG << "GameController: opened " << getDeviceString() << std::endl;
-	if(m_controller && m_config.printEvents) {
+	if(m_controller && Device::printEvents) {
 		SDL_Joystick *joystick = SDL_GameControllerGetJoystick(m_controller);
 		LOG << "  num buttons: " << SDL_JoystickNumButtons(joystick) << std::endl
 		    << "  num axes: " << SDL_JoystickNumAxes(joystick) << std::endl;
@@ -171,10 +172,9 @@ bool GameController::handleEvent(SDL_Event *event) {
 				m_prevAxisValues[event->caxis.axis] = value;
 				return buttonPressed(axis, value);
 			}
-			lo::Address *sender = m_config.getOscSender();
-			sender->send(m_config.deviceAddress + m_oscAddress + "/axis",
+			sender->send(Device::deviceAddress + m_oscAddress + "/axis",
 				"si", axis.c_str(), value);
-			if(m_config.printEvents) {
+			if(Device::printEvents) {
 				LOG << m_oscAddress << " " << m_devName
 				    << " axis: " << axis << " " << value << std::endl;
 			}
@@ -242,11 +242,10 @@ bool GameController::buttonPressed(std::string &button, int value) {
 		button = m_remapping->mappingFor(BUTTON, button);
 	}
 
-	lo::Address *sender = m_config.getOscSender();
-	sender->send(m_config.deviceAddress + m_oscAddress + "/button",
+	sender->send(Device::deviceAddress + m_oscAddress + "/button",
 		"si", button.c_str(), value);
 	
-	if(m_config.printEvents) {
+	if(Device::printEvents) {
 		LOG << m_oscAddress << " " << m_devName
 		    << " button: " << button << " " << value << std::endl;
 	}

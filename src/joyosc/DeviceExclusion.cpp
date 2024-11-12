@@ -1,6 +1,6 @@
 /*==============================================================================
 
-	DeviceExclusion.h
+	DeviceExclusion.cpp
 
 	joyosc: a device event to osc bridge
 
@@ -29,7 +29,7 @@ using namespace tinyxml2;
 bool DeviceExclusion::readXML(XMLElement *e) {
 	bool loaded = false;
 	XMLElement *child = e->FirstChildElement();
-	while(child != NULL) {
+	while(child) {
 		if((std::string)child->Name() == "controller") {
 			std::string name = child->Attribute("name");
 			if(name != "") {

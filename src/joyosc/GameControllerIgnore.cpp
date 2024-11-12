@@ -30,7 +30,7 @@ bool GameControllerIgnore::readXML(XMLElement *e) {
 	std::string devName = "unknown";
 	if(parent->Attribute("name")) {devName = std::string(parent->Attribute("name"));}
 	XMLElement *child = e->FirstChildElement();
-	while(child != NULL) {
+	while(child) {
 		std::string which = "";
 		if(child->Attribute("id")) {which = std::string(child->Attribute("id"));}
 		if(which != "") {

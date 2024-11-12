@@ -25,15 +25,13 @@
 #include "JoystickIgnore.h"
 #include "JoystickRemapping.h"
 
-Joystick::Joystick(std::string oscAddress) :
-	Device(oscAddress) {}
+Joystick::Joystick(std::string oscAddress) : Device(oscAddress) {}
 
-bool Joystick::open(DeviceIndex index) {
+bool Joystick::open(DeviceIndex index, DeviceSettings *settings) {
 	if(!index.isValid()) {
 		LOG_WARN << "Joystick: cannot open, index not set" << std::endl;
 		return false;
 	}
-
 	m_index = index;
 
 	if(isOpen()) {
@@ -56,7 +54,7 @@ bool Joystick::open(DeviceIndex index) {
 		m_prevAxisValues.push_back(0);
 	}
 
-	Config::DeviceSettings *settings = m_config.getDeviceSettings((std::string)m_devName, (int)JOYSTICK);
+	// apply settings?
 	if(settings) {
 
 		// try to set the address from the mapping list using the dev name
@@ -87,7 +85,7 @@ bool Joystick::open(DeviceIndex index) {
 	}
 
 	LOG << "Joystick: opened " << getDeviceString() << std::endl;
-	if(m_joystick && Config::instance().printEvents) {
+	if(m_joystick && printEvents) {
 		LOG << "  num buttons: " << SDL_JoystickNumButtons(m_joystick) << std::endl
 		    << "  num axes: " << SDL_JoystickNumAxes(m_joystick) << std::endl
 		    << "  num balls: " << SDL_JoystickNumBalls(m_joystick) << std::endl
@@ -116,7 +114,6 @@ bool Joystick::handleEvent(SDL_Event *event) {
 	if(event == nullptr) {
 		return false;
 	}
-	lo::Address *sender = m_config.getOscSender();
 	switch(event->type) {
 		
 		case SDL_JOYBUTTONDOWN: {
@@ -127,10 +124,10 @@ bool Joystick::handleEvent(SDL_Event *event) {
 				event->jbutton.button = m_remapping->mappingFor(BUTTON, event->jbutton.button);
 			}
 
-			sender->send(m_config.deviceAddress + m_oscAddress + "/button",
+			sender->send(Device::deviceAddress + m_oscAddress + "/button",
 				"ii", (int)event->jbutton.button, (int)event->jbutton.state);
 
-			if(m_config.printEvents) {
+			if(printEvents) {
 				LOG << m_oscAddress << " " << m_devName
 				    << " button: " << (int)event->jbutton.button
 				    << " " << (int)event->jbutton.state << std::endl;
@@ -146,10 +143,10 @@ bool Joystick::handleEvent(SDL_Event *event) {
 				event->jbutton.button = m_remapping->mappingFor(BUTTON, event->jbutton.button);
 			}
 
-			sender->send(m_config.deviceAddress + m_oscAddress + "/button",
+			sender->send(Device::deviceAddress + m_oscAddress + "/button",
 				"ii", (int)event->jbutton.button, (int)event->jbutton.state);
 
-			if(m_config.printEvents) {
+			if(printEvents) {
 				LOG << m_oscAddress << " " << m_devName
 				    << " button: " << (int)event->jbutton.button
 				    << " " << (int)event->jbutton.state << std::endl;
@@ -180,9 +177,9 @@ bool Joystick::handleEvent(SDL_Event *event) {
 			m_prevAxisValues[event->jaxis.axis] = value;
 
 			// send
-			sender->send(m_config.deviceAddress + m_oscAddress + "/axis",
+			sender->send(Device::deviceAddress + m_oscAddress + "/axis",
 				"ii", (int)event->jaxis.axis, value);
-			if(m_config.printEvents) {
+			if(printEvents) {
 				LOG << m_oscAddress << " " << m_devName
 				    << " axis: " << (int)event->jaxis.axis
 				    << " " << value << std::endl;
@@ -199,10 +196,10 @@ bool Joystick::handleEvent(SDL_Event *event) {
 				event->jball.ball = m_remapping->mappingFor(BALL, event->jball.ball);
 			}
 
-			sender->send(m_config.deviceAddress + m_oscAddress + "/ball",
+			sender->send(Device::deviceAddress + m_oscAddress + "/ball",
 				"iii", (int)event->jball.ball, (int)event->jball.xrel, (int)event->jball.yrel);
 
-			if(m_config.printEvents) {
+			if(printEvents) {
 				LOG << m_oscAddress << " " << m_devName
 				    << " ball: " << (int)event->jaxis.axis
 				    << " " << (int)event->jball.xrel
@@ -219,10 +216,10 @@ bool Joystick::handleEvent(SDL_Event *event) {
 				event->jhat.hat = m_remapping->mappingFor(HAT, event->jhat.hat);
 			}
 
-			sender->send(m_config.deviceAddress + m_oscAddress + "/hat",
+			sender->send(Device::deviceAddress + m_oscAddress + "/hat",
 				"ii", (int)event->jhat.hat, (int)event->jhat.value);
 
-			if(m_config.printEvents) {
+			if(printEvents) {
 				LOG << m_oscAddress << " " << m_devName
 				    << " hat: " << (int)event->jhat.hat
 				    << " " << (int)event->jhat.value << std::endl;

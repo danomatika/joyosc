@@ -24,7 +24,16 @@
 
 #include "../config.h" // automake config defines
 
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+
 #include <SDL.h>
 
+#define LO_USE_EXCEPTIONS
+#include <lo/lo.h>
+#include <lo/lo_cpp.h>
+#include <tinyxml2.h>
+
 #include "Log.h"
-#include "Config.h"

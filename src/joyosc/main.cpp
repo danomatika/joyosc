@@ -24,9 +24,10 @@
 #include "App.h"
 
 int main(int argc, char **argv) {
+	App app;
 
 	// init config settings
-	if(!Config::instance().parseCommandLine(argc, argv)) {
+	if(!app.parseCommandLine(argc, argv)) {
 		return EXIT_FAILURE;
 	}
 
@@ -49,8 +50,8 @@ int main(int argc, char **argv) {
 
 	// open optional window?
 	SDL_Window *window = nullptr;
-	if(Config::instance().openWindow) {
-		window = SDL_CreateWindow("joyosc", 50, 100, 160, 120, 0);
+	if(app.openWindow) {
+		window = SDL_CreateWindow(PACKAGE, 50, 100, 160, 120, 0);
 		if(window == nullptr) {
 			LOG_ERROR << "could not create window: " << SDL_GetError() << std::endl;
 			SDL_Quit();
@@ -59,7 +60,6 @@ int main(int argc, char **argv) {
 	}
 
 	// run the application
-	App app;
 	app.run();
 
 	// cleanup SDL

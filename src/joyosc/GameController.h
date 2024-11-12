@@ -39,10 +39,10 @@ class GameController : public Device {
 	public:
 
 		GameController(std::string oscAddress="controller");
-		
+
 		/// open the controller
 		/// returns	true on success
-		bool open(DeviceIndex index);
+		bool open(DeviceIndex index, DeviceSettings *settings=nullptr);
 
 		/// close the controller
 		void close();
@@ -86,6 +86,10 @@ class GameController : public Device {
 		/// returns num mappings added or -1 on error
 		static int addMappingFile(std::string path);
 
+		/// report trigger buttons as axis values
+		/// note: this is the shared default
+		static bool triggersAsAxes;
+
 	protected:
 
 		/// send button event
@@ -95,5 +99,6 @@ class GameController : public Device {
 		SDL_GameController *m_controller = nullptr;
 
 		/// treat left & right triggers as axes? otherwise buttons
+		//// note: this is the instance value, may differ from shared default
 		bool m_triggersAsAxes = false;
 };

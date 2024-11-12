@@ -30,7 +30,7 @@ bool JoystickRemapping::readXML(XMLElement *e) {
 	std::string devName = "unknown";
 	if(parent->Attribute("name")) {devName = std::string(parent->Attribute("name"));}
 	XMLElement *child = e->FirstChildElement();
-	while(child != NULL) {
+	while(child) {
 		int from = child->IntAttribute("from", -1);
 		int to = child->IntAttribute("to", -1);
 		if(from > -1 && to > -1) {

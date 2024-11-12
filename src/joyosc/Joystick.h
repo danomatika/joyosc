@@ -43,7 +43,7 @@ class Joystick : public Device {
 
 		/// open the joystick
 		/// returns	true on success
-		bool open(DeviceIndex index);
+		bool open(DeviceIndex index, DeviceSettings *settings=nullptr);
 
 		/// close the joystick
 		void close();
