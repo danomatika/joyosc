@@ -86,9 +86,11 @@ class DeviceManager {
 
 	protected:
 
-		bool readXMLJoystick(tinyxml2::XMLElement *e);
-
+		/// read <controller> tag
 		bool readXMLController(tinyxml2::XMLElement *e);
+
+		/// read <joystick> tag
+		bool readXMLJoystick(tinyxml2::XMLElement *e);
 
 		/// return the first available index in the active devices list
 		int firstAvailableIndex();

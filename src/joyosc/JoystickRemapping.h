@@ -35,6 +35,15 @@ class JoystickRemapping : public EventRemapping {
 		/// load from XML element, returns true on success
 		bool readXML(tinyxml2::XMLElement *e);
 
+		/// check indices & toss out any bad values
+		void check(Device *device);
+
+		/// get index mapping, returns the given index if no mapping found
+		int mappingFor(EventType type, int index);
+
+		/// print the current mappings
+		void print();
+
 		/// button mappings from -> to by id
 		std::map<int,int> buttons;
 
@@ -46,13 +55,4 @@ class JoystickRemapping : public EventRemapping {
 
 		/// hat mappings from -> to by id
 		std::map<int,int>hats;
-
-		/// check indices & toss out any bad values
-		void check(Device *device);
-
-		/// get index mapping, returns the given index if no mapping found
-		int mappingFor(EventType type, int index);
-
-		/// print the current mappings
-		void print();
 };

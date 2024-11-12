@@ -199,6 +199,18 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 	}
 }
 
+DeviceSettings* DeviceManager::getDeviceSettings(const std::string &deviceName, int type) {
+	auto iter = m_knownDevices.find(deviceName);
+	if(iter != m_knownDevices.end()) {
+		DeviceSettings &settings = (DeviceSettings &)(iter->second);
+		if(type > 0 && settings.type != type) {
+			return nullptr; // wrong type
+		}
+		return &settings;
+	}
+	return nullptr;
+}
+
 void DeviceManager::printKnownDevices() {
 	LOG << "known devices: " << m_knownDevices.size() << std::endl;
 	int index = 0;
@@ -234,17 +246,7 @@ void DeviceManager::print(bool details) {
 	}
 }
 
-DeviceSettings* DeviceManager::getDeviceSettings(const std::string &deviceName, int type) {
-	auto iter = m_knownDevices.find(deviceName);
-	if(iter != m_knownDevices.end()) {
-		DeviceSettings &settings = (DeviceSettings &)(iter->second);
-		if(type > 0 && settings.type != type) {
-			return nullptr; // wrong type
-		}
-		return &settings;
-	}
-	return nullptr;
-}
+
 
 // PROTECTED
 

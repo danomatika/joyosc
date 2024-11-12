@@ -35,12 +35,6 @@ class GameControllerRemapping : public EventRemapping {
 		/// load from XML element, returns true on success
 		bool readXML(tinyxml2::XMLElement *e);
 
-		/// button mappings from -> to by name
-		std::map<std::string,std::string> buttons;
-
-		/// axis mappings from -> to by name
-		std::map<std::string,std::string> axes;
-
 		/// check indices & toss out any bad values
 		void check(Device *device);
 
@@ -49,4 +43,10 @@ class GameControllerRemapping : public EventRemapping {
 
 		/// print the current mappings
 		void print();
+
+		/// button mappings from -> to by name
+		std::map<std::string,std::string> buttons;
+
+		/// axis mappings from -> to by name
+		std::map<std::string,std::string> axes;
 };

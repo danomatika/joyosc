@@ -35,9 +35,6 @@ class GameControllerIgnore : public EventIgnore {
 		/// load from XML element, returns true on success
 		bool readXML(tinyxml2::XMLElement *e);
 
-		std::set<std::string> buttons; ///< button names to ignore
-		std::set<std::string> axes; ///< axis names to ignore
-
 		/// check names & toss out any bad values
 		void check(Device *device);
 
@@ -46,4 +43,7 @@ class GameControllerIgnore : public EventIgnore {
 
 		/// print the current ignore values
 		void print();
+
+		std::set<std::string> buttons; ///< button names to ignore
+		std::set<std::string> axes; ///< axis names to ignore
 };
