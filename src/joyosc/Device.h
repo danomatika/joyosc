@@ -25,8 +25,6 @@
 #include "Common.h"
 #include "Event.h"
 
-// class Device;
-
 /// \class DeviceIndex
 /// \brief index struct for opening a game controller or joystick
 ///
@@ -48,14 +46,14 @@ struct DeviceIndex {
 
 /// supported device types
 enum DeviceType {
-	UNKNOWN        = 0,
-	JOYSTICK       = 1,
-	GAMECONTROLLER = 2
+	UNKNOWN,
+	JOYSTICK,
+	GAMECONTROLLER
 };
 
 /// device settings loaded from config file(s)
 struct DeviceSettings {
-	int type; ///< Device::Type enum
+	DeviceType type; ///< device type
 	std::string address; ///< OSC address
 	unsigned int axisDeadZone; ///< zeroing threshold
 	bool triggersAsAxes; ///< treat triggers as axes?

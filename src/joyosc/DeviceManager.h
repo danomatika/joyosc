@@ -68,9 +68,9 @@ class DeviceManager {
 
 		/// get the settings for a given device name
 		/// deviceName is as a string ie. "Logitech Logitech Dual Action"
-		/// type is the DeviceType enum: 0 any, 1 controller, 2 joystick
+		/// type is the DeviceType enum, set UNKNOWN for any device type
 		/// returns settings pointer on success, nullptr if not found
-		DeviceSettings* getDeviceSettings(const std::string &deviceName, int type=0);
+		DeviceSettings* getDeviceSettings(const std::string &deviceName, DeviceType type=UNKNOWN);
 
 		/// print known device settings list
 		void printKnownDevices();

@@ -68,7 +68,7 @@ bool DeviceManager::open(int sdlIndex) {
 	if(SDL_IsGameController(sdlIndex) == SDL_TRUE && !joysticksOnly) {
 		if(!m_deviceExclusion.isExcluded(GAMECONTROLLER, sdlIndex)) {
 			std::string devname = SDL_GameControllerNameForIndex(sdlIndex);
-			DeviceSettings *settings = getDeviceSettings(devname, (int)GAMECONTROLLER);
+			DeviceSettings *settings = getDeviceSettings(devname, GAMECONTROLLER);
 			GameController *gc = new GameController();
 			if(gc->open(index, settings)) {
 				m_devices[gc->getInstanceID()] = gc;
@@ -83,7 +83,7 @@ bool DeviceManager::open(int sdlIndex) {
 	else {
 		if(!m_deviceExclusion.isExcluded(JOYSTICK, sdlIndex)) {
 			std::string devname = SDL_JoystickNameForIndex(sdlIndex);
-			DeviceSettings *settings = getDeviceSettings(devname, (int)JOYSTICK);
+			DeviceSettings *settings = getDeviceSettings(devname, JOYSTICK);
 			Joystick *js = new Joystick();
 			if(js->open(index, settings)) {
 				m_devices[js->getInstanceID()] = js;
@@ -199,11 +199,11 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 	}
 }
 
-DeviceSettings* DeviceManager::getDeviceSettings(const std::string &deviceName, int type) {
+DeviceSettings* DeviceManager::getDeviceSettings(const std::string &deviceName, DeviceType type) {
 	auto iter = m_knownDevices.find(deviceName);
 	if(iter != m_knownDevices.end()) {
 		DeviceSettings &settings = (DeviceSettings &)(iter->second);
-		if(type > 0 && settings.type != type) {
+		if(type != UNKNOWN && settings.type != type) {
 			return nullptr; // wrong type
 		}
 		return &settings;
@@ -259,13 +259,13 @@ bool DeviceManager::readXMLController(tinyxml2::XMLElement *e) {
 		         << std::endl;
 		return false;
 	}
-	if(getDeviceSettings(name, (int)GAMECONTROLLER)) {
+	if(getDeviceSettings(name, GAMECONTROLLER)) {
 		LOG_WARN << "game controller name " << name
 		         << " already exists" << std::endl;
 		return false;
 	}
 	DeviceSettings device = {
-		.type = (int)GAMECONTROLLER,
+		.type = GAMECONTROLLER,
 		.address = addr,
 		.axisDeadZone = 0,
 		.triggersAsAxes = GameController::triggersAsAxes,
@@ -343,12 +343,12 @@ bool DeviceManager::readXMLJoystick(tinyxml2::XMLElement *e) {
 		LOG_WARN << "ignoring joystick without name" << std::endl;
 		return false;
 	}
-	if(getDeviceSettings(name, (int)JOYSTICK)) {
+	if(getDeviceSettings(name, JOYSTICK)) {
 		LOG_WARN << "joystick name " << name << " already exists" << std::endl;
 		return false;
 	}
 	DeviceSettings device = {
-		.type = (int)JOYSTICK,
+		.type = JOYSTICK,
 		.address = addr,
 		.axisDeadZone = 0,
 		.triggersAsAxes = 0,
