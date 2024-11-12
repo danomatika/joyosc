@@ -67,11 +67,11 @@ bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
 		m_oscAddress = settings->address;
 
 		// overrides
-		m_triggersAsAxes = settings->axes.triggers;
+		m_triggersAsAxes = settings->triggersAsAxes;
 
 		// set axis dead zone if one exists
-		if(settings->axes.deadZone > 0) {
-			setAxisDeadZone(settings->axes.deadZone);
+		if(settings->axisDeadZone > 0) {
+			setAxisDeadZone(settings->axisDeadZone);
 		}
 
 		// set remapping if one exists

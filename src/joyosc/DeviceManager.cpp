@@ -265,7 +265,8 @@ bool DeviceManager::readXMLController(tinyxml2::XMLElement *e) {
 	DeviceSettings device = {
 		.type = (int)GAMECONTROLLER,
 		.address = addr,
-		.axes = {.deadZone = 0, .triggers = GameController::triggersAsAxes},
+		.axisDeadZone = 0,
+		.triggersAsAxes = GameController::triggersAsAxes,
 		.remap = nullptr,
 		.ignore = nullptr
 	};
@@ -274,31 +275,31 @@ bool DeviceManager::readXMLController(tinyxml2::XMLElement *e) {
 	while(child) {
 
 		if((std::string)child->Name() == "axes") {
-			device.axes.deadZone = child->UnsignedAttribute("deadZone", 0);
-			if(device.axes.deadZone > 0) {
+			device.axisDeadZone = child->UnsignedAttribute("deadZone", 0);
+			if(device.axisDeadZone > 0) {
 				LOG_DEBUG << "GameController " << name << ": "
-				          << "axis deadzone " << device.axes.deadZone << std::endl;
+				          << "axis deadzone " << device.axisDeadZone << std::endl;
 			}
-			if(child->QueryBoolAttribute("triggers", &device.axes.triggers) == tinyxml2::XML_SUCCESS) {
+			if(child->QueryBoolAttribute("triggers", &device.triggersAsAxes) == tinyxml2::XML_SUCCESS) {
 				LOG_DEBUG << "GameController " << name << ": "
-				          << "triggers as axes " << device.axes.triggers << std::endl;
+				          << "triggers as axes " << device.triggersAsAxes << std::endl;
 			}
 		}
 
 		// deprecated
 		if((std::string)child->Name() == "thresholds") {
-			device.axes.deadZone = child->UnsignedAttribute("axisDeadZone", 0);
-			if(device.axes.deadZone > 0) {
+			device.axisDeadZone = child->UnsignedAttribute("axisDeadZone", 0);
+			if(device.axisDeadZone > 0) {
 				LOG_DEBUG << "GameController " << name << ": "
-				          << "axis deadzone " << device.axes.deadZone << std::endl;
+				          << "axis deadzone " << device.axisDeadZone << std::endl;
 			}
 		}
 
 		// deprecated
 		if((std::string)child->Name() == "triggers") {
-			if(child->QueryBoolAttribute("asAxes", &device.axes.triggers) == tinyxml2::XML_SUCCESS) {
+			if(child->QueryBoolAttribute("asAxes", &device.triggersAsAxes) == tinyxml2::XML_SUCCESS) {
 				LOG_DEBUG << "GameController " << name << ": "
-				          << "triggers as axes " << device.axes.triggers << std::endl;
+				          << "triggers as axes " << device.triggersAsAxes << std::endl;
 			}
 		}
 
@@ -347,7 +348,8 @@ bool DeviceManager::readXMLJoystick(tinyxml2::XMLElement *e) {
 	DeviceSettings device = {
 		.type = (int)JOYSTICK,
 		.address = addr,
-		.axes = {0, 0},
+		.axisDeadZone = 0,
+		.triggersAsAxes = 0,
 		.remap = nullptr,
 		.ignore = nullptr
 	};
@@ -356,19 +358,19 @@ bool DeviceManager::readXMLJoystick(tinyxml2::XMLElement *e) {
 	while(child) {
 
 		if((std::string)child->Name() == "axes") {
-			device.axes.deadZone = child->UnsignedAttribute("deadZone", 0);
-			if(device.axes.deadZone > 0) {
+			device.axisDeadZone = child->UnsignedAttribute("deadZone", 0);
+			if(device.axisDeadZone > 0) {
 				LOG_DEBUG << "Joystick " << name << ": "
-				          << "axis deadzone " << device.axes.deadZone << std::endl;
+				          << "axis deadzone " << device.axisDeadZone << std::endl;
 			}
 		}
 
 		// deprecated
 		if((std::string)child->Name() == "thresholds") {
-			device.axes.deadZone = child->UnsignedAttribute("axisDeadZone", 0);
-			if(device.axes.deadZone > 0) {
+			device.axisDeadZone = child->UnsignedAttribute("axisDeadZone", 0);
+			if(device.axisDeadZone > 0) {
 				LOG_DEBUG << "Joystick " << name << ": "
-				          << "axis deadzone " << device.axes.deadZone << std::endl;
+				          << "axis deadzone " << device.axisDeadZone << std::endl;
 			}
 		}
 

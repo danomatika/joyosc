@@ -53,14 +53,12 @@ enum DeviceType {
 	GAMECONTROLLER = 2
 };
 
-/// device settings loaded from config file
+/// device settings loaded from config file(s)
 struct DeviceSettings {
 	int type; ///< Device::Type enum
 	std::string address; ///< OSC address
-	struct {
-		unsigned int deadZone; ///< zeroing threshold
-		bool triggers; ///< treat triggers as axes?
-	} axes; ///< axis behavior
+	unsigned int axisDeadZone; ///< zeroing threshold
+	bool triggersAsAxes; ///< treat triggers as axes?
 	EventRemapping *remap; ///< event remappings
 	EventIgnore *ignore; ///< event ignore rules
 };

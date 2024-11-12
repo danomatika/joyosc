@@ -61,8 +61,8 @@ bool Joystick::open(DeviceIndex index, DeviceSettings *settings) {
 		m_oscAddress = settings->address;
 
 		// set axis dead zone if one exists
-		if(settings->axes.deadZone > 0) {
-			setAxisDeadZone(settings->axes.deadZone);
+		if(settings->axisDeadZone > 0) {
+			setAxisDeadZone(settings->axisDeadZone);
 		}
 
 		// set remapping if one exists
