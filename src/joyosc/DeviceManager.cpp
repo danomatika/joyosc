@@ -241,7 +241,7 @@ void DeviceManager::print(bool details) {
 			dev.second->print();
 		}
 		else {
-			LOG << dev.second->getDeviceString() << std::endl;
+			LOG << dev.second->toString() << std::endl;
 		}
 	}
 }

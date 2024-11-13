@@ -84,7 +84,7 @@ bool Joystick::open(DeviceIndex index, DeviceSettings *settings) {
 		m_oscAddress = stream.str();
 	}
 
-	LOG << "Joystick: opened " << getDeviceString() << std::endl;
+	LOG << "Joystick: opened " << toString() << std::endl;
 	if(m_joystick && printEvents) {
 		LOG << "  num buttons: " << SDL_JoystickNumButtons(m_joystick) << std::endl
 		    << "  num axes: " << SDL_JoystickNumAxes(m_joystick) << std::endl
@@ -99,7 +99,7 @@ void Joystick::close() {
 		if(isOpen()) {
 			SDL_JoystickClose(m_joystick);
 		}
-		LOG << "Joystick: closed " << getDeviceString() << std::endl;
+		LOG << "Joystick: closed " << toString() << std::endl;
 		m_joystick = nullptr;
 	}
 
@@ -235,17 +235,11 @@ bool Joystick::isOpen() {
 }
 
 void Joystick::print() {
-	LOG << getDeviceString() << std::endl;
+	LOG << toString() << std::endl;
 	if(m_joystick) {
 		LOG << "  num buttons: " << SDL_JoystickNumButtons(m_joystick) << std::endl
 		    << "  num axes: " << SDL_JoystickNumAxes(m_joystick) << std::endl
 		    << "  num balls: " << SDL_JoystickNumBalls(m_joystick) << std::endl
 		    << "  num hats: " << SDL_JoystickNumHats(m_joystick) << std::endl;
 	}
-}
-
-std::string Joystick::getDeviceString() {
-	std::stringstream s;
-	s << m_index.index << " " << m_devName << " " << m_oscAddress;
-	return s.str();
 }

@@ -93,11 +93,8 @@ class Device {
 		/// returns the device type enum value
 		virtual DeviceType getType() = 0;
 
-		/// returns basic device info as a string
-		virtual std::string getDeviceString() = 0;
-
 		/// get device name i.e. "P3 Controller"
-		inline std::string getDevName() {return m_devName;}
+		inline std::string getName() {return m_devName;}
 
 		/// set the osc address of this device ie "/js0" etc
 		inline void setOscAddress(std::string oscAddress) {
@@ -139,6 +136,9 @@ class Device {
 
 		/// print button, axis, etc ignores
 		void printIgnores();
+
+		/// returns basic device info as a string
+		virtual std::string toString();
 
 		static std::string notificationAddress; ///< base osc sending address for notifications
 		static std::string deviceAddress; ///< base osc sending addess for devices

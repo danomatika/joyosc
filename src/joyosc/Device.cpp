@@ -31,7 +31,7 @@ Device::Device(std::string oscAddress) : m_oscAddress(oscAddress) {}
 
 void Device::setAxisDeadZone(unsigned int zone) {
 	m_axisDeadZone = zone;
-	LOG_DEBUG << getDeviceString() << " \"" << getDevName() << "\": "
+	LOG_DEBUG << toString() << " \"" << getName() << "\": "
 	          << "set axis dead zone to " << zone << std::endl;
 }
 
@@ -51,4 +51,10 @@ void Device::printRemapping() {
 
 void Device::printIgnores() {
 	if(m_ignore) {m_ignore->print();}
+}
+
+std::string Device::toString() {
+	std::stringstream s;
+	s << m_index.index << " " << m_devName << " " << m_oscAddress;
+	return s.str();
 }

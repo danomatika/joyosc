@@ -93,7 +93,7 @@ bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
 		m_oscAddress = stream.str();
 	}
 
-	LOG << "GameController: opened " << getDeviceString() << std::endl;
+	LOG << "GameController: opened " << toString() << std::endl;
 	if(m_controller && Device::printEvents) {
 		SDL_Joystick *joystick = SDL_GameControllerGetJoystick(m_controller);
 		LOG << "  num buttons: " << SDL_JoystickNumButtons(joystick) << std::endl
@@ -190,18 +190,12 @@ bool GameController::isOpen() {
 }
 
 void GameController::print() {
-	LOG << getDeviceString() << std::endl;
+	LOG << toString() << std::endl;
 	if(m_controller) {
 		SDL_Joystick *joystick = SDL_GameControllerGetJoystick(m_controller);
 		LOG << "  num buttons: " << SDL_JoystickNumButtons(joystick) << std::endl
 		    << "  num axes: " << SDL_JoystickNumAxes(joystick) << std::endl;
 	}
-}
-
-std::string GameController::getDeviceString() {
-	std::stringstream s;
-	s << m_index.index << " " << m_devName << " " << m_oscAddress;
-	return s.str();
 }
 
 SDL_Joystick* GameController::getJoystick() {

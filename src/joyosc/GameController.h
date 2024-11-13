@@ -63,9 +63,6 @@ class GameController : public Device {
 		/// returns the device type enum value
 		inline DeviceType getType() {return GAMECONTROLLER;}
 
-		/// returns devices list index, name, & osc address as a string
-		std::string getDeviceString();
-
 		/// get the underlying SDL game controller handle
 		inline SDL_GameController* getController() {return m_controller;}
 

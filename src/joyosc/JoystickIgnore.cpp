@@ -94,7 +94,7 @@ void JoystickIgnore::check(Device *device) {
 	int numButtons = SDL_JoystickNumButtons(joystick->getJoystick());
 	for(; iter != buttons.end();) {
 		if((*iter) > numButtons) {
-			LOG_WARN << "Joystick " << joystick->getDevName() << ": "
+			LOG_WARN << "Joystick " << joystick->getName() << ": "
 			         << "removing invalid button ignore: " << (*iter) << std::endl;
 			iter = buttons.erase(iter);
 		}
@@ -106,7 +106,7 @@ void JoystickIgnore::check(Device *device) {
 	int numAxes = SDL_JoystickNumAxes(joystick->getJoystick());
 	for(iter = axes.begin(); iter != axes.end();) {
 		if((*iter) > numAxes ) {
-			LOG_WARN << "Joystick " << joystick->getDevName() << ": "
+			LOG_WARN << "Joystick " << joystick->getName() << ": "
 			         << "removing invalid axis ignore: " << (*iter) << std::endl;
 			iter = axes.erase(iter);
 		}
@@ -118,7 +118,7 @@ void JoystickIgnore::check(Device *device) {
 	int numBalls = SDL_JoystickNumBalls(joystick->getJoystick());
 	for(iter = balls.begin(); iter != balls.end();) {
 		if((*iter) > numBalls) {
-			LOG_WARN << "Joystick " << joystick->getDevName() << ": "
+			LOG_WARN << "Joystick " << joystick->getName() << ": "
 			         << "removing invalid ball ignore: " << (*iter) << std::endl;
 			iter = balls.erase(iter);
 		}
@@ -130,7 +130,7 @@ void JoystickIgnore::check(Device *device) {
 	int numHats = SDL_JoystickNumHats(joystick->getJoystick());
 	for(iter = hats.begin(); iter != hats.end();) {
 		if((*iter) > numHats) {
-			LOG_WARN << "Joystick " << joystick->getDevName() << ": "
+			LOG_WARN << "Joystick " << joystick->getName() << ": "
 			         << "removing invalid hat ignore: " << (*iter) << std::endl;
 			iter = hats.erase(iter);
 		}

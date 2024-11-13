@@ -73,7 +73,7 @@ void GameControllerIgnore::check(Device *device) {
 	auto iter = buttons.begin();
 	for(; iter != buttons.end();) {
 		if(SDL_GameControllerGetButtonFromString((*iter).c_str()) == SDL_CONTROLLER_BUTTON_INVALID) {
-			LOG_WARN << "GameController " << controller->getDevName() << ": "
+			LOG_WARN << "GameController " << controller->getName() << ": "
 			         << "removing invalid button ignore: " << (*iter) << std::endl;
 			iter = buttons.erase(iter);
 		}
@@ -83,7 +83,7 @@ void GameControllerIgnore::check(Device *device) {
 	}
 	for(iter = axes.begin(); iter != axes.end();) {
 		if(SDL_GameControllerGetAxisFromString((*iter).c_str()) == SDL_CONTROLLER_AXIS_INVALID) {
-			LOG_WARN << "GameController " << controller->getDevName() << ": "
+			LOG_WARN << "GameController " << controller->getName() << ": "
 			         << "removing invalid axis ignore: " << (*iter) << std::endl;
 			iter = axes.erase(iter);
 		}

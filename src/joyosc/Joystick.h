@@ -64,9 +64,6 @@ class Joystick : public Device {
 		/// returns the device type enum value
 		inline DeviceType getType() {return JOYSTICK;}
 
-		/// returns device list index, name, & osc address as a string
-		std::string getDeviceString();
-
 		/// get the underlying SDL joystick handle
 		inline SDL_Joystick* getJoystick() {return m_joystick;}
 

@@ -99,7 +99,7 @@ void JoystickRemapping::check(Device *device) {
 	int numButtons = SDL_JoystickNumButtons(joystick->getJoystick());
 	for(iter = buttons.begin(); iter != buttons.end();) {
 		if(iter->first > numButtons || iter->second > numButtons) {
-			LOG_WARN << "Joystick " << joystick->getDevName() << ": "
+			LOG_WARN << "Joystick " << joystick->getName() << ": "
 			         << "removing invalid button remap: "
 			         << iter->first << " -> " << iter->second << std::endl;
 			iter = buttons.erase(iter);
@@ -112,7 +112,7 @@ void JoystickRemapping::check(Device *device) {
 	int numAxes = SDL_JoystickNumAxes(joystick->getJoystick());
 	for(iter = axes.begin(); iter != axes.end();) {
 		if(iter->first > numAxes || iter->second > numAxes) {
-			LOG_WARN << "Joystick " << joystick->getDevName() << ": "
+			LOG_WARN << "Joystick " << joystick->getName() << ": "
 			         << "removing invalid axis remap: "
 			         << iter->first << " -> " << iter->second << std::endl;
 			iter = axes.erase(iter);
@@ -125,7 +125,7 @@ void JoystickRemapping::check(Device *device) {
 	int numBalls = SDL_JoystickNumBalls(joystick->getJoystick());
 	for(iter = balls.begin(); iter != balls.end();) {
 		if(iter->first > numBalls || iter->second > numBalls) {
-			LOG_WARN << "Joystick " << joystick->getDevName() << ": "
+			LOG_WARN << "Joystick " << joystick->getName() << ": "
 			         << "removing invalid ball remap: "
 			         << iter->first << " -> " << iter->second << std::endl;
 			iter = balls.erase(iter);
@@ -138,7 +138,7 @@ void JoystickRemapping::check(Device *device) {
 	int numHats = SDL_JoystickNumHats(joystick->getJoystick());
 	for(iter = hats.begin(); iter != hats.end();) {
 		if(iter->first > numHats || iter->second > numHats) {
-			LOG_WARN << "Joystick " << joystick->getDevName() << ": "
+			LOG_WARN << "Joystick " << joystick->getName() << ": "
 			         << "removing invalid hat remap: "
 			         << iter->first << " -> " << iter->second << std::endl;
 			iter = hats.erase(iter);
