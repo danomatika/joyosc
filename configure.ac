@@ -23,8 +23,8 @@ DEBUG_CXXFLAGS="-O0 -Wall -Werror -Wno-uninitialized"
 case $host in
 	*linux*)
 		# add linker flags for GCC (needed by Linaro/udoo)
-       	LDFLAGS="$LDFLAGS -Wl,--no-as-needed"
-       	;;
+		LDFLAGS="$LDFLAGS -Wl,--no-as-needed"
+		;;
 	*)
 		;;
 esac
