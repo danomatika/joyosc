@@ -118,16 +118,16 @@ void App::run() {
 	// setup osc interface
 	try {
 		if(listeningMulticast == "") {
-			m_oscReceiver = new lo::ServerThread(listeningPort, 0, &App::oscError);
+			m_receiver = new lo::ServerThread(listeningPort, 0, &App::oscError);
 		}
 		else {
-			m_oscReceiver = new lo::ServerThread(listeningMulticast, listeningPort, "", "", &App::oscError);
+			m_receiver = new lo::ServerThread(listeningMulticast, listeningPort, "", "", &App::oscError);
 		}
-		m_oscReceiver->add_method(nullptr, nullptr, [this](const char *address, const lo::Message &message) {
+		m_receiver->add_method(nullptr, nullptr, [this](const char *address, const lo::Message &message) {
 			return this->oscReceived(std::string(address), message);
 		});
-		m_oscSender = new lo::Address(sendingIp, sendingPort);
-		Device::sender = m_oscSender;
+		m_sender = new lo::Address(sendingIp, sendingPort);
+		Device::sender = m_sender;
 	}
 	catch(lo::Invalid &e) {
 		exit(EXIT_FAILURE);
@@ -136,7 +136,7 @@ void App::run() {
 		exit(EXIT_FAILURE);
 	}
 
-	m_oscSender->send(Device::notificationAddress + "/startup");
+	m_sender->send(Device::notificationAddress + "/startup");
 
 	// set signal handling
 	signal(SIGTERM, signalExit); // terminate
@@ -149,11 +149,11 @@ void App::run() {
 	m_deviceManager.openAll();
 	m_deviceManager.sendDeviceEvents = true;
 
-	m_oscSender->send(Device::notificationAddress + "/ready");
+	m_sender->send(Device::notificationAddress + "/ready");
 	
-	m_oscReceiver->start();
-	m_bRun = true;
-	while(m_bRun) {
+	m_receiver->start();
+	m_run = true;
+	while(m_run) {
 
 		// handle any joystick events
 		SDL_Event event;
@@ -161,7 +161,7 @@ void App::run() {
 			if(!m_deviceManager.handleEvent(&event)) {
 				switch(event.type) {
 					case SDL_QUIT:
-						m_bRun = false;
+						m_run = false;
 						break;
 				}
 			}
@@ -170,13 +170,13 @@ void App::run() {
 		// and 2 cents for the scheduler ...
 		usleep(sleepUS);
 	}
-	m_oscReceiver->stop();
+	m_receiver->stop();
 
 	// close all opened devices
 	m_deviceManager.sendDeviceEvents = false;
 	m_deviceManager.closeAll();
 
-	m_oscSender->send(Device::notificationAddress + "/shutdown");
+	m_sender->send(Device::notificationAddress + "/shutdown");
 }
 
 void App::print() {

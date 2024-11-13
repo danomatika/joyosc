@@ -38,7 +38,7 @@ class GameController : public Device {
 
 	public:
 
-		GameController(std::string oscAddress="controller");
+		GameController(std::string oscAddress="/controller");
 
 		/// open the controller
 		/// returns	true on success

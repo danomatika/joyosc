@@ -96,7 +96,7 @@ class Device {
 		/// returns basic device info as a string
 		virtual std::string getDeviceString() = 0;
 
-		/// get device name i.e. "/dev/input/js0"
+		/// get device name i.e. "P3 Controller"
 		inline std::string getDevName() {return m_devName;}
 
 		/// set the osc address of this device ie "/js0" etc

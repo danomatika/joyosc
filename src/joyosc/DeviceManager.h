@@ -75,7 +75,7 @@ class DeviceManager {
 		/// print known device settings list
 		void printKnownDevices();
 
-		/// print device exlucsions
+		/// print device exlcusions
 		inline void printExclusions() {m_deviceExclusion.print();}
 
 		/// print active joystick list

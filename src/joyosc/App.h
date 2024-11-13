@@ -40,7 +40,7 @@ class App {
 		void run();
 
 		/// stop the main loop
-		inline void stop() {m_bRun = false;}
+		inline void stop() {m_run = false;}
 
 		/// print the current config values
 		void print();
@@ -72,10 +72,10 @@ class App {
 		/// signal callback
 		static void signalExit(int signal);
 
-		bool m_bRun = false; ///< is the main loop running?
+		bool m_run = false; ///< is the main loop running?
 
 		DeviceManager m_deviceManager; ///< controller & joystick device manager
 
-		lo::ServerThread *m_oscReceiver = nullptr; ///< osc receiver
-		lo::Address *m_oscSender = nullptr; ///< osc sender
+		lo::ServerThread *m_receiver = nullptr; ///< osc receiver
+		lo::Address *m_sender = nullptr; ///< osc sender
 };
