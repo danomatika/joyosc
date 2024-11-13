@@ -36,22 +36,18 @@ bool GameControllerIgnore::readXML(XMLElement *e) {
 		if(which != "") {
 			if((std::string)child->Name() == "button") {
 				auto ret = buttons.insert(which);
-				if(!ret.second) {
-					LOG_WARN << "GameController " << devName << ": "
-					         << "already ignoring button " << which << std::endl;
+				if(ret.second) {
+					LOG_DEBUG << "GameController " << devName << ": "
+					          << "ignoring button " << which << std::endl;
 				}
-				LOG_DEBUG << "GameController " << devName << ": "
-				          << "ignoring button " << which << std::endl;
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "axis") {
 				auto ret = axes.insert(which);
-				if(!ret.second) {
-					LOG_WARN << "GameController " << devName << ": "
-					         << "already ignoring axis " << which << std::endl;
+				if(ret.second) {
+					LOG_DEBUG << "GameController " << devName << ": "
+					          << "ignoring axis " << which << std::endl;
 				}
-				LOG_DEBUG << "GameController " << devName << ": "
-				          << "ignoring axis " << which << std::endl;
 				loaded = true;
 			}
 		}

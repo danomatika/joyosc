@@ -35,42 +35,34 @@ bool JoystickIgnore::readXML(XMLElement *e) {
 		if(which > -1) {
 			if((std::string)child->Name() == "button") {
 				auto ret = buttons.insert(which);
-				if(!ret.second) {
-					LOG_WARN << "Joystick " << devName << ": "
-					         << "already ignoring button " << which << std::endl;
+				if(ret.second) {
+					LOG_DEBUG << "Joystick " << devName << ": "
+					          << "ignoring button " << which << std::endl;
 				}
-				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "ignoring button " << which << std::endl;
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "axis") {
 				auto ret = axes.insert(which);
-				if(!ret.second) {
-					LOG_WARN << "Joystick " << devName << ": "
-					         << "already ignoring axis " << which << std::endl;
+				if(ret.second) {
+					LOG_DEBUG << "Joystick " << devName << ": "
+					          << "ignoring axis " << which << std::endl;
 				}
-				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "ignoring axis " << which << std::endl;
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "ball") {
 				auto ret = balls.insert(which);
-				if(!ret.second) {
-					LOG_WARN << "Joystick " << devName << ": "
-					         << "already ignoring ball " << which << std::endl;
+				if(ret.second) {
+					LOG_DEBUG << "Joystick " << devName << ": "
+					          << "ignoring ball " << which << std::endl;
 				}
-				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "ignoring ball " << which << std::endl;
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "hat") {
 				auto ret = balls.insert(which);
-				if(!ret.second) {
-					LOG_WARN << "Joystick " << devName << ": "
-					         << "already ignoring hat " << which << std::endl;
+				if(ret.second) {
+					LOG_DEBUG << "Joystick " << devName << ": "
+					          << "ignoring hat " << which << std::endl;
 				}
-				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "ignoring hat " << which << std::endl;
 				loaded = true;
 			}
 		}

@@ -36,46 +36,34 @@ bool JoystickRemapping::readXML(XMLElement *e) {
 		if(from > -1 && to > -1) {
 			if((std::string)child->Name() == "button") {
 				auto ret = buttons.insert(std::make_pair(from, to));
-				if(!ret.second) {
-					LOG_WARN << "Joystick " << devName << ": "
-					         << "mapping for button " << from
-					         << " already exists" << std::endl;
+				if(ret.second) {
+					LOG_DEBUG << "Joystick " << devName << ": "
+					          << "remapped button " << from << " to " << to << std::endl;
 				}
-				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "remapped button " << from << " to " << to << std::endl;
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "axis") {
 				auto ret = axes.insert(std::make_pair(from, to));
-				if(!ret.second) {
-					LOG_WARN << "Joystick " << devName << ": "
-					         << "mapping for axis " << from
-					         << " already exists" << std::endl;
+				if(ret.second) {
+					LOG_DEBUG << "Joystick " << devName << ": "
+					          << "remapped axis " << from << " to " << to << std::endl;
 				}
-				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "remapped axis " << from << " to " << to << std::endl;
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "ball") {
 				auto ret = balls.insert(std::make_pair(from, to));
-				if(!ret.second) {
-					LOG_WARN << "Joystick " << devName << ": "
-					         << "mapping for ball " << from
-					         << " already exists" << std::endl;
+				if(ret.second) {
+					LOG_DEBUG << "Joystick " << devName << ": "
+					          << "remapped ball " << from << " to " << to << std::endl;
 				}
-				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "remapped ball " << from << " to " << to << std::endl;
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "hat") {
 				auto ret = balls.insert(std::make_pair(from, to));
-				if(!ret.second) {
-					LOG_WARN << "Joystick " << devName << ": "
-					         << "mapping for hat " << from
-					         << " already exists" << std::endl;
+				if(ret.second) {
+					LOG_DEBUG << "Joystick " << devName << ": "
+					          << "remapped hat " << from << " to " << to << std::endl;
 				}
-				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "remapped hat " << from << " to " << to << std::endl;
 				loaded = true;
 			}
 		}
