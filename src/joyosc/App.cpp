@@ -53,7 +53,8 @@ bool App::parseCommandLine(int argc, char **argv) {
 		JSONLY,
 		WINDOW,
 		SLEEP,
-		TRIGGER
+		TRIGGER,
+		VERBOSE
 	};
 
 	// option and usage print descriptors
@@ -70,6 +71,7 @@ bool App::parseCommandLine(int argc, char **argv) {
 		{WINDOW, 0, "w", "window", Options::Arg::None, "  -w, --window \tOpen window, helps on some platforms if device events are not being found, ex. MFi controllers on macOS"},
 		{SLEEP, 0, "s", "sleep", Options::Arg::Integer, "  -s, --sleep \tSleep time in usecs (default: 10000)"},
 		{TRIGGER, 0, "t", "triggers", Options::Arg::None, "  -t, --triggers \tReport trigger buttons as axis values"},
+		{VERBOSE, 0, "v", "verbose", Options::Arg::None, "  -v, --verbose \tVerbose printing"},
 		{UNKNOWN, 0, "", "", Options::Arg::Unknown, "\nArguments:"},
 		{UNKNOWN, 0, "", "", Options::Arg::None, "  FILE \tOptional XML config file(s)"},
 		{0, 0, 0, 0, 0, 0}
@@ -88,11 +90,14 @@ bool App::parseCommandLine(int argc, char **argv) {
 		std::cout << VERSION << std::endl;
 		return false;
 	}
+	if(options.isSet(VERBOSE)) {
+		Log::logLevel = Log::LEVEL_VERBOSE;
+	}
 
 	// load config file(s)
 	for(int i = 0; i < options.numArguments(); ++i) {
 		auto path = Path::absolutePath(options.getArgumentString(i));
-		LOG << "loading " << path << std::endl;
+		LOG_VERBOSE << "loading " << path << std::endl;
 		if(!loadXMLFile(path.c_str())) {
 			return false;
 		}
@@ -113,7 +118,9 @@ bool App::parseCommandLine(int argc, char **argv) {
 }
 		
 void App::run() {
-	print();
+	if(Log::logLevel < Log::LEVEL_NORMAL) {
+		print();
+	}
 
 	// setup osc interface
 	try {
@@ -306,11 +313,11 @@ void App::readXMLMappings(tinyxml2::XMLElement *e, const std::string &dir) {
 int App::oscReceived(const std::string &address, const lo::Message &message) {
 	if(address == "/" PACKAGE "/quit") {
 		stop();
-		LOG << std::endl << "	" << PACKAGE << ": quit message received, exiting ..." << std::endl;
+		LOG_VERBOSE << std::endl << "	" << PACKAGE << ": quit message received, exiting ..." << std::endl;
 		return 0; // handled
 	}
-	LOG << PACKAGE << ": unknown message received: "
-	    << address << " " << message.types() << std::endl;
+	// LOG_WARN << PACKAGE << ": unknown message received: "
+	//          << address << " " << message.types() << std::endl;
 	return 1; // not handled
 }
 
@@ -324,5 +331,5 @@ void App::oscError(int num, const char *msg, const char *where) {
 
 void App::signalExit(int signal) {
 	appPtr->stop();
-	LOG << std::endl << "	" << PACKAGE << ": signal caught, exiting ..." << std::endl;
+	LOG_VERBOSE << std::endl << "	" << PACKAGE << ": signal caught, exiting ..." << std::endl;
 }

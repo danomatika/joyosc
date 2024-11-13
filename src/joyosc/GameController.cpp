@@ -95,11 +95,16 @@ bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
 		m_address = stream.str();
 	}
 
-	LOG << "GameController: opened " << toString() << std::endl;
-	if(m_controller && Device::printEvents) {
-		SDL_Joystick *joystick = SDL_GameControllerGetJoystick(m_controller);
-		LOG << "  num buttons: " << SDL_JoystickNumButtons(joystick) << std::endl
-		    << "  num axes: " << SDL_JoystickNumAxes(joystick) << std::endl;
+	if(Device::printEvents) {
+		LOG << "GameController: opened " << toString() << std::endl;
+		if(m_controller) {
+			SDL_Joystick *joystick = SDL_GameControllerGetJoystick(m_controller);
+			LOG << "  num buttons: " << SDL_JoystickNumButtons(joystick) << std::endl
+			    << "  num axes: " << SDL_JoystickNumAxes(joystick) << std::endl;
+		}
+	}
+	else {
+		LOG_VERBOSE << "GameController: opened " << toString() << std::endl;
 	}
 	return true;
 }
@@ -109,9 +114,16 @@ void GameController::close() {
 		if(isOpen()) {
 			SDL_GameControllerClose(m_controller);
 		}
-		LOG << "GameController: closed " << m_index.index
-		    << " " << m_name << " with address "
-		    << m_address << std::endl;
+		if(Device::printEvents) {
+			LOG << "GameController: closed " << m_index.index
+			    << " " << m_name << " with address "
+			    << m_address << std::endl;
+		}
+		else {
+			LOG_VERBOSE << "GameController: closed " << m_index.index
+			            << " " << m_name << " with address "
+			            << m_address << std::endl;
+		}
 		m_controller = nullptr;
 	}
 

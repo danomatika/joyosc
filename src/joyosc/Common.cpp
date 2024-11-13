@@ -1,10 +1,10 @@
 /*==============================================================================
 
-	Common.h
+	Common.cpp
 
 	joyosc: a device event to osc bridge
   
-	Copyright (C) 2010, 2024 Dan Wilcox <danomatika@gmail.com>
+	Copyright (C) 2024 Dan Wilcox <danomatika@gmail.com>
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -20,21 +20,7 @@
 	along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ==============================================================================*/
-#pragma once
+#include "Common.h"
 
-#include "../config.h" // automake config defines
-
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-
-#include <SDL.h>
-
-#define LO_USE_EXCEPTIONS
-#include <lo/lo.h>
-#include <lo/lo_cpp.h>
-#include <tinyxml2.h>
-
-#define LOG_STATIC_LEVEL
-#include "Log.h"
+// static log level storage
+Log::Level Log::logLevel = Log::LEVEL_NORMAL;

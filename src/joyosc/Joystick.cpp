@@ -80,12 +80,17 @@ bool Joystick::open(DeviceIndex index, DeviceSettings *settings) {
 		}
 	}
 
-	LOG << "Joystick: opened " << toString() << std::endl;
-	if(m_joystick && printEvents) {
-		LOG << "  num buttons: " << SDL_JoystickNumButtons(m_joystick) << std::endl
-		    << "  num axes: " << SDL_JoystickNumAxes(m_joystick) << std::endl
-		    << "  num balls: " << SDL_JoystickNumBalls(m_joystick) << std::endl
-		    << "  num hats: " << SDL_JoystickNumHats(m_joystick) << std::endl;
+	if(Device::printEvents) {
+		LOG << "Joystick: opened " << toString() << std::endl;
+		if(m_joystick) {
+			LOG << "  num buttons: " << SDL_JoystickNumButtons(m_joystick) << std::endl
+			    << "  num axes: " << SDL_JoystickNumAxes(m_joystick) << std::endl
+			    << "  num balls: " << SDL_JoystickNumBalls(m_joystick) << std::endl
+			    << "  num hats: " << SDL_JoystickNumHats(m_joystick) << std::endl;
+		}
+	}
+	else {
+		LOG_VERBOSE << "Joystick: opened " << toString() << std::endl;
 	}
 	return true;
 }
@@ -95,7 +100,12 @@ void Joystick::close() {
 		if(isOpen()) {
 			SDL_JoystickClose(m_joystick);
 		}
-		LOG << "Joystick: closed " << toString() << std::endl;
+		if(Device::printEvents) {
+			LOG << "Joystick: closed " << toString() << std::endl;
+		}
+		else {
+			LOG_VERBOSE << "Joystick: closed " << toString() << std::endl;
+		}
 		m_joystick = nullptr;
 	}
 

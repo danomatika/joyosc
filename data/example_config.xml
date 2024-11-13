@@ -30,7 +30,7 @@
 	                     note: this can be overridden per controller with the
 	                     controller <axes> tag, see below
 	 -->
-	<config printEvents="true" joysticksOnly="false" openWindow="false"
+	<config printEvents="false" joysticksOnly="false" openWindow="false"
 	        sleepUS="20000" triggersAsAxes="false"/>
 
 	<!-- device types to for mapping names to OSC send addresses and adding
