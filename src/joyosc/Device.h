@@ -98,9 +98,7 @@ class Device {
 		inline std::string getName() {return m_name;}
 
 		/// set the osc address of this device ie. "/js0" etc
-		inline void setAddress(std::string oscAddress) {
-			m_address = oscAddress;
-		}
+		inline void setAddress(std::string address) {m_address = address;}
 
 		/// get the osc address of this device ie. "/js0" etc
 		inline std::string getAddress() {return m_address;}
