@@ -102,7 +102,7 @@ bool DeviceManager::close(SDL_JoystickID instanceID) {
 	if(m_devices.find(instanceID) != m_devices.end()) {
 		Device *dev = m_devices[instanceID];
 		if(sendDeviceEvents) {
-			switch(dev->getDeviceType()) {
+			switch(dev->getType()) {
 				case GAMECONTROLLER:
 					Device::sender->send(Device::notificationAddress + "/close",
 						"si", "controller", ((GameController *)dev)->getIndex());
@@ -155,7 +155,7 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 
 		case SDL_CONTROLLERAXISMOTION:
 		case SDL_CONTROLLERBUTTONDOWN: case SDL_CONTROLLERBUTTONUP:
-			if(getDeviceType(event->cdevice.which) == GAMECONTROLLER) {
+			if(getType(event->cdevice.which) == GAMECONTROLLER) {
 				return m_devices[event->cdevice.which]->handleEvent(event);
 			}
 			return false;
@@ -180,7 +180,7 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 
 		case SDL_JOYBUTTONDOWN: case SDL_JOYBUTTONUP:
 		case SDL_JOYAXISMOTION: case SDL_JOYBALLMOTION: case SDL_JOYHATMOTION:
-			if(getDeviceType(event->jdevice.which) == JOYSTICK) {
+			if(getType(event->jdevice.which) == JOYSTICK) {
 				return m_devices[event->jdevice.which]->handleEvent(event);
 			}
 			return false;
@@ -417,21 +417,21 @@ int DeviceManager::firstAvailableIndex() {
 	return m_devices.size();
 }
 
-DeviceType DeviceManager::getDeviceType(int index) {
+DeviceType DeviceManager::getType(int index) {
 	if(m_devices.find(index) != m_devices.end()) {
-		return m_devices[index]->getDeviceType();
+		return m_devices[index]->getType();
 	}
 	return UNKNOWN;
 }
 
 bool DeviceManager::sdlIndexExists(int sdlIndex) {
 	for(auto &dev : m_devices) {
-		if(dev.second->getDeviceType() == GAMECONTROLLER) {
+		if(dev.second->getType() == GAMECONTROLLER) {
 			if(((GameController *)dev.second)->getSdlIndex() == sdlIndex) {
 				return true;
 			}
 		}
-		else if(dev.second->getDeviceType() == JOYSTICK) {
+		else if(dev.second->getType() == JOYSTICK) {
 			if(((Joystick *)dev.second)->getSdlIndex() == sdlIndex) {
 				return true;
 			}

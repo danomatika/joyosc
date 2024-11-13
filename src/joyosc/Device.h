@@ -91,7 +91,7 @@ class Device {
 		virtual bool isOpen() = 0;
 
 		/// returns the device type enum value
-		virtual DeviceType getDeviceType() = 0;
+		virtual DeviceType getType() = 0;
 
 		/// returns basic device info as a string
 		virtual std::string getDeviceString() = 0;

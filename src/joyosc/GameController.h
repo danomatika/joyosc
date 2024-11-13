@@ -61,7 +61,7 @@ class GameController : public Device {
 		void print();
 
 		/// returns the device type enum value
-		inline DeviceType getDeviceType() {return GAMECONTROLLER;}
+		inline DeviceType getType() {return GAMECONTROLLER;}
 
 		/// returns devices list index, name, & osc address as a string
 		std::string getDeviceString();
