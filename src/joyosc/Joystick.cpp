@@ -25,7 +25,7 @@
 #include "JoystickIgnore.h"
 #include "JoystickRemapping.h"
 
-Joystick::Joystick(std::string oscAddress) : Device(oscAddress) {}
+Joystick::Joystick(std::string address) : Device(address) {}
 
 bool Joystick::open(DeviceIndex index, DeviceSettings *settings) {
 	if(!index.isValid()) {
@@ -58,7 +58,9 @@ bool Joystick::open(DeviceIndex index, DeviceSettings *settings) {
 	if(settings) {
 
 		// try to set the address from the mapping list using the dev name
-		m_oscAddress = settings->address;
+		if(settings->address != "") {
+			m_address = settings->address;
+		}
 
 		// set axis dead zone if one exists
 		if(settings->axisDeadZone > 0) {
@@ -76,12 +78,6 @@ bool Joystick::open(DeviceIndex index, DeviceSettings *settings) {
 			setIgnore((JoystickIgnore *)settings->ignore);
 			printIgnores();
 		}
-	}
-	if(!settings || m_oscAddress == "") {
-		// not found ... set a generic name using the index
-		std::stringstream stream;
-		stream << "/js" << m_index.index;
-		m_oscAddress = stream.str();
 	}
 
 	LOG << "Joystick: opened " << toString() << std::endl;
@@ -124,11 +120,11 @@ bool Joystick::handleEvent(SDL_Event *event) {
 				event->jbutton.button = m_remapping->mappingFor(BUTTON, event->jbutton.button);
 			}
 
-			sender->send(Device::deviceAddress + m_oscAddress + "/button",
+			sender->send(Device::deviceAddress + m_address + "/button",
 				"ii", (int)event->jbutton.button, (int)event->jbutton.state);
 
 			if(printEvents) {
-				LOG << m_oscAddress << " " << m_name
+				LOG << m_address << " " << m_name
 				    << " button: " << (int)event->jbutton.button
 				    << " " << (int)event->jbutton.state << std::endl;
 			}
@@ -143,11 +139,11 @@ bool Joystick::handleEvent(SDL_Event *event) {
 				event->jbutton.button = m_remapping->mappingFor(BUTTON, event->jbutton.button);
 			}
 
-			sender->send(Device::deviceAddress + m_oscAddress + "/button",
+			sender->send(Device::deviceAddress + m_address + "/button",
 				"ii", (int)event->jbutton.button, (int)event->jbutton.state);
 
 			if(printEvents) {
-				LOG << m_oscAddress << " " << m_name
+				LOG << m_address << " " << m_name
 				    << " button: " << (int)event->jbutton.button
 				    << " " << (int)event->jbutton.state << std::endl;
 			}
@@ -177,10 +173,10 @@ bool Joystick::handleEvent(SDL_Event *event) {
 			m_prevAxisValues[event->jaxis.axis] = value;
 
 			// send
-			sender->send(Device::deviceAddress + m_oscAddress + "/axis",
+			sender->send(Device::deviceAddress + m_address + "/axis",
 				"ii", (int)event->jaxis.axis, value);
 			if(printEvents) {
-				LOG << m_oscAddress << " " << m_name
+				LOG << m_address << " " << m_name
 				    << " axis: " << (int)event->jaxis.axis
 				    << " " << value << std::endl;
 			}
@@ -196,11 +192,11 @@ bool Joystick::handleEvent(SDL_Event *event) {
 				event->jball.ball = m_remapping->mappingFor(BALL, event->jball.ball);
 			}
 
-			sender->send(Device::deviceAddress + m_oscAddress + "/ball",
+			sender->send(Device::deviceAddress + m_address + "/ball",
 				"iii", (int)event->jball.ball, (int)event->jball.xrel, (int)event->jball.yrel);
 
 			if(printEvents) {
-				LOG << m_oscAddress << " " << m_name
+				LOG << m_address << " " << m_name
 				    << " ball: " << (int)event->jaxis.axis
 				    << " " << (int)event->jball.xrel
 				    << " " << (int)event->jball.yrel << std::endl;
@@ -216,11 +212,11 @@ bool Joystick::handleEvent(SDL_Event *event) {
 				event->jhat.hat = m_remapping->mappingFor(HAT, event->jhat.hat);
 			}
 
-			sender->send(Device::deviceAddress + m_oscAddress + "/hat",
+			sender->send(Device::deviceAddress + m_address + "/hat",
 				"ii", (int)event->jhat.hat, (int)event->jhat.value);
 
 			if(printEvents) {
-				LOG << m_oscAddress << " " << m_name
+				LOG << m_address << " " << m_name
 				    << " hat: " << (int)event->jhat.hat
 				    << " " << (int)event->jhat.value << std::endl;
 			}

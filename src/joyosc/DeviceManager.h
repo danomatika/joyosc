@@ -66,11 +66,11 @@ class DeviceManager {
 		/// return the number of devices
 		unsigned int numDevices() {return m_devices.size();}
 
-		/// get the settings for a given device name
-		/// deviceName is as a string ie. "Logitech Logitech Dual Action"
+		/// get the settings for a device by name in the known device list
 		/// type is the DeviceType enum, set UNKNOWN for any device type
+		/// name is as a string ie. "Logitech Logitech Dual Action"
 		/// returns settings pointer on success, nullptr if not found
-		DeviceSettings* getDeviceSettings(const std::string &deviceName, DeviceType type=UNKNOWN);
+		DeviceSettings* settingsFor(DeviceType type, const std::string &name);
 
 		/// print known device settings list
 		void printKnownDevices();
@@ -92,17 +92,24 @@ class DeviceManager {
 		/// read <joystick> tag
 		bool readXMLJoystick(tinyxml2::XMLElement *e);
 
+		/// create default address using index, ex. "/gc1"
+		std::string addressForIndex(DeviceType type, int index);
+
 		/// return the first available index in the active devices list
 		int firstAvailableIndex();
 
-		/// get the device type at a given index
+		/// get the active device type at a given index
 		DeviceType getType(int index);
 
 		/// is an sdlIndex already in use by an active device?
 		bool sdlIndexExists(int sdlIndex);
 
+		/// know device settings list
 		std::map<std::string,DeviceSettings> m_knownDevices;
-		DeviceExclusion m_deviceExclusion; ///< device exclusions
 
-		std::map<int,Device *> m_devices; ///< active device list, mapped by instanceID
+		/// device exclusions, which names etc to ignore
+		DeviceExclusion m_deviceExclusion;
+
+		/// active device list, mapped by instanceID
+		std::map<int,Device *> m_devices;
 };

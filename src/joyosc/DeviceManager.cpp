@@ -67,9 +67,10 @@ bool DeviceManager::open(int sdlIndex) {
 	index.sdlIndex = sdlIndex;
 	if(SDL_IsGameController(sdlIndex) == SDL_TRUE && !joysticksOnly) {
 		if(!m_deviceExclusion.isExcluded(GAMECONTROLLER, sdlIndex)) {
-			std::string devname = SDL_GameControllerNameForIndex(sdlIndex);
-			DeviceSettings *settings = getDeviceSettings(devname, GAMECONTROLLER);
-			GameController *gc = new GameController();
+			std::string name = SDL_GameControllerNameForIndex(sdlIndex);
+			DeviceSettings *settings = settingsFor(GAMECONTROLLER, name);
+			std::string address = addressForIndex(GAMECONTROLLER, index.index);
+			GameController *gc = new GameController(address);
 			if(gc->open(index, settings)) {
 				m_devices[gc->getInstanceID()] = gc;
 				if(sendDeviceEvents) {
@@ -82,9 +83,10 @@ bool DeviceManager::open(int sdlIndex) {
 	}
 	else {
 		if(!m_deviceExclusion.isExcluded(JOYSTICK, sdlIndex)) {
-			std::string devname = SDL_JoystickNameForIndex(sdlIndex);
-			DeviceSettings *settings = getDeviceSettings(devname, JOYSTICK);
-			Joystick *js = new Joystick();
+			std::string name = SDL_JoystickNameForIndex(sdlIndex);
+			DeviceSettings *settings = settingsFor(JOYSTICK, name);
+			std::string address = addressForIndex(JOYSTICK, index.index);
+			Joystick *js = new Joystick(address);
 			if(js->open(index, settings)) {
 				m_devices[js->getInstanceID()] = js;
 				if(sendDeviceEvents) {
@@ -150,7 +152,7 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 			return true;
 
 		case SDL_CONTROLLERDEVICEREMAPPED:
-			LOG_DEBUG << "CONTROLLER REMAPPED instance ID " << event->cdevice.which << std::endl;
+			LOG_DEBUG << "CONTROLLER REMAPPED instanceID " << event->cdevice.which << std::endl;
 			return true;
 
 		case SDL_CONTROLLERAXISMOTION:
@@ -161,7 +163,7 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 			return false;
 
 		case SDL_CONTROLLERDEVICEREMOVED:
-			LOG_DEBUG << "CONTROLLER REMOVED instance ID " << event->cdevice.which << std::endl;
+			LOG_DEBUG << "CONTROLLER REMOVED instanceID " << event->cdevice.which << std::endl;
 			if(close(event->cdevice.which)) {
 				#ifdef DEBUG
 					print();
@@ -186,7 +188,7 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 			return false;
 
 		case SDL_JOYDEVICEREMOVED:
-			LOG_DEBUG << "JOYSTICK REMOVED instance ID " << event->jdevice.which << std::endl;
+			LOG_DEBUG << "JOYSTICK REMOVED instanceID " << event->jdevice.which << std::endl;
 			if(close(event->jdevice.which)) {
 				#ifdef DEBUG
 					print();
@@ -199,8 +201,8 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 	}
 }
 
-DeviceSettings* DeviceManager::getDeviceSettings(const std::string &deviceName, DeviceType type) {
-	auto iter = m_knownDevices.find(deviceName);
+DeviceSettings* DeviceManager::settingsFor(DeviceType type, const std::string &name) {
+	auto iter = m_knownDevices.find(name);
 	if(iter != m_knownDevices.end()) {
 		DeviceSettings &settings = (DeviceSettings &)(iter->second);
 		if(type != UNKNOWN && settings.type != type) {
@@ -246,8 +248,6 @@ void DeviceManager::print(bool details) {
 	}
 }
 
-
-
 // PROTECTED
 
 bool DeviceManager::readXMLController(tinyxml2::XMLElement *e) {
@@ -259,7 +259,7 @@ bool DeviceManager::readXMLController(tinyxml2::XMLElement *e) {
 		         << std::endl;
 		return false;
 	}
-	if(getDeviceSettings(name, GAMECONTROLLER)) {
+	if(settingsFor(GAMECONTROLLER, name)) {
 		LOG_WARN << "game controller name " << name
 		         << " already exists" << std::endl;
 		return false;
@@ -343,7 +343,7 @@ bool DeviceManager::readXMLJoystick(tinyxml2::XMLElement *e) {
 		LOG_WARN << "ignoring joystick without name" << std::endl;
 		return false;
 	}
-	if(getDeviceSettings(name, JOYSTICK)) {
+	if(settingsFor(JOYSTICK, name)) {
 		LOG_WARN << "joystick name " << name << " already exists" << std::endl;
 		return false;
 	}
@@ -404,6 +404,17 @@ bool DeviceManager::readXMLJoystick(tinyxml2::XMLElement *e) {
 
 	m_knownDevices[name] = device;
 	return true;
+}
+
+std::string DeviceManager::addressForIndex(DeviceType type, int index) {
+	std::stringstream stream;
+	switch(type) {
+		case GAMECONTROLLER: stream << "/gc";  break;
+		case JOYSTICK:       stream << "/js";  break;
+		default:             stream << "/dev"; break;
+	}
+	stream << index;
+	return stream.str();
 }
 
 // brute force search for first available index, works with fact

@@ -27,7 +27,7 @@ std::string Device::deviceAddress = "/" PACKAGE "/devices";
 bool Device::printEvents = false;
 lo::Address* Device::sender = nullptr;
 
-Device::Device(std::string oscAddress) : m_oscAddress(oscAddress) {}
+Device::Device(std::string address) : m_address(address) {}
 
 void Device::setAxisDeadZone(unsigned int zone) {
 	m_axisDeadZone = zone;
@@ -55,6 +55,6 @@ void Device::printIgnores() {
 
 std::string Device::toString() {
 	std::stringstream s;
-	s << m_index.index << " " << m_name << " " << m_oscAddress;
+	s << m_index.index << " " << m_name << " " << m_address;
 	return s.str();
 }

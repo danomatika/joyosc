@@ -28,7 +28,7 @@
 
 bool GameController::triggersAsAxes = false;
 
-GameController::GameController(std::string oscAddress) : Device(oscAddress) {
+GameController::GameController(std::string address) : Device(address) {
 	m_triggersAsAxes = GameController::triggersAsAxes;
 }
 
@@ -64,7 +64,9 @@ bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
 	if(settings) {
 
 		// try to set the address from the mapping list using the dev name
-		m_oscAddress = settings->address;
+		if(settings->address != "") {
+			m_address = settings->address;
+		}
 
 		// overrides
 		m_triggersAsAxes = settings->triggersAsAxes;
@@ -86,11 +88,11 @@ bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
 			printIgnores();
 		}
 	}
-	if(!settings || m_oscAddress == "") {
+	if(!settings || m_address == "") {
 		// not found ... set a generic name using the index
 		std::stringstream stream;
 		stream << "/gc" << m_index.index;
-		m_oscAddress = stream.str();
+		m_address = stream.str();
 	}
 
 	LOG << "GameController: opened " << toString() << std::endl;
@@ -109,7 +111,7 @@ void GameController::close() {
 		}
 		LOG << "GameController: closed " << m_index.index
 		    << " " << m_name << " with address "
-		    << m_oscAddress << std::endl;
+		    << m_address << std::endl;
 		m_controller = nullptr;
 	}
 
@@ -172,10 +174,10 @@ bool GameController::handleEvent(SDL_Event *event) {
 				m_prevAxisValues[event->caxis.axis] = value;
 				return buttonPressed(axis, value);
 			}
-			sender->send(Device::deviceAddress + m_oscAddress + "/axis",
+			sender->send(Device::deviceAddress + m_address + "/axis",
 				"si", axis.c_str(), value);
 			if(Device::printEvents) {
-				LOG << m_oscAddress << " " << m_name
+				LOG << m_address << " " << m_name
 				    << " axis: " << axis << " " << value << std::endl;
 			}
 
@@ -236,11 +238,11 @@ bool GameController::buttonPressed(std::string &button, int value) {
 		button = m_remapping->mappingFor(BUTTON, button);
 	}
 
-	sender->send(Device::deviceAddress + m_oscAddress + "/button",
+	sender->send(Device::deviceAddress + m_address + "/button",
 		"si", button.c_str(), value);
 	
 	if(Device::printEvents) {
-		LOG << m_oscAddress << " " << m_name
+		LOG << m_address << " " << m_name
 		    << " button: " << button << " " << value << std::endl;
 	}
 	return true;

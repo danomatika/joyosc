@@ -67,7 +67,8 @@ class Device {
 
 	public:
 
-		Device(std::string oscAddress="/device");
+		/// constructor with osc address
+		Device(std::string address="/device");
 		virtual ~Device() {}
 
 		/// open the device
@@ -93,16 +94,16 @@ class Device {
 		/// returns the device type enum value
 		virtual DeviceType getType() = 0;
 
-		/// get device name i.e. "P3 Controller"
+		/// get device name ie. "P3 Controller"
 		inline std::string getName() {return m_name;}
 
-		/// set the osc address of this device ie "/js0" etc
-		inline void setOscAddress(std::string oscAddress) {
-			m_oscAddress = oscAddress;
+		/// set the osc address of this device ie. "/js0" etc
+		inline void setAddress(std::string oscAddress) {
+			m_address = oscAddress;
 		}
 
-		/// get the osc address of this device ie "/js0" etc
-		inline std::string getOscAddress() {return m_oscAddress;}
+		/// get the osc address of this device ie. "/js0" etc
+		inline std::string getAddress() {return m_address;}
 
 		/// get index in the devices list
 		inline int getIndex() {return m_index.index;}
@@ -147,8 +148,8 @@ class Device {
 
 	protected:
 
-		std::string	m_name = ""; ///< the device name
-		std::string	m_oscAddress = ""; ///< osc address to send to
+		std::string	m_name = ""; ///< device name ie. "PS3 Controller"
+		std::string	m_address = ""; ///< osc address of this device ie. "/js0" etc
 
 		DeviceIndex m_index; ///< device list index & SDL index
 		SDL_JoystickID m_instanceID = -1; ///< unique SDL instance ID, *not* SDL index

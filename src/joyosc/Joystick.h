@@ -39,7 +39,8 @@ class Joystick : public Device {
 
 	public:
 
-		Joystick(std::string oscAddress="/joystick");
+		/// constructor with osc address
+		Joystick(std::string address="/joystick");
 
 		/// open the joystick
 		/// returns	true on success
