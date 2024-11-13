@@ -55,6 +55,6 @@ void Device::printIgnores() {
 
 std::string Device::toString() {
 	std::stringstream s;
-	s << m_index.index << " " << m_devName << " " << m_oscAddress;
+	s << m_index.index << " " << m_name << " " << m_oscAddress;
 	return s.str();
 }

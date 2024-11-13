@@ -94,7 +94,7 @@ class Device {
 		virtual DeviceType getType() = 0;
 
 		/// get device name i.e. "P3 Controller"
-		inline std::string getName() {return m_devName;}
+		inline std::string getName() {return m_name;}
 
 		/// set the osc address of this device ie "/js0" etc
 		inline void setOscAddress(std::string oscAddress) {
@@ -147,7 +147,7 @@ class Device {
 
 	protected:
 
-		std::string	m_devName = ""; ///< the device name
+		std::string	m_name = ""; ///< the device name
 		std::string	m_oscAddress = ""; ///< osc address to send to
 
 		DeviceIndex m_index; ///< device list index & SDL index

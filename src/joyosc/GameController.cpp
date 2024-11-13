@@ -53,7 +53,7 @@ bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
 
 	SDL_Joystick *joystick = SDL_GameControllerGetJoystick(m_controller);
 	m_instanceID = SDL_JoystickInstanceID(joystick);
-	m_devName = SDL_GameControllerName(m_controller);
+	m_name = SDL_GameControllerName(m_controller);
 
 	// create prev axis values
 	for(int i = 0; i < SDL_JoystickNumAxes(joystick); ++i) {
@@ -108,7 +108,7 @@ void GameController::close() {
 			SDL_GameControllerClose(m_controller);
 		}
 		LOG << "GameController: closed " << m_index.index
-		    << " " << m_devName << " with address "
+		    << " " << m_name << " with address "
 		    << m_oscAddress << std::endl;
 		m_controller = nullptr;
 	}
@@ -116,7 +116,7 @@ void GameController::close() {
 	// reset variables
 	m_index.clear();
 	m_instanceID = -1;
-	m_devName = "";
+	m_name = "";
 	m_prevAxisValues.clear();
 }
 
@@ -175,7 +175,7 @@ bool GameController::handleEvent(SDL_Event *event) {
 			sender->send(Device::deviceAddress + m_oscAddress + "/axis",
 				"si", axis.c_str(), value);
 			if(Device::printEvents) {
-				LOG << m_oscAddress << " " << m_devName
+				LOG << m_oscAddress << " " << m_name
 				    << " axis: " << axis << " " << value << std::endl;
 			}
 
@@ -240,7 +240,7 @@ bool GameController::buttonPressed(std::string &button, int value) {
 		"si", button.c_str(), value);
 	
 	if(Device::printEvents) {
-		LOG << m_oscAddress << " " << m_devName
+		LOG << m_oscAddress << " " << m_name
 		    << " button: " << button << " " << value << std::endl;
 	}
 	return true;

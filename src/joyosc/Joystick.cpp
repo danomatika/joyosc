@@ -47,7 +47,7 @@ bool Joystick::open(DeviceIndex index, DeviceSettings *settings) {
 	}
 
 	m_instanceID = SDL_JoystickInstanceID(m_joystick);
-	m_devName = SDL_JoystickName(m_joystick);
+	m_name = SDL_JoystickName(m_joystick);
 
 	// create prev axis values
 	for(int i = 0; i < SDL_JoystickNumAxes(m_joystick); ++i) {
@@ -106,7 +106,7 @@ void Joystick::close() {
 	// reset variables
 	m_index.clear();
 	m_instanceID = -1;
-	m_devName = "";
+	m_name = "";
 	m_prevAxisValues.clear();
 }
 
@@ -128,7 +128,7 @@ bool Joystick::handleEvent(SDL_Event *event) {
 				"ii", (int)event->jbutton.button, (int)event->jbutton.state);
 
 			if(printEvents) {
-				LOG << m_oscAddress << " " << m_devName
+				LOG << m_oscAddress << " " << m_name
 				    << " button: " << (int)event->jbutton.button
 				    << " " << (int)event->jbutton.state << std::endl;
 			}
@@ -147,7 +147,7 @@ bool Joystick::handleEvent(SDL_Event *event) {
 				"ii", (int)event->jbutton.button, (int)event->jbutton.state);
 
 			if(printEvents) {
-				LOG << m_oscAddress << " " << m_devName
+				LOG << m_oscAddress << " " << m_name
 				    << " button: " << (int)event->jbutton.button
 				    << " " << (int)event->jbutton.state << std::endl;
 			}
@@ -180,7 +180,7 @@ bool Joystick::handleEvent(SDL_Event *event) {
 			sender->send(Device::deviceAddress + m_oscAddress + "/axis",
 				"ii", (int)event->jaxis.axis, value);
 			if(printEvents) {
-				LOG << m_oscAddress << " " << m_devName
+				LOG << m_oscAddress << " " << m_name
 				    << " axis: " << (int)event->jaxis.axis
 				    << " " << value << std::endl;
 			}
@@ -200,7 +200,7 @@ bool Joystick::handleEvent(SDL_Event *event) {
 				"iii", (int)event->jball.ball, (int)event->jball.xrel, (int)event->jball.yrel);
 
 			if(printEvents) {
-				LOG << m_oscAddress << " " << m_devName
+				LOG << m_oscAddress << " " << m_name
 				    << " ball: " << (int)event->jaxis.axis
 				    << " " << (int)event->jball.xrel
 				    << " " << (int)event->jball.yrel << std::endl;
@@ -220,7 +220,7 @@ bool Joystick::handleEvent(SDL_Event *event) {
 				"ii", (int)event->jhat.hat, (int)event->jhat.value);
 
 			if(printEvents) {
-				LOG << m_oscAddress << " " << m_devName
+				LOG << m_oscAddress << " " << m_name
 				    << " hat: " << (int)event->jhat.hat
 				    << " " << (int)event->jhat.value << std::endl;
 			}
