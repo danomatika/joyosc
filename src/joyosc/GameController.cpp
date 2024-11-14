@@ -185,6 +185,26 @@ bool GameController::handleEvent(void *data) {
 			return buttonPressed(button, event->cbutton.state);
 		}
 
+		case SDL_CONTROLLERTOUCHPADDOWN:
+		case SDL_CONTROLLERTOUCHPADUP:
+		case SDL_CONTROLLERTOUCHPADMOTION: {
+			std::string action = event->type==SDL_CONTROLLERTOUCHPADDOWN ? "touchpaddown" : event->type==SDL_CONTROLLERTOUCHPADUP ? "touchpadup" : "touchpad";
+			lo::Address *sender = m_config.getOscSender();
+			sender->send(m_config.deviceAddress + m_oscAddress + "/" + action,
+				"iifff",
+				event->ctouchpad.touchpad,
+				event->ctouchpad.finger,
+				event->ctouchpad.x,
+				event->ctouchpad.y,
+				event->ctouchpad.pressure);
+			if(m_config.printEvents) {
+				LOG << m_oscAddress << " " << m_devName
+				    << " " << action << ": " << event->ctouchpad.touchpad << " " << event->ctouchpad.finger << " " << event->ctouchpad.x << " " << event->ctouchpad.y << " " << event->ctouchpad.pressure << std::endl;
+			}
+
+			return true;
+		}
+
 		case SDL_CONTROLLERSENSORUPDATE: {
 			std::string sensor = GetSensorName((SDL_SensorType)event->csensor.sensor);
 			lo::Address *sender = m_config.getOscSender();
