@@ -262,6 +262,8 @@ SDL Game Controller button names: a, b, x, y, start, back, guide, leftshoulder, 
 
 SDL Game Controller axis names: leftx, lefty, rightx, righty
 
+On devices with a touchpad, such as the Playstation controllers, joyosc reports touchpad down, up, and motion events using the touchpaddown, touchpadup, and touchpad names, followed by five (two integer and three floating point) arguments: touchpad index (this will usually be 0, but may report higher indices if the device has more than one touchpad), finger index (starting at 0; higher values may be reported if the touchpad supports multi-touch), x and y (touchpad coordinates in the 0-1 range; upper left corner is 0, 0), and pressure (in the 0-1 range; 0 means no touch).
+
 Also, joyosc can report x, y, z motion (acceleration and gyro aka rotation) data on devices which support this when invoked with the `--sensors` option. These use the following sensor names: accel, gyro (also leftaccel, leftgyro and rightaccel, rightgyro on some devices). _Note: These will generate lots of data when enabled._
 
 _Note: Game Controller names seem to follow the general Playstation DualShock layout. Devices with more than 4 axes and ~20 buttons are probably best used as Joysticks._
