@@ -88,12 +88,6 @@ bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
 			printIgnores();
 		}
 	}
-	if(!settings || m_address == "") {
-		// not found ... set a generic name using the index
-		std::stringstream stream;
-		stream << "/gc" << m_index.index;
-		m_address = stream.str();
-	}
 
 	if(Device::printEvents) {
 		LOG << "GameController: opened " << toString() << std::endl;
