@@ -155,8 +155,10 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 			LOG_DEBUG << "CONTROLLER REMAPPED instanceID " << event->cdevice.which << std::endl;
 			return true;
 
-		case SDL_CONTROLLERAXISMOTION:
 		case SDL_CONTROLLERBUTTONDOWN: case SDL_CONTROLLERBUTTONUP:
+		case SDL_CONTROLLERAXISMOTION: case SDL_CONTROLLERTOUCHPADDOWN:
+		case SDL_CONTROLLERTOUCHPADMOTION: case SDL_CONTROLLERTOUCHPADUP:
+		case SDL_CONTROLLERSENSORUPDATE:
 			if(getType(event->cdevice.which) == GAMECONTROLLER) {
 				return m_devices[event->cdevice.which]->handleEvent(event);
 			}
@@ -269,6 +271,7 @@ bool DeviceManager::readXMLController(tinyxml2::XMLElement *e) {
 		.address = addr,
 		.axisDeadZone = 0,
 		.triggersAsAxes = GameController::triggersAsAxes,
+		.enableSensors = GameController::enableSensors,
 		.remap = nullptr,
 		.ignore = nullptr
 	};
@@ -285,6 +288,13 @@ bool DeviceManager::readXMLController(tinyxml2::XMLElement *e) {
 			if(child->QueryBoolAttribute("triggers", &device.triggersAsAxes) == tinyxml2::XML_SUCCESS) {
 				LOG_DEBUG << "GameController " << name << ": "
 				          << "triggers as axes " << device.triggersAsAxes << std::endl;
+			}
+		}
+
+		if((std::string)child->Name() == "sensors") {
+			if(child->QueryBoolAttribute("enable", &device.enableSensors) == tinyxml2::XML_SUCCESS) {
+				LOG_DEBUG << "GameController " << name << ": "
+				          << "enable sensors " << device.enableSensors << std::endl;
 			}
 		}
 
@@ -352,6 +362,7 @@ bool DeviceManager::readXMLJoystick(tinyxml2::XMLElement *e) {
 		.address = addr,
 		.axisDeadZone = 0,
 		.triggersAsAxes = 0,
+		.enableSensors = 0,
 		.remap = nullptr,
 		.ignore = nullptr
 	};

@@ -84,11 +84,24 @@ class GameController : public Device {
 		/// returns num mappings added or -1 on error
 		static int addMappingFile(std::string path);
 
+		/// return sensor name from enum
+		static std::string nameForSensor(SDL_SensorType sensor);
+
+		/// return touchpad event from enum
+		static std::string nameForTouchEvent(SDL_EventType type);
+
 		/// report trigger buttons as axis values
-		/// note: this is the shared default
+		/// note: this is the shared default, may be overriden per-instance
 		static bool triggersAsAxes;
 
+		/// enable sensor events (gyro, accelerometer)
+		/// note: this is the shared default, may be overriden per-instance
+		static bool enableSensors;
+
 	protected:
+
+		/// enable (available) controller sensors
+		void enableAvailableSensors();
 
 		/// send button event
 		bool buttonPressed(std::string &name, int value);
@@ -97,6 +110,8 @@ class GameController : public Device {
 		SDL_GameController *m_controller = nullptr;
 
 		/// treat left & right triggers as axes? otherwise buttons
-		//// note: this is the instance value, may differ from shared default
-		bool m_triggersAsAxes = false;
+		bool m_triggersAsAxes;
+
+		/// enable sensor events (gyro, accelerometer)
+		bool m_enableSensors;
 };

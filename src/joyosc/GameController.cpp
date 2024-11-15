@@ -26,10 +26,24 @@
 #include "GameControllerIgnore.h"
 #include "Path.h"
 
+// available sensors
+static const SDL_SensorType s_sensors[] = {
+		SDL_SENSOR_ACCEL,
+		SDL_SENSOR_GYRO,
+#if HAVE_DECL_SDL_SENSOR_ACCEL_L
+		SDL_SENSOR_ACCEL_L,
+		SDL_SENSOR_GYRO_L,
+		SDL_SENSOR_ACCEL_R,
+		SDL_SENSOR_GYRO_R
+#endif
+};
+
 bool GameController::triggersAsAxes = false;
+bool GameController::enableSensors = false;
 
 GameController::GameController(std::string address) : Device(address) {
 	m_triggersAsAxes = GameController::triggersAsAxes;
+	m_enableSensors = GameController::enableSensors;
 }
 
 bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
@@ -70,6 +84,7 @@ bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
 
 		// overrides
 		m_triggersAsAxes = settings->triggersAsAxes;
+		m_enableSensors = settings->enableSensors;
 
 		// set axis dead zone if one exists
 		if(settings->axisDeadZone > 0) {
@@ -89,13 +104,13 @@ bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
 		}
 	}
 
+	if(m_enableSensors) {
+		enableAvailableSensors();
+	}
+
 	if(Device::printEvents) {
-		LOG << "GameController: opened " << toString() << std::endl;
-		if(m_controller) {
-			SDL_Joystick *joystick = SDL_GameControllerGetJoystick(m_controller);
-			LOG << "  num buttons: " << SDL_JoystickNumButtons(joystick) << std::endl
-			    << "  num axes: " << SDL_JoystickNumAxes(joystick) << std::endl;
-		}
+		LOG << "GameController: opened ";
+		print();
 	}
 	else {
 		LOG_VERBOSE << "GameController: opened " << toString() << std::endl;
@@ -189,6 +204,47 @@ bool GameController::handleEvent(SDL_Event *event) {
 
 			return true;
 		}
+
+		case SDL_CONTROLLERTOUCHPADDOWN: case SDL_CONTROLLERTOUCHPADMOTION:
+		case SDL_CONTROLLERTOUCHPADUP: {
+			const std::string &action = nameForTouchEvent((SDL_EventType)event->type);
+			sender->send(Device::deviceAddress + m_address + "/touchpad",
+				"siifff", action.c_str(),
+				event->ctouchpad.touchpad,
+				event->ctouchpad.finger,
+				event->ctouchpad.x,
+				event->ctouchpad.y,
+				event->ctouchpad.pressure
+			);
+			if(Device::printEvents) {
+				LOG << m_address << " " << m_name
+				    << " touchpad: " << action
+				    << " " << event->ctouchpad.touchpad
+				    << " " << event->ctouchpad.finger
+				    << " " << event->ctouchpad.x
+				    << " " << event->ctouchpad.y
+				    << " " << event->ctouchpad.pressure << std::endl;
+			}
+			return true;
+		}
+
+		case SDL_CONTROLLERSENSORUPDATE: {
+			const std::string &sensor = nameForSensor((SDL_SensorType)event->csensor.sensor);
+			sender->send(Device::deviceAddress + m_address + "/sensor",
+				"sfff", sensor.c_str(),
+				event->csensor.data[0],
+				event->csensor.data[1],
+				event->csensor.data[2]
+			);
+			if(Device::printEvents) {
+				LOG << m_address << " " << m_name
+				    << " sensor: " << sensor
+				    << " " << event->csensor.data[0]
+				    << " " << event->csensor.data[1]
+				    << " " << event->csensor.data[2] << std::endl;
+			}
+			return true;
+		}
 	}
 	return false;
 }
@@ -203,6 +259,15 @@ void GameController::print() {
 		SDL_Joystick *joystick = SDL_GameControllerGetJoystick(m_controller);
 		LOG << "  num buttons: " << SDL_JoystickNumButtons(joystick) << std::endl
 		    << "  num axes: " << SDL_JoystickNumAxes(joystick) << std::endl;
+		for(unsigned int i = 0; i < SDL_arraysize(s_sensors); ++i) {
+			SDL_SensorType sensor = s_sensors[i];
+			if(SDL_GameControllerHasSensor(m_controller, sensor) &&
+			   SDL_GameControllerIsSensorEnabled(m_controller, sensor) == SDL_TRUE) {
+				LOG << "  sensor: " << GameController::nameForSensor(sensor) << " "
+				    << SDL_GameControllerGetSensorDataRate(m_controller, sensor)
+				    << "hz" << std::endl;
+			}
+		}
 	}
 }
 
@@ -234,7 +299,46 @@ int GameController::addMappingFile(std::string path) {
 	return ret;
 }
 
+std::string GameController::nameForSensor(SDL_SensorType sensor) {
+	switch(sensor) {
+		case SDL_SENSOR_ACCEL:   return "accel";
+		case SDL_SENSOR_GYRO:    return "gyro";
+#if HAVE_DECL_SDL_SENSOR_ACCEL_L
+		// newer SDLs support split sensors on one controller
+		case SDL_SENSOR_ACCEL_L: return "leftaccel";
+		case SDL_SENSOR_GYRO_L:  return "leftgyro";
+		case SDL_SENSOR_ACCEL_R: return "rightaccel";
+		case SDL_SENSOR_GYRO_R:  return "rightgyro";
+#endif
+		default: return "unknown";
+	}
+}
+
+// naming matches RjDJ/PdParty #touch events
+std::string GameController::nameForTouchEvent(SDL_EventType type) {
+	switch(type) {
+		case SDL_CONTROLLERTOUCHPADDOWN:   return "down";
+		case SDL_CONTROLLERTOUCHPADMOTION: return "xy";
+		case SDL_CONTROLLERTOUCHPADUP:     return "up";
+		default: return "unknown";
+	}
+}
+
 // PROTECTED
+
+void GameController::enableAvailableSensors() {
+	for(unsigned int i = 0; i < SDL_arraysize(s_sensors); ++i) {
+		SDL_SensorType sensor = s_sensors[i];
+		if(SDL_GameControllerHasSensor(m_controller, sensor)) {
+			int ret = SDL_GameControllerSetSensorEnabled(m_controller, sensor, SDL_TRUE);
+			if(ret < 0) {
+				LOG_WARN << "GameController " << m_name
+				         << ": could not enable sensor " << nameForSensor(sensor)
+				         << ": " << SDL_GetError() << std::endl;
+			}
+		}
+	}
+}
 
 bool GameController::buttonPressed(std::string &button, int value) {
 	if(m_ignore && m_ignore->isIgnored(BUTTON, button)) {

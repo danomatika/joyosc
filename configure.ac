@@ -57,6 +57,11 @@ PKG_CHECK_MODULES([LO], [liblo >= 0.23], [],
 PKG_CHECK_MODULES([TINYXML2], [tinyxml2 >= 6], [],
 	AC_MSG_ERROR([tinyxml2 library >= 6.0.0 not found]))
 
+# check for SDL sensor constants, older versions of SDL2 did not support
+# split left and right accel or gyros on a single controller
+CPPFLAGS="$SDL_CFLAGS $CPPFLAGS" # add header search paths
+AC_CHECK_DECL([SDL_SENSOR_ACCEL_L], [], [], [#include <SDL2/SDL_sensor.h>])
+
 #########################################
 ##### Build options #####
 

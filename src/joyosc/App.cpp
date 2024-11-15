@@ -54,6 +54,7 @@ bool App::parseCommandLine(int argc, char **argv) {
 		WINDOW,
 		SLEEP,
 		TRIGGER,
+		SENSORS,
 		VERBOSE
 	};
 
@@ -69,8 +70,9 @@ bool App::parseCommandLine(int argc, char **argv) {
 		{EVENTS, 0, "e", "events", Options::Arg::None, "  -e, --events \tPrint incoming events, useful for debugging"},
 		{JSONLY, 0, "j", "joysticks-only", Options::Arg::None, "  -j, --joysticks-only \tDisable game controller support, joystick interface only"},
 		{WINDOW, 0, "w", "window", Options::Arg::None, "  -w, --window \tOpen window, helps on some platforms if device events are not being found, ex. MFi controllers on macOS"},
-		{SLEEP, 0, "s", "sleep", Options::Arg::Integer, "  -s, --sleep \tSleep time in usecs (default: 10000)"},
+		{SLEEP, 0, "", "sleep", Options::Arg::Integer, "  -s, --sleep \tSleep time in usecs (default: 10000)"},
 		{TRIGGER, 0, "t", "triggers", Options::Arg::None, "  -t, --triggers \tReport trigger buttons as axis values"},
+		{SENSORS, 0, "s", "sensors", Options::Arg::None, "  -s, --sensors \tEnable controller sensor events (accelerometer, gyro)"},
 		{VERBOSE, 0, "v", "verbose", Options::Arg::None, "  -v, --verbose \tVerbose printing"},
 		{UNKNOWN, 0, "", "", Options::Arg::Unknown, "\nArguments:"},
 		{UNKNOWN, 0, "", "", Options::Arg::None, "  FILE \tOptional XML config file(s)"},
@@ -113,6 +115,7 @@ bool App::parseCommandLine(int argc, char **argv) {
 	if(options.isSet(WINDOW))     {openWindow = true;}
 	if(options.isSet(SLEEP))      {sleepUS = options.getUInt(SLEEP);}
 	if(options.isSet(TRIGGER))    {GameController::triggersAsAxes = true;}
+	if(options.isSet(SENSORS))    {GameController::enableSensors = true;}
 
 	return true;
 }
@@ -197,7 +200,8 @@ void App::print() {
 	    << "print events?:   " << (Device::printEvents ? "true" : "false") << std::endl
 	    << "joysticks only?: " << (m_deviceManager.joysticksOnly ? "true" : "false") << std::endl
 	    << "sleep us:        " << sleepUS << std::endl
-	    << "triggers as axes?: " << (GameController::triggersAsAxes ? "true" : "false") << std::endl;
+	    << "triggers as axes?: " << (GameController::triggersAsAxes ? "true" : "false") << std::endl
+	    << "enable sensors?: " << (GameController::enableSensors ? "true" : "false") << std::endl;
 	m_deviceManager.printKnownDevices();
 	m_deviceManager.printExclusions();
 }
@@ -252,6 +256,7 @@ bool App::loadXMLFile(const std::string &path) {
 			child->QueryBoolAttribute("openWindow", &openWindow);
 			child->QueryUnsignedAttribute("sleepUS", &sleepUS);
 			child->QueryBoolAttribute("triggersAsAxes", &GameController::triggersAsAxes);
+			child->QueryBoolAttribute("enableSensors", &GameController::enableSensors);
 		}
 		else if((std::string)child->Name() == "devices") {
 			m_deviceManager.readXML(child);

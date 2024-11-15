@@ -57,6 +57,7 @@ struct DeviceSettings {
 	std::string address; ///< OSC address
 	unsigned int axisDeadZone; ///< zeroing threshold
 	bool triggersAsAxes; ///< treat triggers as axes?
+	bool enableSensors; ///< enable sensor events?
 	EventRemapping *remap; ///< event remappings
 	EventIgnore *ignore; ///< event ignore rules
 };

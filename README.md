@@ -173,6 +173,7 @@ The config file sets the OSC connection information as well as device to OSC dev
 * button, axis, hat, & trackball re-mappings
 * which button, axis, hat, & trackball events to ignore
 * custom SDL2 game controller mapping strings for devices only detected as joysticks
+* which device names to exclude
 
 Look at the `example_config.xml` file installed to the doc folder or in the `data` folder of the source distribution for details.
 
@@ -200,6 +201,8 @@ Options:
                        not being found, ex. MFi controllers on macOS
   -s, --sleep          Sleep time in usecs (default: 10000)
   -t, --triggers       Report trigger buttons as axis values
+  -s, --sensors        Enable controller sensor events (accelerometer, gyro)
+  -v, --verbose        Verbose printing
 
 Arguments:
   FILE                 Optional XML config file(s)
@@ -263,7 +266,21 @@ SDL Game Controller axis names: leftx, lefty, rightx, righty
 
 _Note: Game Controller names seem to follow the general Playstation DualShock layout. Devices with more than 4 axes and ~20 buttons are probably best used as Joysticks._
 
-If you do not want to use the Game Controller interface and stick with Joysticks only, use the `--joysticks-only` commandline option.
+If you do not want to use the Game Controller interface and stick with Joysticks only, use the `-j/--joysticks-only` commandline option.
+
+#### Game Controller Touchpad events
+
+On devices with a touchpad, such as the Playstation 4 controllers, joyosc reports touchpad down, up, and xy (motion) events.
+
+SDL Game Controller touchpad event names: down, xy, up
+
+#### Game Controller Sensor Events
+
+joyosc can report raw accelerometer or gyro (rotation) x, y, z data on supported devices when enabling sensors via the `-s/--sensors` option or in a config file. Some split devices have sensors on both sides such as the Nintendo Joy-Cons.
+
+SDL Game Controller sensor event names: accel, gyro, leftaccel, leftgyro, rightaccel, rightgyro
+
+_Note: Sensors will generate **lots** of events when enabled._
 
 #### Event Streaming
 
@@ -274,13 +291,20 @@ joyosc streams device event information in the following OSC address format:
     /joyosc/devices/DEVICE_NAME/INPUT_TYPE ID VALUE
 
 * _DEVICE_NAME_ is the mapped name to the device as specified in the config file, otherwise it is "gc#" or "js#" with # being the current device id
-* _INPUT_TYPE_ can be `button`, `axis`, `ball`, or `hat` for joysticks and `button` or `axis` for game controllers
-* _ID_ is the joystick id number or game controller name string for the control (aka joystick button 1, axis 2, etc / game controller button x, axis lefty, etc); these are likely different between joystick devices but largely the same between game controllers
+* _INPUT_TYPE_ can be `button`, `axis`, `ball`, or `hat` for joysticks and `button`, `axis`, `touchpad`, or `sensor` for game controllers
+* _ID_ is the joystick id number or game controller name string for the control (aka joystick button 1, axis 2, etc / game controller button x, axis lefty, sensor gyro, etc); these are likely different between joystick devices but largely the same between game controllers
 * _VALUE_ is the current value of the control:
-  * button state values are 1 or 0 for pressed & released
-  * axis values are -32767 to 32767 (signed 16 bit)
-  * hat values are binary bits representing the hat button aka: 0, 2, 4, 8
-  * (track)ball values are relative x & y movement in pixels (I think, SDL docs don't go into details)
+  * button state: 1 or 0 for pressed & released
+  * axis values: -32767 to 32767 (signed 16 bit)
+    - triggers reported as axes use 0 to 32767 range
+  * touchpad: index, finger, x, y, pressure
+    - x & y are normalized 0 to 1 (upper left 0,0)
+    - pressure is normalized 0 to 1 (0 no press, 1 "full" press))
+  * sensor: x, y, z
+    - floating point values in m/s^2 (accelerometer) or radians/s (gyro)
+    - see the [SDL docs](https://wiki.libsdl.org/SDL2/SDL_SensorType#remarks) for details
+  * hat: binary bits representing the hat button aka: 0, 2, 4, 8
+  * (track)ball: relative x & y movement in pixels (I think, SDL docs don't go into details)
 
 Example joystick messages:
 ~~~
@@ -295,9 +319,9 @@ Example game controller messages:
 /joyosc/devices/gc0/button lefttrigger 0
 /joyosc/devices/gc0/axis righty 32767
 ~~~
- 
+
 #### Notifications
- 
+
 joyosc also sends status notification messages:
 ~~~
 /joyosc/notifications/startup
