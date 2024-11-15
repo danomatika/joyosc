@@ -26,6 +26,28 @@
 #include "GameControllerIgnore.h"
 #include "Path.h"
 
+static const char *GetSensorName(SDL_SensorType sensor)
+{
+    switch (sensor) {
+    case SDL_SENSOR_ACCEL:
+        return "accel";
+    case SDL_SENSOR_GYRO:
+        return "gyro";
+#if HAVE_DECL_SDL_SENSOR_ACCEL_L
+    case SDL_SENSOR_ACCEL_L:
+        return "leftaccel";
+    case SDL_SENSOR_GYRO_L:
+        return "leftgyro";
+    case SDL_SENSOR_ACCEL_R:
+        return "rightaccel";
+    case SDL_SENSOR_GYRO_R:
+        return "rightgyro";
+#endif
+    default:
+        return "UNKNOWN";
+    }
+}
+
 GameController::GameController(std::string oscAddress) :
 	Device(oscAddress) {}
 
@@ -95,6 +117,30 @@ bool GameController::open(void *data) {
 	}
 
 	LOG << "GameController: opened " << getDeviceString() << std::endl;
+	if(m_controller && m_config.enableSensors) {
+	  // enable available sensors
+	  SDL_SensorType sensors[] = {
+	    SDL_SENSOR_ACCEL,
+	    SDL_SENSOR_GYRO,
+#if HAVE_DECL_SDL_SENSOR_ACCEL_L
+	    SDL_SENSOR_ACCEL_L,
+	    SDL_SENSOR_GYRO_L,
+	    SDL_SENSOR_ACCEL_R,
+	    SDL_SENSOR_GYRO_R
+#endif
+	  };
+	  for (unsigned int i = 0; i < SDL_arraysize(sensors); ++i) {
+	    SDL_SensorType sensor = sensors[i];
+
+	    if (SDL_GameControllerHasSensor(m_controller, sensor)) {
+	      LOG << "  enabling "
+		  << GetSensorName(sensor)
+		  << " at " << SDL_GameControllerGetSensorDataRate(m_controller, sensor)
+		  << "Hz" << std::endl;
+	      SDL_GameControllerSetSensorEnabled(m_controller, sensor, SDL_TRUE);
+	    }
+	  }
+	}
 	if(m_controller && m_config.printEvents) {
 		SDL_Joystick *joystick = SDL_GameControllerGetJoystick(m_controller);
 		LOG << "  num buttons: " << SDL_JoystickNumButtons(joystick) << std::endl
@@ -137,6 +183,42 @@ bool GameController::handleEvent(void *data) {
 		case SDL_CONTROLLERBUTTONUP: {
 			std::string button = SDL_GameControllerGetStringForButton((SDL_GameControllerButton)event->cbutton.button);
 			return buttonPressed(button, event->cbutton.state);
+		}
+
+		case SDL_CONTROLLERTOUCHPADDOWN:
+		case SDL_CONTROLLERTOUCHPADUP:
+		case SDL_CONTROLLERTOUCHPADMOTION: {
+			std::string action = event->type==SDL_CONTROLLERTOUCHPADDOWN ? "touchpaddown" : event->type==SDL_CONTROLLERTOUCHPADUP ? "touchpadup" : "touchpad";
+			lo::Address *sender = m_config.getOscSender();
+			sender->send(m_config.deviceAddress + m_oscAddress + "/" + action,
+				"iifff",
+				event->ctouchpad.touchpad,
+				event->ctouchpad.finger,
+				event->ctouchpad.x,
+				event->ctouchpad.y,
+				event->ctouchpad.pressure);
+			if(m_config.printEvents) {
+				LOG << m_oscAddress << " " << m_devName
+				    << " " << action << ": " << event->ctouchpad.touchpad << " " << event->ctouchpad.finger << " " << event->ctouchpad.x << " " << event->ctouchpad.y << " " << event->ctouchpad.pressure << std::endl;
+			}
+
+			return true;
+		}
+
+		case SDL_CONTROLLERSENSORUPDATE: {
+			std::string sensor = GetSensorName((SDL_SensorType)event->csensor.sensor);
+			lo::Address *sender = m_config.getOscSender();
+			sender->send(m_config.deviceAddress + m_oscAddress + "/sensor",
+				"sfff", sensor.c_str(),
+				event->csensor.data[0],
+				event->csensor.data[1],
+				event->csensor.data[2]);
+			if(m_config.printEvents) {
+				LOG << m_oscAddress << " " << m_devName
+				    << " sensor: " << sensor << " " << event->csensor.data[0] << " " << event->csensor.data[1] << " " << event->csensor.data[2] << std::endl;
+			}
+
+			return true;
 		}
 
 		case SDL_CONTROLLERAXISMOTION: {

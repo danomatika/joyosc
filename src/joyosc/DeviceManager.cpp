@@ -120,6 +120,10 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 			LOG_DEBUG << "CONTROLLER REMAPPED instance ID " << event->cdevice.which << std::endl;
 			return true;
 			
+		case SDL_CONTROLLERSENSORUPDATE:
+		case SDL_CONTROLLERTOUCHPADDOWN:
+		case SDL_CONTROLLERTOUCHPADUP:
+		case SDL_CONTROLLERTOUCHPADMOTION:
 		case SDL_CONTROLLERAXISMOTION:
 		case SDL_CONTROLLERBUTTONDOWN: case SDL_CONTROLLERBUTTONUP:
 			if(getDeviceType(event->cdevice.which) == Device::GAMECONTROLLER) {
