@@ -230,7 +230,7 @@ bool GameController::handleEvent(SDL_Event *event) {
 
 		case SDL_CONTROLLERSENSORUPDATE: {
 			const std::string &sensor = nameForSensor((SDL_SensorType)event->csensor.sensor);
-			sender->send(Device::deviceAddress + m_address + "/sensor",
+			sender->send(Device::deviceAddress + m_address + "/motion",
 				"sfff", sensor.c_str(),
 				event->csensor.data[0],
 				event->csensor.data[1],
@@ -238,7 +238,7 @@ bool GameController::handleEvent(SDL_Event *event) {
 			);
 			if(Device::printEvents) {
 				LOG << m_address << " " << m_name
-				    << " sensor: " << sensor
+				    << " motion: " << sensor
 				    << " " << event->csensor.data[0]
 				    << " " << event->csensor.data[1]
 				    << " " << event->csensor.data[2] << std::endl;
