@@ -15,7 +15,7 @@ The joyosc package contains the following parts:
 1. joyosc: device event daemon
 2. lsjs: joystick & game controller info tool
 
-This group of tools allows any OSC capable program to receive joystick & game controller event data aka button presses, axis movements, etc. Specific joysticks & game controllers can be mapped by name to specific OSC send addresses and button, axis, etc ids can be remapped or ignored.
+This group of tools allows any OSC capable program to receive joystick & game controller event data aka button presses, axis movements, etc. Specific joysticks & game controllers can be mapped by name or Globally Unique ID to specific OSC send addresses and button, axis, etc ids can be remapped or ignored.
 
 These tools were developed for the robotcowboy project, a wearable computer
 music system using [Pure Data](https://puredata.info) in GNU/Linux, macOS, and [iOS](https://danomatika.com/code/pdparty). See <https://robotcowboy.com> and the initial version, then named "rc-unitd" in _[robotcowboy: A One Man Band Musical Cyborg](https://danomatika.com/publications/robotcowboy_thesis_07.pdf)_ Master’s thesis, Chalmers University of Technology 2007.
@@ -165,17 +165,19 @@ Starts device daemon with the default settings.
 
 Starts device daemon using the given config file.
 
-The config file sets the OSC connection information as well as device to OSC device name address mappings. A custom config file will allow you to specify:
+The config file sets the OSC connection information as well as device name or GUID (Globally Unique ID) to OSC address mappings. A custom config file will allow you to specify:
 
 * setup info such as listening and sending ports
-* OSC device name addresses for specific device names
+* OSC send addresses for specific device names or GUIDs\*
 * axis dead zone values for jittery thumb sticks
 * button, axis, hat, & trackball re-mappings
 * which button, axis, hat, & trackball events to ignore
 * custom SDL2 game controller mapping strings for devices only detected as joysticks
-* which device names to exclude
+* which device names and GUIDs to exclude
 
 Look at the `example_config.xml` file installed to the doc folder or in the `data` folder of the source distribution for details.
+
+\* _Note: GUIDs are not gauranteed to be different between devices of the same model and may be different between platforms. "Your mileage may vary." See the [SDL GUID doc](https://wiki.libsdl.org/SDL2/SDL_GUID) for details._
 
 #### Options
 

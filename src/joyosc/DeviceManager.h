@@ -66,11 +66,12 @@ class DeviceManager {
 		/// return the number of devices
 		unsigned int numDevices() {return m_devices.size();}
 
-		/// get the settings for a device by name in the known device list
+		/// get settings for a device by name or GUID in the known device list
 		/// type is the DeviceType enum, set UNKNOWN for any device type
-		/// name is as a string ie. "Logitech Logitech Dual Action"
+		/// key is a name ie. "Logitech Logitech Dual Action"
+		/// or GUID ie. "03007a2e4c0500006802000000016800"
 		/// returns settings pointer on success, nullptr if not found
-		DeviceSettings* settingsFor(DeviceType type, const std::string &name);
+		DeviceSettings* settingsFor(DeviceType type, const std::string &key);
 
 		/// print known device settings list
 		void printKnownDevices();
@@ -104,7 +105,7 @@ class DeviceManager {
 		/// is an sdlIndex already in use by an active device?
 		bool sdlIndexExists(int sdlIndex);
 
-		/// know device settings list
+		/// known device settings list, mapped by device name or guid
 		std::map<std::string,DeviceSettings> m_knownDevices;
 
 		/// device exclusions, which names etc to ignore

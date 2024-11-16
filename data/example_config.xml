@@ -38,8 +38,11 @@
 	        sleepUS="20000" triggersAsAxes="false" enableSensors="false"/>
 
 	<!-- device types to for mapping names to OSC send addresses and adding
-	     event customizations, use lsjs to get the names of the devices
+	     event customizations, use lsjs to get the names and guids of the devices
 	     currently plugged in
+
+	     devices can be matched by name ie. "PS3 Controller" or the SDL GUID
+	     (Globally Unique ID) for specific device, use lsjs to print both
 	-->
 	<devices>
 
@@ -50,10 +53,13 @@
 		     you can provide a custom mapping to add or override existing
 		     mappings using the <mappings> element further below
 
-		     name is required, address is optional
+		     name or guid is required, address is optional
 		-->
 		<controller name="Logitech F310 Gamepad (DInput)" address="/F310"/>
 		<controller name="PS3 Controller" address="/ps3"/>
+
+		<!-- match to Globally Unique ID -->
+		<controller guid="03007a2e4c0500006802000000016800" address="/pad1"/>
 
 		<!-- you can also customize a specific controller -->
 		<controller name="Logitech F510 Gamepad (DInput)" address="/F510">
@@ -168,14 +174,15 @@
 			</ignore>
 		</joystick>
 
-		<!-- exclude controllers or joysticks by name; useful if a device appears
-		     multiple times or is in use by another application and should not
-		     generate events in joyosc
+		<!-- exclude controllers or joysticks by name or GUID; useful if a
+		     device appears multiple times or is in use by another application
+		     and should not generate events in joyosc
 
-			  types: controller, joystick
+			 types: controller, joystick
 		-->
 		<exclude>
 			<controller name="Dreamcast Controller"/>
+			<joystick guid="12345000000000000000000000000000"/>
 		</exclude>
 	</devices>
 

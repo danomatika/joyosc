@@ -140,6 +140,9 @@ class Device {
 		/// returns basic device info as a string
 		virtual std::string toString();
 
+		/// return GUID for device at sdlIndex or "" on failure
+		static std::string guidForSdlIndex(int sdlIndex);
+
 		static std::string notificationAddress; ///< base osc sending address for notifications
 		static std::string deviceAddress; ///< base osc sending addess for devices
 		static bool printEvents; ///< print lots of events?

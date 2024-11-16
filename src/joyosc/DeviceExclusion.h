@@ -43,4 +43,5 @@ class DeviceExclusion {
 
 		std::set<std::string> controllerNames; ///< game controller names to exclude
 		std::set<std::string> joystickNames;   ///< joystick names to exclude
+		std::set<std::string> guids;           ///< GUIDs to exclude
 };

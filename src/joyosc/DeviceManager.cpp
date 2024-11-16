@@ -58,6 +58,7 @@ bool DeviceManager::readXML(tinyxml2::XMLElement *e) {
 	return loaded;
 }
 
+// try finding matching device GUID, otherwise name
 bool DeviceManager::open(int sdlIndex) {
 	if(sdlIndexExists(sdlIndex)) {
 		return false; // ignore duplicates
@@ -67,8 +68,15 @@ bool DeviceManager::open(int sdlIndex) {
 	index.sdlIndex = sdlIndex;
 	if(SDL_IsGameController(sdlIndex) == SDL_TRUE && !joysticksOnly) {
 		if(!m_deviceExclusion.isExcluded(GAMECONTROLLER, sdlIndex)) {
-			std::string name = SDL_GameControllerNameForIndex(sdlIndex);
-			DeviceSettings *settings = settingsFor(GAMECONTROLLER, name);
+			DeviceSettings *settings = nullptr;
+			std::string guid = Device::guidForSdlIndex(sdlIndex);
+			if(guid != "") {
+				settings = settingsFor(GAMECONTROLLER, guid);
+			}
+			if(!settings) {
+				std::string name = SDL_GameControllerNameForIndex(sdlIndex);
+				settings = settingsFor(GAMECONTROLLER, name);
+			}
 			std::string address = addressForIndex(GAMECONTROLLER, index.index);
 			GameController *gc = new GameController(address);
 			if(gc->open(index, settings)) {
@@ -83,8 +91,15 @@ bool DeviceManager::open(int sdlIndex) {
 	}
 	else {
 		if(!m_deviceExclusion.isExcluded(JOYSTICK, sdlIndex)) {
-			std::string name = SDL_JoystickNameForIndex(sdlIndex);
-			DeviceSettings *settings = settingsFor(JOYSTICK, name);
+			DeviceSettings *settings = nullptr;
+			std::string guid = Device::guidForSdlIndex(sdlIndex);
+			if(guid != "") {
+				settings = settingsFor(JOYSTICK, guid);
+			}
+			if(!settings) {
+				std::string name = SDL_JoystickNameForIndex(sdlIndex);
+				settings = settingsFor(JOYSTICK, name);
+			}
 			std::string address = addressForIndex(JOYSTICK, index.index);
 			Joystick *js = new Joystick(address);
 			if(js->open(index, settings)) {
@@ -203,8 +218,8 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 	}
 }
 
-DeviceSettings* DeviceManager::settingsFor(DeviceType type, const std::string &name) {
-	auto iter = m_knownDevices.find(name);
+DeviceSettings* DeviceManager::settingsFor(DeviceType type, const std::string &key) {
+	auto iter = m_knownDevices.find(key);
 	if(iter != m_knownDevices.end()) {
 		DeviceSettings &settings = (DeviceSettings &)(iter->second);
 		if(type != UNKNOWN && settings.type != type) {
@@ -253,12 +268,18 @@ void DeviceManager::print(bool details) {
 // PROTECTED
 
 bool DeviceManager::readXMLController(tinyxml2::XMLElement *e) {
-	std::string name = "", addr = "";
+	std::string name = "", guid = "", addr = "";
 	if(e->Attribute("name")) {name = std::string(e->Attribute("name"));}
+	if(e->Attribute("guid")) {guid = std::string(e->Attribute("guid"));}
 	if(e->Attribute("address")) {addr = std::string(e->Attribute("address"));}
-	if(name == "") {
-		LOG_WARN << "ignoring game controller without name"
+	if(name == "" && guid == "") {
+		LOG_WARN << "ignoring game controller without name or guid"
 		         << std::endl;
+		return false;
+	}
+	if(settingsFor(GAMECONTROLLER, guid)) {
+		LOG_WARN << "game controller guid " << guid
+		         << " already exists" << std::endl;
 		return false;
 	}
 	if(settingsFor(GAMECONTROLLER, name)) {
@@ -341,16 +362,26 @@ bool DeviceManager::readXMLController(tinyxml2::XMLElement *e) {
 		child = child->NextSiblingElement();
 	}
 
-	m_knownDevices[name] = device;
+	if(guid != "") {
+		m_knownDevices[guid] = device;
+	}
+	else {
+		m_knownDevices[name] = device;
+	}
 	return true;
 }
 
 bool DeviceManager::readXMLJoystick(tinyxml2::XMLElement *e) {
-	std::string name = "", addr = "";
+	std::string name = "", guid = "", addr = "";
 	if(e->Attribute("name")) {name = std::string(e->Attribute("name"));}
+	if(e->Attribute("guid")) {guid = std::string(e->Attribute("guid"));}
 	if(e->Attribute("address")) {addr = std::string(e->Attribute("address"));}
-	if(name == "") {
-		LOG_WARN << "ignoring joystick without name" << std::endl;
+	if(name == "" && guid == "") {
+		LOG_WARN << "ignoring joystick without name or guid" << std::endl;
+		return false;
+	}
+	if(settingsFor(JOYSTICK, guid)) {
+		LOG_WARN << "joystick guid " << guid << " already exists" << std::endl;
 		return false;
 	}
 	if(settingsFor(JOYSTICK, name)) {
@@ -413,7 +444,12 @@ bool DeviceManager::readXMLJoystick(tinyxml2::XMLElement *e) {
 		child = child->NextSiblingElement();
 	}
 
-	m_knownDevices[name] = device;
+	if(guid != "") {
+		m_knownDevices[guid] = device;
+	}
+	else {
+		m_knownDevices[name] = device;
+	}
 	return true;
 }
 

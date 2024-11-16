@@ -58,3 +58,11 @@ std::string Device::toString() {
 	s << m_index.index << " " << m_name << " " << m_address;
 	return s.str();
 }
+
+std::string Device::guidForSdlIndex(int sdlIndex) {
+	SDL_JoystickGUID guid = SDL_JoystickGetDeviceGUID(sdlIndex);
+	char guidString[33] = {0};
+	SDL_JoystickGetGUIDString(guid, guidString, 33);
+	std::string ret(guidString);
+	return (ret == "00000000000000000000000000000000" ? "" : ret);
+}
