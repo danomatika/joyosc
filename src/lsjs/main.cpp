@@ -158,12 +158,12 @@ int main(int argc, char **argv) {
 	// which provide extended type checks
 	const option::Descriptor usage[] = {
 		{UNKNOWN, 0, "", "", Options::Arg::Unknown, "Options:"},
-		{HELP, 0, "h", "help", Options::Arg::None, "  -h, --help \tPrint usage and exit"},
-		{VERS, 0, "", "version", Options::Arg::None, "  --version \tPrint version and exit"},
-		{DETAILS, 0, "d", "details", Options::Arg::None, "  -d, --details \tPrint device details (buttons, axes, GUIDs, etc)"},
-		{MAPPINGS, 0, "m", "mappings", Options::Arg::None, "  -m, --mappings \tPrint game controller mappings"},
-		{JSONLY, 0, "j", "joysticks-only", Options::Arg::None, "  -j, --joysticks-only \tDisable game controller support, joystick interface only"},
-		{WINDOW, 0, "w", "window", Options::Arg::None, "  -w, --window \tOpen window, helps on some platforms if devices are not being found, ex. MFi controllers on macOS"},
+		{HELP, 0, "h", "help", Options::Arg::None, "  -h, --help \tprint usage and exit"},
+		{VERS, 0, "", "version", Options::Arg::None, "  --version \tprint version and exit"},
+		{DETAILS, 0, "d", "details", Options::Arg::None, "  -d, --details \tprint device details (buttons, axes, GUIDs, etc)"},
+		{MAPPINGS, 0, "m", "mappings", Options::Arg::None, "  -m, --mappings \tprint game controller mappings"},
+		{JSONLY, 0, "j", "joysticks-only", Options::Arg::None, "  -j, --joysticks-only \tdisable game controller support, joystick interface only"},
+		{WINDOW, 0, "w", "window", Options::Arg::None, "  -w, --window \topen window, helps on some platforms if devices are not being found, ex. MFi controllers on macOS"},
 		{0, 0, 0, 0, 0, 0}
 	};
 
