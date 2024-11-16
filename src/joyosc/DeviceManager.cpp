@@ -30,9 +30,11 @@
 #include "JoystickIgnore.h"
 #include "JoystickRemapping.h"
 
-bool DeviceManager::readXML(tinyxml2::XMLElement *e) {
+using namespace tinyxml2;
+
+bool DeviceManager::readXML(XMLElement *e) {
 	bool loaded = false;
-	tinyxml2::XMLElement *child = e->FirstChildElement();
+	XMLElement *child = e->FirstChildElement();
 	while(child) {
 		if((std::string)child->Name() == "controller") {
 			if(readXMLController(child)) {
@@ -267,7 +269,7 @@ void DeviceManager::print(bool details) {
 
 // PROTECTED
 
-bool DeviceManager::readXMLController(tinyxml2::XMLElement *e) {
+bool DeviceManager::readXMLController(XMLElement *e) {
 	std::string name = "", guid = "", addr = "";
 	if(e->Attribute("name")) {name = std::string(e->Attribute("name"));}
 	if(e->Attribute("guid")) {guid = std::string(e->Attribute("guid"));}
@@ -297,7 +299,7 @@ bool DeviceManager::readXMLController(tinyxml2::XMLElement *e) {
 		.ignore = nullptr
 	};
 
-	tinyxml2::XMLElement *child = e->FirstChildElement();
+	XMLElement *child = e->FirstChildElement();
 	while(child) {
 
 		if((std::string)child->Name() == "axes") {
@@ -306,14 +308,14 @@ bool DeviceManager::readXMLController(tinyxml2::XMLElement *e) {
 				LOG_DEBUG << "GameController " << name << ": "
 				          << "axis deadzone " << device.axisDeadZone << std::endl;
 			}
-			if(child->QueryBoolAttribute("triggers", &device.triggersAsAxes) == tinyxml2::XML_SUCCESS) {
+			if(child->QueryBoolAttribute("triggers", &device.triggersAsAxes) == XML_SUCCESS) {
 				LOG_DEBUG << "GameController " << name << ": "
 				          << "triggers as axes " << device.triggersAsAxes << std::endl;
 			}
 		}
 
 		if((std::string)child->Name() == "sensors") {
-			if(child->QueryBoolAttribute("enable", &device.enableSensors) == tinyxml2::XML_SUCCESS) {
+			if(child->QueryBoolAttribute("enable", &device.enableSensors) == XML_SUCCESS) {
 				LOG_DEBUG << "GameController " << name << ": "
 				          << "enable sensors " << device.enableSensors << std::endl;
 			}
@@ -330,7 +332,7 @@ bool DeviceManager::readXMLController(tinyxml2::XMLElement *e) {
 
 		// deprecated
 		if((std::string)child->Name() == "triggers") {
-			if(child->QueryBoolAttribute("asAxes", &device.triggersAsAxes) == tinyxml2::XML_SUCCESS) {
+			if(child->QueryBoolAttribute("asAxes", &device.triggersAsAxes) == XML_SUCCESS) {
 				LOG_DEBUG << "GameController " << name << ": "
 				          << "triggers as axes " << device.triggersAsAxes << std::endl;
 			}
@@ -371,7 +373,7 @@ bool DeviceManager::readXMLController(tinyxml2::XMLElement *e) {
 	return true;
 }
 
-bool DeviceManager::readXMLJoystick(tinyxml2::XMLElement *e) {
+bool DeviceManager::readXMLJoystick(XMLElement *e) {
 	std::string name = "", guid = "", addr = "";
 	if(e->Attribute("name")) {name = std::string(e->Attribute("name"));}
 	if(e->Attribute("guid")) {guid = std::string(e->Attribute("guid"));}
@@ -398,7 +400,7 @@ bool DeviceManager::readXMLJoystick(tinyxml2::XMLElement *e) {
 		.ignore = nullptr
 	};
 
-	tinyxml2::XMLElement *child = e->FirstChildElement();
+	XMLElement *child = e->FirstChildElement();
 	while(child) {
 
 		if((std::string)child->Name() == "axes") {

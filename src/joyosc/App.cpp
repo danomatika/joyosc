@@ -32,6 +32,8 @@
 #include <unistd.h>
 #include <signal.h> // signal handling
 
+using namespace tinyxml2;
+
 static App *appPtr; // global app this pointer
 
 App::App() {
@@ -209,11 +211,11 @@ void App::print() {
 // PROTECTED
 
 bool App::loadXMLFile(const std::string &path) {
-	tinyxml2::XMLElement *root = nullptr, *child = nullptr;
+	XMLElement *root = nullptr, *child = nullptr;
 
-	tinyxml2::XMLDocument *doc = new tinyxml2::XMLDocument;
+	XMLDocument *doc = new XMLDocument;
 	int ret = doc->LoadFile(path.c_str());
-	if(ret != tinyxml2::XML_SUCCESS) {
+	if(ret != XML_SUCCESS) {
 		LOG_ERROR << "XML \"" << PACKAGE << "\": could not load \"" << path
 		          << "\": " << doc->ErrorName() << " " << doc->ErrorStr()
 		          << std::endl;
@@ -279,8 +281,8 @@ error:
 	return false;
 }
 
-void App::readXMLMappings(tinyxml2::XMLElement *e, const std::string &dir) {
-	tinyxml2::XMLElement *child = e->FirstChildElement();
+void App::readXMLMappings(XMLElement *e, const std::string &dir) {
+	XMLElement *child = e->FirstChildElement();
 	while(child) {
 		if((std::string)child->Name() == "mapping") {
 			std::string mapping = "";
