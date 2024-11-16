@@ -188,24 +188,24 @@ Usage: joyosc [options] [FILE...]
   joystick device event to osc bridge
 
 Options:
-  -h, --help           Print usage and exit
-  --version            Print version and exit
-  -l, --listening-port Listening port (default: 7770)
-  -m, --multicast      Multicast listening group address (off by default)
-  -i, --ip             IP address, hostname, or multicast group to send to
+  -h, --help           print usage and exit
+  --version            print version and exit
+  -l, --listening-port listening port (default: 7770)
+  -m, --multicast      multicast listening group address (off by default)
+  -i, --ip             ip address, hostname, or multicast group to send to
                        (default: 127.0.0.1)
-  -p, --port           Port to send to (default: 8880)
-  -e, --events         Print incoming events, useful for debugging
-  -j, --joysticks-only Disable game controller support, joystick interface only
-  -w, --window         Open window, helps on some platforms if device events are
+  -p, --port           port to send to (default: 8880)
+  -e, --events         print incoming events, useful for debugging
+  -j, --joysticks-only disable game controller support, joystick interface only
+  -w, --window         open window, helps on some platforms if device events are
                        not being found, ex. MFi controllers on macOS
-  -s, --sleep          Sleep time in usecs (default: 10000)
-  -t, --triggers       Report trigger buttons as axis values
-  -s, --sensors        Enable controller sensor events (accelerometer, gyro)
-  -v, --verbose        Verbose printing
+  --sleep              sleep time in usecs (default: 10000)
+  -t, --triggers       report trigger buttons as axis values
+  -s, --sensors        enable controller sensor events (accelerometer, gyro)
+  -v, --verbose        verbose printing
 
 Arguments:
-  FILE                 Optional XML config file(s)
+  FILE                 optional XML config file(s)
 ~~~
 
 Note: Enabling event printing is useful when debugging:
