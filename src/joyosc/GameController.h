@@ -94,7 +94,7 @@ class GameController : public Device {
 		/// note: this is the shared default, may be overriden per-instance
 		static bool triggersAsAxes;
 
-		/// enable sensor events (gyro, accelerometer)
+		/// enable sensor events (accelerometer, gyro)
 		/// note: this is the shared default, may be overriden per-instance
 		static bool enableSensors;
 
@@ -112,6 +112,6 @@ class GameController : public Device {
 		/// treat left & right triggers as axes? otherwise buttons
 		bool m_triggersAsAxes;
 
-		/// enable sensor events (gyro, accelerometer)
+		/// enable sensor events (accelerometer, gyro)
 		bool m_enableSensors;
 };

@@ -29,9 +29,13 @@
 	                     (default: false)
 	                     note: this can be overridden per controller with the
 	                     controller <axes> tag, see below
+
+	     enableSensors: enable sensor events (accelerometer, gyro)
+	                    note: this can be overridden per controller with the
+	                    controller <sensors> tag, see below
 	 -->
 	<config printEvents="false" joysticksOnly="false" openWindow="false"
-	        sleepUS="20000" triggersAsAxes="false"/>
+	        sleepUS="20000" triggersAsAxes="false" enableSensors="false"/>
 
 	<!-- device types to for mapping names to OSC send addresses and adding
 	     event customizations, use lsjs to get the names of the devices
@@ -67,6 +71,12 @@
 			               (default: false)
 			-->
 			<axes deadZone="4000" triggers="false"/>
+
+			<!-- sensor behavior
+
+			     enable: enable sensor events (accelerometer, gyro)
+			-->
+			<sensors enable="false"/>
 
 			<!-- axisDeadZone: old version of <axes deadZone> -->
 			<!-- <thresholds axisDeadZone="3000"/> -->
