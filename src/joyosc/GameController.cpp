@@ -259,6 +259,11 @@ void GameController::print() {
 		SDL_Joystick *joystick = SDL_GameControllerGetJoystick(m_controller);
 		LOG << "  num buttons: " << SDL_JoystickNumButtons(joystick) << std::endl
 		    << "  num axes: " << SDL_JoystickNumAxes(joystick) << std::endl;
+		int touchpads = SDL_GameControllerGetNumTouchpads(m_controller);
+		if(touchpads > 0) {
+			int fingers = SDL_GameControllerGetNumTouchpadFingers(m_controller, 0);
+			LOG <<  "  num touchpads: " << touchpads << (fingers > 1 ? " multitouch" : "") << std::endl;
+		}
 		for(unsigned int i = 0; i < SDL_arraysize(s_sensors); ++i) {
 			SDL_SensorType sensor = s_sensors[i];
 			if(SDL_GameControllerHasSensor(m_controller, sensor) &&
