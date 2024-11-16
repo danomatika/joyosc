@@ -117,7 +117,7 @@ bool GameController::open(void *data) {
 	}
 
 	LOG << "GameController: opened " << getDeviceString() << std::endl;
-	if(m_controller && m_config.enableSensors) {
+	if(m_controller && m_config.enableMotion) {
 	  // enable available sensors
 	  SDL_SensorType sensors[] = {
 	    SDL_SENSOR_ACCEL,
@@ -208,14 +208,14 @@ bool GameController::handleEvent(void *data) {
 		case SDL_CONTROLLERSENSORUPDATE: {
 			std::string sensor = GetSensorName((SDL_SensorType)event->csensor.sensor);
 			lo::Address *sender = m_config.getOscSender();
-			sender->send(m_config.deviceAddress + m_oscAddress + "/sensor",
+			sender->send(m_config.deviceAddress + m_oscAddress + "/motion",
 				"sfff", sensor.c_str(),
 				event->csensor.data[0],
 				event->csensor.data[1],
 				event->csensor.data[2]);
 			if(m_config.printEvents) {
 				LOG << m_oscAddress << " " << m_devName
-				    << " sensor: " << sensor << " " << event->csensor.data[0] << " " << event->csensor.data[1] << " " << event->csensor.data[2] << std::endl;
+				    << " motion: " << sensor << " " << event->csensor.data[0] << " " << event->csensor.data[1] << " " << event->csensor.data[2] << std::endl;
 			}
 
 			return true;

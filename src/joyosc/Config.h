@@ -72,7 +72,7 @@ class Config {
 		bool openWindow = false; ///< open window? helps to receive events on some platforms
 		unsigned int sleepUS = 10000; ///< how long to sleep in the run loop
 		bool triggersAsAxes = false; ///< report trigger buttons as axis values
-		bool enableSensors = false; ///< report sensor values (gyro, accelerometer)
+		bool enableMotion = false; ///< report motion data (gyro, accelerometer)
 
 	/// \section Getters
 

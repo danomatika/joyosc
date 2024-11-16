@@ -75,7 +75,7 @@ bool Config::parseCommandLine(int argc, char **argv) {
 		WINDOW,
 		SLEEP,
 		TRIGGER,
-		SENSORS
+		MOTION
 	};
 
 	// option and usage print descriptors
@@ -92,7 +92,7 @@ bool Config::parseCommandLine(int argc, char **argv) {
 		{WINDOW, 0, "w", "window", Options::Arg::None, "  -w, --window \tOpen window, helps on some platforms if device events are not being found, ex. MFi controllers on macOS"},
 		{SLEEP, 0, "s", "sleep", Options::Arg::Integer, "  -s, --sleep \tSleep time in usecs (default: 10000)"},
 		{TRIGGER, 0, "t", "triggers", Options::Arg::None, "  -t, --triggers \tReport trigger buttons as axis values"},
-		{SENSORS, 0, "r", "sensors", Options::Arg::None, "  -r, --sensors \tReport sensor values (gyro, accelerometer)"},
+		{MOTION, 0, "v", "motion", Options::Arg::None, "  -v, --motion \tReport motion data (gyro, accelerometer)"},
 		{UNKNOWN, 0, "", "", Options::Arg::Unknown, "\nArguments:"},
 		{UNKNOWN, 0, "", "", Options::Arg::None, "  FILE \tOptional XML config file(s)"},
 		{0, 0, 0, 0, 0, 0}
@@ -131,7 +131,7 @@ bool Config::parseCommandLine(int argc, char **argv) {
 	if(options.isSet(WINDOW))     {openWindow = true;}
 	if(options.isSet(SLEEP))      {sleepUS = options.getUInt(SLEEP);}
 	if(options.isSet(TRIGGER))    {triggersAsAxes = true;}
-	if(options.isSet(SENSORS))    {enableSensors = true;}
+	if(options.isSet(MOTION))     {enableMotion = true;}
 
 	return true;
 }
@@ -218,7 +218,7 @@ void Config::print() {
 	    << "joysticks only?: " << (joysticksOnly ? "true" : "false") << std::endl
 	    << "sleep us:        " << sleepUS << std::endl
 	    << "triggers as axes?: " << (triggersAsAxes ? "true" : "false") << std::endl
-	    << "enable sensors?: " << (enableSensors ? "true" : "false") << std::endl
+	    << "enable motion data?: " << (enableMotion ? "true" : "false") << std::endl
 	    << "device addresses: " << m_devices.size() << std::endl;
 	int index = 0;
 	for(auto &device : m_devices) {
