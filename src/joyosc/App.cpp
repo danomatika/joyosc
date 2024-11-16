@@ -70,7 +70,7 @@ bool App::parseCommandLine(int argc, char **argv) {
 		{EVENTS, 0, "e", "events", Options::Arg::None, "  -e, --events \tPrint incoming events, useful for debugging"},
 		{JSONLY, 0, "j", "joysticks-only", Options::Arg::None, "  -j, --joysticks-only \tDisable game controller support, joystick interface only"},
 		{WINDOW, 0, "w", "window", Options::Arg::None, "  -w, --window \tOpen window, helps on some platforms if device events are not being found, ex. MFi controllers on macOS"},
-		{SLEEP, 0, "", "sleep", Options::Arg::Integer, "  -s, --sleep \tSleep time in usecs (default: 10000)"},
+		{SLEEP, 0, "", "sleep", Options::Arg::Integer, "  --sleep \tSleep time in usecs (default: 10000)"},
 		{TRIGGER, 0, "t", "triggers", Options::Arg::None, "  -t, --triggers \tReport trigger buttons as axis values"},
 		{SENSORS, 0, "s", "sensors", Options::Arg::None, "  -s, --sensors \tEnable controller sensor events (accelerometer, gyro)"},
 		{VERBOSE, 0, "v", "verbose", Options::Arg::None, "  -v, --verbose \tVerbose printing"},
