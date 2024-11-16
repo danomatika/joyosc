@@ -199,7 +199,7 @@ Options:
   -j, --joysticks-only Disable game controller support, joystick interface only
   -w, --window         Open window, helps on some platforms if device events are
                        not being found, ex. MFi controllers on macOS
-  -s, --sleep          Sleep time in usecs (default: 10000)
+  --sleep              Sleep time in usecs (default: 10000)
   -t, --triggers       Report trigger buttons as axis values
   -s, --sensors        Enable controller sensor events (accelerometer, gyro)
   -v, --verbose        Verbose printing
