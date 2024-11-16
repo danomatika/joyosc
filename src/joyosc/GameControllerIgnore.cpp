@@ -3,7 +3,7 @@
 	GameControllerIgnore.cpp
 
 	joyosc: a device event to osc bridge
-  
+
 	Copyright (C) 2007, 2010, 2024 Dan Wilcox <danomatika@gmail.com>
 
 	This program is free software: you can redistribute it and/or modify
