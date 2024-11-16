@@ -396,12 +396,12 @@ Usage: lsjs [options]
   print the available joysticks & game controllers
 
 Options:
-  -h, --help           Print usage and exit
-  --version            Print version and exit
-  -d, --details        Print device details (buttons, axes, GUIDs, etc)
-  -m, --mappings       Print game controller mappings
-  -j, --joysticks-only Disable game controller support, joystick interface only
-  -w, --window         Open window, helps on some platforms if devices are not
+  -h, --help           print usage and exit
+  --version            print version and exit
+  -d, --details        print device details (buttons, axes, GUIDs, etc)
+  -m, --mappings       print game controller mappings
+  -j, --joysticks-only disable game controller support, joystick interface only
+  -w, --window         open window, helps on some platforms if devices are not
                        being found, ex. MFi controllers on macOS
 ~~~
 
