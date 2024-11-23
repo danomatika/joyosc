@@ -210,11 +210,20 @@ void App::print() {
 
 // PROTECTED
 
+// use tinyxml2::XMLDocument as an XMLDocument clas also exists in msys ucrt64
 bool App::loadXMLFile(const std::string &path) {
 	XMLElement *root = nullptr, *child = nullptr;
+	tinyxml2::XMLDocument *doc = nullptr;
+	int ret = 0;
 
-	XMLDocument *doc = new XMLDocument;
-	int ret = doc->LoadFile(path.c_str());
+	if(!Path::exists(path)) {
+		LOG_ERROR << "XML \"" << PACKAGE << "\": could not load \"" << path
+		          << "\": file does not exist" << std::endl;
+		goto error;
+	}
+
+	doc = new tinyxml2::XMLDocument;
+	ret = doc->LoadFile(path.c_str());
 	if(ret != XML_SUCCESS) {
 		LOG_ERROR << "XML \"" << PACKAGE << "\": could not load \"" << path
 		          << "\": " << doc->ErrorName() << " " << doc->ErrorStr()
