@@ -22,6 +22,8 @@
 ==============================================================================*/
 #include "Device.h"
 
+#include "../shared.h"
+
 std::string Device::notificationAddress = "/" PACKAGE "/notifications";
 std::string Device::deviceAddress = "/" PACKAGE "/devices";
 bool Device::printEvents = false;
@@ -60,9 +62,5 @@ std::string Device::toString() {
 }
 
 std::string Device::guidForSdlIndex(int sdlIndex) {
-	SDL_JoystickGUID guid = SDL_JoystickGetDeviceGUID(sdlIndex);
-	char guidString[33] = {0};
-	SDL_JoystickGetGUIDString(guid, guidString, 33);
-	std::string ret(guidString);
-	return (ret == "00000000000000000000000000000000" ? "" : ret);
+	return shared::guidForSdlIndex(sdlIndex);
 }

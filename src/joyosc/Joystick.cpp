@@ -22,6 +22,7 @@
 ==============================================================================*/
 #include "Joystick.h"
 
+#include "../shared.h"
 #include "JoystickIgnore.h"
 #include "JoystickRemapping.h"
 
@@ -243,9 +244,6 @@ bool Joystick::isOpen() {
 void Joystick::print() {
 	LOG << toString() << std::endl;
 	if(m_joystick) {
-		LOG << "  num buttons: " << SDL_JoystickNumButtons(m_joystick) << std::endl
-		    << "  num axes: " << SDL_JoystickNumAxes(m_joystick) << std::endl
-		    << "  num balls: " << SDL_JoystickNumBalls(m_joystick) << std::endl
-		    << "  num hats: " << SDL_JoystickNumHats(m_joystick) << std::endl;
+		shared::printJoystickDetails(m_joystick);
 	}
 }

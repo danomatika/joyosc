@@ -22,40 +22,12 @@
 ==============================================================================*/
 #include "../config.h" // automake config defines
 
-#include <SDL.h>
+#include "../shared.h" // SDL.h
 #include <unistd.h>
 #include "Options.h"
 
-// available sensors
-static const SDL_SensorType s_sensors[] = {
-		SDL_SENSOR_ACCEL,
-		SDL_SENSOR_GYRO,
-#if HAVE_DECL_SDL_SENSOR_ACCEL_L
-		SDL_SENSOR_ACCEL_L,
-		SDL_SENSOR_GYRO_L,
-		SDL_SENSOR_ACCEL_R,
-		SDL_SENSOR_GYRO_R
-#endif
-};
-
-std::string nameForSensor(SDL_SensorType sensor) {
-	switch(sensor) {
-		case SDL_SENSOR_ACCEL:   return "accel";
-		case SDL_SENSOR_GYRO:    return "gyro";
-#if HAVE_DECL_SDL_SENSOR_ACCEL_L
-		// newer SDLs support split sensors on one controller
-		case SDL_SENSOR_ACCEL_L: return "leftaccel";
-		case SDL_SENSOR_GYRO_L:  return "leftgyro";
-		case SDL_SENSOR_ACCEL_R: return "rightaccel";
-		case SDL_SENSOR_GYRO_R:  return "rightgyro";
-#endif
-		default: return "unknown";
-	}
-}
-
 // print
 void printDevices(bool printDetails, bool printMappings, bool joysticksOnly) {
-	char guidString[33];
 	int numJoysticks = SDL_NumJoysticks();
 	for(int i = 0; i < numJoysticks; ++i) {
 		SDL_Joystick *joystick = nullptr;
@@ -69,38 +41,23 @@ void printDevices(bool printDetails, bool printMappings, bool joysticksOnly) {
 		}
 		if(joystick) {
 			if(printDetails) {std::cout << std::endl;}
-			SDL_JoystickGetGUIDString(SDL_JoystickGetGUID(joystick), guidString, 33);
 			if(controller) {
-				std::cout << i << " Controller: \"" << SDL_GameControllerNameForIndex(i) << "\" " << guidString << std::endl;
+				std::cout << i << " Controller: \""
+				          << SDL_GameControllerNameForIndex(i) << "\" "
+				          << shared::guidForSdlIndex(i) << std::endl;
 				if(printDetails) {
-					std::cout << "  num axes: " << SDL_JoystickNumAxes(joystick) << std::endl
-							  << "  num buttons: " << SDL_JoystickNumButtons(joystick) << std::endl;
-					int touchpads = SDL_GameControllerGetNumTouchpads(controller);
-					if(touchpads > 0) {
-						int fingers = SDL_GameControllerGetNumTouchpadFingers(controller, 0);
-						std::cout <<  "  num touchpads: " << touchpads << (fingers > 1 ? " multitouch" : "") << std::endl;
-					}
-					for(unsigned int i = 0; i < SDL_arraysize(s_sensors); ++i) {
-						SDL_SensorType sensor = s_sensors[i];
-						if(SDL_GameControllerHasSensor(controller, sensor) &&
-						   SDL_GameControllerIsSensorEnabled(controller, sensor) == SDL_TRUE) {
-							std::cout << "  sensor: " << nameForSensor(sensor) << " "
-							          << SDL_GameControllerGetSensorDataRate(controller, sensor)
-							          << "hz" << std::endl;
-						}
-					}
+					shared::printControllerDetails(controller);
 					if(i == numJoysticks-1) {
 						std::cout << std::endl;
 					}
 				}
 			}
 			else {
-				std::cout << i << " Joystick: \"" << SDL_JoystickNameForIndex(i) << "\" " << guidString << std::endl;
+				std::cout << i << " Joystick: \""
+				          << SDL_JoystickNameForIndex(i)
+				          << "\" " << shared::guidForSdlIndex(i) << std::endl;
 				if(printDetails) {
-					std::cout << "  num axes: " << SDL_JoystickNumAxes(joystick) << std::endl
-							  << "  num buttons: " << SDL_JoystickNumButtons(joystick) << std::endl
-							  << "  num balls: " << SDL_JoystickNumBalls(joystick) << std::endl
-							  << "  num hats: " << SDL_JoystickNumHats(joystick) << std::endl;
+					shared::printJoystickDetails(joystick);
 					if(i == numJoysticks-1) {
 						std::cout << std::endl;
 					}

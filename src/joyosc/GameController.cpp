@@ -25,18 +25,7 @@
 #include "GameControllerRemapping.h"
 #include "GameControllerIgnore.h"
 #include "Path.h"
-
-// available sensors
-static const SDL_SensorType s_sensors[] = {
-		SDL_SENSOR_ACCEL,
-		SDL_SENSOR_GYRO,
-#if HAVE_DECL_SDL_SENSOR_ACCEL_L
-		SDL_SENSOR_ACCEL_L,
-		SDL_SENSOR_GYRO_L,
-		SDL_SENSOR_ACCEL_R,
-		SDL_SENSOR_GYRO_R
-#endif
-};
+#include "../shared.h"
 
 bool GameController::triggersAsAxes = false;
 bool GameController::enableSensors = false;
@@ -256,23 +245,7 @@ bool GameController::isOpen() {
 void GameController::print() {
 	LOG << toString() << std::endl;
 	if(m_controller) {
-		SDL_Joystick *joystick = SDL_GameControllerGetJoystick(m_controller);
-		LOG << "  num buttons: " << SDL_JoystickNumButtons(joystick) << std::endl
-		    << "  num axes: " << SDL_JoystickNumAxes(joystick) << std::endl;
-		int touchpads = SDL_GameControllerGetNumTouchpads(m_controller);
-		if(touchpads > 0) {
-			int fingers = SDL_GameControllerGetNumTouchpadFingers(m_controller, 0);
-			LOG <<  "  num touchpads: " << touchpads << (fingers > 1 ? " multitouch" : "") << std::endl;
-		}
-		for(unsigned int i = 0; i < SDL_arraysize(s_sensors); ++i) {
-			SDL_SensorType sensor = s_sensors[i];
-			if(SDL_GameControllerHasSensor(m_controller, sensor) &&
-			   SDL_GameControllerIsSensorEnabled(m_controller, sensor) == SDL_TRUE) {
-				LOG << "  sensor: " << GameController::nameForSensor(sensor) << " "
-				    << SDL_GameControllerGetSensorDataRate(m_controller, sensor)
-				    << "hz" << std::endl;
-			}
-		}
+		shared::printControllerDetails(m_controller);
 	}
 }
 
@@ -305,18 +278,7 @@ int GameController::addMappingFile(std::string path) {
 }
 
 std::string GameController::nameForSensor(SDL_SensorType sensor) {
-	switch(sensor) {
-		case SDL_SENSOR_ACCEL:   return "accel";
-		case SDL_SENSOR_GYRO:    return "gyro";
-#if HAVE_DECL_SDL_SENSOR_ACCEL_L
-		// newer SDLs support split sensors on one controller
-		case SDL_SENSOR_ACCEL_L: return "leftaccel";
-		case SDL_SENSOR_GYRO_L:  return "leftgyro";
-		case SDL_SENSOR_ACCEL_R: return "rightaccel";
-		case SDL_SENSOR_GYRO_R:  return "rightgyro";
-#endif
-		default: return "unknown";
-	}
+	return shared::nameForSensor(sensor);
 }
 
 // naming matches RjDJ/PdParty #touch events
@@ -332,8 +294,8 @@ std::string GameController::nameForTouchEvent(SDL_EventType type) {
 // PROTECTED
 
 void GameController::enableAvailableSensors() {
-	for(unsigned int i = 0; i < SDL_arraysize(s_sensors); ++i) {
-		SDL_SensorType sensor = s_sensors[i];
+	for(unsigned int i = 0; i < SDL_arraysize(shared::s_sensors); ++i) {
+		SDL_SensorType sensor = shared::s_sensors[i];
 		if(SDL_GameControllerHasSensor(m_controller, sensor)) {
 			int ret = SDL_GameControllerSetSensorEnabled(m_controller, sensor, SDL_TRUE);
 			if(ret < 0) {

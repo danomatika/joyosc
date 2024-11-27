@@ -5,10 +5,8 @@ include $(top_srcdir)/lib/libs.mk
 # program to build
 bin_PROGRAMS = joyosc
 
-#Config.h Config.cpp
-
 # program's sources
-joyosc_SOURCES = main.cpp Common.h Common.cpp App.h App.cpp \
+joyosc_SOURCES = main.cpp Common.h Common.cpp ../shared.h App.h App.cpp \
                  Device.h Device.cpp DeviceExclusion.h DeviceExclusion.cpp \
                  DeviceManager.h DeviceManager.cpp Event.h \
                  Joystick.h Joystick.cpp \
