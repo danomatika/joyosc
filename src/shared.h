@@ -91,10 +91,6 @@ inline void printControllerDetails(SDL_GameController *controller) {
 	if(SDL_GameControllerHasLED(controller) == SDL_TRUE) {
 		LOG << "  led: yes" << std::endl;
 	}
-	const char *serial = SDL_GameControllerGetSerial(controller);
-	if(serial) {
-		LOG << "  serial: " << serial << std::endl;
-	}
 }
 
 /// print joystick details
