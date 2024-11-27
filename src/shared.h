@@ -59,12 +59,6 @@ inline std::string nameForSensor(SDL_SensorType sensor) {
 	}
 }
 
-#define GET_JOYSTICK_GUID \
-	char guidString[33] = {0}; \
-	SDL_JoystickGetGUIDString(guid, guidString, 33); \
-	std::string ret(guidString); \
-	return (ret == "00000000000000000000000000000000" ? "" : ret);
-
 /// return GUID for device at sdlIndex or "" on failure
 inline std::string guidForSdlIndex(int sdlIndex) {
 	SDL_JoystickGUID guid = SDL_JoystickGetDeviceGUID(sdlIndex);
@@ -97,14 +91,6 @@ inline void printControllerDetails(SDL_GameController *controller) {
 	if(SDL_GameControllerHasLED(controller) == SDL_TRUE) {
 		LOG << "  led: yes" << std::endl;
 	}
-	// int index = SDL_GameControllerGetPlayerIndex(controller);
-	// if(index != -1) {
-	// 	LOG << "  player: " << index << std::endl;
-	// }
-	// std::string guid = shared::guidForJoystick(joystick);
-	// if(guid != "") {
-	// 	LOG << "  guid: " << guid << std::endl;
-	// }
 	const char *serial = SDL_GameControllerGetSerial(controller);
 	if(serial) {
 		LOG << "  serial: " << serial << std::endl;
@@ -119,4 +105,4 @@ inline void printJoystickDetails(SDL_Joystick *joystick) {
 	    << "  num hats: " << SDL_JoystickNumHats(joystick) << std::endl;
 }
 
-}
+} // namespace
