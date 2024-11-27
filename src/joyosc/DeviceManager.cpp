@@ -289,15 +289,11 @@ bool DeviceManager::readXMLController(XMLElement *e) {
 		         << " already exists" << std::endl;
 		return false;
 	}
-	DeviceSettings device = {
-		.type = GAMECONTROLLER,
-		.address = addr,
-		.axisDeadZone = 0,
-		.triggersAsAxes = GameController::triggersAsAxes,
-		.enableSensors = GameController::enableSensors,
-		.remap = nullptr,
-		.ignore = nullptr
-	};
+	DeviceSettings device;
+	device.type = GAMECONTROLLER;
+	device.address = addr;
+	GameControllerSettings *gc = new GameControllerSettings();
+	device.data = (void *)gc;
 
 	XMLElement *child = e->FirstChildElement();
 	while(child) {
@@ -308,16 +304,16 @@ bool DeviceManager::readXMLController(XMLElement *e) {
 				LOG_DEBUG << "GameController " << name << ": "
 				          << "axis deadzone " << device.axisDeadZone << std::endl;
 			}
-			if(child->QueryBoolAttribute("triggers", &device.triggersAsAxes) == XML_SUCCESS) {
+			if(child->QueryBoolAttribute("triggers", &gc->triggersAsAxes) == XML_SUCCESS) {
 				LOG_DEBUG << "GameController " << name << ": "
-				          << "triggers as axes " << device.triggersAsAxes << std::endl;
+				          << "triggers as axes " << gc->triggersAsAxes << std::endl;
 			}
 		}
 
 		if((std::string)child->Name() == "sensors") {
-			if(child->QueryBoolAttribute("enable", &device.enableSensors) == XML_SUCCESS) {
+			if(child->QueryBoolAttribute("enable", &gc->enableSensors) == XML_SUCCESS) {
 				LOG_DEBUG << "GameController " << name << ": "
-				          << "enable sensors " << device.enableSensors << std::endl;
+				          << "enable sensors " << gc->enableSensors << std::endl;
 			}
 		}
 
@@ -332,9 +328,9 @@ bool DeviceManager::readXMLController(XMLElement *e) {
 
 		// deprecated
 		if((std::string)child->Name() == "triggers") {
-			if(child->QueryBoolAttribute("asAxes", &device.triggersAsAxes) == XML_SUCCESS) {
+			if(child->QueryBoolAttribute("asAxes", &gc->triggersAsAxes) == XML_SUCCESS) {
 				LOG_DEBUG << "GameController " << name << ": "
-				          << "triggers as axes " << device.triggersAsAxes << std::endl;
+				          << "triggers as axes " << gc->triggersAsAxes << std::endl;
 			}
 		}
 
@@ -360,6 +356,16 @@ bool DeviceManager::readXMLController(XMLElement *e) {
 				}
 				device.ignore = ignore;
 			}
+		}
+
+		if((std::string)child->Name() == "color") {
+			child->QueryIntAttribute("r", &gc->ledColor[0]);
+			child->QueryIntAttribute("g", &gc->ledColor[1]);
+			child->QueryIntAttribute("b", &gc->ledColor[2]);
+			LOG_DEBUG << "GameController: " << name << ": led color "
+			          << gc->ledColor[0] << " "
+			          << gc->ledColor[1] << " "
+			          << gc->ledColor[2] << std::endl;
 		}
 		child = child->NextSiblingElement();
 	}
@@ -390,15 +396,9 @@ bool DeviceManager::readXMLJoystick(XMLElement *e) {
 		LOG_WARN << "joystick name " << name << " already exists" << std::endl;
 		return false;
 	}
-	DeviceSettings device = {
-		.type = JOYSTICK,
-		.address = addr,
-		.axisDeadZone = 0,
-		.triggersAsAxes = 0,
-		.enableSensors = 0,
-		.remap = nullptr,
-		.ignore = nullptr
-	};
+	DeviceSettings device;
+	device.type = JOYSTICK;
+	device.address = addr;
 
 	XMLElement *child = e->FirstChildElement();
 	while(child) {

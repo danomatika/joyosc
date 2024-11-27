@@ -71,10 +71,6 @@ bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
 			m_address = settings->address;
 		}
 
-		// overrides
-		m_triggersAsAxes = settings->triggersAsAxes;
-		m_enableSensors = settings->enableSensors;
-
 		// set axis dead zone if one exists
 		if(settings->axisDeadZone > 0) {
 			setAxisDeadZone(settings->axisDeadZone);
@@ -90,6 +86,22 @@ bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
 		if(settings->ignore) {
 			setIgnore((GameControllerIgnore *)settings->ignore);
 			printIgnores();
+		}
+
+		// overrides
+		GameControllerSettings *gcs = (GameControllerSettings *)settings->data;
+		m_triggersAsAxes = gcs->triggersAsAxes;
+		m_enableSensors = gcs->enableSensors;
+
+		// set color?
+		if(gcs->isColorValid()) {
+			LOG << "setting color"
+				    << " " << gcs->ledColor[0]
+				    << " " << gcs->ledColor[1]
+				    << " " << gcs->ledColor[2] << std::endl;
+			setColor(gcs->ledColor[0],
+			         gcs->ledColor[1],
+			         gcs->ledColor[2]);
 		}
 	}
 
@@ -258,6 +270,12 @@ SDL_Joystick* GameController::getJoystick() {
 
 void GameController::setTriggersAsAxes(bool asAxes) {
 	m_triggersAsAxes = asAxes;
+}
+
+void GameController::setColor(int r, int g, int b) {
+	if(SDL_GameControllerHasLED(m_controller) == SDL_TRUE) {
+		SDL_GameControllerSetLED(m_controller, r, g, b);
+	}
 }
 
 int GameController::addMappingString(std::string mapping) {

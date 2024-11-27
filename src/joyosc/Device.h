@@ -53,13 +53,12 @@ enum DeviceType {
 
 /// device settings loaded from config file(s)
 struct DeviceSettings {
-	DeviceType type; ///< device type
-	std::string address; ///< OSC address
-	unsigned int axisDeadZone; ///< zeroing threshold
-	bool triggersAsAxes; ///< treat triggers as axes?
-	bool enableSensors; ///< enable sensor events?
-	EventRemapping *remap; ///< event remappings
-	EventIgnore *ignore; ///< event ignore rules
+	DeviceType type = UNKNOWN; ///< device type
+	std::string address = ""; ///< OSC address
+	unsigned int axisDeadZone = 0; ///< zeroing threshold
+	EventRemapping *remap = nullptr; ///< event remappings
+	EventIgnore *ignore = nullptr; ///< event ignore rules
+	void *data = nullptr; ///< device type specific data
 };
 
 /// \class Device

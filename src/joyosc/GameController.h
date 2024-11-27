@@ -27,6 +27,14 @@
 class GameControllerRemapping;
 class GameControllerIgnore;
 
+/// game controller specific settings
+struct GameControllerSettings {
+	bool triggersAsAxes = false; ///< treat triggers as axes?
+	bool enableSensors = false; ///< enable sensor events?
+	int ledColor[3] = {-1, -1, -1}; ///< led rgb color, set -1 to ignore
+	bool isColorValid() {return (ledColor[0] >= 0 && ledColor[1] >= 0 && ledColor[2] >= 0);}
+};
+
 /// \class GameController
 /// \brief handles an SDL game controller device
 ///
@@ -75,6 +83,9 @@ class GameController : public Device {
 
 		/// get triggers as axes value
 		inline int getTriggersAsAxes() {return m_triggersAsAxes;}
+
+		/// set controller LED color (if supported by the device)
+		void setColor(int r, int g, int b);
 
 		/// add a game controller mapping string to SDL,
 		/// returns 1 on add, 0 on update, & -1 on error
