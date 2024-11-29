@@ -56,10 +56,9 @@
 		     name or guid is required, address is optional
 		-->
 		<controller name="Logitech F310 Gamepad (DInput)" address="/F310"/>
-		<controller name="PS3 Controller" address="/ps3"/>
 
-		<!-- match to Globally Unique ID -->
-		<controller guid="03007a2e4c0500006802000000016800" address="/pad1"/>
+		<!-- match to Globally Unique ID, may be different between platforms -->
+		<!-- <controller guid="03007a2e4c0500006802000000016809" address="/pad1"/> -->
 
 		<!-- you can also customize a specific controller -->
 		<controller name="Logitech F510 Gamepad (DInput)" address="/F510">
@@ -101,19 +100,20 @@
 			     rightstick, dpup, dpdown, dpleft, dpright (dp = digital pad)
 
 			     SDL game controller axis names: leftx, lefty, rightx, righty
+
+
 			-->
 			<remap>
-				<!-- send button b as lefttrigger button -->
-				<button from="b" to="lefttrigger"/>
 				<!-- send a button a as square button (rename completely) -->
 				<button from="a" to="square"/>
-				<!-- send left x axis  as right y axis -->
+				<!-- send button b as lefttrigger button -->
+				<button from="b" to="lefttrigger"/>
+				<!-- send left x axis as right y axis -->
 				<axis from="leftx" to="righty"/>
 			</remap>
 
 			<!-- ignore buttons, axes, etc; useful if you want to save bandwidth
-			     by not sending unneeded events, this is especially true for
-			     devices which might map an accelerometer to a set of axes
+			     by not sending unneeded events
 
 			     types: button, axis
 			-->
@@ -125,7 +125,35 @@
 			</ignore>
 		</controller>
 
-		<!-- joysticks: base hoystick device
+		<!-- remap joystick axes which are not in the SDL controller mapping,
+	         these are usually extra controls such as button pressure values -->
+		<controller name="PS3 Controller" address="/ps3">
+			<!-- extended: enable unmapped joystick button or axis events?
+			               ex. PS3 Controller button pressure axes -->
+			<remap>
+				<!-- send extended joystick axis 6 as x value, etc -->
+				<axis extended="true" from="6" to="a"/>
+				<axis extended="true" from="7" to="b"/>
+				<axis extended="true" from="8" to="x"/>
+				<axis extended="true" from="9" to="y"/>
+
+				<axis extended="true" from="12" to="dpup"/>
+				<axis extended="true" from="13" to="dpdown"/>
+				<axis extended="true" from="14" to="dpleft"/>
+				<axis extended="true" from="15" to="dpright"/>
+
+				<axis extended="true" from="10" to="leftshoulder"/>
+				<axis extended="true" from="11" to="rightshoulder"/>
+			</remap>
+		</controller>
+
+		<!-- set controller led color, if supported
+		     in this case, setting the PS4 led to "black" turns it off -->
+		<controller name="PS4 Controller" address="/ps4">
+			<color r="0" g="0" b="0"/>
+		</controller>
+
+		<!-- joysticks: base joystick device
 
 		    these are joysticks devices w/out game controller mappings or when
 		    the game controller api is disabled via the joysticks only option
@@ -134,7 +162,7 @@
 		<joystick name="Logitech Dual Action" address="/ps2black"/>
 
 		<!-- like controllers, you can also customize a specific joystick -->
-		<joystick name="PLAYSTATION(R)3 Controller" address="/js0">
+		<joystick name="PS2 Controller" address="/ps2">
 
 			<!-- axis behavior
 

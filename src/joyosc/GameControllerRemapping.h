@@ -41,6 +41,13 @@ class GameControllerRemapping : public EventRemapping {
 		/// get name mapping, returns the given name if no mapping found
 		const std::string& mappingFor(EventType type, const std::string &name);
 
+		/// are there extended mappings?
+		bool hasExtendedMappings() {return extended.mappings;}
+
+		/// get name mapping for joystick button or axis event
+		/// returns "" if no mapping found
+		const std::string& mappingForExtended(EventType type, int index);
+
 		/// print the current mappings
 		void print();
 
@@ -49,4 +56,12 @@ class GameControllerRemapping : public EventRemapping {
 
 		/// axis mappings from -> to by name
 		std::map<std::string,std::string> axes;
+
+		// optional extended joystick events: unmapped joystick buttons or axes
+		// ex. PS3 controller button pressure axes
+		struct {
+			bool mappings = false; ///< are there extended mappings?
+			std::map<int,std::string> buttons; ///< joystick button -> name
+			std::map<int,std::string> axes; ///< joystick axis -> name
+		} extended;
 };

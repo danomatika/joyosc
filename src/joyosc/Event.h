@@ -88,6 +88,15 @@ class EventRemapping {
 			return index;
 		}
 
+		/// are there extended mappings?
+		virtual bool hasExtendedMappings() {return false;}
+
+		/// get index to name mapping, returns "" if no mapping found
+		virtual const std::string& mappingForExtended(EventType type, int index) {
+			static const std::string empty(""); // avoid copies
+			return (std::string &)empty;
+		}
+
 		/// print the current mappings
 		virtual void print() = 0;
 };

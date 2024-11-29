@@ -31,31 +31,67 @@ bool GameControllerRemapping::readXML(XMLElement *e) {
 	if(parent->Attribute("name")) {devName = std::string(parent->Attribute("name"));}
 	XMLElement *child = e->FirstChildElement();
 	while(child) {
-		std::string from = "", to = "";
-		if(child->Attribute("from")) {from = std::string(child->Attribute("from"));}
+		bool isExtended = false;
+		std::string to = "";
 		if(child->Attribute("to")) {to = std::string(child->Attribute("to"));}
-		if(from != "" && to != "") {
-			if((std::string)child->Name() == "button") {
-				auto ret = buttons.insert(std::make_pair(from, to));
-				if(ret.second) {
+		child->QueryBoolAttribute("extended", &isExtended);
+		if(isExtended) {
+			// remap joystick index to a name
+			int from = -1;
+			child->QueryIntAttribute("from", &from);
+			if(from != -1 && to != "") {
+				if((std::string)child->Name() == "button") {
+					extended.buttons[from] = to;
 					LOG_DEBUG << "GameController " << devName << ": "
-					          << "remapped button " << from << " to " << to << std::endl;
+					          << "remapped extended button " << from
+					          << " to " << to << std::endl;
+					loaded = true;
+					extended.mappings = true;
 				}
-				loaded = true;
+				else if((std::string)child->Name() == "axis") {
+					extended.axes[from] = to;
+					LOG_DEBUG << "GameController " << devName << ": "
+					          << "remapped extended axis " << from
+					          << " to " << to << std::endl;
+					loaded = true;
+					extended.mappings = true;
+				}
 			}
-			else if((std::string)child->Name() == "axis") {
-				auto ret = axes.insert(std::make_pair(from, to));
-				if(ret.second) {
-					LOG_DEBUG << "GameController " << devName << ": "
-					          << "remapped axis " << from << " to " << to << std::endl;
-				}
-				loaded = true;
+			else {
+				LOG_WARN << "GameController " << devName << ": "
+				         << "ignoring invalid remap extended xml element: \""
+				         << child->Name() << "\"" << std::endl;
 			}
 		}
 		else {
-			LOG_WARN << "GameController " << devName << ": "
-			         << "ignoring invalid remap xml element: \""
-			         << child->Name() << "\"" << std::endl;
+			// remap controller name mapping to a new name
+			std::string from = "";
+			if(child->Attribute("from")) {from = std::string(child->Attribute("from"));}
+			if(from != "" && to != "") {
+				if((std::string)child->Name() == "button") {
+					auto ret = buttons.insert(std::make_pair(from, to));
+					if(ret.second) {
+						LOG_DEBUG << "GameController " << devName << ": "
+						          << "remapped button " << from << " to "
+						          << to << std::endl;
+					}
+					loaded = true;
+				}
+				else if((std::string)child->Name() == "axis") {
+					auto ret = axes.insert(std::make_pair(from, to));
+					if(ret.second) {
+						LOG_DEBUG << "GameController " << devName << ": "
+						          << "remapped axis " << from << " to "
+						          << to << std::endl;
+					}
+					loaded = true;
+				}
+			}
+			else {
+				LOG_WARN << "GameController " << devName << ": "
+				         << "ignoring invalid remap xml element: \""
+				         << child->Name() << "\"" << std::endl;
+			}
 		}
 		child = child->NextSiblingElement();
 	}
@@ -67,8 +103,8 @@ void GameControllerRemapping::check(Device *device) {
 	if(!controller) {
 		return;
 	}
-	auto iter = buttons.begin();
-	for(; iter != buttons.end();) {
+
+	for(auto iter = buttons.begin(); iter != buttons.end();) {
 		if(SDL_GameControllerGetButtonFromString(iter->first.c_str()) == SDL_CONTROLLER_BUTTON_INVALID) {
 			LOG_WARN << "GameController " << controller->getName() << ": "
 			         << "removing invalid button remap: "
@@ -79,12 +115,37 @@ void GameControllerRemapping::check(Device *device) {
 			++iter;
 		}
 	}
-	for(iter = axes.begin(); iter != axes.end();) {
+	for(auto iter = axes.begin(); iter != axes.end();) {
 		if(SDL_GameControllerGetAxisFromString(iter->first.c_str()) == SDL_CONTROLLER_AXIS_INVALID) {
 			LOG_WARN << "GameController " << controller->getName() << ": "
 			         << "removing invalid axis remap: "
 			         << iter->first << " -> " << iter->second << std::endl;
 			iter = axes.erase(iter);
+		}
+		else {
+			++iter;
+		}
+	}
+
+	SDL_Joystick *joystick = controller->getJoystick();
+	for(auto iter = extended.buttons.begin(); iter != extended.buttons.end();) {
+		if(iter->first >= SDL_JoystickNumButtons(joystick)) {
+			LOG_WARN << "GameController " << controller->getName() << ": "
+			         << "removing invalid extended button remap: "
+			         << iter->first << " -> " << iter->second << std::endl;
+			iter = extended.buttons.erase(iter);
+		}
+		else {
+			++iter;
+		}
+	}
+	for(auto iter = extended.axes.begin(); iter != extended.axes.end();) {
+		LOG << iter->first << " " << SDL_JoystickNumAxes(joystick) << std::endl;
+		if(iter->first >= SDL_JoystickNumAxes(joystick)) {
+			LOG_WARN << "GameController " << controller->getName() << ": "
+			         << "removing invalid extended axis remap: "
+			         << iter->first << " -> " << iter->second << std::endl;
+			iter = extended.axes.erase(iter);
 		}
 		else {
 			++iter;
@@ -107,11 +168,33 @@ const std::string& GameControllerRemapping::mappingFor(EventType type, const std
 	}
 }
 
+const std::string& GameControllerRemapping::mappingForExtended(EventType type, int index) {
+	static const std::string empty(""); // avoid copies
+	switch(type) {
+		case BUTTON: {
+			auto iter = extended.buttons.find(index);
+			return iter != extended.buttons.end() ? iter->second : empty;
+		}
+		case AXIS: {
+			auto iter = extended.axes.find(index);
+			return iter != extended.axes.end() ? iter->second : empty;
+		}
+		default:
+			return empty;
+	}
+}
+
 void GameControllerRemapping::print() {
 	for(auto &b : buttons) {
 		LOG << "  button remap: " << b.first << " -> " << b.second << std::endl;
 	}
 	for(auto &a : axes) {
 		LOG << "  axis remap: " << a.first << " -> " << a.second << std::endl;
+	}
+	for(auto &b : extended.buttons) {
+		LOG << "  extended button remap: " << b.first << " -> " << b.second << std::endl;
+	}
+	for(auto &a : extended.axes) {
+		LOG << "  extended axis remap: " << a.first << " -> " << a.second << std::endl;
 	}
 }

@@ -82,10 +82,9 @@ void JoystickIgnore::check(Device *device) {
 		return;
 	}
 
-	auto iter = buttons.begin();
-	int numButtons = SDL_JoystickNumButtons(joystick->getJoystick());
-	for(; iter != buttons.end();) {
-		if((*iter) > numButtons) {
+	int num = SDL_JoystickNumButtons(joystick->getJoystick());
+	for(auto iter = buttons.begin(); iter != buttons.end();) {
+		if((*iter) >= num) {
 			LOG_WARN << "Joystick " << joystick->getName() << ": "
 			         << "removing invalid button ignore: " << (*iter) << std::endl;
 			iter = buttons.erase(iter);
@@ -95,9 +94,9 @@ void JoystickIgnore::check(Device *device) {
 		}
 	}
 
-	int numAxes = SDL_JoystickNumAxes(joystick->getJoystick());
-	for(iter = axes.begin(); iter != axes.end();) {
-		if((*iter) > numAxes ) {
+	num = SDL_JoystickNumAxes(joystick->getJoystick());
+	for(auto iter = axes.begin(); iter != axes.end();) {
+		if((*iter) >= num) {
 			LOG_WARN << "Joystick " << joystick->getName() << ": "
 			         << "removing invalid axis ignore: " << (*iter) << std::endl;
 			iter = axes.erase(iter);
@@ -107,9 +106,9 @@ void JoystickIgnore::check(Device *device) {
 		}
 	}
 	
-	int numBalls = SDL_JoystickNumBalls(joystick->getJoystick());
-	for(iter = balls.begin(); iter != balls.end();) {
-		if((*iter) > numBalls) {
+	num = SDL_JoystickNumBalls(joystick->getJoystick());
+	for(auto iter = balls.begin(); iter != balls.end();) {
+		if((*iter) >= num) {
 			LOG_WARN << "Joystick " << joystick->getName() << ": "
 			         << "removing invalid ball ignore: " << (*iter) << std::endl;
 			iter = balls.erase(iter);
@@ -119,9 +118,9 @@ void JoystickIgnore::check(Device *device) {
 		}
 	}
 	
-	int numHats = SDL_JoystickNumHats(joystick->getJoystick());
-	for(iter = hats.begin(); iter != hats.end();) {
-		if((*iter) > numHats) {
+	num = SDL_JoystickNumHats(joystick->getJoystick());
+	for(auto iter = hats.begin(); iter != hats.end();) {
+		if((*iter) >= num) {
 			LOG_WARN << "Joystick " << joystick->getName() << ": "
 			         << "removing invalid hat ignore: " << (*iter) << std::endl;
 			iter = hats.erase(iter);

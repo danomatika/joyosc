@@ -70,7 +70,7 @@ bool Joystick::open(DeviceIndex index, DeviceSettings *settings) {
 
 		// set remapping if one exists
 		if(settings->remap) {
-			setRemapping((JoystickRemapping *)settings->remap);
+			setRemapping(settings->remap);
 			printRemapping();
 		}
 

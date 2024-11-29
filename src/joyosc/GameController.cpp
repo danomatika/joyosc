@@ -75,7 +75,6 @@ bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
 		if(settings->axisDeadZone > 0) {
 			setAxisDeadZone(settings->axisDeadZone);
 		}
-
 		// set remapping if one exists
 		if(settings->remap) {
 			setRemapping((GameControllerRemapping *)settings->remap);
@@ -92,6 +91,7 @@ bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
 		GameControllerSettings *gcs = (GameControllerSettings *)settings->data;
 		m_triggersAsAxes = gcs->triggersAsAxes;
 		m_enableSensors = gcs->enableSensors;
+		m_extendedMappings = (m_remapping ? m_remapping->hasExtendedMappings() : false);
 
 		// set color?
 		if(gcs->isColorValid()) {
@@ -150,12 +150,7 @@ bool GameController::handleEvent(SDL_Event *event) {
 	}
 	switch(event->type) {
 
-		case SDL_CONTROLLERBUTTONDOWN: {
-			std::string button = SDL_GameControllerGetStringForButton((SDL_GameControllerButton)event->cbutton.button);
-			return buttonPressed(button, event->cbutton.state);
-		}
-
-		case SDL_CONTROLLERBUTTONUP: {
+		case SDL_CONTROLLERBUTTONDOWN: case SDL_CONTROLLERBUTTONUP: {
 			std::string button = SDL_GameControllerGetStringForButton((SDL_GameControllerButton)event->cbutton.button);
 			return buttonPressed(button, event->cbutton.state);
 		}
@@ -245,6 +240,49 @@ bool GameController::handleEvent(SDL_Event *event) {
 				    << " " << event->csensor.data[2] << std::endl;
 			}
 			return true;
+		}
+
+		// extended joystick event
+		case SDL_JOYBUTTONDOWN: case SDL_JOYBUTTONUP: {
+			if(!m_remapping) {break;}
+			if(SDL_GameControllerHasButton(m_controller, (SDL_GameControllerButton)event->jbutton.button) == SDL_FALSE) {
+				std::string button = m_remapping->mappingForExtended(BUTTON, (int)event->jbutton.button);
+				if(button != "") {
+					int value = (int)event->jbutton.state;
+					sender->send(Device::deviceAddress + m_address + "/button",
+						"si", button.c_str(), value);
+					if(Device::printEvents) {
+						LOG << m_address << " " << m_name
+						    << " button: " << button << " " << value << std::endl;
+					}
+					return true;
+				}
+			}
+			break;
+		}
+
+		// extended joystick event
+		// no ignore or dead zone handling, send raw value
+		case SDL_JOYAXISMOTION: {
+			if(!m_remapping) {break;}
+			if(SDL_GameControllerHasAxis(m_controller, (SDL_GameControllerAxis)event->jaxis.axis) == SDL_FALSE) {
+				std::string axis = m_remapping->mappingForExtended(AXIS, (int)event->jaxis.axis);
+				if(axis != "") {
+					int value = (int)event->caxis.value;
+					if(m_prevAxisValues[event->caxis.axis] == value) {
+						return true;
+					}
+					m_prevAxisValues[event->caxis.axis] = value;
+					sender->send(Device::deviceAddress + m_address + "/axis",
+						"si", axis.c_str(), value);
+					if(Device::printEvents) {
+						LOG << m_address << " " << m_name
+						    << " axis: " << axis << " " << value << std::endl;
+					}
+					return true;
+				}
+			}
+			break;
 		}
 	}
 	return false;

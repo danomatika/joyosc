@@ -84,6 +84,9 @@ class GameController : public Device {
 		/// get triggers as axes value
 		inline int getTriggersAsAxes() {return m_triggersAsAxes;}
 
+		/// are extended joystick events supported? ie. unmapped buttons or axes
+		inline bool hasExtendedMappings() {return m_extendedMappings;}
+
 		/// set controller LED color (if supported by the device)
 		void setColor(int r, int g, int b);
 
@@ -122,6 +125,9 @@ class GameController : public Device {
 
 		/// treat left & right triggers as axes? otherwise buttons
 		bool m_triggersAsAxes;
+
+		/// are extended joystick events supported?
+		bool m_extendedMappings = false;
 
 		/// enable sensor events (accelerometer, gyro)
 		bool m_enableSensors;

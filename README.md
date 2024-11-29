@@ -171,6 +171,7 @@ The config file sets the OSC connection information as well as device name or GU
 * OSC send addresses for specific device names or GUIDs\*
 * axis dead zone values for jittery thumb sticks
 * button, axis, hat, & trackball re-mappings
+* extended controller button & axis re-mappings for additonal unmapped joystick events
 * which button, axis, hat, & trackball events to ignore
 * custom SDL2 game controller mapping strings for devices only detected as joysticks
 * which device names and GUIDs to exclude
@@ -269,6 +270,29 @@ SDL Game Controller axis names: leftx, lefty, rightx, righty
 _Note: Game Controller names seem to follow the general Playstation DualShock layout. Devices with more than 4 axes and ~20 buttons are probably best used as Joysticks._
 
 If you do not want to use the Game Controller interface and stick with Joysticks only, use the `-j/--joysticks-only` commandline option.
+
+#### Game Controller Extended Mappings
+
+The SDL Game Controller mappings do *not* expose additional axes or buttons which fall outside of the general layout. This is true for controllers which provide button pressure values as well as on/off state, ex. the PS3 controller.
+
+joyosc can optionally remap these extra button or axes events, for example PS3 axis 6 (button a pressure) -> axis "a":
+~~~
+/ps3 PS3 Controller button: a 1
+/ps3 PS3 Controller axis: a -32768
+/ps3 PS3 Controller axis: a -17862
+/ps3 PS3 Controller axis: a -15549
+/ps3 PS3 Controller axis: a -10152
+/ps3 PS3 Controller axis: a -2956
+/ps3 PS3 Controller axis: a 5782
+/ps3 PS3 Controller axis: a 17861
+/ps3 PS3 Controller axis: a 30968
+/ps3 PS3 Controller axis: a 32767
+/ps3 PS3 Controller axis: a 31482
+/ps3 PS3 Controller axis: a 7838
+/ps3 PS3 Controller axis: a -22488
+/ps3 PS3 Controller button: a 0
+/ps3 PS3 Controller axis: a -32768
+~~~
 
 #### Game Controller Touchpad events
 

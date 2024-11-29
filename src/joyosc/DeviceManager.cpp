@@ -200,7 +200,16 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 			return true;
 
 		case SDL_JOYBUTTONDOWN: case SDL_JOYBUTTONUP:
-		case SDL_JOYAXISMOTION: case SDL_JOYBALLMOTION: case SDL_JOYHATMOTION:
+		case SDL_JOYAXISMOTION: {
+			Device *device = m_devices[event->jdevice.which];
+			if(device->getType() == JOYSTICK || (device->getType() == GAMECONTROLLER &&
+				((GameController *)device)->hasExtendedMappings())) {
+				device->handleEvent(event);
+			 }
+			return false;
+		}
+
+		case SDL_JOYBALLMOTION: case SDL_JOYHATMOTION:
 			if(getType(event->jdevice.which) == JOYSTICK) {
 				return m_devices[event->jdevice.which]->handleEvent(event);
 			}

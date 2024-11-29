@@ -56,7 +56,7 @@ struct DeviceSettings {
 	DeviceType type = UNKNOWN; ///< device type
 	std::string address = ""; ///< OSC address
 	unsigned int axisDeadZone = 0; ///< zeroing threshold
-	EventRemapping *remap = nullptr; ///< event remappings
+	EventRemapping* remap = nullptr; ///< event remappings
 	EventIgnore *ignore = nullptr; ///< event ignore rules
 	void *data = nullptr; ///< device type specific data
 };
