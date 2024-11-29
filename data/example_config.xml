@@ -100,8 +100,6 @@
 			     rightstick, dpup, dpdown, dpleft, dpright (dp = digital pad)
 
 			     SDL game controller axis names: leftx, lefty, rightx, righty
-
-
 			-->
 			<remap>
 				<!-- send a button a as square button (rename completely) -->
@@ -136,14 +134,12 @@
 				<axis extended="true" from="7" to="b"/>
 				<axis extended="true" from="8" to="x"/>
 				<axis extended="true" from="9" to="y"/>
-
+				<axis extended="true" from="10" to="leftshoulder"/>
+				<axis extended="true" from="11" to="rightshoulder"/>
 				<axis extended="true" from="12" to="dpup"/>
 				<axis extended="true" from="13" to="dpdown"/>
 				<axis extended="true" from="14" to="dpleft"/>
 				<axis extended="true" from="15" to="dpright"/>
-
-				<axis extended="true" from="10" to="leftshoulder"/>
-				<axis extended="true" from="11" to="rightshoulder"/>
 			</remap>
 		</controller>
 
