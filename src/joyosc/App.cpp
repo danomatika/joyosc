@@ -332,9 +332,7 @@ int App::oscReceived(const std::string &address, const lo::Message &message) {
 		LOG_VERBOSE << std::endl << "	" << PACKAGE << ": quit message received, exiting ..." << std::endl;
 		return 0; // handled
 	}
-	// LOG_WARN << PACKAGE << ": unknown message received: "
-	//          << address << " " << message.types() << std::endl;
-	return 1; // not handled
+	return m_deviceManager.oscReceived(address, message);
 }
 
 void App::oscError(int num, const char *msg, const char *where) {

@@ -38,20 +38,20 @@ GameController::GameController(std::string address) : Device(address) {
 
 bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
 	if(!index.isValid()) {
-		LOG_WARN << "GameController: cannot open, index not set" << std::endl;
+		LOG_ERROR << "GameController: cannot open, index not set" << std::endl;
 		return false;
 	}
 	m_index = index;
 
 	if(isOpen()) {
-		LOG_WARN << "GameController: controller with index "
+		LOG_ERROR << "GameController: controller with index "
 		         << m_index.index << " already opened" << std::endl;
 		return false;
 	}
 
 	m_controller = SDL_GameControllerOpen(m_index.sdlIndex);
 	if(!m_controller) {
-		LOG_WARN << "GameController: open failed for index " << m_index.index << std::endl;
+		LOG_ERROR << "GameController: open failed for index " << m_index.index << std::endl;
 		return false;
 	}
 
@@ -296,6 +296,23 @@ bool GameController::isOpen() {
 	return SDL_GameControllerGetAttached(m_controller) == SDL_TRUE;
 }
 
+void GameController::setColor(int r, int g, int b) {
+	if(SDL_GameControllerHasLED(m_controller) == SDL_TRUE) {
+		r = CLAMP(r, 0, 255);
+		g = CLAMP(g, 0, 255);
+		b = CLAMP(b, 0, 255);
+		SDL_GameControllerSetLED(m_controller, r, g, b);
+	}
+}
+
+void GameController::rumble(float strength, int duration) {
+	if(SDL_GameControllerHasRumble(m_controller) == SDL_TRUE) {
+		strength = CLAMP(strength, 0, 1);
+		duration = CLAMP(duration, 0, 5000);
+		SDL_GameControllerRumble(m_controller, 0xFFFF * strength, 0xFFFF * strength, duration);
+	}
+}
+
 void GameController::print() {
 	LOG << toString() << std::endl;
 	if(m_controller) {
@@ -312,12 +329,6 @@ SDL_Joystick* GameController::getJoystick() {
 
 void GameController::setTriggersAsAxes(bool asAxes) {
 	m_triggersAsAxes = asAxes;
-}
-
-void GameController::setColor(int r, int g, int b) {
-	if(SDL_GameControllerHasLED(m_controller) == SDL_TRUE) {
-		SDL_GameControllerSetLED(m_controller, r, g, b);
-	}
 }
 
 int GameController::addMappingString(std::string mapping) {

@@ -71,6 +71,7 @@ bool DeviceManager::open(int sdlIndex) {
 			GameController *gc = new GameController(address);
 			if(gc->open(index, settings)) {
 				m_devices[gc->getInstanceID()] = gc;
+				m_addresses[gc->getAddress()] = gc;
 				if(sendDeviceEvents) {
 					Device::sender->send(Device::notificationAddress + "/open",
 						"si", "controller", index.index);
@@ -94,6 +95,7 @@ bool DeviceManager::open(int sdlIndex) {
 			Joystick *js = new Joystick(address);
 			if(js->open(index, settings)) {
 				m_devices[js->getInstanceID()] = js;
+				m_addresses[js->getAddress()] = js;
 				if(sendDeviceEvents) {
 					Device::sender->send(Device::notificationAddress + "/open",
 						"si", "joystick", index.index);
@@ -120,6 +122,7 @@ bool DeviceManager::close(SDL_JoystickID instanceID) {
 					break;
 			}
 		}
+		m_addresses.erase(dev->getAddress());
 		dev->close();
 		delete dev;
 		m_devices.erase(instanceID);
@@ -217,6 +220,37 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 	}
 }
 
+int DeviceManager::oscReceived(const std::string &address, const lo::Message &message) {
+	std::string types = message.types();
+	lo_arg **argv = message.argv();
+	if(address == Device::deviceAddress + "/rumble") {
+		if(types == "sff" || types == "sfi") {
+			std::string key = std::string(&argv[0]->s);
+			float strength = message.argv()[1]->f;
+			int duration = (types[2] == 'f' ? argv[2]->f : argv[2]->i);
+			Device *dev = deviceByAddress("/" + key);
+			if(dev) {
+				dev->rumble(strength, duration);
+			}
+		}
+		return 0; // handled
+	}
+	else if(address == Device::deviceAddress + "/color") {
+		if(message.types() == "sfff" || message.types() == "siii") {
+			std::string key = std::string(&argv[0]->s);
+			int r = (types[1] == 'f' ? argv[1]->f : argv[1]->i);
+			int g = (types[2] == 'f' ? argv[2]->f : argv[2]->i);
+			int b = (types[3] == 'f' ? argv[3]->f : argv[3]->i);
+			Device *dev = deviceByAddress("/" + key);
+			if(dev && dev->getType() == GAMECONTROLLER) {
+				((GameController *)dev)->setColor(r, g, b);
+			}
+		}
+		return 0; // handled
+	}
+	return 1; // not handled
+}
+
 void DeviceManager::printKnownDevices() {
 	LOG << "known devices: " << m_deviceSettings.size() << std::endl;
 	m_deviceSettings.print();
@@ -258,8 +292,9 @@ int DeviceManager::firstAvailableIndex() {
 }
 
 DeviceType DeviceManager::getType(int index) {
-	if(m_devices.find(index) != m_devices.end()) {
-		return m_devices[index]->getType();
+	auto iter = m_devices.find(index);
+	if(iter != m_devices.end()) {
+		return iter->second->getType();
 	}
 	return UNKNOWN;
 }
@@ -278,4 +313,12 @@ bool DeviceManager::sdlIndexExists(int sdlIndex) {
 		}
 	}
 	return false;
+}
+
+Device* DeviceManager::deviceByAddress(const std::string &address) {
+	auto iter = m_addresses.find(address);
+	if(iter != m_addresses.end()) {
+		return iter->second;
+	}
+	return nullptr;
 }

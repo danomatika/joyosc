@@ -171,14 +171,14 @@ The config file sets the OSC connection information as well as device name or GU
 * OSC send addresses for specific device names or GUIDs\*
 * axis dead zone values for jittery thumb sticks
 * button, axis, hat, & trackball re-mappings
-* extended controller button & axis re-mappings for additonal unmapped joystick events
+* extended controller button & axis re-mappings for additional unmapped joystick events
 * which button, axis, hat, & trackball events to ignore
 * custom SDL2 game controller mapping strings for devices only detected as joysticks
 * which device names and GUIDs to exclude
 
 Look at the `example_config.xml` file installed to the doc folder or in the `data` folder of the source distribution for details.
 
-\* _Note: GUIDs are not gauranteed to be different between devices of the same model and may be different between platforms. "Your mileage may vary." See the [SDL GUID doc](https://wiki.libsdl.org/SDL2/SDL_GUID) for details._
+\* _Note: GUIDs are not guaranteed to be different between devices of the same model and may be different between platforms. "Your mileage may vary." See the [SDL GUID doc](https://wiki.libsdl.org/SDL2/SDL_GUID) for details._
 
 #### Options
 
@@ -366,9 +366,36 @@ joyosc also listens for osc control messages on a specified listening port (defa
 The current messages are:
 ~~~
 /joyosc/quit
+/joyosc/devices/color devAddr r g b
+/joyosc/devices/rumble devAddr strength duration
 ~~~
 
-_Note: This capability may be expanded in the future._
+### Quit joyosc
+
+Exit joyosc externally via `/joyosc/quit`.
+
+### Game Controller LED Color
+
+For game controllers with an LED such as PS4 and PS5 controllers, the color can be set over OSC. The color value range is 0-255.
+
+For example, to set the color of the device at OSC address "gc0" to cyan:
+
+~~~
+/joyosc/devices/color gc0 0 255 255
+~~~
+
+To turn the LED off, set "black": `0 0 0`. This message is ignored for joysticks and controllers without an LED.
+
+### Device Haptic Rumble
+
+For devices which support haptic "rumble" aka have vibration motors, rumble events can be started over OSC. The rumble strength is a normalized percentage 0-1 and the duration is in ms from 0-5000 (5 seconds).
+
+To rumble device at OSC address "gc0" at 75% for 500 ms (a half second):
+~~~
+/joyosc/devices/rumble gc0 0.75 500
+~~~
+
+To stop current rumble event, set strength and duration to `0 0`. This message is ignored for unsupported devices.
 
 ---
 

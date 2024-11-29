@@ -56,6 +56,11 @@ class Joystick : public Device {
 		/// not been opened
 		bool handleEvent(SDL_Event *event);
 
+		/// rumble at strength % 0-1 for duration ms
+		/// ex. 75% for half a second: rumble(0.75, 500)
+		/// rumble at 0% to stop
+		void rumble(float strength, int duration);
+
 		/// returns true if the joystick is open
 		bool isOpen();
 
@@ -71,4 +76,5 @@ class Joystick : public Device {
 	protected:
 
 		SDL_Joystick *m_joystick = nullptr; ///< SDL joystick handle
+		SDL_Haptic *m_haptic = nullptr; ///< haptic handle, if supported
 };

@@ -64,6 +64,9 @@ class DeviceManager {
 		//// handle and send device event
 		bool handleEvent(SDL_Event *event);
 
+		/// received osc message callback
+		int oscReceived(const std::string &address, const lo::Message &message);
+
 		/// return the number of devices
 		unsigned int numDevices() {return m_devices.size();}
 
@@ -93,12 +96,18 @@ class DeviceManager {
 		/// is an sdlIndex already in use by an active device?
 		bool sdlIndexExists(int sdlIndex);
 
+		/// get device by it's address, ie. "/gc0"
+		Device* deviceByAddress(const std::string &address);
+
 		/// known device settings, mapped by device name or guid
 		DeviceSettingsMap m_deviceSettings;
 
 		/// device exclusions, which names etc to ignore
 		DeviceExclusion m_deviceExclusion;
 
-		/// active device list, mapped by instanceID
+		/// active devices, mapped by instanceID
 		std::map<int,Device *> m_devices;
+
+		/// active devices, mapped by OSC addresses
+		std::map<std::string,Device *> m_addresses;
 };

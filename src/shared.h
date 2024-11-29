@@ -29,6 +29,10 @@
 	#define LOG std::cout
 #endif
 
+#define MAX(a,b) ((a) > (b) ? (a) : (b))
+#define MIN(a,b) ((a) < (b) ? (a) : (b))
+#define CLAMP(v,a,b) (MAX(MIN((v), (b)), (a)))
+
 namespace shared {
 
 // available sensors
@@ -91,6 +95,9 @@ inline void printControllerDetails(SDL_GameController *controller) {
 	if(SDL_GameControllerHasLED(controller) == SDL_TRUE) {
 		LOG << "  led: yes" << std::endl;
 	}
+	if(SDL_GameControllerHasRumble(controller) == SDL_TRUE) {
+		LOG << "  rumble: yes" << std::endl;
+	}
 }
 
 /// print joystick details
@@ -99,6 +106,9 @@ inline void printJoystickDetails(SDL_Joystick *joystick) {
 	    << "  num axes: " << SDL_JoystickNumAxes(joystick) << std::endl
 	    << "  num balls: " << SDL_JoystickNumBalls(joystick) << std::endl
 	    << "  num hats: " << SDL_JoystickNumHats(joystick) << std::endl;
+	if(SDL_JoystickIsHaptic(joystick)) {
+		LOG << "rumble: yes" << std::endl;
+	}
 }
 
 } // namespace

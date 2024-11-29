@@ -136,6 +136,11 @@ class Device {
 		/// print button, axis, etc ignores
 		void printIgnores();
 
+		/// rumble at strength % 0-1 for duration ms
+		/// ex. 75% for half a second: rumble(0.75, 500)
+		/// rumble at 0% to stop
+		virtual void rumble(float strength, int duration) {}
+
 		/// returns basic device info as a string
 		virtual std::string toString();
 

@@ -66,6 +66,15 @@ class GameController : public Device {
 		/// returns true if the controller is open
 		bool isOpen();
 
+		/// set LED color (if supported by the device)
+		/// color range is 0-255
+		void setColor(int r, int g, int b);
+
+		/// rumble at strength % 0-1 for duration ms
+		/// ex. 75% for half a second: rumble(0.75, 500)
+		/// rumble at 0% to stop
+		void rumble(float strength, int duration);
+
 		/// print controller info
 		void print();
 
@@ -86,9 +95,6 @@ class GameController : public Device {
 
 		/// are extended joystick events supported? ie. unmapped buttons or axes
 		inline bool hasExtendedMappings() {return m_extendedMappings;}
-
-		/// set controller LED color (if supported by the device)
-		void setColor(int r, int g, int b);
 
 		/// add a game controller mapping string to SDL,
 		/// returns 1 on add, 0 on update, & -1 on error

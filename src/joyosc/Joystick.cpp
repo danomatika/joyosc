@@ -31,25 +31,34 @@ Joystick::Joystick(std::string address) : Device(address) {}
 
 bool Joystick::open(DeviceIndex index, DeviceSettings *settings) {
 	if(!index.isValid()) {
-		LOG_WARN << "Joystick: cannot open, index not set" << std::endl;
+		LOG_ERROR << "Joystick: cannot open, index not set" << std::endl;
 		return false;
 	}
 	m_index = index;
 
 	if(isOpen()) {
-		LOG_WARN << "Joystick: joystick with index "
+		LOG_ERROR << "Joystick: joystick with index "
 		         << m_index.index << " already opened" << std::endl;
 		return false;
 	}
 
 	m_joystick = SDL_JoystickOpen(m_index.sdlIndex);
 	if(!m_joystick) {
-		LOG_WARN << "Joystick: open failed for index " << m_index.index << std::endl;
+		LOG_ERROR << "Joystick: open failed for index " << m_index.index << std::endl;
 		return false;
 	}
 
 	m_instanceID = SDL_JoystickInstanceID(m_joystick);
 	m_name = SDL_JoystickName(m_joystick);
+	if(SDL_JoystickIsHaptic(m_joystick) == SDL_TRUE) {
+		m_haptic = SDL_HapticOpenFromJoystick(m_joystick);
+		if(m_haptic) {
+			if(SDL_HapticRumbleInit(m_haptic) == SDL_FALSE) {
+				LOG_WARN << "Joystick: haptic rumble init failed for index "
+				         << m_index.index << ": " << SDL_GetError() << std::endl;
+			}
+		}
+	}
 
 	// create prev axis values
 	for(int i = 0; i < SDL_JoystickNumAxes(m_joystick); ++i) {
@@ -86,13 +95,8 @@ bool Joystick::open(DeviceIndex index, DeviceSettings *settings) {
 	}
 
 	if(Device::printEvents) {
-		LOG << "Joystick: opened " << toString() << std::endl;
-		if(m_joystick) {
-			LOG << "  num buttons: " << SDL_JoystickNumButtons(m_joystick) << std::endl
-			    << "  num axes: " << SDL_JoystickNumAxes(m_joystick) << std::endl
-			    << "  num balls: " << SDL_JoystickNumBalls(m_joystick) << std::endl
-			    << "  num hats: " << SDL_JoystickNumHats(m_joystick) << std::endl;
-		}
+		LOG << "Joystick: opened ";
+		print();
 	}
 	else {
 		LOG_VERBOSE << "Joystick: opened " << toString() << std::endl;
@@ -101,6 +105,10 @@ bool Joystick::open(DeviceIndex index, DeviceSettings *settings) {
 }
 
 void Joystick::close() {
+	if(m_haptic) {
+		SDL_HapticClose(m_haptic);
+		m_haptic = nullptr;
+	}
 	if(m_joystick) {
 		if(isOpen()) {
 			SDL_JoystickClose(m_joystick);
@@ -243,6 +251,14 @@ bool Joystick::handleEvent(SDL_Event *event) {
 
 bool Joystick::isOpen() {
 	return SDL_JoystickGetAttached(m_joystick) == SDL_TRUE;
+}
+
+void Joystick::rumble(float strength, int duration) {
+	if(m_haptic) {
+		strength = CLAMP(strength, 0, 1);
+		duration = CLAMP(duration, 0, 5000);
+		SDL_HapticRumblePlay(m_haptic, strength, duration);
+	}
 }
 
 void Joystick::print() {

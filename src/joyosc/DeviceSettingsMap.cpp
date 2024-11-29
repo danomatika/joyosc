@@ -61,7 +61,6 @@ DeviceSettings* DeviceSettingsMap::settingsFor(DeviceType type, const std::strin
 }
 
 void DeviceSettingsMap::print() {
-	LOG << "known devices: " << m_devices.size() << std::endl;
 	int index = 0;
 	for(auto &device : m_devices) {
 		DeviceSettings &settings = (DeviceSettings &)(device.second);
