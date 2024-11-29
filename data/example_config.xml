@@ -54,6 +54,9 @@
 		     mappings using the <mappings> element further below
 
 		     name or guid is required, address is optional
+
+		     address '#' placeholder will be replaced with device index,
+		     ex. "/pad#" -> "/pad0" if device is the first connected
 		-->
 		<controller name="Logitech F310 Gamepad (DInput)" address="/F310"/>
 
@@ -125,7 +128,7 @@
 
 		<!-- remap joystick axes which are not in the SDL controller mapping,
 	         these are usually extra controls such as button pressure values -->
-		<controller name="PS3 Controller" address="/ps3">
+		<controller name="PS3 Controller" address="/ps#">
 			<!-- extended: enable unmapped joystick button or axis events?
 			               ex. PS3 Controller button pressure axes -->
 			<remap>

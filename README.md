@@ -472,6 +472,12 @@ To ensure a full clean when making changes to configure.ac, etc run:
 
     ./autoclean.sh
 
+For debugging, configure with `--enable-debug` and (re) build. Run in gdb or lldb to pinpoint crashes. For example:
+
+    lldb -- ./src/joyosc/joyosc -ev data/example_config.xml
+    ...
+    process launch
+
 FUTURE IDEAS/IMPROVEMENTS
 -------------------------
 

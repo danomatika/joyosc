@@ -22,6 +22,7 @@
 ==============================================================================*/
 #include "Joystick.h"
 
+#include <regex>
 #include "../shared.h"
 #include "JoystickIgnore.h"
 #include "JoystickRemapping.h"
@@ -58,9 +59,12 @@ bool Joystick::open(DeviceIndex index, DeviceSettings *settings) {
 	// apply settings?
 	if(settings) {
 
-		// try to set the address from the mapping list using the dev name
+		// try to set the address from the mapping list using the dev name,
+		// replace # with index if found
 		if(settings->address != "") {
-			m_address = settings->address;
+			std::stringstream stream;
+			stream << index.index;
+			m_address = std::regex_replace(settings->address, std::regex("#"), stream.str());
 		}
 
 		// set axis dead zone if one exists

@@ -99,6 +99,9 @@ class DeviceManager {
 		/// return the first available index in the active devices list
 		int firstAvailableIndex();
 
+		/// add settings to known device list by key
+		void addKnownDevice(const std::string &key, const DeviceSettings &device);
+
 		/// get the active device type at a given index
 		DeviceType getType(int index);
 

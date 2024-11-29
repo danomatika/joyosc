@@ -380,10 +380,10 @@ bool DeviceManager::readXMLController(XMLElement *e) {
 	}
 
 	if(guid != "") {
-		m_knownDevices[guid] = device;
+		addKnownDevice(guid, device);
 	}
 	else {
-		m_knownDevices[name] = device;
+		addKnownDevice(name, device);
 	}
 	return true;
 }
@@ -456,10 +456,10 @@ bool DeviceManager::readXMLJoystick(XMLElement *e) {
 	}
 
 	if(guid != "") {
-		m_knownDevices[guid] = device;
+		addKnownDevice(guid, device);
 	}
 	else {
-		m_knownDevices[name] = device;
+		addKnownDevice(name, device);
 	}
 	return true;
 }
@@ -484,6 +484,13 @@ int DeviceManager::firstAvailableIndex() {
 		}
 	}
 	return m_devices.size();
+}
+
+void DeviceManager::addKnownDevice(const std::string &key, const DeviceSettings &device) {
+	if(m_knownDevices.find(key) != m_knownDevices.end()) {
+		LOG_WARN << "overwriting settings for device " << key << std::endl;
+	}
+	m_knownDevices[key] = device;
 }
 
 DeviceType DeviceManager::getType(int index) {
