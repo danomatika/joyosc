@@ -22,13 +22,8 @@
 ==============================================================================*/
 #include "DeviceManager.h"
 
-#include "App.h"
 #include "Joystick.h"
 #include "GameController.h"
-#include "GameControllerIgnore.h"
-#include "GameControllerRemapping.h"
-#include "JoystickIgnore.h"
-#include "JoystickRemapping.h"
 
 using namespace tinyxml2;
 
@@ -36,15 +31,8 @@ bool DeviceManager::readXML(XMLElement *e) {
 	bool loaded = false;
 	XMLElement *child = e->FirstChildElement();
 	while(child) {
-		if((std::string)child->Name() == "controller") {
-			if(readXMLController(child)) {
-				loaded = true;
-			}
-		}
-		else if((std::string)child->Name() == "joystick") {
-			if(readXMLJoystick(child)) {
-				loaded = true;
-			}
+		if(m_deviceSettings.readXML(child)) {
+			loaded = true;
 		}
 		else if((std::string)child->Name() == "exclude") {
 			if(m_deviceExclusion.readXML(child)) {
@@ -73,11 +61,11 @@ bool DeviceManager::open(int sdlIndex) {
 			DeviceSettings *settings = nullptr;
 			std::string guid = Device::guidForSdlIndex(sdlIndex);
 			if(guid != "") {
-				settings = settingsFor(GAMECONTROLLER, guid);
+				settings = m_deviceSettings.settingsFor(GAMECONTROLLER, guid);
 			}
 			if(!settings) {
 				std::string name = SDL_GameControllerNameForIndex(sdlIndex);
-				settings = settingsFor(GAMECONTROLLER, name);
+				settings = m_deviceSettings.settingsFor(GAMECONTROLLER, name);
 			}
 			std::string address = addressForIndex(GAMECONTROLLER, index.index);
 			GameController *gc = new GameController(address);
@@ -96,11 +84,11 @@ bool DeviceManager::open(int sdlIndex) {
 			DeviceSettings *settings = nullptr;
 			std::string guid = Device::guidForSdlIndex(sdlIndex);
 			if(guid != "") {
-				settings = settingsFor(JOYSTICK, guid);
+				settings = m_deviceSettings.settingsFor(JOYSTICK, guid);
 			}
 			if(!settings) {
 				std::string name = SDL_JoystickNameForIndex(sdlIndex);
-				settings = settingsFor(JOYSTICK, name);
+				settings = m_deviceSettings.settingsFor(JOYSTICK, name);
 			}
 			std::string address = addressForIndex(JOYSTICK, index.index);
 			Joystick *js = new Joystick(address);
@@ -229,40 +217,9 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 	}
 }
 
-DeviceSettings* DeviceManager::settingsFor(DeviceType type, const std::string &key) {
-	auto iter = m_knownDevices.find(key);
-	if(iter != m_knownDevices.end()) {
-		DeviceSettings &settings = (DeviceSettings &)(iter->second);
-		if(type != UNKNOWN && settings.type != type) {
-			return nullptr; // wrong type
-		}
-		return &settings;
-	}
-	return nullptr;
-}
-
 void DeviceManager::printKnownDevices() {
-	LOG << "known devices: " << m_knownDevices.size() << std::endl;
-	int index = 0;
-	for(auto &device : m_knownDevices) {
-		DeviceSettings &settings = (DeviceSettings &)(device.second);
-		LOG << "  " << index;
-		switch(settings.type) {
-			case GAMECONTROLLER:
-				LOG << " C ";
-				break;
-			case JOYSTICK:
-				LOG << " J ";
-				break;
-			default:
-				LOG << " ? ";
-				break;
-		}
-		LOG << device.first
-		    << (settings.address == "" ? "" : " " + settings.address)
-		    << std::endl;
-		++index;
-	}
+	LOG << "known devices: " << m_deviceSettings.size() << std::endl;
+	m_deviceSettings.print();
 }
 
 void DeviceManager::print(bool details) {
@@ -277,192 +234,6 @@ void DeviceManager::print(bool details) {
 }
 
 // PROTECTED
-
-bool DeviceManager::readXMLController(XMLElement *e) {
-	std::string name = "", guid = "", addr = "";
-	if(e->Attribute("name")) {name = std::string(e->Attribute("name"));}
-	if(e->Attribute("guid")) {guid = std::string(e->Attribute("guid"));}
-	if(e->Attribute("address")) {addr = std::string(e->Attribute("address"));}
-	if(name == "" && guid == "") {
-		LOG_WARN << "ignoring game controller without name or guid"
-		         << std::endl;
-		return false;
-	}
-	if(settingsFor(GAMECONTROLLER, guid)) {
-		LOG_WARN << "game controller guid " << guid
-		         << " already exists" << std::endl;
-		return false;
-	}
-	if(settingsFor(GAMECONTROLLER, name)) {
-		LOG_WARN << "game controller name " << name
-		         << " already exists" << std::endl;
-		return false;
-	}
-	DeviceSettings device;
-	device.type = GAMECONTROLLER;
-	device.address = addr;
-	GameControllerSettings *gc = new GameControllerSettings();
-	device.data = (void *)gc;
-
-	XMLElement *child = e->FirstChildElement();
-	while(child) {
-
-		if((std::string)child->Name() == "axes") {
-			device.axisDeadZone = child->UnsignedAttribute("deadZone", 0);
-			if(device.axisDeadZone > 0) {
-				LOG_DEBUG << "GameController " << name << ": "
-				          << "axis deadzone " << device.axisDeadZone << std::endl;
-			}
-			if(child->QueryBoolAttribute("triggers", &gc->triggersAsAxes) == XML_SUCCESS) {
-				LOG_DEBUG << "GameController " << name << ": "
-				          << "triggers as axes " << gc->triggersAsAxes << std::endl;
-			}
-		}
-
-		if((std::string)child->Name() == "sensors") {
-			if(child->QueryBoolAttribute("enable", &gc->enableSensors) == XML_SUCCESS) {
-				LOG_DEBUG << "GameController " << name << ": "
-				          << "enable sensors " << gc->enableSensors << std::endl;
-			}
-		}
-
-		// deprecated
-		if((std::string)child->Name() == "thresholds") {
-			device.axisDeadZone = child->UnsignedAttribute("axisDeadZone", 0);
-			if(device.axisDeadZone > 0) {
-				LOG_DEBUG << "GameController " << name << ": "
-				          << "axis deadzone " << device.axisDeadZone << std::endl;
-			}
-		}
-
-		// deprecated
-		if((std::string)child->Name() == "triggers") {
-			if(child->QueryBoolAttribute("asAxes", &gc->triggersAsAxes) == XML_SUCCESS) {
-				LOG_DEBUG << "GameController " << name << ": "
-				          << "triggers as axes " << gc->triggersAsAxes << std::endl;
-			}
-		}
-
-		if((std::string)child->Name() == "remap") {
-			GameControllerRemapping *remap = new GameControllerRemapping;
-			if(remap->readXML(child)) {
-				if(device.remap) {
-					delete device.remap;
-					LOG_WARN << "game controller remapping for "
-					         << name << " already exists" << std::endl;
-				}
-				device.remap = remap;
-			}
-		}
-
-		if((std::string)child->Name() == "ignore") {
-			GameControllerIgnore *ignore = new GameControllerIgnore;
-			if(ignore->readXML(child)) {
-				if(device.ignore) {
-					delete device.ignore;
-					LOG_WARN << "game controller ignore for "
-					         << name << " already exists" << std::endl;
-				}
-				device.ignore = ignore;
-			}
-		}
-
-		if((std::string)child->Name() == "color") {
-			child->QueryIntAttribute("r", &gc->ledColor[0]);
-			child->QueryIntAttribute("g", &gc->ledColor[1]);
-			child->QueryIntAttribute("b", &gc->ledColor[2]);
-			LOG_DEBUG << "GameController: " << name << ": led color "
-			          << gc->ledColor[0] << " "
-			          << gc->ledColor[1] << " "
-			          << gc->ledColor[2] << std::endl;
-		}
-		child = child->NextSiblingElement();
-	}
-
-	if(guid != "") {
-		addKnownDevice(guid, device);
-	}
-	else {
-		addKnownDevice(name, device);
-	}
-	return true;
-}
-
-bool DeviceManager::readXMLJoystick(XMLElement *e) {
-	std::string name = "", guid = "", addr = "";
-	if(e->Attribute("name")) {name = std::string(e->Attribute("name"));}
-	if(e->Attribute("guid")) {guid = std::string(e->Attribute("guid"));}
-	if(e->Attribute("address")) {addr = std::string(e->Attribute("address"));}
-	if(name == "" && guid == "") {
-		LOG_WARN << "ignoring joystick without name or guid" << std::endl;
-		return false;
-	}
-	if(settingsFor(JOYSTICK, guid)) {
-		LOG_WARN << "joystick guid " << guid << " already exists" << std::endl;
-		return false;
-	}
-	if(settingsFor(JOYSTICK, name)) {
-		LOG_WARN << "joystick name " << name << " already exists" << std::endl;
-		return false;
-	}
-	DeviceSettings device;
-	device.type = JOYSTICK;
-	device.address = addr;
-
-	XMLElement *child = e->FirstChildElement();
-	while(child) {
-
-		if((std::string)child->Name() == "axes") {
-			device.axisDeadZone = child->UnsignedAttribute("deadZone", 0);
-			if(device.axisDeadZone > 0) {
-				LOG_DEBUG << "Joystick " << name << ": "
-				          << "axis deadzone " << device.axisDeadZone << std::endl;
-			}
-		}
-
-		// deprecated
-		if((std::string)child->Name() == "thresholds") {
-			device.axisDeadZone = child->UnsignedAttribute("axisDeadZone", 0);
-			if(device.axisDeadZone > 0) {
-				LOG_DEBUG << "Joystick " << name << ": "
-				          << "axis deadzone " << device.axisDeadZone << std::endl;
-			}
-		}
-
-		if((std::string)child->Name() == "remap") {
-			JoystickRemapping *remap = new JoystickRemapping;
-			if(remap->readXML(child)) {
-				if(device.remap) {
-					delete device.remap;
-					LOG_WARN << "joystick remapping for "
-					         << name << " already exists" << std::endl;
-				}
-				device.remap = remap;
-			}
-		}
-
-		if((std::string)child->Name() == "ignore") {
-			JoystickIgnore *ignore = new JoystickIgnore;
-			if(ignore->readXML(child)) {
-				if(device.ignore) {
-					delete device.ignore;
-					LOG_WARN << "joystick ignore for "
-					         << name << " already exists" << std::endl;
-				}
-				device.ignore = ignore;
-			}
-		}
-		child = child->NextSiblingElement();
-	}
-
-	if(guid != "") {
-		addKnownDevice(guid, device);
-	}
-	else {
-		addKnownDevice(name, device);
-	}
-	return true;
-}
 
 std::string DeviceManager::addressForIndex(DeviceType type, int index) {
 	std::stringstream stream;
@@ -484,13 +255,6 @@ int DeviceManager::firstAvailableIndex() {
 		}
 	}
 	return m_devices.size();
-}
-
-void DeviceManager::addKnownDevice(const std::string &key, const DeviceSettings &device) {
-	if(m_knownDevices.find(key) != m_knownDevices.end()) {
-		LOG_WARN << "overwriting settings for device " << key << std::endl;
-	}
-	m_knownDevices[key] = device;
 }
 
 DeviceType DeviceManager::getType(int index) {

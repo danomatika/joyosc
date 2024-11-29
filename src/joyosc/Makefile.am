@@ -8,8 +8,9 @@ bin_PROGRAMS = joyosc
 # program's sources
 joyosc_SOURCES = main.cpp Common.h Common.cpp ../shared.h App.h App.cpp \
                  Device.h Device.cpp DeviceExclusion.h DeviceExclusion.cpp \
-                 DeviceManager.h DeviceManager.cpp Event.h \
-                 Joystick.h Joystick.cpp \
+                 DeviceManager.h DeviceManager.cpp \
+                 DeviceSettingsMap.h DeviceSettingsMap.cpp \
+                 Event.h Joystick.h Joystick.cpp \
                  JoystickIgnore.h JoystickIgnore.cpp \
                  JoystickRemapping.h JoystickRemapping.cpp \
                  GameController.h GameController.cpp \

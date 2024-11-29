@@ -24,10 +24,11 @@
 
 #include <string>
 #include "Device.h"
+#include "DeviceSettingsMap.h"
 #include "DeviceExclusion.h"
 
 /// \class DeviceManager
-/// \brief Manages a list of the currently active game controller & joystick devices
+/// \brief Manages a active game controller & joystick devices
 class DeviceManager {
 
 	public:
@@ -66,12 +67,8 @@ class DeviceManager {
 		/// return the number of devices
 		unsigned int numDevices() {return m_devices.size();}
 
-		/// get settings for a device by name or GUID in the known device list
-		/// type is the DeviceType enum, set UNKNOWN for any device type
-		/// key is a name ie. "Logitech Logitech Dual Action"
-		/// or GUID ie. "03007a2e4c0500006802000000016800"
-		/// returns settings pointer on success, nullptr if not found
-		DeviceSettings* settingsFor(DeviceType type, const std::string &key);
+		/// print active joystick list
+		void print(bool details=false);
 
 		/// print known device settings list
 		void printKnownDevices();
@@ -79,19 +76,10 @@ class DeviceManager {
 		/// print device exlcusions
 		inline void printExclusions() {m_deviceExclusion.print();}
 
-		/// print active joystick list
-		void print(bool details=false);
-
 		bool joysticksOnly = false; ///< disable game controller support?
 		bool sendDeviceEvents = false; ///< send device open/close events?
 
 	protected:
-
-		/// read <controller> tag
-		bool readXMLController(tinyxml2::XMLElement *e);
-
-		/// read <joystick> tag
-		bool readXMLJoystick(tinyxml2::XMLElement *e);
 
 		/// create default address using index, ex. "/gc1"
 		std::string addressForIndex(DeviceType type, int index);
@@ -99,17 +87,14 @@ class DeviceManager {
 		/// return the first available index in the active devices list
 		int firstAvailableIndex();
 
-		/// add settings to known device list by key
-		void addKnownDevice(const std::string &key, const DeviceSettings &device);
-
 		/// get the active device type at a given index
 		DeviceType getType(int index);
 
 		/// is an sdlIndex already in use by an active device?
 		bool sdlIndexExists(int sdlIndex);
 
-		/// known device settings list, mapped by device name or guid
-		std::map<std::string,DeviceSettings> m_knownDevices;
+		/// known device settings, mapped by device name or guid
+		DeviceSettingsMap m_deviceSettings;
 
 		/// device exclusions, which names etc to ignore
 		DeviceExclusion m_deviceExclusion;
