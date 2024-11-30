@@ -151,11 +151,9 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 	switch(event->type) {
 
 		case SDL_CONTROLLERDEVICEADDED:
-			LOG_DEBUG << "CONTROLLER ADDED sdlIndex " << event->cdevice.which << std::endl;
+			LOG_DEBUG << "CONTROLLER ADDED instanceID " << event->cdevice.which << std::endl;
 			if(open(event->cdevice.which)) {
-				#ifdef DEBUG
-					print();
-				#endif
+				if(Log::logLevel == Log::LEVEL_DEBUG) {print();}
 			}
 			return true;
 
@@ -175,18 +173,14 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 		case SDL_CONTROLLERDEVICEREMOVED:
 			LOG_DEBUG << "CONTROLLER REMOVED instanceID " << event->cdevice.which << std::endl;
 			if(close(event->cdevice.which)) {
-				#ifdef DEBUG
-					print();
-				#endif
+				if(Log::logLevel == Log::LEVEL_DEBUG) {print();}
 			}
 			return true;
 
 		case SDL_JOYDEVICEADDED:
-			LOG_DEBUG << "JOYSTICK ADDED sdlIndex " << event->jdevice.which << std::endl;
+			LOG_DEBUG << "JOYSTICK ADDED instanceID " << event->jdevice.which << std::endl;
 			if(open(event->jdevice.which)) {
-				#ifdef DEBUG
-					print();
-				#endif
+				if(Log::logLevel == Log::LEVEL_DEBUG) {print();}
 			}
 			return true;
 
@@ -209,9 +203,7 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 		case SDL_JOYDEVICEREMOVED:
 			LOG_DEBUG << "JOYSTICK REMOVED instanceID " << event->jdevice.which << std::endl;
 			if(close(event->jdevice.which)) {
-				#ifdef DEBUG
-					print();
-				#endif
+				if(Log::logLevel == Log::LEVEL_DEBUG) {print();}
 			}
 			return true;
 
