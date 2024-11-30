@@ -99,7 +99,7 @@ bool App::parseCommandLine(int argc, char **argv) {
 	}
 
 	// load config file(s)
-	for(int i = 0; i < options.numArguments(); ++i) {
+	for(unsigned int i = 0; i < options.numArguments(); ++i) {
 		auto path = Path::absolutePath(options.getArgumentString(i));
 		LOG_VERBOSE << "loading " << path << std::endl;
 		if(!loadXMLFile(path.c_str())) {
