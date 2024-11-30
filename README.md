@@ -205,7 +205,7 @@ Options:
   --sleep              sleep time in usecs (default: 10000)
   -t, --triggers       report trigger buttons as axis values
   -s, --sensors        enable controller sensor events (accelerometer, gyro)
-  -v, --verbose        verbose printing
+  -v, --verbose        verbose printing, call twice for debug printing -vv
 
 Arguments:
   FILE                 optional XML config file(s)
@@ -370,11 +370,11 @@ The current messages are:
 /joyosc/devices/rumble devAddr strength duration
 ~~~
 
-### Quit joyosc
+##### Quit joyosc
 
 Exit joyosc externally via `/joyosc/quit`.
 
-### Game Controller LED Color
+##### Game Controller LED Color
 
 For game controllers with an LED such as PS4 and PS5 controllers, the color can be set over OSC. The color value range is 0-255.
 
@@ -386,7 +386,7 @@ For example, to set the color of the device at OSC address "gc0" to cyan:
 
 To turn the LED off, set "black": `0 0 0`. This message is ignored for joysticks and controllers without an LED.
 
-### Device Haptic Rumble
+##### Device Haptic Rumble
 
 For devices which support haptic "rumble" aka have vibration motors, rumble events can be started over OSC. The rumble strength is a normalized percentage 0-1 and the duration is in ms from 0-5000 (5 seconds).
 
