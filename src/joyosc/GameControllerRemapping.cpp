@@ -140,7 +140,6 @@ void GameControllerRemapping::check(Device *device) {
 		}
 	}
 	for(auto iter = extended.axes.begin(); iter != extended.axes.end();) {
-		LOG << iter->first << " " << SDL_JoystickNumAxes(joystick) << std::endl;
 		if(iter->first >= SDL_JoystickNumAxes(joystick)) {
 			LOG_WARN << "GameController " << controller->getName() << ": "
 			         << "removing invalid extended axis remap: "

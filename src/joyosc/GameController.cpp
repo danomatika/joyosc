@@ -99,10 +99,6 @@ bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
 
 		// set color?
 		if(gcs->isColorValid()) {
-			LOG << "setting color"
-				    << " " << gcs->ledColor[0]
-				    << " " << gcs->ledColor[1]
-				    << " " << gcs->ledColor[2] << std::endl;
 			setColor(gcs->ledColor[0],
 			         gcs->ledColor[1],
 			         gcs->ledColor[2]);

@@ -75,7 +75,7 @@ bool App::parseCommandLine(int argc, char **argv) {
 		{SLEEP, 0, "", "sleep", Options::Arg::Integer, "  --sleep \tsleep time in usecs (default: 10000)"},
 		{TRIGGER, 0, "t", "triggers", Options::Arg::None, "  -t, --triggers \treport trigger buttons as axis values"},
 		{SENSORS, 0, "s", "sensors", Options::Arg::None, "  -s, --sensors \tenable controller sensor events (accelerometer, gyro)"},
-		{VERBOSE, 0, "v", "verbose", Options::Arg::None, "  -v, --verbose \tverbose printing"},
+		{VERBOSE, 0, "v", "verbose", Options::Arg::None, "  -v, --verbose \tverbose printing, call twice for debug printing -vv"},
 		{UNKNOWN, 0, "", "", Options::Arg::Unknown, "\nArguments:"},
 		{UNKNOWN, 0, "", "", Options::Arg::None, "  FILE \toptional XML config file(s)"},
 		{0, 0, 0, 0, 0, 0}
@@ -95,7 +95,7 @@ bool App::parseCommandLine(int argc, char **argv) {
 		return false;
 	}
 	if(options.isSet(VERBOSE)) {
-		Log::logLevel = Log::LEVEL_VERBOSE;
+		Log::logLevel = (options.count(VERBOSE) > 1 ? Log::LEVEL_DEBUG : Log::LEVEL_VERBOSE);
 	}
 
 	// load config file(s)
