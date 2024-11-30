@@ -64,8 +64,10 @@ bool DeviceManager::open(int sdlIndex) {
 				settings = m_deviceSettings.settingsFor(GAMECONTROLLER, guid);
 			}
 			if(!settings) {
-				std::string name = SDL_GameControllerNameForIndex(sdlIndex);
-				settings = m_deviceSettings.settingsFor(GAMECONTROLLER, name);
+				const char *name = SDL_GameControllerNameForIndex(sdlIndex);
+				if(name) {
+					settings = m_deviceSettings.settingsFor(GAMECONTROLLER, name);
+				}
 			}
 			std::string address = addressForIndex(GAMECONTROLLER, index.index);
 			GameController *gc = new GameController(address);
@@ -78,6 +80,7 @@ bool DeviceManager::open(int sdlIndex) {
 				}
 				return true;
 			}
+			if(gc) {delete gc;}
 		}
 	}
 	else {
@@ -88,8 +91,10 @@ bool DeviceManager::open(int sdlIndex) {
 				settings = m_deviceSettings.settingsFor(JOYSTICK, guid);
 			}
 			if(!settings) {
-				std::string name = SDL_JoystickNameForIndex(sdlIndex);
-				settings = m_deviceSettings.settingsFor(JOYSTICK, name);
+				const char *name = SDL_JoystickNameForIndex(sdlIndex);
+				if(name) {
+					settings = m_deviceSettings.settingsFor(JOYSTICK, name);
+				}
 			}
 			std::string address = addressForIndex(JOYSTICK, index.index);
 			Joystick *js = new Joystick(address);
@@ -102,6 +107,7 @@ bool DeviceManager::open(int sdlIndex) {
 				}
 				return true;
 			}
+			if(js) {delete js;}
 		}
 	}
 	return false;
