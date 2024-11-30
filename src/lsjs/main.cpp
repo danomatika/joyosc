@@ -22,76 +22,10 @@
 ==============================================================================*/
 #include "../config.h" // automake config defines
 
+#include "Log.h"
 #include "../shared.h" // SDL.h
 #include <unistd.h>
 #include "Options.h"
-
-// print
-void printDevices(bool printDetails, bool printMappings, bool joysticksOnly) {
-	int numJoysticks = SDL_NumJoysticks();
-	for(int i = 0; i < numJoysticks; ++i) {
-		SDL_Joystick *joystick = nullptr;
-		SDL_GameController *controller = nullptr;
-		if(SDL_IsGameController(i) && !joysticksOnly) {
-			controller = SDL_GameControllerOpen(i);
-			joystick = SDL_GameControllerGetJoystick(controller);
-		}
-		else {
-			joystick = SDL_JoystickOpen(i);
-		}
-		if(joystick) {
-			if(printDetails) {std::cout << std::endl;}
-			if(controller) {
-				std::cout << i << " Controller: \""
-				          << SDL_GameControllerNameForIndex(i) << "\" "
-				          << shared::guidForSdlIndex(i) << std::endl;
-				if(printDetails) {
-					shared::printControllerDetails(controller);
-					if(i == numJoysticks-1) {
-						std::cout << std::endl;
-					}
-				}
-			}
-			else {
-				std::cout << i << " Joystick: \""
-				          << SDL_JoystickNameForIndex(i)
-				          << "\" " << shared::guidForSdlIndex(i) << std::endl;
-				if(printDetails) {
-					shared::printJoystickDetails(joystick);
-					if(i == numJoysticks-1) {
-						std::cout << std::endl;
-					}
-				}
-			}
-			if(controller) {
-				SDL_GameControllerClose(controller);
-			}
-			else {
-				SDL_JoystickClose(joystick);
-			}
-		}
-	}
-	if(printMappings && !joysticksOnly) {
-		if(!printDetails && numJoysticks > 0) {std::cout << std::endl;}
-		SDL_JoystickGUID guid;
-		for(int i = 0; i < numJoysticks; ++i) {
-			SDL_GameController *controller = nullptr;
-			SDL_Joystick *joystick = nullptr;
-			if(SDL_IsGameController(i)) {
-				controller = SDL_GameControllerOpen(i);
-				joystick = SDL_GameControllerGetJoystick(controller);
-			}
-			if(controller) {
-				guid = SDL_JoystickGetGUID(joystick);
-				const char *mapping = SDL_GameControllerMappingForGUID(guid);
-				if(mapping) { // in case there is no mapping
-					std::cout << mapping << std::endl << std::endl;
-				}
-			}
-			SDL_GameControllerClose(controller);
-		}
-	}
-}
 
 int main(int argc, char **argv) {
 
@@ -134,19 +68,19 @@ int main(int argc, char **argv) {
 		return EXIT_SUCCESS;
 	}
 	if(options.isSet(VERS)) {
-		std::cout << VERSION << std::endl;
+		LOG << VERSION << std::endl;
 		return EXIT_SUCCESS;
 	}
 
 	// read option values if set
 	if(options.isSet(DETAILS))  {printDetails = true;}
 	if(options.isSet(MAPPINGS)) {printMappings = true;}
-	if(options.isSet(JSONLY))   {joysticksOnly = true;}
+	if(options.isSet(JSONLY))   {joysticksOnly = true; printMappings = false;}
 	if(options.isSet(WINDOW))   {openWindow = true;}
 
 	// init SDL
-	if(SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER) < 0 ) {
-		std::cerr << "Error: could not initialize SDL: " << SDL_GetError() << std::endl;
+	if(SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_HAPTIC) < 0 ) {
+		LOG_ERROR << "could not initialize SDL: " << SDL_GetError() << std::endl;
 		return EXIT_FAILURE;
 	}
 
@@ -155,7 +89,7 @@ int main(int argc, char **argv) {
 	if(openWindow) {
 		window = SDL_CreateWindow("lsjs", 50, 100, 160, 120, 0);
 		if(window == nullptr) {
-			std::cerr << "Error: could not create window: " << SDL_GetError() << std::endl;
+			LOG_ERROR << "could not create window: " << SDL_GetError() << std::endl;
 			SDL_Quit();
 			return EXIT_FAILURE;
 		}
@@ -172,16 +106,70 @@ int main(int argc, char **argv) {
 				}
 			}
 			if(tries >= 10) {
-				printDevices(printDetails, printMappings, joysticksOnly);
 				break;
 			}
 			tries++;
 			usleep(10000);
 		}
 	}
-	else {
-		// try once
-		printDevices(printDetails, printMappings, joysticksOnly);
+
+	// print devices
+	int numJoysticks = SDL_NumJoysticks();
+	for(int i = 0; i < numJoysticks; ++i) {
+		SDL_Joystick *joystick = nullptr;
+		SDL_GameController *controller = nullptr;
+		if(SDL_IsGameController(i) && !joysticksOnly) {
+			controller = SDL_GameControllerOpen(i);
+			if(!controller) {continue;}
+			joystick = SDL_GameControllerGetJoystick(controller);
+			if(joystick) {
+				if(printDetails) {LOG << std::endl;}
+				LOG << i << " Controller: \"" << SDL_GameControllerNameForIndex(i) << "\" "
+				    << shared::guidForSdlIndex(i) << std::endl;
+				if(printDetails) {
+					shared::printControllerDetails(controller);
+					if(i == numJoysticks - 1) {
+						LOG << std::endl;
+					}
+				}
+			}
+		}
+		else {
+			joystick = SDL_JoystickOpen(i);
+			if(!joystick) {continue;}
+			if(printDetails) {LOG << std::endl;}
+			LOG << i << " Joystick: \"" << SDL_JoystickNameForIndex(i)
+			    << "\" " << shared::guidForSdlIndex(i) << std::endl;
+			if(printDetails) {
+				shared::printJoystickDetails(joystick);
+				if(i == numJoysticks - 1) {
+					LOG << std::endl;
+				}
+			}
+		}
+		if(controller) {
+			SDL_GameControllerClose(controller);
+		}
+		else if(joystick) {
+			SDL_JoystickClose(joystick);
+		}
+	}
+
+	// print mappings
+	if(printMappings) {
+		if(!printDetails && numJoysticks > 0) {LOG << std::endl;}
+		for(int i = 0; i < numJoysticks; ++i) {
+			if(!SDL_IsGameController(i)) {continue;}
+			SDL_GameController *controller = SDL_GameControllerOpen(i);
+			if(!controller) {continue;}
+			SDL_Joystick *joystick = SDL_GameControllerGetJoystick(controller);
+			SDL_JoystickGUID guid = SDL_JoystickGetGUID(joystick);
+			const char *mapping = SDL_GameControllerMappingForGUID(guid);
+			if(mapping) {
+				LOG << mapping << std::endl << std::endl;
+			}
+			SDL_GameControllerClose(controller);
+		}
 	}
 
 	// cleanup SDL
