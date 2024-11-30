@@ -51,7 +51,8 @@ bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
 
 	m_controller = SDL_GameControllerOpen(m_index.sdlIndex);
 	if(!m_controller) {
-		LOG_ERROR << "GameController: open failed for index " << m_index.index << std::endl;
+		LOG_ERROR << "GameController: open failed for index " << m_index.index
+		          << ": " << SDL_GetError() << std::endl;
 		return false;
 	}
 

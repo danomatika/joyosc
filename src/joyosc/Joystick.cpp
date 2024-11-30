@@ -44,7 +44,8 @@ bool Joystick::open(DeviceIndex index, DeviceSettings *settings) {
 
 	m_joystick = SDL_JoystickOpen(m_index.sdlIndex);
 	if(!m_joystick) {
-		LOG_ERROR << "Joystick: open failed for index " << m_index.index << std::endl;
+		LOG_ERROR << "Joystick: open failed for index " << m_index.index
+		          << ": " << SDL_GetError() << std::endl;
 		return false;
 	}
 
