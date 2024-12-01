@@ -12,8 +12,20 @@
 
 	<!-- multicast OSC send settings -->
 	<!-- <sending ip="239.200.200.200" port="8880"/> -->
-	
-	<!-- printEvents: print live events to to console? bool "true" or "false"
+
+	<!-- OSC address settings
+
+	     notification: base osc sending address for notifications
+
+	     device: base osc sending addess for device events
+
+	     query: base osc sending address for queries
+	-->
+	<address notification="/joyosc/notifications" device="/joyosc/devices" query="/joyosc/query"/>
+
+	<!-- app configuration
+
+	     printEvents: print live events to to console? bool "true" or "false"
 	                  (default: false)
 
 	     joysticksOnly: disable game controller support, use joystick

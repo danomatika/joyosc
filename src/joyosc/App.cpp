@@ -199,6 +199,7 @@ void App::print() {
 	    << "sending port:    " << sendingPort << std::endl
 	    << "sending address for notifications: " << Device::notificationAddress << std::endl
 	    << "sending address for devices:       " << Device::deviceAddress << std::endl
+	    << "sending address for queries:       " << DeviceManager::queryAddress << std::endl
 	    << "print events?:   " << (Device::printEvents ? "true" : "false") << std::endl
 	    << "joysticks only?: " << (m_deviceManager.joysticksOnly ? "true" : "false") << std::endl
 	    << "sleep us:        " << sleepUS << std::endl
@@ -253,12 +254,33 @@ bool App::loadXMLFile(const std::string &path) {
 			}
 			child->QueryUnsignedAttribute("port", &sendingPort);
 		}
-		else if((std::string)child->Name() == "osc") {
-			if(child->Attribute("notificationAddress")) {
-				Device::notificationAddress = std::string(child->Attribute("notificationAddress"));
+		else if((std::string)child->Name() == "address") {
+			if(child->Attribute("notification")) {
+				std::string address(child->Attribute("notification"));
+				if(address == "" || address[0] != '/') {
+					LOG_WARN << "invalid notification address: " << address << std::endl;
+				}
+				else {
+					Device::notificationAddress = address;
+				}
 			}
-			if(child->Attribute("deviceAddress")) {
-				Device::deviceAddress = std::string(child->Attribute("deviceAddress"));
+			if(child->Attribute("device")) {
+				std::string address(child->Attribute("device"));
+				if(address == "" || address[0] != '/') {
+					LOG_WARN << "invalid device address: " << address << std::endl;
+				}
+				else {
+					Device::deviceAddress = address;
+				}
+			}
+			if(child->Attribute("query")) {
+				std::string address(child->Attribute("query"));
+				if(address == "" || address[0] != '/') {
+					LOG_WARN << "invalid query address: " << address << std::endl;
+				}
+				else {
+					DeviceManager::queryAddress = address;
+				}
 			}
 		}
 		else if((std::string)child->Name() == "config") {

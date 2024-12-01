@@ -72,8 +72,23 @@ inline std::string guidForSdlIndex(int sdlIndex) {
 	return (ret == "00000000000000000000000000000000" ? "" : ret);
 }
 
-/// print controller details
-inline void printControllerDetails(SDL_GameController *controller) {
+/// return number of game controller sensors
+/// set all to true to count all sensors, regardless if they are not enabled
+inline int numGameControllerSensors(SDL_GameController *controller, bool all=true) {
+	int count = 0;
+	for(unsigned int i = 0; i < SDL_arraysize(s_sensors); ++i) {
+		SDL_SensorType sensor = s_sensors[i];
+		if(SDL_GameControllerHasSensor(controller, sensor) && (all ||
+		   SDL_GameControllerIsSensorEnabled(controller, sensor) == SDL_TRUE)) {
+			count++;
+		}
+	}
+	return count;
+}
+
+/// print game controller details
+/// set allSensors to true to print all sensors, regardless if they are not enabled
+inline void printControllerDetails(SDL_GameController *controller, bool allSensors=true) {
 	SDL_Joystick *joystick = SDL_GameControllerGetJoystick(controller);
 	LOG << "  num buttons: " << SDL_JoystickNumButtons(joystick) << std::endl
 	    << "  num axes: " << SDL_JoystickNumAxes(joystick) << std::endl;
@@ -85,8 +100,8 @@ inline void printControllerDetails(SDL_GameController *controller) {
 	}
 	for(unsigned int i = 0; i < SDL_arraysize(s_sensors); ++i) {
 		SDL_SensorType sensor = s_sensors[i];
-		if(SDL_GameControllerHasSensor(controller, sensor) &&
-		   SDL_GameControllerIsSensorEnabled(controller, sensor) == SDL_TRUE) {
+		if(SDL_GameControllerHasSensor(controller, sensor) && (allSensors ||
+		   SDL_GameControllerIsSensorEnabled(controller, sensor) == SDL_TRUE)) {
 			LOG << "  sensor: " << shared::nameForSensor(sensor) << " "
 			    << SDL_GameControllerGetSensorDataRate(controller, sensor)
 			    << "hz" << std::endl;

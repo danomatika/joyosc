@@ -89,9 +89,16 @@ bool DeviceSettingsMap::readXMLController(XMLElement *e) {
 	std::string name = "", guid = "", addr = "";
 	if(e->Attribute("name")) {name = std::string(e->Attribute("name"));}
 	if(e->Attribute("guid")) {guid = std::string(e->Attribute("guid"));}
-	if(e->Attribute("address")) {addr = std::string(e->Attribute("address"));}
+	if(e->Attribute("address")) {
+		addr = std::string(e->Attribute("address"));
+		if(addr == "" || addr[0] != '/') {
+			LOG_WARN << "game controller invalid address: "
+			         << addr << std::endl;
+			return false;
+		}
+	}
 	if(name == "" && guid == "") {
-		LOG_WARN << "ignoring game controller without name or guid"
+		LOG_WARN << "game controller without name or guid"
 		         << std::endl;
 		return false;
 	}
@@ -199,9 +206,16 @@ bool DeviceSettingsMap::readXMLJoystick(XMLElement *e) {
 	std::string name = "", guid = "", addr = "";
 	if(e->Attribute("name")) {name = std::string(e->Attribute("name"));}
 	if(e->Attribute("guid")) {guid = std::string(e->Attribute("guid"));}
-	if(e->Attribute("address")) {addr = std::string(e->Attribute("address"));}
+	if(e->Attribute("address")) {
+		addr = std::string(e->Attribute("address"));
+		if(addr == "" || addr[0] != '/') {
+			LOG_WARN << "joystick invalid address: "
+			         << addr << std::endl;
+			return false;
+		}
+	}
 	if(name == "" && guid == "") {
-		LOG_WARN << "ignoring joystick without name or guid" << std::endl;
+		LOG_WARN << "joystick without name or guid" << std::endl;
 		return false;
 	}
 	if(settingsFor(JOYSTICK, guid)) {

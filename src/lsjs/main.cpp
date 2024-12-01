@@ -127,7 +127,7 @@ int main(int argc, char **argv) {
 				LOG << i << " Controller: \"" << SDL_GameControllerNameForIndex(i) << "\" "
 				    << shared::guidForSdlIndex(i) << std::endl;
 				if(printDetails) {
-					shared::printControllerDetails(controller);
+					shared::printControllerDetails(controller, true);
 					if(i == numJoysticks - 1) {
 						LOG << std::endl;
 					}

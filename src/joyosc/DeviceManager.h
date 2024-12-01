@@ -82,6 +82,8 @@ class DeviceManager {
 		bool joysticksOnly = false; ///< disable game controller support?
 		bool sendDeviceEvents = false; ///< send device open/close events?
 
+		static std::string queryAddress; ///< base osc sending address for queries
+
 	protected:
 
 		/// create default address using index, ex. "/gc1"
@@ -98,6 +100,12 @@ class DeviceManager {
 
 		/// get device by it's address, ie. "/gc0"
 		Device* deviceByAddress(const std::string &address);
+
+		/// get device by it's index
+		Device* deviceByIndex(int index);
+
+		/// send device query info
+		void sendDeviceInfo(Device *device);
 
 		/// known device settings, mapped by device name or guid
 		DeviceSettingsMap m_deviceSettings;

@@ -313,7 +313,7 @@ void GameController::rumble(float strength, int duration) {
 void GameController::print() {
 	LOG << toString() << std::endl;
 	if(m_controller) {
-		shared::printControllerDetails(m_controller);
+		shared::printControllerDetails(m_controller, false);
 	}
 }
 
