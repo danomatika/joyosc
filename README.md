@@ -352,12 +352,41 @@ joyosc also sends status notification messages:
 ~~~
 /joyosc/notifications/startup
 /joyosc/notifications/ready
-/joyosc/notifications/open devType\* deviceID
-/joyosc/notifications/close devType\* deviceID
+/joyosc/notifications/open devType\* devID devAddr
+/joyosc/notifications/close devType\* devID devAddr
 /joyosc/notifications/shutdown
 ~~~
 
 \* devType is either "joystick" or "controller"
+
+#### Device Queries
+
+In response to a query control message (see below), joyosc will send connected device info messages:
+~~~
+/joyosc/query/count numDevs
+/joysoc/query/device controller devID devAddr buttons axes touchpads sensors rumble led
+/joyosc/query/device joystick devID devAddr buttons axes balls hats rumble
+~~~ 
+
+Device count: number of currently connected *and* active devices
+
+Device controller query info:
+* buttons, axes, touchpads: int, number of each type of input
+* sensors: int, number of sensors (available and enabled)
+* rumble: bool, 1 if rumble available
+* led: bool, 1 if controller has a color LED
+
+Device joystick query info:
+* buttons, axes, balls, hats, touchpads: int, number of each type of input
+* rumble: bool, 1 if rumble available
+
+For example, the output from querying the count and a single connected PS4 controller: 
+~~~
+/joyosc/query/count 1
+/joyosc/query/device controller 0 ps4 16 16 1 0 1 1
+~~~
+
+The PS4 controller has 16 buttons, 16 axes, 1 touchpad, a color LED, can rumble.
 
 #### Control Messages
 
@@ -368,6 +397,10 @@ The current messages are:
 /joyosc/quit
 /joyosc/devices/color devAddr r g b
 /joyosc/devices/rumble devAddr strength duration
+/joyosc/query/count
+/joyosc/query
+/joyosc/query devAddr
+/joyosc/query devID
 ~~~
 
 ##### Quit joyosc
@@ -379,7 +412,6 @@ Exit joyosc externally via `/joyosc/quit`.
 For game controllers with an LED such as PS4 and PS5 controllers, the color can be set over OSC. The color value range is 0-255.
 
 For example, to set the color of the device at OSC address "gc0" to cyan:
-
 ~~~
 /joyosc/devices/color gc0 0 255 255
 ~~~
@@ -396,6 +428,25 @@ To rumble device at OSC address "gc0" at 75% for 500 ms (a half second):
 ~~~
 
 To stop current rumble event, set strength and duration to `0 0`. This message is ignored for unsupported devices.
+
+##### Device Queries
+
+The currently active devices can be queried over OSC.
+
+To get active device count:
+~~~
+/joyosc/query/count
+~~~
+
+To query all active devices:
+~~~
+/joyosc/query
+
+To query a single device by address, ie. "gc0", or index:
+~~~
+/joyosc/query devAddr
+/joyosc/query devID
+~~~
 
 ---
 

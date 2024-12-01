@@ -17,7 +17,7 @@
 
 	     notification: base osc sending address for notifications
 
-	     device: base osc sending addess for device events
+	     device: base osc sending address for device events
 
 	     query: base osc sending address for queries
 	-->
@@ -49,8 +49,8 @@
 	<config printEvents="false" joysticksOnly="false" openWindow="false"
 	        sleepUS="20000" triggersAsAxes="false" enableSensors="false"/>
 
-	<!-- device types to for mapping names to OSC send addresses and adding
-	     event customizations, use lsjs to get the names and guids of the devices
+	<!-- device types to for mapping names to OSC send addresses and event
+	     customization, use lsjs to get the names and guids of the devices
 	     currently plugged in
 
 	     devices can be matched by name ie. "PS3 Controller" or the SDL GUID
@@ -227,7 +227,7 @@
 
 	<!-- mappings: custom SDL game controller mappings to add at runtime
 
-	     useful if you want to remap butons/axes or you have a device which does
+	     useful if you want to remap buttons/axes or you have a device which does
 	     not have a game controller mapping and only detects as a joystick
 
 	     use lsjs -m to print the default SDL mappings for the currently plugged
