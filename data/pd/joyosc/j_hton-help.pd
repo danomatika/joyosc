@@ -1,0 +1,16 @@
+#N canvas 237 262 334 337 12;
+#X floatatom 38 111 10 0 0 0 - - - 0;
+#X floatatom 38 198 10 0 0 0 - - - 0;
+#X obj 41 241 hsl 162 19 0 1 0 0 empty empty norm\ 0\ -\ 1 4 10 0 12 #fcfcfc #000000 #000000 0 1;
+#X obj 41 67 hsl 162 19 -32768 32767 0 0 empty empty HID\ -32768\ -\ 32767 4 10 0 12 #fcfcfc #000000 #000000 0 1;
+#X msg 38 33 0;
+#X text 72 32 center;
+#X obj 38 154 j_hton;
+#X text 95 155 normalize HID axis value;
+#X text 35 294 robotcowboy.com | danomatika.com;
+#X text 35 277 Dan Wilcox 2024;
+#X connect 0 0 6 0;
+#X connect 1 0 2 0;
+#X connect 3 0 0 0;
+#X connect 4 0 3 0;
+#X connect 6 0 1 0;

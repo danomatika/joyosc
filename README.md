@@ -263,7 +263,7 @@ Joystick devices report all input events with a numeric button, axis, hat, & tra
 
 Game Controllers map underlying joystick inputs to generic button and axis name strings if the device is detected by SDL as having a game controller mapping. If a device is *not* detected, you can add a custom SDL mapping string via the xml config file or an external text file. See the following for more info: [SDL_GameControllerAddMapping](http://wiki.libsdl.org/SDL_GameControllerAddMapping) & [SDL Game Controller DB](https://github.com/gabomdq/SDL_GameControllerDB).
 
-SDL Game Controller button names: a, b, x, y, start, back, guide, leftshoulder, lefttrigger, rightshoulder, righttrigger, leftstick, rightstick, dpup, dpdown, dpleft, dpright (dp = digital pad)
+SDL Game Controller button names: a, b, x, y, start, back, guide, leftshoulder, lefttrigger, rightshoulder, righttrigger, leftstick, rightstick, dpup, dpdown, dpleft, dpright (dp = digital pad), touchpad
 
 SDL Game Controller axis names: leftx, lefty, rightx, righty
 
@@ -329,7 +329,7 @@ joyosc streams device event information in the following OSC address format:
   * sensor: x, y, z
     - floating point values in m/s^2 (accelerometer) or radians/s (gyro)
     - see the [SDL docs](https://wiki.libsdl.org/SDL2/SDL_SensorType#remarks) for details
-  * hat: binary bits representing the hat button:0, 2, 4, 8
+  * hat: binary bitmask representing the hat buttons:
     - cardinal directions: 0 center, 1 up, 2 right, 4 down, 8 left
     - corner directions: 3 rightup, 6 rightdown, 9 leftup, 12 leftdown
     - see the [SDL docs](https://wiki.libsdl.org/SDL3/SDL_GetJoystickHat)
