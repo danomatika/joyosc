@@ -321,7 +321,7 @@ joyosc streams device event information in the following OSC address format:
 * _ID_ is the joystick id number or game controller name string for the control (aka joystick button 1, axis 2, etc / game controller button x, axis lefty, sensor gyro, etc); these are likely different between joystick devices but largely the same between game controllers
 * _VALUE_ is the current value of the control:
   * button state: 1 or 0 for pressed & released
-  * axis values: -32767 to 32767 (signed 16 bit)
+  * axis values: -32768 to 32767 (signed 16 bit)
     - triggers reported as axes use 0 to 32767 range
   * touchpad: index, finger, x, y, pressure
     - x & y are normalized 0 to 1 (upper left 0,0)
@@ -329,7 +329,10 @@ joyosc streams device event information in the following OSC address format:
   * sensor: x, y, z
     - floating point values in m/s^2 (accelerometer) or radians/s (gyro)
     - see the [SDL docs](https://wiki.libsdl.org/SDL2/SDL_SensorType#remarks) for details
-  * hat: binary bits representing the hat button aka: 0, 2, 4, 8
+  * hat: binary bits representing the hat button:0, 2, 4, 8
+    - cardinal directions: 0 center, 1 up, 2 right, 4 down, 8 left
+    - corner directions: 3 rightup, 6 rightdown, 9 leftup, 12 leftdown
+    - see the [SDL docs](https://wiki.libsdl.org/SDL3/SDL_GetJoystickHat)
   * (track)ball: relative x & y movement in pixels (I think, SDL docs don't go into details)
 
 Example joystick messages:
@@ -441,6 +444,7 @@ To get active device count:
 To query all active devices:
 ~~~
 /joyosc/query
+~~~
 
 To query a single device by address, ie. "gc0", or index:
 ~~~
