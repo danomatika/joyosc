@@ -57,6 +57,7 @@ bool App::parseCommandLine(int argc, char **argv) {
 		SLEEP,
 		TRIGGER,
 		SENSORS,
+		SCALE,
 		VERBOSE
 	};
 
@@ -74,6 +75,7 @@ bool App::parseCommandLine(int argc, char **argv) {
 		{WINDOW, 0, "w", "window", Options::Arg::None, "  -w, --window \topen window, helps on some platforms if device events are not being found, ex. MFi controllers on macOS"},
 		{SLEEP, 0, "", "sleep", Options::Arg::Integer, "  --sleep \tsleep time in usecs (default: 10000)"},
 		{TRIGGER, 0, "t", "triggers", Options::Arg::None, "  -t, --triggers \treport trigger buttons as axis values"},
+		{SCALE, 0, "", "scale", Options::Arg::NonEmpty, "  --scale \tscale axis values: \"hid\" -32768 - 32767, \"norm\" 0 - 1, \"snorm\" -1 - 1, \"midi\" 0 - 127 (default: hid)"},
 		{SENSORS, 0, "s", "sensors", Options::Arg::None, "  -s, --sensors \tenable controller sensor events (accelerometer, gyro)"},
 		{VERBOSE, 0, "v", "verbose", Options::Arg::None, "  -v, --verbose \tverbose printing, call twice for debug printing -vv"},
 		{UNKNOWN, 0, "", "", Options::Arg::Unknown, "\nArguments:"},
@@ -117,6 +119,9 @@ bool App::parseCommandLine(int argc, char **argv) {
 	if(options.isSet(WINDOW))     {openWindow = true;}
 	if(options.isSet(SLEEP))      {sleepUS = options.getUInt(SLEEP);}
 	if(options.isSet(TRIGGER))    {GameController::triggersAsAxes = true;}
+	if(options.isSet(SCALE))      {
+		Device::axisScaler = ValueScale::axisScalerForName(options.getString(SCALE));
+	}
 	if(options.isSet(SENSORS))    {GameController::enableSensors = true;}
 
 	return true;
@@ -204,6 +209,7 @@ void App::print() {
 	    << "joysticks only?: " << (m_deviceManager.joysticksOnly ? "true" : "false") << std::endl
 	    << "sleep us:        " << sleepUS << std::endl
 	    << "triggers as axes?: " << (GameController::triggersAsAxes ? "true" : "false") << std::endl
+	    << "axis scale:      " << ValueScale::axisScalerName(Device::axisScaler) << std::endl
 	    << "enable sensors?: " << (GameController::enableSensors ? "true" : "false") << std::endl;
 	m_deviceManager.printKnownDevices();
 	m_deviceManager.printExclusions();
@@ -289,6 +295,10 @@ bool App::loadXMLFile(const std::string &path) {
 			child->QueryBoolAttribute("openWindow", &openWindow);
 			child->QueryUnsignedAttribute("sleepUS", &sleepUS);
 			child->QueryBoolAttribute("triggersAsAxes", &GameController::triggersAsAxes);
+			if(child->Attribute("axisScale")) {
+				std::string scale = std::string(child->Attribute("axisScale"));
+				Device::axisScaler = ValueScale::axisScalerForName(scale);
+			}
 			child->QueryBoolAttribute("enableSensors", &GameController::enableSensors);
 		}
 		else if((std::string)child->Name() == "devices") {

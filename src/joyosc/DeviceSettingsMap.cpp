@@ -131,6 +131,14 @@ bool DeviceSettingsMap::readXMLController(XMLElement *e) {
 				LOG_DEBUG << "GameController " << name << ": "
 				          << "triggers as axes " << gc->triggersAsAxes << std::endl;
 			}
+			if(child->Attribute("scale")) {
+				std::string scale = std::string(child->Attribute("scale"));
+				device.axisScaler = ValueScale::axisScalerForName(scale);
+				if(device.axisScaler) {
+					LOG_DEBUG << "GameController " << name << ": "
+					          << "axis scale " << scale << std::endl;
+				}
+			}
 		}
 
 		if((std::string)child->Name() == "sensors") {
@@ -236,6 +244,14 @@ bool DeviceSettingsMap::readXMLJoystick(XMLElement *e) {
 			if(device.axisDeadZone > 0) {
 				LOG_DEBUG << "Joystick " << name << ": "
 				          << "axis deadzone " << device.axisDeadZone << std::endl;
+			}
+			if(child->Attribute("scale")) {
+				std::string scale = std::string(child->Attribute("scale"));
+				device.axisScaler = ValueScale::axisScalerForName(scale);
+				if(device.axisScaler) {
+					LOG_DEBUG << "Joystick " << name << ": "
+					          << "axis scale " << scale << std::endl;
+				}
 			}
 		}
 		if((std::string)child->Name() == "thresholds") { // deprecated

@@ -126,6 +126,9 @@ class GameController : public Device {
 		/// send button event
 		bool buttonPressed(std::string &name, int value);
 
+		/// send axis event
+		void axisMoved(const std::string &name, int value);
+
 		/// SDL controller handle
 		SDL_GameController *m_controller = nullptr;
 

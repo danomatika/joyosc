@@ -82,6 +82,11 @@ bool Joystick::open(DeviceIndex index, DeviceSettings *settings) {
 			setAxisDeadZone(settings->axisDeadZone);
 		}
 
+		// set axis value scaler if one exists
+		if(settings->axisScaler) {
+			m_axisScaler = settings->axisScaler;
+		}
+
 		// set remapping if one exists
 		if(settings->remap) {
 			setRemapping(settings->remap);
@@ -197,12 +202,24 @@ bool Joystick::handleEvent(SDL_Event *event) {
 			m_prevAxisValues[event->jaxis.axis] = value;
 
 			// send
-			sender->send(Device::deviceAddress + m_address + "/axis",
-				"ii", (int)event->jaxis.axis, value);
-			if(printEvents) {
-				LOG << m_address << " " << m_name
-				    << " axis: " << (int)event->jaxis.axis
-				    << " " << value << std::endl;
+			if(m_axisScaler) {
+				float scaled = m_axisScaler(value);
+				sender->send(Device::deviceAddress + m_address + "/axis",
+					"if", (int)event->jaxis.axis, scaled);
+				if(Device::printEvents) {
+					LOG << m_address << " " << m_name
+					    << " axis: " << (int)event->jaxis.axis
+					    << " " << scaled << std::endl;
+				}
+			}
+			else {
+				sender->send(Device::deviceAddress + m_address + "/axis",
+					"ii", (int)event->jaxis.axis, value);
+				if(printEvents) {
+					LOG << m_address << " " << m_name
+					    << " axis: " << (int)event->jaxis.axis
+					    << " " << value << std::endl;
+				}
 			}
 
 			return true;

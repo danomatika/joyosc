@@ -80,6 +80,12 @@ bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
 		if(settings->axisDeadZone > 0) {
 			setAxisDeadZone(settings->axisDeadZone);
 		}
+
+		// set axis value scaler if one exists
+		if(settings->axisScaler) {
+			m_axisScaler = settings->axisScaler;
+		}
+
 		// set remapping if one exists
 		if(settings->remap) {
 			setRemapping((GameControllerRemapping *)settings->remap);
@@ -192,13 +198,7 @@ bool GameController::handleEvent(SDL_Event *event) {
 				m_prevAxisValues[event->caxis.axis] = value;
 				return buttonPressed(axis, value);
 			}
-			sender->send(Device::deviceAddress + m_address + "/axis",
-				"si", axis.c_str(), value);
-			if(Device::printEvents) {
-				LOG << m_address << " " << m_name
-				    << " axis: " << axis << " " << value << std::endl;
-			}
-
+			axisMoved(axis, value);
 			return true;
 		}
 
@@ -269,17 +269,12 @@ bool GameController::handleEvent(SDL_Event *event) {
 			if(SDL_GameControllerHasAxis(m_controller, (SDL_GameControllerAxis)event->jaxis.axis) == SDL_FALSE) {
 				std::string axis = m_remapping->mappingForExtended(AXIS, (int)event->jaxis.axis);
 				if(axis != "") {
-					int value = (int)event->caxis.value;
-					if(m_prevAxisValues[event->caxis.axis] == value) {
+					int value = (int)event->jaxis.value;
+					if(m_prevAxisValues[event->jaxis.axis] == value) {
 						return true;
 					}
-					m_prevAxisValues[event->caxis.axis] = value;
-					sender->send(Device::deviceAddress + m_address + "/axis",
-						"si", axis.c_str(), value);
-					if(Device::printEvents) {
-						LOG << m_address << " " << m_name
-						    << " axis: " << axis << " " << value << std::endl;
-					}
+					m_prevAxisValues[event->jaxis.axis] = value;
+					axisMoved(axis, value);
 					return true;
 				}
 			}
@@ -391,4 +386,24 @@ bool GameController::buttonPressed(std::string &button, int value) {
 		    << " button: " << button << " " << value << std::endl;
 	}
 	return true;
+}
+
+void GameController::axisMoved(const std::string &name, int value) {
+	if(m_axisScaler) {
+		float scaled = m_axisScaler(value);
+		sender->send(Device::deviceAddress + m_address + "/axis",
+			"sf", name.c_str(), scaled);
+		if(Device::printEvents) {
+			LOG << m_address << " " << m_name
+			    << " axis" << ": " << name << " " << scaled << std::endl;
+		}
+	}
+	else {
+		sender->send(Device::deviceAddress + m_address + "/axis",
+			"si", name.c_str(), value);
+		if(Device::printEvents) {
+			LOG << m_address << " " << m_name
+			    << " axis" << ": " << name << " " << value << std::endl;
+		}
+	}
 }

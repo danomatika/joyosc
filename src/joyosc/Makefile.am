@@ -15,7 +15,8 @@ joyosc_SOURCES = main.cpp Common.h Common.cpp ../shared.h App.h App.cpp \
                  JoystickRemapping.h JoystickRemapping.cpp \
                  GameController.h GameController.cpp \
                  GameControllerIgnore.h GameControllerIgnore.cpp \
-                 GameControllerRemapping.h GameControllerRemapping.cpp
+                 GameControllerRemapping.h GameControllerRemapping.cpp \
+                 ValueScale.h
 
 # include paths
 AM_CXXFLAGS = $(SDL_CFLAGS) $(LO_CFLAGS) $(TINYXML2_CFLAGS) $(HELPERS_INCLUDE)

@@ -42,12 +42,21 @@
 	                     note: this can be overridden per controller with the
 	                     controller <axes> tag, see below
 
+	     axisScale: axis value scale
+	                * "hid"   -32768 - 32767 (default)
+	                * "norm"   0 - 1
+	                * "snorm" -1 - 1
+	                * "midi"   0 - 127
+	                note: this can be overridden per controller with the
+	                controller <axes> tag, see below
+
 	     enableSensors: enable sensor events (accelerometer, gyro)
 	                    note: this can be overridden per controller with the
 	                    controller <sensors> tag, see below
 	 -->
 	<config printEvents="false" joysticksOnly="false" openWindow="false"
-	        sleepUS="20000" triggersAsAxes="false" enableSensors="false"/>
+	        sleepUS="20000" triggersAsAxes="false" axisScale="hid"
+	        enableSensors="false"/>
 
 	<!-- device types to for mapping names to OSC send addresses and event
 	     customization, use lsjs to get the names and guids of the devices
@@ -86,11 +95,17 @@
 			               documentation)
 
 			     triggers: some controllers report variable triggers as axes
-			              and joyosc treats them as binary buttons by default,
+			               and joyosc treats them as binary buttons by default,
 			               disable this per controller by setting triggers to true
 			               (default: false)
+
+			     scale: axis value scale
+			            * "hid"   -32768 - 32767 (default)
+			            * "norm"   0 - 1
+			            * "snorm" -1 - 1
+			            * "midi"   0 - 127
 			-->
-			<axes deadZone="4000" triggers="false"/>
+			<axes deadZone="4000" triggers="false" scale="hid"/>
 
 			<!-- sensor behavior
 
@@ -160,7 +175,7 @@
 
 		<!-- set controller led color, if supported
 		     in this case, setting the PS4 led to "black" turns it off -->
-		<controller name="PS4 Controller" address="/ps4">
+		<controller name="PS4 Controller" >
 			<color r="0" g="0" b="0"/>
 		</controller>
 
@@ -181,8 +196,14 @@
 			               axis, some devices are jittery and require a
 			               larger number, (default: 3200, as per SDL
 			               documentation)
+
+			     scale: axis value scale
+			            * "hid"   -32768 - 32767 (default)
+			            * "norm"   0 - 1
+			            * "snorm" -1 - 1
+			            * "midi"   0 - 127
 			-->
-			<axes deadZone="4000"/>
+			<axes deadZone="4000" scale="hid"/>
 
 			<!-- axisDeadZone: old version of <axes deadZone> -->
 			<!-- <thresholds axisDeadZone="3000"/> -->

@@ -24,6 +24,7 @@
 
 #include "Common.h"
 #include "Event.h"
+#include "ValueScale.h"
 
 /// \class DeviceIndex
 /// \brief index struct for opening a game controller or joystick
@@ -56,6 +57,7 @@ struct DeviceSettings {
 	DeviceType type = UNKNOWN; ///< device type
 	std::string address = ""; ///< OSC address
 	unsigned int axisDeadZone = 0; ///< zeroing threshold
+	ValueScaleFunc axisScaler = nullptr; ///< axis value scaler
 	EventRemapping* remap = nullptr; ///< event remappings
 	EventIgnore *ignore = nullptr; ///< event ignore rules
 	void *data = nullptr; ///< device type specific data
@@ -152,6 +154,10 @@ class Device {
 		static bool printEvents; ///< print lots of events?
 		static lo::Address *sender; ///< shared osc sender, required!
 
+		/// axis value scaler func
+		/// note: this is the shared default, may be overriden per-instance
+		static ValueScaleFunc axisScaler;
+
 	protected:
 
 		std::string	m_name = ""; ///< device name ie. "PS3 Controller"
@@ -162,6 +168,7 @@ class Device {
 
 		unsigned int m_axisDeadZone = 3200; ///< axis dead zone amount +/- center pos
 		std::vector<int16_t> m_prevAxisValues; ///< prev axis values to cancel repeats
+		ValueScaleFunc m_axisScaler = nullptr; ///< axis value scaler func
 
 		EventRemapping *m_remapping = nullptr; ///< button, axis, etc remappings
 		EventIgnore *m_ignore = nullptr; ///< button, axis, etc ignores

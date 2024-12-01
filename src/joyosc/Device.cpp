@@ -29,7 +29,11 @@ std::string Device::deviceAddress = "/" PACKAGE "/devices";
 bool Device::printEvents = false;
 lo::Address* Device::sender = nullptr;
 
-Device::Device(std::string address) : m_address(address) {}
+ValueScaleFunc Device::axisScaler = nullptr;
+
+Device::Device(std::string address) : m_address(address) {
+	m_axisScaler = Device::axisScaler;
+}
 
 void Device::setAxisDeadZone(unsigned int zone) {
 	m_axisDeadZone = zone;
