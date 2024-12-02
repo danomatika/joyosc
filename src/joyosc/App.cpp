@@ -57,6 +57,7 @@ bool App::parseCommandLine(int argc, char **argv) {
 		SLEEP,
 		TRIGGER,
 		SENSORS,
+		RATE,
 		VERBOSE
 	};
 
@@ -75,6 +76,7 @@ bool App::parseCommandLine(int argc, char **argv) {
 		{SLEEP, 0, "", "sleep", Options::Arg::Integer, "  --sleep \tsleep time in usecs (default: 10000)"},
 		{TRIGGER, 0, "t", "triggers", Options::Arg::None, "  -t, --triggers \treport trigger buttons as axis values"},
 		{SENSORS, 0, "s", "sensors", Options::Arg::None, "  -s, --sensors \tenable controller sensor events (accelerometer, gyro)"},
+		{RATE, 0, "r", "rate", Options::Arg::Integer, "  -r, --rate \tsensor rate limit in hz (default: 0)"},
 		{VERBOSE, 0, "v", "verbose", Options::Arg::None, "  -v, --verbose \tverbose printing, call twice for debug printing -vv"},
 		{UNKNOWN, 0, "", "", Options::Arg::Unknown, "\nArguments:"},
 		{UNKNOWN, 0, "", "", Options::Arg::None, "  FILE \toptional XML config file(s)"},
@@ -118,6 +120,9 @@ bool App::parseCommandLine(int argc, char **argv) {
 	if(options.isSet(SLEEP))      {sleepUS = options.getUInt(SLEEP);}
 	if(options.isSet(TRIGGER))    {GameController::triggersAsAxes = true;}
 	if(options.isSet(SENSORS))    {GameController::enableSensors = true;}
+	if(options.isSet(RATE) && options.getInt(RATE) > 0) {
+		GameController::sensorRateMS = 1000 / options.getInt(RATE); // hz -> ms
+	}
 
 	return true;
 }
@@ -204,7 +209,8 @@ void App::print() {
 	    << "joysticks only?: " << (m_deviceManager.joysticksOnly ? "true" : "false") << std::endl
 	    << "sleep us:        " << sleepUS << std::endl
 	    << "triggers as axes?: " << (GameController::triggersAsAxes ? "true" : "false") << std::endl
-	    << "enable sensors?: " << (GameController::enableSensors ? "true" : "false") << std::endl;
+	    << "enable sensors?: " << (GameController::enableSensors ? "true" : "false") << std::endl
+	    << "sensor rate:     " << (1000 / GameController::sensorRateMS) << "hz" << std::endl; // ms -> hz
 	m_deviceManager.printKnownDevices();
 	m_deviceManager.printExclusions();
 }
@@ -290,6 +296,10 @@ bool App::loadXMLFile(const std::string &path) {
 			child->QueryUnsignedAttribute("sleepUS", &sleepUS);
 			child->QueryBoolAttribute("triggersAsAxes", &GameController::triggersAsAxes);
 			child->QueryBoolAttribute("enableSensors", &GameController::enableSensors);
+			int rate = -1;
+			if(child->QueryIntAttribute("rate", &rate) == XML_SUCCESS && rate > 0) {
+				GameController::sensorRateMS = 1000 / rate; // hz -> ms
+			}
 		}
 		else if((std::string)child->Name() == "devices") {
 			m_deviceManager.readXML(child);

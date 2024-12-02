@@ -22,6 +22,7 @@
 ==============================================================================*/
 #include "GameController.h"
 
+#include <cmath>
 #include <regex>
 #include "../shared.h"
 #include "GameControllerRemapping.h"
@@ -30,10 +31,12 @@
 
 bool GameController::triggersAsAxes = false;
 bool GameController::enableSensors = false;
+int GameController::sensorRateMS = 0;
 
 GameController::GameController(std::string address) : Device(address) {
 	m_triggersAsAxes = GameController::triggersAsAxes;
 	m_enableSensors = GameController::enableSensors;
+	m_sensorRateMS = GameController::sensorRateMS;
 }
 
 bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
@@ -96,6 +99,7 @@ bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
 		GameControllerSettings *gcs = (GameControllerSettings *)settings->data;
 		m_triggersAsAxes = gcs->triggersAsAxes;
 		m_enableSensors = gcs->enableSensors;
+		m_sensorRateMS = gcs->sensorRateMS;
 		m_extendedMappings = (m_remapping ? m_remapping->hasExtendedMappings() : false);
 
 		// set color?
@@ -226,19 +230,31 @@ bool GameController::handleEvent(SDL_Event *event) {
 		}
 
 		case SDL_CONTROLLERSENSORUPDATE: {
-			const std::string &sensor = nameForSensor((SDL_SensorType)event->csensor.sensor);
+			SDL_SensorType type = (SDL_SensorType)event->csensor.sensor;
+			const std::string &sensor = nameForSensor(type);
+			float x = event->csensor.data[0];
+			float y = event->csensor.data[1];
+			float z = event->csensor.data[2];
+			auto iter = m_prevSensorValues.find(type);
+			if(iter != m_prevSensorValues.end()) {
+				// limit sensor rate and filter value repeats
+				SensorValues *prev = (&iter->second);
+				if(event->csensor.timestamp - prev->timestamp < m_sensorRateMS) {
+					return true;
+				}
+				if(x == prev->x && y == prev->y && z == prev->z) {
+					return true;
+				}
+				prev->x = x;
+				prev->y = y;
+				prev->z = z;
+				prev->timestamp = event->csensor.timestamp;
+			}
 			sender->send(Device::deviceAddress + m_address + "/sensor",
-				"sfff", sensor.c_str(),
-				event->csensor.data[0],
-				event->csensor.data[1],
-				event->csensor.data[2]
-			);
+				"sfff", sensor.c_str(), x, y, z);
 			if(Device::printEvents) {
-				LOG << m_address << " " << m_name
-				    << " sensor: " << sensor
-				    << " " << event->csensor.data[0]
-				    << " " << event->csensor.data[1]
-				    << " " << event->csensor.data[2] << std::endl;
+				LOG << m_address << " " << m_name << " sensor: " << sensor
+				    << " " << x << " " << y << " " << z << std::endl;
 			}
 			return true;
 		}
@@ -370,7 +386,9 @@ void GameController::enableAvailableSensors() {
 				LOG_WARN << "GameController " << m_name
 				         << ": could not enable sensor " << nameForSensor(sensor)
 				         << ": " << SDL_GetError() << std::endl;
+				continue;
 			}
+			m_prevSensorValues[sensor] = SensorValues();
 		}
 	}
 }

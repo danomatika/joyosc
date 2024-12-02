@@ -138,6 +138,12 @@ bool DeviceSettingsMap::readXMLController(XMLElement *e) {
 				LOG_DEBUG << "GameController " << name << ": "
 				          << "enable sensors " << gc->enableSensors << std::endl;
 			}
+			int rate = -1;
+			if(child->QueryIntAttribute("rate", &rate) == XML_SUCCESS && rate > 0) {
+				gc->sensorRateMS = 1000 / rate; // hz -> ms
+				LOG_DEBUG << "GameController " << name << ": "
+				          << "sensor rate " << gc->sensorRateMS << std::endl;
+			}
 		}
 
 		// deprecated
