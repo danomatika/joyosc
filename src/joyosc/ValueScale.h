@@ -35,7 +35,7 @@ class ValueScale {
 		inline static float axisNorm(int value) {
 			float f = (value + 32768.f) / 65535.f;
 			// this is dumb, but ensures 0 -> 0.5, not 0.5000009 or similar
-			return floorf(f * 10000.f) / 10000.f;
+			return floorf(f * 100000.f) / 100000.f;
 		}
 
 		/// normalize 16-bit HID axis values -32768 - 32767 to -1 to 1
