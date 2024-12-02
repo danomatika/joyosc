@@ -371,7 +371,7 @@ void DeviceManager::sendDeviceInfo(Device *device) {
 			SDL_Joystick *joystick = ((GameController *)device)->getJoystick();
 			SDL_GameController *controller = ((GameController *)device)->getController();
 			int buttons = SDL_JoystickNumButtons(joystick);
-			int axes = SDL_JoystickNumButtons(joystick);
+			int axes = SDL_JoystickNumAxes(joystick);
 			int touchpads = SDL_GameControllerGetNumTouchpads(controller);
 			int sensors = shared::numGameControllerSensors(controller, false); // only enabled sensors
 			int rumble = (int)SDL_GameControllerHasRumble(controller);
