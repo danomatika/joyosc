@@ -31,6 +31,7 @@ class GameControllerIgnore;
 struct GameControllerSettings {
 	bool triggersAsAxes = false; ///< treat triggers as axes?
 	bool enableSensors = false; ///< enable sensor events?
+	bool normalizeSensors = false; ///< normalize sensor values?
 	int ledColor[3] = {-1, -1, -1}; ///< led rgb color, set -1 to ignore
 	bool isColorValid() {return (ledColor[0] >= 0 && ledColor[1] >= 0 && ledColor[2] >= 0);}
 };
@@ -118,6 +119,10 @@ class GameController : public Device {
 		/// note: this is the shared default, may be overriden per-instance
 		static bool enableSensors;
 
+		/// normalize sensor values
+		/// note: this is the shared default, may be overriden per-instance
+		static bool normalizeSensors;
+
 	protected:
 
 		/// enable (available) controller sensors
@@ -125,6 +130,9 @@ class GameController : public Device {
 
 		/// send button event
 		bool buttonPressed(std::string &name, int value);
+
+		/// send axis event
+		void axisMoved(const std::string &name, int value);
 
 		/// SDL controller handle
 		SDL_GameController *m_controller = nullptr;
@@ -137,4 +145,7 @@ class GameController : public Device {
 
 		/// enable sensor events (accelerometer, gyro)
 		bool m_enableSensors = false;
+
+		/// normalize sensor values?
+		bool m_normalizeSensors = false;
 };

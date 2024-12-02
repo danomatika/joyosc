@@ -56,6 +56,7 @@ struct DeviceSettings {
 	DeviceType type = UNKNOWN; ///< device type
 	std::string address = ""; ///< OSC address
 	unsigned int axisDeadZone = 0; ///< zeroing threshold
+	bool normalizeAxes = false; ///< normalize axis values?
 	EventRemapping* remap = nullptr; ///< event remappings
 	EventIgnore *ignore = nullptr; ///< event ignore rules
 	void *data = nullptr; ///< device type specific data
@@ -152,6 +153,19 @@ class Device {
 		static bool printEvents; ///< print lots of events?
 		static lo::Address *sender; ///< shared osc sender, required!
 
+		/// normalize axis values
+		/// note: this is the shared default, may be overriden per-instance
+		static bool normalizeAxes;
+
+		/// normalize signed 16-bit axis values -32768 - 32767 to float -1 - 1
+		/// note: avoids rounding errors at slight loss in precision
+		inline static float normalizeAxisValue(int value) {
+			float f = (value + 32768.f) / 65535.f;
+			// this is dumb, but ensures 0 -> 0.5, not 0.5000009 or similar
+			f = floorf(f * 100000.f) / 100000.f;
+			return (f * 2.f) - 1.f;
+		}
+
 	protected:
 
 		std::string	m_name = ""; ///< device name ie. "PS3 Controller"
@@ -162,6 +176,7 @@ class Device {
 
 		unsigned int m_axisDeadZone = 3200; ///< axis dead zone amount +/- center pos
 		std::vector<int16_t> m_prevAxisValues; ///< prev axis values to cancel repeats
+		bool m_normalizeAxes = false; ///< normalize axis values?
 
 		EventRemapping *m_remapping = nullptr; ///< button, axis, etc remappings
 		EventIgnore *m_ignore = nullptr; ///< button, axis, etc ignores

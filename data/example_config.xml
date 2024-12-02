@@ -42,12 +42,19 @@
 	                     note: this can be overridden per controller with the
 	                     controller <axes> tag, see below
 
+	     normalizeAxes: normalize axis values to -1 - 1
+
 	     enableSensors: enable sensor events (accelerometer, gyro)
 	                    note: this can be overridden per controller with the
 	                    controller <sensors> tag, see below
+
+	     normalizeSensors: normalize sensor values:
+	                       * accel m/s^2 -> standard gs
+	                       * gyro rad/s -> rotation
 	 -->
 	<config printEvents="false" joysticksOnly="false" openWindow="false"
-	        sleepUS="20000" triggersAsAxes="false" enableSensors="false"/>
+	        sleepUS="20000" triggersAsAxes="false" normalizeAxes="false"
+	        enableSensors="false" normalizeSensors="false"/>
 
 	<!-- device types to for mapping names to OSC send addresses and event
 	     customization, use lsjs to get the names and guids of the devices
@@ -90,13 +97,17 @@
 			               disable this per controller by setting triggers to true
 			               (default: false)
 			-->
-			<axes deadZone="4000" triggers="false"/>
+			<axes deadZone="4000" triggers="false" normalize="false"/>
 
 			<!-- sensor behavior
 
 			     enable: enable sensor events (accelerometer, gyro)
+
+				 normalize: normalize sensor events:
+				            * accel m/s^2 -> standard gs
+				            * gyro rad/s -> rotation
 			-->
-			<sensors enable="false"/>
+			<sensors enable="false" normalize="false"/>
 
 			<!-- axisDeadZone: old version of <axes deadZone> -->
 			<!-- <thresholds axisDeadZone="3000"/> -->

@@ -131,12 +131,20 @@ bool DeviceSettingsMap::readXMLController(XMLElement *e) {
 				LOG_DEBUG << "GameController " << name << ": "
 				          << "triggers as axes " << gc->triggersAsAxes << std::endl;
 			}
+			if(child->QueryBoolAttribute("normalize", &device.normalizeAxes) == XML_SUCCESS) {
+				LOG_DEBUG << "GameController " << name << ": "
+				          << "normalize axes " << device.normalizeAxes << std::endl;
+			}
 		}
 
 		if((std::string)child->Name() == "sensors") {
 			if(child->QueryBoolAttribute("enable", &gc->enableSensors) == XML_SUCCESS) {
 				LOG_DEBUG << "GameController " << name << ": "
 				          << "enable sensors " << gc->enableSensors << std::endl;
+			}
+			if(child->QueryBoolAttribute("normalize", &gc->normalizeSensors) == XML_SUCCESS) {
+				LOG_DEBUG << "GameController " << name << ": "
+				          << "normalize sensors " << gc->normalizeSensors << std::endl;
 			}
 		}
 
@@ -236,6 +244,10 @@ bool DeviceSettingsMap::readXMLJoystick(XMLElement *e) {
 			if(device.axisDeadZone > 0) {
 				LOG_DEBUG << "Joystick " << name << ": "
 				          << "axis deadzone " << device.axisDeadZone << std::endl;
+			}
+			if(child->QueryBoolAttribute("normalize", &device.normalizeAxes) == XML_SUCCESS) {
+				LOG_DEBUG << "Joystick " << name << ": "
+				          << "normalize axes " << device.normalizeAxes << std::endl;
 			}
 		}
 		if((std::string)child->Name() == "thresholds") { // deprecated

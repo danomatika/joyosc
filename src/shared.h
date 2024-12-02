@@ -47,6 +47,32 @@ static const SDL_SensorType s_sensors[] = {
 #endif
 };
 
+inline bool isAccelSensor(SDL_SensorType sensor) {
+	switch(sensor) {
+		case SDL_SENSOR_ACCEL:
+#if HAVE_DECL_SDL_SENSOR_ACCEL_L
+		case SDL_SENSOR_ACCEL_L:
+		case SDL_SENSOR_ACCEL_R:
+#endif
+			return true;
+		default:
+			return false;
+	}
+}
+
+inline bool isGyroSensor(SDL_SensorType sensor) {
+	switch(sensor) {
+		case SDL_SENSOR_GYRO:
+#if HAVE_DECL_SDL_SENSOR_ACCEL_L
+		case SDL_SENSOR_GYRO_L:
+		case SDL_SENSOR_GYRO_R:
+#endif
+			return true;
+		default:
+			return false;
+	}
+}
+
 /// return sensor name from enum
 inline std::string nameForSensor(SDL_SensorType sensor) {
 	switch(sensor) {

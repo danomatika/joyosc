@@ -28,12 +28,16 @@
 #include "GameControllerIgnore.h"
 #include "Path.h"
 
+#include <cmath> // M_2_PI
+
 bool GameController::triggersAsAxes = false;
 bool GameController::enableSensors = false;
+bool GameController::normalizeSensors = false;
 
 GameController::GameController(std::string address) : Device(address) {
 	m_triggersAsAxes = GameController::triggersAsAxes;
 	m_enableSensors = GameController::enableSensors;
+	m_normalizeSensors = GameController::normalizeSensors;
 }
 
 bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
@@ -96,6 +100,7 @@ bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
 		GameControllerSettings *gcs = (GameControllerSettings *)settings->data;
 		m_triggersAsAxes = gcs->triggersAsAxes;
 		m_enableSensors = gcs->enableSensors;
+		m_normalizeSensors = gcs->normalizeSensors;
 		m_extendedMappings = (m_remapping ? m_remapping->hasExtendedMappings() : false);
 
 		// set color?
@@ -192,12 +197,7 @@ bool GameController::handleEvent(SDL_Event *event) {
 				m_prevAxisValues[event->caxis.axis] = value;
 				return buttonPressed(axis, value);
 			}
-			sender->send(Device::deviceAddress + m_address + "/axis",
-				"si", axis.c_str(), value);
-			if(Device::printEvents) {
-				LOG << m_address << " " << m_name
-				    << " axis: " << axis << " " << value << std::endl;
-			}
+			axisMoved(axis, value);
 
 			return true;
 		}
@@ -226,19 +226,28 @@ bool GameController::handleEvent(SDL_Event *event) {
 		}
 
 		case SDL_CONTROLLERSENSORUPDATE: {
-			const std::string &sensor = nameForSensor((SDL_SensorType)event->csensor.sensor);
+			SDL_SensorType type = (SDL_SensorType)event->csensor.sensor;
+			const std::string &sensor = nameForSensor(type);
+			float x = event->csensor.data[0];
+			float y = event->csensor.data[1];
+			float z = event->csensor.data[2];
+			if(m_normalizeSensors) {
+				if(shared::isAccelSensor(type)) { // m/s^2 -> standard gs
+					x /= SDL_STANDARD_GRAVITY;
+					y /= SDL_STANDARD_GRAVITY;
+					z /= SDL_STANDARD_GRAVITY;
+				}
+				else if(shared::isGyroSensor(type)) { // rad/2 -> rotation
+					x /= M_2_PI;
+					y /= M_2_PI;
+					z /= M_2_PI;
+				}
+			}
 			sender->send(Device::deviceAddress + m_address + "/sensor",
-				"sfff", sensor.c_str(),
-				event->csensor.data[0],
-				event->csensor.data[1],
-				event->csensor.data[2]
-			);
+				"sfff", sensor.c_str(), x, y, z);
 			if(Device::printEvents) {
-				LOG << m_address << " " << m_name
-				    << " sensor: " << sensor
-				    << " " << event->csensor.data[0]
-				    << " " << event->csensor.data[1]
-				    << " " << event->csensor.data[2] << std::endl;
+				LOG << m_address << " " << m_name << " sensor: " << sensor
+				    << " " << x << " " << y << " " << z << std::endl;
 			}
 			return true;
 		}
@@ -273,13 +282,8 @@ bool GameController::handleEvent(SDL_Event *event) {
 					if(m_prevAxisValues[event->caxis.axis] == value) {
 						return true;
 					}
-					m_prevAxisValues[event->caxis.axis] = value;
-					sender->send(Device::deviceAddress + m_address + "/axis",
-						"si", axis.c_str(), value);
-					if(Device::printEvents) {
-						LOG << m_address << " " << m_name
-						    << " axis: " << axis << " " << value << std::endl;
-					}
+					m_prevAxisValues[event->jaxis.axis] = value;
+					axisMoved(axis, value);
 					return true;
 				}
 			}
@@ -391,4 +395,24 @@ bool GameController::buttonPressed(std::string &button, int value) {
 		    << " button: " << button << " " << value << std::endl;
 	}
 	return true;
+}
+
+void GameController::axisMoved(const std::string &name, int value) {
+	if(m_normalizeAxes) {
+		float scaled = Device::normalizeAxisValue(value);
+		sender->send(Device::deviceAddress + m_address + "/axis",
+			"sf", name.c_str(), scaled);
+		if(Device::printEvents) {
+			LOG << m_address << " " << m_name
+			    << " axis" << ": " << name << " " << scaled << std::endl;
+		}
+	}
+	else {
+		sender->send(Device::deviceAddress + m_address + "/axis",
+			"si", name.c_str(), value);
+		if(Device::printEvents) {
+			LOG << m_address << " " << m_name
+			    << " axis" << ": " << name << " " << value << std::endl;
+		}
+	}
 }
