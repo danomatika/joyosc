@@ -45,9 +45,12 @@
 	     enableSensors: enable sensor events (accelerometer, gyro)
 	                    note: this can be overridden per controller with the
 	                    controller <sensors> tag, see below
+
+	     sensorRate: sensor rate limit in hz, 0 is unlimited
 	 -->
 	<config printEvents="false" joysticksOnly="false" openWindow="false"
-	        sleepUS="20000" triggersAsAxes="false" enableSensors="false"/>
+	        sleepUS="20000" triggersAsAxes="false" enableSensors="false"
+	        sensorRate="0"/>
 
 	<!-- device types to for mapping names to OSC send addresses and event
 	     customization, use lsjs to get the names and guids of the devices
@@ -95,8 +98,10 @@
 			<!-- sensor behavior
 
 			     enable: enable sensor events (accelerometer, gyro)
+
+			     rate: sensor rate limit in hz, 0 is unlimited
 			-->
-			<sensors enable="false"/>
+			<sensors enable="false" rate="0"/>
 
 			<!-- axisDeadZone: old version of <axes deadZone> -->
 			<!-- <thresholds axisDeadZone="3000"/> -->
