@@ -386,10 +386,10 @@ Device joystick query info:
 For example, the output from querying the count and a single connected PS4 controller: 
 ~~~
 /joyosc/query/count 1
-/joyosc/query/device controller 0 ps4 16 16 1 0 1 1
+/joyosc/query/device controller 0 ps4 16 6 1 0 1 1
 ~~~
 
-The PS4 controller has 16 buttons, 16 axes, 1 touchpad, a color LED, can rumble.
+The PS4 controller has 16 buttons, 6 axes, 1 touchpad, a color LED, can rumble.
 
 #### Control Messages
 

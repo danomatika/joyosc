@@ -133,11 +133,11 @@ class GameController : public Device {
 		SDL_GameController *m_controller = nullptr;
 
 		/// treat left & right triggers as axes? otherwise buttons
-		bool m_triggersAsAxes;
+		bool m_triggersAsAxes = false;
 
 		/// are extended joystick events supported?
 		bool m_extendedMappings = false;
 
 		/// enable sensor events (accelerometer, gyro)
-		bool m_enableSensors;
+		bool m_enableSensors = false;
 };
