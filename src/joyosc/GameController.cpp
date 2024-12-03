@@ -242,8 +242,10 @@ bool GameController::handleEvent(SDL_Event *event) {
 				if(event->csensor.timestamp - prev->timestamp < m_sensorRateMS) {
 					return true;
 				}
-				if(x == prev->x && y == prev->y && z == prev->z) {
-					return true;
+				if(abs(x - prev->x) < FLT_EPSILON &&
+				   abs(y - prev->y) < FLT_EPSILON &&
+				   abs(z - prev->z) < FLT_EPSILON) {
+				    return true;
 				}
 				prev->x = x;
 				prev->y = y;
