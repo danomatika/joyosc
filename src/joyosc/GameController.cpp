@@ -31,7 +31,7 @@
 
 bool GameController::triggersAsAxes = false;
 bool GameController::enableSensors = false;
-int GameController::sensorRateMS = 0;
+unsigned int GameController::sensorRateMS = 0;
 
 GameController::GameController(std::string address) : Device(address) {
 	m_triggersAsAxes = GameController::triggersAsAxes;

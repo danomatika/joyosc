@@ -31,7 +31,7 @@ class GameControllerIgnore;
 struct GameControllerSettings {
 	bool triggersAsAxes = false; ///< treat triggers as axes?
 	bool enableSensors = false; ///< enable sensor events?
-	int sensorRateMS = 0; ///< sensor rate limit in ms, 0 for unlimited
+	unsigned int sensorRateMS = 0; ///< sensor rate limit in ms, 0 for unlimited
 	int ledColor[3] = {-1, -1, -1}; ///< led rgb color, set -1 to ignore
 	bool isColorValid() {return (ledColor[0] >= 0 && ledColor[1] >= 0 && ledColor[2] >= 0);}
 };
@@ -121,7 +121,7 @@ class GameController : public Device {
 
 		/// sensor rate limit in ms between frames, 0 for unlimited
 		/// note: this is the shared default, may be overriden per-instance
-		static int sensorRateMS;
+		static unsigned int sensorRateMS;
 
 	protected:
 
@@ -155,5 +155,5 @@ class GameController : public Device {
 		std::map<SDL_SensorType,SensorValues> m_prevSensorValues;
 
 		/// sensor rate limit in ms between frames, 0 for unlimited
-		int m_sensorRateMS = 0;
+		unsigned int m_sensorRateMS = 0;
 };

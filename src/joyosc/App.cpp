@@ -121,7 +121,7 @@ bool App::parseCommandLine(int argc, char **argv) {
 	if(options.isSet(TRIGGER))    {GameController::triggersAsAxes = true;}
 	if(options.isSet(SENSORS))    {GameController::enableSensors = true;}
 	if(options.isSet(RATE) && options.getInt(RATE) > 0) {
-		GameController::sensorRateMS = 1000 / options.getInt(RATE); // hz -> ms
+		GameController::sensorRateMS = 1000 / options.getUInt(RATE); // hz -> ms
 	}
 
 	return true;
@@ -209,8 +209,13 @@ void App::print() {
 	    << "joysticks only?: " << (m_deviceManager.joysticksOnly ? "true" : "false") << std::endl
 	    << "sleep us:        " << sleepUS << std::endl
 	    << "triggers as axes?: " << (GameController::triggersAsAxes ? "true" : "false") << std::endl
-	    << "enable sensors?: " << (GameController::enableSensors ? "true" : "false") << std::endl
-	    << "sensor rate:     " << (1000 / GameController::sensorRateMS) << "hz" << std::endl; // ms -> hz
+	    << "enable sensors?: " << (GameController::enableSensors ? "true" : "false") << std::endl;
+	if(GameController::sensorRateMS > 0) {
+		LOG << "sensor rate:     " << 1000 / GameController::sensorRateMS << "hz" << std::endl; // ms -> hz
+	}
+	else {
+		LOG << "sensor rate:     unlimited" << std::endl;
+	}
 	m_deviceManager.printKnownDevices();
 	m_deviceManager.printExclusions();
 }
@@ -296,8 +301,8 @@ bool App::loadXMLFile(const std::string &path) {
 			child->QueryUnsignedAttribute("sleepUS", &sleepUS);
 			child->QueryBoolAttribute("triggersAsAxes", &GameController::triggersAsAxes);
 			child->QueryBoolAttribute("enableSensors", &GameController::enableSensors);
-			int rate = -1;
-			if(child->QueryIntAttribute("rate", &rate) == XML_SUCCESS && rate > 0) {
+			unsigned int rate = 0;
+			if(child->QueryUnsignedAttribute("rate", &rate) == XML_SUCCESS && rate > 0) {
 				GameController::sensorRateMS = 1000 / rate; // hz -> ms
 			}
 		}
