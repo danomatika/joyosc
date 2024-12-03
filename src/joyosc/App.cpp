@@ -302,7 +302,7 @@ bool App::loadXMLFile(const std::string &path) {
 			child->QueryBoolAttribute("triggersAsAxes", &GameController::triggersAsAxes);
 			child->QueryBoolAttribute("enableSensors", &GameController::enableSensors);
 			unsigned int rate = 0;
-			if(child->QueryUnsignedAttribute("rate", &rate) == XML_SUCCESS && rate > 0) {
+			if(child->QueryUnsignedAttribute("sensorRate", &rate) == XML_SUCCESS && rate > 0) {
 				GameController::sensorRateMS = 1000 / rate; // hz -> ms
 			}
 		}
