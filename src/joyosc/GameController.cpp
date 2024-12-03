@@ -235,22 +235,12 @@ bool GameController::handleEvent(SDL_Event *event) {
 			float x = event->csensor.data[0];
 			float y = event->csensor.data[1];
 			float z = event->csensor.data[2];
-			auto iter = m_prevSensorValues.find(type);
-			if(iter != m_prevSensorValues.end()) {
-				// limit sensor rate and filter value repeats
-				SensorValues *prev = (&iter->second);
-				if(event->csensor.timestamp - prev->timestamp < m_sensorRateMS) {
+			auto prev = m_prevSensorTimestamps.find(type);
+			if(prev != m_prevSensorTimestamps.end()) { // limit sensor rate
+				if(event->csensor.timestamp - prev->second < m_sensorRateMS) {
 					return true;
 				}
-				if(abs(x - prev->x) < FLT_EPSILON &&
-				   abs(y - prev->y) < FLT_EPSILON &&
-				   abs(z - prev->z) < FLT_EPSILON) {
-				    return true;
-				}
-				prev->x = x;
-				prev->y = y;
-				prev->z = z;
-				prev->timestamp = event->csensor.timestamp;
+				prev->second = event->csensor.timestamp;
 			}
 			if(m_normalizeSensors) {
 				if(shared::isAccelSensor(type)) { // m/s^2 -> standard gs
@@ -397,7 +387,7 @@ void GameController::enableAvailableSensors() {
 				         << ": " << SDL_GetError() << std::endl;
 				continue;
 			}
-			m_prevSensorValues[sensor] = SensorValues();
+			m_prevSensorTimestamps[sensor] = 0;
 		}
 	}
 }

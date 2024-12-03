@@ -154,16 +154,8 @@ class GameController : public Device {
 		/// normalize sensor values?
 		bool m_normalizeSensors = false;
 
-		/// sensor value snapshot
-		struct SensorValues {
-			float x = 0;
-			float y = 0;
-			float z = 0;
-			uint32_t timestamp = 0;
-		};
-
-		///< prev sensor values to cancel repeats
-		std::map<SDL_SensorType,SensorValues> m_prevSensorValues;
+		///< prev sensor timestamps for rate limit
+		std::map<SDL_SensorType,uint32_t> m_prevSensorTimestamps;
 
 		/// sensor rate limit in ms between frames, 0 for unlimited
 		unsigned int m_sensorRateMS = 0;
