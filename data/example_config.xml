@@ -51,10 +51,12 @@
 	     normalizeSensors: normalize sensor values:
 	                       * accel m/s^2 -> standard gs
 	                       * gyro rad/s -> rotation
+
+	     sensorRate: sensor rate limit in hz, 0 is unlimited
 	 -->
 	<config printEvents="false" joysticksOnly="false" openWindow="false"
 	        sleepUS="20000" triggersAsAxes="false" normalizeAxes="false"
-	        enableSensors="false" normalizeSensors="false"/>
+	        enableSensors="false" normalizeSensors="false" sensorRate="0"/>
 
 	<!-- device types to for mapping names to OSC send addresses and event
 	     customization, use lsjs to get the names and guids of the devices
@@ -103,11 +105,13 @@
 
 			     enable: enable sensor events (accelerometer, gyro)
 
-				 normalize: normalize sensor events:
-				            * accel m/s^2 -> standard gs
-				            * gyro rad/s -> rotation
+			     normalize: normalize sensor events:
+			                * accel m/s^2 -> standard gs
+			                * gyro rad/s -> rotation
+
+			     rate: sensor rate limit in hz, 0 is unlimited
 			-->
-			<sensors enable="false" normalize="false"/>
+			<sensors enable="false" normalize="false" rate="0"/>
 
 			<!-- axisDeadZone: old version of <axes deadZone> -->
 			<!-- <thresholds axisDeadZone="3000"/> -->

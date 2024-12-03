@@ -22,6 +22,7 @@
 ==============================================================================*/
 #include "GameController.h"
 
+#include <cmath>
 #include <regex>
 #include "../shared.h"
 #include "GameControllerRemapping.h"
@@ -33,11 +34,13 @@
 bool GameController::triggersAsAxes = false;
 bool GameController::enableSensors = false;
 bool GameController::normalizeSensors = false;
+unsigned int GameController::sensorRateMS = 0;
 
 GameController::GameController(std::string address) : Device(address) {
 	m_triggersAsAxes = GameController::triggersAsAxes;
 	m_enableSensors = GameController::enableSensors;
 	m_normalizeSensors = GameController::normalizeSensors;
+	m_sensorRateMS = GameController::sensorRateMS;
 }
 
 bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
@@ -101,6 +104,7 @@ bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
 		m_triggersAsAxes = gcs->triggersAsAxes;
 		m_enableSensors = gcs->enableSensors;
 		m_normalizeSensors = gcs->normalizeSensors;
+		m_sensorRateMS = gcs->sensorRateMS;
 		m_extendedMappings = (m_remapping ? m_remapping->hasExtendedMappings() : false);
 
 		// set color?
@@ -231,6 +235,23 @@ bool GameController::handleEvent(SDL_Event *event) {
 			float x = event->csensor.data[0];
 			float y = event->csensor.data[1];
 			float z = event->csensor.data[2];
+			auto iter = m_prevSensorValues.find(type);
+			if(iter != m_prevSensorValues.end()) {
+				// limit sensor rate and filter value repeats
+				SensorValues *prev = (&iter->second);
+				if(event->csensor.timestamp - prev->timestamp < m_sensorRateMS) {
+					return true;
+				}
+				if(abs(x - prev->x) < FLT_EPSILON &&
+				   abs(y - prev->y) < FLT_EPSILON &&
+				   abs(z - prev->z) < FLT_EPSILON) {
+				    return true;
+				}
+				prev->x = x;
+				prev->y = y;
+				prev->z = z;
+				prev->timestamp = event->csensor.timestamp;
+			}
 			if(m_normalizeSensors) {
 				if(shared::isAccelSensor(type)) { // m/s^2 -> standard gs
 					x /= SDL_STANDARD_GRAVITY;
@@ -374,7 +395,9 @@ void GameController::enableAvailableSensors() {
 				LOG_WARN << "GameController " << m_name
 				         << ": could not enable sensor " << nameForSensor(sensor)
 				         << ": " << SDL_GetError() << std::endl;
+				continue;
 			}
+			m_prevSensorValues[sensor] = SensorValues();
 		}
 	}
 }

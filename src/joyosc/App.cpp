@@ -57,6 +57,7 @@ bool App::parseCommandLine(int argc, char **argv) {
 		SLEEP,
 		TRIGGER,
 		SENSORS,
+		RATE,
 		NORM,
 		VERBOSE
 	};
@@ -76,6 +77,7 @@ bool App::parseCommandLine(int argc, char **argv) {
 		{SLEEP, 0, "", "sleep", Options::Arg::Integer, "  --sleep \tsleep time in usecs (default: 10000)"},
 		{TRIGGER, 0, "t", "triggers", Options::Arg::None, "  -t, --triggers \treport trigger buttons as axis values"},
 		{SENSORS, 0, "s", "sensors", Options::Arg::None, "  -s, --sensors \tenable controller sensor events (accelerometer, gyro)"},
+		{RATE, 0, "r", "rate", Options::Arg::Integer, "  -r, --rate \tsensor rate limit in hz (default: 0)"},
 		{NORM, 0, "n", "normalize", Options::Arg::None, "  -n, --normalize \tnormalize axis and sensor values"},
 		{VERBOSE, 0, "v", "verbose", Options::Arg::None, "  -v, --verbose \tverbose printing, call twice for debug printing -vv"},
 		{UNKNOWN, 0, "", "", Options::Arg::Unknown, "\nArguments:"},
@@ -120,6 +122,9 @@ bool App::parseCommandLine(int argc, char **argv) {
 	if(options.isSet(SLEEP))      {sleepUS = options.getUInt(SLEEP);}
 	if(options.isSet(TRIGGER))    {GameController::triggersAsAxes = true;}
 	if(options.isSet(SENSORS))    {GameController::enableSensors = true;}
+	if(options.isSet(RATE) && options.getInt(RATE) > 0) {
+		GameController::sensorRateMS = 1000 / options.getUInt(RATE); // hz -> ms
+	}
 	if(options.isSet(NORM)) {
 		Device::normalizeAxes = true;
 		GameController::normalizeSensors = true;
@@ -211,8 +216,14 @@ void App::print() {
 	    << "sleep us:        " << sleepUS << std::endl
 	    << "triggers as axes?: " << (GameController::triggersAsAxes ? "true" : "false") << std::endl
 	    << "normalize axes?: " << (Device::normalizeAxes ? "true" : "false") << std::endl
-	    << "enable sensors?: " << (GameController::enableSensors ? "true" : "false") << std::endl
-	    << "normalize sensors?: " << (GameController::normalizeSensors ? "true" : "false") << std::endl;
+	    << "enable sensors?: " << (GameController::enableSensors ? "true" : "false") << std::endl;
+	if(GameController::sensorRateMS > 0) {
+		LOG << "sensor rate:     " << 1000 / GameController::sensorRateMS << "hz" << std::endl; // ms -> hz
+	}
+	else {
+		LOG << "sensor rate:     unlimited" << std::endl;
+	}
+	LOG << "normalize sensors?: " << (GameController::normalizeSensors ? "true" : "false") << std::endl;
 	m_deviceManager.printKnownDevices();
 	m_deviceManager.printExclusions();
 }
@@ -300,6 +311,10 @@ bool App::loadXMLFile(const std::string &path) {
 			child->QueryBoolAttribute("normalizeAxes", &Device::normalizeAxes);
 			child->QueryBoolAttribute("enableSensors", &GameController::enableSensors);
 			child->QueryBoolAttribute("normalizeSensors", &GameController::normalizeSensors);
+			unsigned int rate = 0;
+			if(child->QueryUnsignedAttribute("sensorRate", &rate) == XML_SUCCESS && rate > 0) {
+				GameController::sensorRateMS = 1000 / rate; // hz -> ms
+			}
 		}
 		else if((std::string)child->Name() == "devices") {
 			m_deviceManager.readXML(child);
