@@ -175,7 +175,7 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 		case SDL_CONTROLLERAXISMOTION: case SDL_CONTROLLERTOUCHPADDOWN:
 		case SDL_CONTROLLERTOUCHPADMOTION: case SDL_CONTROLLERTOUCHPADUP:
 		case SDL_CONTROLLERSENSORUPDATE:
-			if(getType(event->cdevice.which) == GAMECONTROLLER) {
+			if(getDeviceType(event->cdevice.which) == GAMECONTROLLER) {
 				return m_devices[event->cdevice.which]->handleEvent(event);
 			}
 			return false;
@@ -196,16 +196,19 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 
 		case SDL_JOYBUTTONDOWN: case SDL_JOYBUTTONUP:
 		case SDL_JOYAXISMOTION: {
-			Device *device = m_devices[event->jdevice.which];
-			if(device->getType() == JOYSTICK || (device->getType() == GAMECONTROLLER &&
-				((GameController *)device)->hasExtendedMappings())) {
-				device->handleEvent(event);
-			 }
+			DeviceType type = getDeviceType(event->jdevice.which);
+			if(type != UNKNOWN) {
+				Device *device = m_devices[event->jdevice.which];
+				if(type == JOYSTICK || (type == GAMECONTROLLER &&
+					((GameController *)device)->hasExtendedMappings())) {
+					device->handleEvent(event);
+				 }
+			}
 			return false;
 		}
 
 		case SDL_JOYBALLMOTION: case SDL_JOYHATMOTION:
-			if(getType(event->jdevice.which) == JOYSTICK) {
+			if(getDeviceType(event->jdevice.which) == JOYSTICK) {
 				return m_devices[event->jdevice.which]->handleEvent(event);
 			}
 			return false;
@@ -301,14 +304,6 @@ Device* DeviceManager::get(int index) {
 	return nullptr;
 }
 
-DeviceType DeviceManager::getType(int index) {
-	auto iter = m_devices.find(index);
-	if(iter != m_devices.end()) {
-		return iter->second->getType();
-	}
-	return UNKNOWN;
-}
-
 void DeviceManager::sendDeviceInfo(Device *device) {
 	switch(device->getType()) {
 		case GAMECONTROLLER: {
@@ -402,4 +397,12 @@ bool DeviceManager::sdlIndexExists(int sdlIndex) {
 		}
 	}
 	return false;
+}
+
+DeviceType DeviceManager::getDeviceType(int index) {
+	auto iter = m_devices.find(index);
+	if(iter != m_devices.end()) {
+		return iter->second->getType();
+	}
+	return UNKNOWN;
 }

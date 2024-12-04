@@ -70,9 +70,6 @@ class DeviceManager {
 		/// return the number of devices
 		size_t size() {return m_devices.size();}
 
-		/// get the active device type at a given index
-		DeviceType getType(int index);
-
 		/// get device by it's address, ie. "/gc0"
 		Device* get(const std::string &address);
 
@@ -91,10 +88,14 @@ class DeviceManager {
 		/// print device exlcusions
 		inline void printExclusions() {m_deviceExclusion.print();}
 
-		bool joysticksOnly = false; ///< disable game controller support?
-		bool sendDeviceEvents = false; ///< send device open/close events?
+		/// disable game controller support?
+		bool joysticksOnly = false;
 
-		static std::string queryAddress; ///< base osc sending address for queries
+		/// send device open/close events?
+		bool sendDeviceEvents = false;
+
+		/// base osc sending address for queries
+		static std::string queryAddress;
 
 	protected:
 
@@ -106,6 +107,9 @@ class DeviceManager {
 
 		/// is an sdlIndex already in use by an active device?
 		bool sdlIndexExists(int sdlIndex);
+
+		/// get the active device type at for an instanceID
+		DeviceType getDeviceType(int instanceID);
 
 		/// known device settings, mapped by device name or guid
 		DeviceSettingsMap m_deviceSettings;
