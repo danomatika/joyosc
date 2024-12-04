@@ -110,9 +110,9 @@
 #X obj 108 264 s \$1-hat;
 #X obj 151 205 s \$1-ball;
 #X text 324 246 midi: 0 - 127 MIDI;
-#X text 323 182 hid: -32768 - 32767 (default);
 #X text 323 204 norm: 0 - 1 normalize;
 #X text 323 224 snorm: -1 - 1 signed normalize;
+#X text 323 182 default: -32768 - 32767;
 #X connect 5 0 6 0;
 #X connect 6 0 7 0;
 #X connect 7 0 1 0;

@@ -1,4 +1,4 @@
-#N canvas 732 261 473 396 10;
+#N canvas 429 219 473 396 10;
 #X text 170 287 events are sent out in lists;
 #X text 199 332 button # 0 is down aka '1';
 #X obj 69 304 outlet;
@@ -108,18 +108,18 @@
 #X text 170 150 creation args 1: device address name \, ex: gc0;
 #X text 172 308 ex: gc0-button "0 1";
 #X obj 167 114 symbol;
-#X text 272 191 hid: -32768 - 32767 (default);
 #X text 273 255 midi: 0 - 127 MIDI;
 #X obj 119 224 outlet;
 #X text 272 212 norm: 0 - 1 normalize;
 #X obj 135 201 s \$1-extra;
 #X text 272 233 snorm: -1 - 1 signed normalize;
+#X text 272 191 default: -32768 - 32767;
 #X connect 5 0 9 0;
 #X connect 6 0 3 0;
 #X connect 6 0 7 0;
 #X connect 6 1 11 0;
-#X connect 6 2 21 0;
-#X connect 6 2 23 0;
+#X connect 6 2 20 0;
+#X connect 6 2 22 0;
 #X connect 9 0 6 0;
 #X connect 10 0 13 0;
 #X connect 11 0 2 0;
