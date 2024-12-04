@@ -40,7 +40,9 @@
 struct DeviceIndex {
 	int index = -1; ///< device list index
 	int sdlIndex = -1; ///< SDL index
+	/// clear indices
 	void clear() {index = -1; sdlIndex = -1;}
+	/// returns true if indices have been set
 	bool isValid() {return index > -1 && sdlIndex > -1;}
 };
 
@@ -86,11 +88,16 @@ class Device {
 		/// not been opened
 		virtual bool handleEvent(SDL_Event *event) = 0;
 
-		/// print device info
-		virtual void print() = 0;
+		/// rumble at strength % 0-1 for duration ms
+		/// ex. 75% for half a second: rumble(0.75, 500)
+		/// rumble at 0% to stop
+		virtual void rumble(float strength, int duration) {}
 
 		/// returns true if device is open
 		virtual bool isOpen() = 0;
+
+		/// print device info
+		virtual void print() = 0;
 
 		/// returns the device type enum value
 		virtual DeviceType getType() = 0;
@@ -137,25 +144,10 @@ class Device {
 		/// print button, axis, etc ignores
 		void printIgnores();
 
-		/// rumble at strength % 0-1 for duration ms
-		/// ex. 75% for half a second: rumble(0.75, 500)
-		/// rumble at 0% to stop
-		virtual void rumble(float strength, int duration) {}
-
 		/// returns basic device info as a string
 		virtual std::string toString();
 
-		/// return GUID for device at sdlIndex or "" on failure
-		static std::string GUIDForSDLIndex(int sdlIndex);
-
-		static std::string notificationAddress; ///< base osc sending address for notifications
-		static std::string deviceAddress; ///< base osc sending addess for devices
-		static bool printEvents; ///< print lots of events?
-		static lo::Address *sender; ///< shared osc sender, required!
-
-		/// normalize axis values
-		/// note: this is the shared default, may be overriden per-instance
-		static bool normalizeAxes;
+	/// \section static utils
 
 		/// normalize signed 16-bit axis values -32768 - 32767 to float -1 - 1
 		/// note: avoids rounding errors at slight loss in precision
@@ -165,6 +157,29 @@ class Device {
 			f = floorf(f * 100000.f) / 100000.f;
 			return (f * 2.f) - 1.f;
 		}
+
+		/// return GUID for device at sdlIndex or "" on failure
+		static std::string GUIDForSDLIndex(int sdlIndex);
+
+	/// \section shared settings
+
+		/// base osc sending address for notifications
+		static std::string notificationAddress;
+
+		/// base osc sending addess for devices
+		static std::string deviceAddress;
+
+		/// print lots of events?
+		static bool printEvents;
+
+		/// shared osc sender, required!
+		static lo::Address *sender;
+
+	/// \section shared defaults
+
+		/// normalize axis values
+		/// note: this is the shared default, may be overriden per-instance
+		static bool normalizeAxes;
 
 	protected:
 

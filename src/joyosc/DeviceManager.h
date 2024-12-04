@@ -88,11 +88,15 @@ class DeviceManager {
 		/// print device exlcusions
 		inline void printExclusions() {m_deviceExclusion.print();}
 
+	/// \section settings
+
 		/// disable game controller support?
 		bool joysticksOnly = false;
 
 		/// send device open/close events?
 		bool sendDeviceEvents = false;
+
+	/// \section shared settings
 
 		/// base osc sending address for queries
 		static std::string queryAddress;

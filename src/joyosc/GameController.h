@@ -34,7 +34,10 @@ struct GameControllerSettings {
 	bool normalizeSensors = false; ///< normalize sensor values?
 	unsigned int sensorRateMS = 0; ///< sensor rate limit in ms, 0 for unlimited
 	int ledColor[3] = {-1, -1, -1}; ///< led rgb color, set -1 to ignore
-	bool isColorValid() {return (ledColor[0] >= 0 && ledColor[1] >= 0 && ledColor[2] >= 0);}
+	/// returns true if color is valid, ie. has been set
+	bool isColorValid() {
+		return (ledColor[0] >= 0 && ledColor[1] >= 0 && ledColor[2] >= 0);
+	}
 };
 
 /// \class GameController
@@ -65,17 +68,13 @@ class GameController : public Device {
 		/// not been opened
 		bool handleEvent(SDL_Event *event);
 
-		/// returns true if the controller is open
-		bool isOpen();
-
-		/// set LED color (if supported by the device)
-		/// color range is 0-255
-		void setColor(int r, int g, int b);
-
 		/// rumble at strength % 0-1 for duration ms
 		/// ex. 75% for half a second: rumble(0.75, 500)
 		/// rumble at 0% to stop
 		void rumble(float strength, int duration);
+
+		/// returns true if the controller is open
+		bool isOpen();
 
 		/// print controller info
 		void print();
@@ -98,6 +97,12 @@ class GameController : public Device {
 		/// are extended joystick events supported? ie. unmapped buttons or axes
 		inline bool hasExtendedMappings() {return m_extendedMappings;}
 
+		/// set LED color (if supported by the device)
+		/// color range is 0-255
+		void setColor(int r, int g, int b);
+
+	/// \section static utils
+
 		/// add a game controller mapping string to SDL,
 		/// returns 1 on add, 0 on update, & -1 on error
 		static int addMappingString(std::string mapping);
@@ -117,6 +122,8 @@ class GameController : public Device {
 
 		/// returns true if sensor type is a gyro
 		static bool isSensorGyro(SDL_SensorType sensor);
+
+	/// \section shared defaults
 
 		/// report trigger buttons as axis values
 		/// note: this is the shared default, may be overriden per-instance

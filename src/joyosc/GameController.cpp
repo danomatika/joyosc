@@ -304,25 +304,16 @@ bool GameController::handleEvent(SDL_Event *event) {
 	return false;
 }
 
-bool GameController::isOpen() {
-	return SDL_GameControllerGetAttached(m_controller) == SDL_TRUE;
-}
-
-void GameController::setColor(int r, int g, int b) {
-	if(SDL_GameControllerHasLED(m_controller) == SDL_TRUE) {
-		r = CLAMP(r, 0, 255);
-		g = CLAMP(g, 0, 255);
-		b = CLAMP(b, 0, 255);
-		SDL_GameControllerSetLED(m_controller, r, g, b);
-	}
-}
-
 void GameController::rumble(float strength, int duration) {
 	if(SDL_GameControllerHasRumble(m_controller) == SDL_TRUE) {
 		strength = CLAMP(strength, 0, 1);
 		duration = CLAMP(duration, 0, 5000);
 		SDL_GameControllerRumble(m_controller, 0xFFFF * strength, 0xFFFF * strength, duration);
 	}
+}
+
+bool GameController::isOpen() {
+	return SDL_GameControllerGetAttached(m_controller) == SDL_TRUE;
 }
 
 void GameController::print() {
@@ -342,6 +333,17 @@ SDL_Joystick* GameController::getJoystick() {
 void GameController::setTriggersAsAxes(bool asAxes) {
 	m_triggersAsAxes = asAxes;
 }
+
+void GameController::setColor(int r, int g, int b) {
+	if(SDL_GameControllerHasLED(m_controller) == SDL_TRUE) {
+		r = CLAMP(r, 0, 255);
+		g = CLAMP(g, 0, 255);
+		b = CLAMP(b, 0, 255);
+		SDL_GameControllerSetLED(m_controller, r, g, b);
+	}
+}
+
+// STATIC UTILS
 
 int GameController::addMappingString(std::string mapping) {
 	int ret = SDL_GameControllerAddMapping(mapping.c_str());

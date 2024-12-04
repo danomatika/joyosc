@@ -45,6 +45,8 @@ class App {
 		/// print the current config values
 		void print();
 
+	/// \section settings
+
 		unsigned int listeningPort = 7770; ///< listening port
 		std::string listeningMulticast = ""; ///< multicast listening group, "" if none
 

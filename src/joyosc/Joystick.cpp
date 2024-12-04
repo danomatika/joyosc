@@ -262,16 +262,16 @@ bool Joystick::handleEvent(SDL_Event *event) {
 	return false;
 }
 
-bool Joystick::isOpen() {
-	return SDL_JoystickGetAttached(m_joystick) == SDL_TRUE;
-}
-
 void Joystick::rumble(float strength, int duration) {
 	if(m_haptic) {
 		strength = CLAMP(strength, 0, 1);
 		duration = CLAMP(duration, 0, 5000);
 		SDL_HapticRumblePlay(m_haptic, strength, duration);
 	}
+}
+
+bool Joystick::isOpen() {
+	return SDL_JoystickGetAttached(m_joystick) == SDL_TRUE;
 }
 
 void Joystick::print() {

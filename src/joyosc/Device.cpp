@@ -65,6 +65,8 @@ std::string Device::toString() {
 	return s.str();
 }
 
+// STATIC UTILS
+
 std::string Device::GUIDForSDLIndex(int sdlIndex) {
 	return shared::JoystickGUIDForIndex(sdlIndex);
 }
