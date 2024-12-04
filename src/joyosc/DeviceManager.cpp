@@ -317,7 +317,7 @@ void DeviceManager::sendDeviceInfo(Device *device) {
 			int buttons = SDL_JoystickNumButtons(joystick);
 			int axes = SDL_JoystickNumAxes(joystick);
 			int touchpads = SDL_GameControllerGetNumTouchpads(controller);
-			int sensors = shared::GameControllerNumSensors(controller, false); // only enabled sensors
+			int sensors = shared::GameControllerNumSensors(controller);
 			int rumble = (int)SDL_GameControllerHasRumble(controller);
 			int led = (int)SDL_GameControllerHasLED(controller);
 			std::string address = device->getAddress().substr(1); // drop leading /

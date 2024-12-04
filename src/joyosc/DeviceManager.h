@@ -68,7 +68,7 @@ class DeviceManager {
 		int oscReceived(const std::string &address, const lo::Message &message);
 
 		/// return the number of devices
-		unsigned int numDevices() {return m_devices.size();}
+		size_t size() {return m_devices.size();}
 
 		/// get the active device type at a given index
 		DeviceType getType(int index);
