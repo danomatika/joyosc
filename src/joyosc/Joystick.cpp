@@ -141,7 +141,7 @@ bool Joystick::handleEvent(SDL_Event *event) {
 				break;
 			}
 			if(m_remapping) {
-				event->jbutton.button = m_remapping->mappingFor(BUTTON, event->jbutton.button);
+				event->jbutton.button = m_remapping->get(BUTTON, event->jbutton.button);
 			}
 
 			sender->send(Device::deviceAddress + m_address + "/button",
@@ -160,7 +160,7 @@ bool Joystick::handleEvent(SDL_Event *event) {
 				break;
 			}
 			if(m_remapping) {
-				event->jbutton.button = m_remapping->mappingFor(BUTTON, event->jbutton.button);
+				event->jbutton.button = m_remapping->get(BUTTON, event->jbutton.button);
 			}
 
 			sender->send(Device::deviceAddress + m_address + "/button",
@@ -179,7 +179,7 @@ bool Joystick::handleEvent(SDL_Event *event) {
 				break;
 			}
 			if(m_remapping) {
-				event->jaxis.axis = m_remapping->mappingFor(AXIS, event->jaxis.axis);
+				event->jaxis.axis = m_remapping->get(AXIS, event->jaxis.axis);
 			}
 
 			// handle jitter by creating a dead zone
@@ -225,7 +225,7 @@ bool Joystick::handleEvent(SDL_Event *event) {
 				break;
 			}
 			if(m_remapping) {
-				event->jball.ball = m_remapping->mappingFor(BALL, event->jball.ball);
+				event->jball.ball = m_remapping->get(BALL, event->jball.ball);
 			}
 
 			sender->send(Device::deviceAddress + m_address + "/ball",
@@ -245,7 +245,7 @@ bool Joystick::handleEvent(SDL_Event *event) {
 				break;
 			}
 			if(m_remapping) {
-				event->jhat.hat = m_remapping->mappingFor(HAT, event->jhat.hat);
+				event->jhat.hat = m_remapping->get(HAT, event->jhat.hat);
 			}
 
 			sender->send(Device::deviceAddress + m_address + "/hat",
@@ -277,6 +277,6 @@ void Joystick::rumble(float strength, int duration) {
 void Joystick::print() {
 	LOG << toString() << std::endl;
 	if(m_joystick) {
-		shared::printJoystickDetails(m_joystick);
+		shared::JoystickPrintDetails(m_joystick);
 	}
 }

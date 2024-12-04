@@ -58,7 +58,7 @@ bool DeviceManager::open(int sdlIndex) {
 	if(SDL_IsGameController(sdlIndex) == SDL_TRUE && !joysticksOnly) {
 		if(!m_deviceExclusion.isExcluded(GAMECONTROLLER, sdlIndex)) {
 			DeviceSettings *settings = nullptr;
-			std::string guid = Device::guidForSdlIndex(sdlIndex);
+			std::string guid = Device::GUIDForSDLIndex(sdlIndex);
 			if(guid != "") {
 				settings = m_deviceSettings.settingsFor(GAMECONTROLLER, guid);
 			}
@@ -86,7 +86,7 @@ bool DeviceManager::open(int sdlIndex) {
 	else {
 		if(!m_deviceExclusion.isExcluded(JOYSTICK, sdlIndex)) {
 			DeviceSettings *settings = nullptr;
-			std::string guid = Device::guidForSdlIndex(sdlIndex);
+			std::string guid = Device::GUIDForSDLIndex(sdlIndex);
 			if(guid != "") {
 				settings = m_deviceSettings.settingsFor(JOYSTICK, guid);
 			}
@@ -230,7 +230,7 @@ int DeviceManager::oscReceived(const std::string &address, const lo::Message &me
 			std::string key = std::string(&argv[0]->s);
 			float strength = message.argv()[1]->f;
 			int duration = (types[2] == 'f' ? argv[2]->f : argv[2]->i);
-			Device *dev = deviceByAddress("/" + key);
+			Device *dev = get("/" + key);
 			if(dev) {
 				dev->rumble(strength, duration);
 			}
@@ -243,7 +243,7 @@ int DeviceManager::oscReceived(const std::string &address, const lo::Message &me
 			int r = (types[1] == 'f' ? argv[1]->f : argv[1]->i);
 			int g = (types[2] == 'f' ? argv[2]->f : argv[2]->i);
 			int b = (types[3] == 'f' ? argv[3]->f : argv[3]->i);
-			Device *dev = deviceByAddress("/" + key);
+			Device *dev = get("/" + key);
 			if(dev && dev->getType() == GAMECONTROLLER) {
 				((GameController *)dev)->setColor(r, g, b);
 			}
@@ -265,7 +265,7 @@ int DeviceManager::oscReceived(const std::string &address, const lo::Message &me
 		}
 		else if(types == "s") { // single by address
 			std::string key = std::string(&argv[0]->s);
-			Device *dev = deviceByAddress("/" + key);
+			Device *dev = get("/" + key);
 			if(dev) {
 				sendDeviceInfo(dev);
 			}
@@ -273,7 +273,7 @@ int DeviceManager::oscReceived(const std::string &address, const lo::Message &me
 		else if(types == "i" || types == "f") { // single by index
 			int index = (types[0] == 'f' ? argv[0]->f : argv[0]->i);
 			if(index > -1 && index < (int)m_devices.size()) {
-				Device *dev = deviceByIndex(index);
+				Device *dev = get(index);
 				if(dev) {
 					sendDeviceInfo(dev);
 				}
@@ -282,6 +282,70 @@ int DeviceManager::oscReceived(const std::string &address, const lo::Message &me
 		return 0; // handled
 	}
 	return 1; // not handled
+}
+
+Device* DeviceManager::get(const std::string &address) {
+	auto iter = m_addresses.find(address);
+	if(iter != m_addresses.end()) {
+		return iter->second;
+	}
+	return nullptr;
+}
+
+Device* DeviceManager::get(int index) {
+	for(auto &iter : m_devices) {
+		if(iter.second->getIndex() == index) {
+			return iter.second;
+		}
+	}
+	return nullptr;
+}
+
+DeviceType DeviceManager::getType(int index) {
+	auto iter = m_devices.find(index);
+	if(iter != m_devices.end()) {
+		return iter->second->getType();
+	}
+	return UNKNOWN;
+}
+
+void DeviceManager::sendDeviceInfo(Device *device) {
+	switch(device->getType()) {
+		case GAMECONTROLLER: {
+			SDL_Joystick *joystick = ((GameController *)device)->getJoystick();
+			SDL_GameController *controller = ((GameController *)device)->getController();
+			int buttons = SDL_JoystickNumButtons(joystick);
+			int axes = SDL_JoystickNumAxes(joystick);
+			int touchpads = SDL_GameControllerGetNumTouchpads(controller);
+			int sensors = shared::GameControllerNumSensors(controller, false); // only enabled sensors
+			int rumble = (int)SDL_GameControllerHasRumble(controller);
+			int led = (int)SDL_GameControllerHasLED(controller);
+			std::string address = device->getAddress().substr(1); // drop leading /
+			Device::sender->send(
+				DeviceManager::queryAddress + "/device",
+				"sisiiiiii", "controller", device->getIndex(), address.c_str(),
+				buttons, axes, touchpads, sensors, rumble, led
+			);
+			break;
+		}
+		case JOYSTICK: {
+			SDL_Joystick *joystick = ((Joystick *)device)->getJoystick();
+			int buttons = SDL_JoystickNumButtons(joystick);
+			int axes = SDL_JoystickNumAxes(joystick);
+			int balls = SDL_JoystickNumBalls(joystick);
+			int hats = SDL_JoystickNumHats(joystick);
+			int rumble = (int)SDL_JoystickIsHaptic(joystick);
+			std::string address = device->getAddress().substr(1); // drop leading /
+			Device::sender->send(
+				DeviceManager::queryAddress + "/device",
+				"sisiiiii", "joystick", device->getIndex(), address.c_str(),
+				buttons, axes, balls, hats, rumble
+			);
+			break;
+		}
+		default: // UNKNOWN
+			break;
+	}
 }
 
 void DeviceManager::printKnownDevices() {
@@ -324,14 +388,6 @@ int DeviceManager::firstAvailableIndex() {
 	return m_devices.size();
 }
 
-DeviceType DeviceManager::getType(int index) {
-	auto iter = m_devices.find(index);
-	if(iter != m_devices.end()) {
-		return iter->second->getType();
-	}
-	return UNKNOWN;
-}
-
 bool DeviceManager::sdlIndexExists(int sdlIndex) {
 	for(auto &iter : m_devices) {
 		if(iter.second->getType() == GAMECONTROLLER) {
@@ -346,58 +402,4 @@ bool DeviceManager::sdlIndexExists(int sdlIndex) {
 		}
 	}
 	return false;
-}
-
-Device* DeviceManager::deviceByAddress(const std::string &address) {
-	auto iter = m_addresses.find(address);
-	if(iter != m_addresses.end()) {
-		return iter->second;
-	}
-	return nullptr;
-}
-
-Device* DeviceManager::deviceByIndex(int index) {
-	for(auto &iter : m_devices) {
-		if(iter.second->getIndex() == index) {
-			return iter.second;
-		}
-	}
-	return nullptr;
-}
-
-void DeviceManager::sendDeviceInfo(Device *device) {
-	switch(device->getType()) {
-		case GAMECONTROLLER: {
-			SDL_Joystick *joystick = ((GameController *)device)->getJoystick();
-			SDL_GameController *controller = ((GameController *)device)->getController();
-			int buttons = SDL_JoystickNumButtons(joystick);
-			int axes = SDL_JoystickNumAxes(joystick);
-			int touchpads = SDL_GameControllerGetNumTouchpads(controller);
-			int sensors = shared::numGameControllerSensors(controller, false); // only enabled sensors
-			int rumble = (int)SDL_GameControllerHasRumble(controller);
-			int led = (int)SDL_GameControllerHasLED(controller);
-			std::string address = device->getAddress().substr(1); // drop leading /
-			Device::sender->send(
-				DeviceManager::queryAddress + "/device",
-		        "sisiiiiii", "controller", device->getIndex(), address.c_str(),
-		        buttons, axes, touchpads, sensors, rumble, led);
-			break;
-		}
-		case JOYSTICK: {
-			SDL_Joystick *joystick = ((Joystick *)device)->getJoystick();
-			int buttons = SDL_JoystickNumButtons(joystick);
-			int axes = SDL_JoystickNumAxes(joystick);
-			int balls = SDL_JoystickNumBalls(joystick);
-			int hats = SDL_JoystickNumHats(joystick);
-			int rumble = (int)SDL_JoystickIsHaptic(joystick);
-			std::string address = device->getAddress().substr(1); // drop leading /
-			Device::sender->send(
-				DeviceManager::queryAddress + "/device",
-		        "sisiiiii", "joystick", device->getIndex(), address.c_str(),
-		        buttons, axes, balls, hats, rumble);
-			break;
-		}
-		default: // UNKNOWN
-			break;
-	}
 }

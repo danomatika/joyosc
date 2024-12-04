@@ -35,35 +35,27 @@ bool JoystickRemapping::readXML(XMLElement *e) {
 		int to = child->IntAttribute("to", -1);
 		if(from > -1 && to > -1) {
 			if((std::string)child->Name() == "button") {
-				auto ret = buttons.insert(std::make_pair(from, to));
-				if(ret.second) {
-					LOG_DEBUG << "Joystick " << devName << ": "
-					          << "remapped button " << from << " to " << to << std::endl;
-				}
+				set(BUTTON, from, to);
+				LOG_DEBUG << "Joystick " << devName << ": "
+				          << "remapped button " << from << " to " << to << std::endl;
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "axis") {
-				auto ret = axes.insert(std::make_pair(from, to));
-				if(ret.second) {
-					LOG_DEBUG << "Joystick " << devName << ": "
-					          << "remapped axis " << from << " to " << to << std::endl;
-				}
+				set(AXIS, from, to);
+				LOG_DEBUG << "Joystick " << devName << ": "
+				          << "remapped axis " << from << " to " << to << std::endl;
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "ball") {
-				auto ret = balls.insert(std::make_pair(from, to));
-				if(ret.second) {
-					LOG_DEBUG << "Joystick " << devName << ": "
-					          << "remapped ball " << from << " to " << to << std::endl;
-				}
+				set(BALL, from, to);
+				LOG_DEBUG << "Joystick " << devName << ": "
+				          << "remapped ball " << from << " to " << to << std::endl;
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "hat") {
-				auto ret = balls.insert(std::make_pair(from, to));
-				if(ret.second) {
-					LOG_DEBUG << "Joystick " << devName << ": "
-					          << "remapped hat " << from << " to " << to << std::endl;
-				}
+				set(HAT, from, to);
+				LOG_DEBUG << "Joystick " << devName << ": "
+				          << "remapped hat " << from << " to " << to << std::endl;
 				loaded = true;
 			}
 		}
@@ -136,7 +128,26 @@ void JoystickRemapping::check(Device *device) {
 	}
 }
 
-int JoystickRemapping::mappingFor(EventType type, int index) {
+void JoystickRemapping::set(EventType type, int index, int mapping) {
+	switch(type) {
+		case BUTTON:
+			buttons[index] = mapping;
+			break;
+		case AXIS:
+			axes[index] = mapping;
+			break;
+		case BALL:
+			balls[index] = mapping;
+			break;
+		case HAT:
+			hats[index] = mapping;
+			break;
+		default:
+			return;
+	}
+}
+
+int JoystickRemapping::get(EventType type, int index) {
 	switch(type) {
 		case BUTTON: {
 			auto iter = buttons.find(index);

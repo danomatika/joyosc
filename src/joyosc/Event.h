@@ -78,21 +78,30 @@ class EventRemapping {
 		/// check indices & toss out any bad values
 		virtual void check(Device *device) = 0;
 
+		/// set name mapping
+		virtual void set(EventType type, const std::string &name, const std::string &mapping) {}
+
 		/// get name mapping, returns the given name if no mapping found
-		virtual const std::string& mappingFor(EventType type, const std::string &name) {
+		virtual const std::string& get(EventType type, const std::string &name) {
 			return name;
 		}
 
+		/// set index mapping
+		virtual void set(EventType type, int index, int mapping) {}
+
 		/// get index mapping, returns the given index if no mapping found
-		virtual int mappingFor(EventType type, int index) {
+		virtual int get(EventType type, int index) {
 			return index;
 		}
 
 		/// are there extended mappings?
-		virtual bool hasExtendedMappings() {return false;}
+		virtual bool hasExtended() {return false;}
 
-		/// get index to name mapping, returns "" if no mapping found
-		virtual const std::string& mappingForExtended(EventType type, int index) {
+		/// set name mapping for joystick button or axis event
+		virtual void setExtended(EventType type, int index, const std::string& mapping) {}
+
+		/// get extended index to name mapping, returns "" if no mapping found
+		virtual const std::string& getExtended(EventType type, int index) {
 			static const std::string empty(""); // avoid copies
 			return (std::string &)empty;
 		}

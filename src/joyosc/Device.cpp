@@ -65,6 +65,6 @@ std::string Device::toString() {
 	return s.str();
 }
 
-std::string Device::guidForSdlIndex(int sdlIndex) {
-	return shared::guidForSdlIndex(sdlIndex);
+std::string Device::GUIDForSDLIndex(int sdlIndex) {
+	return shared::JoystickGUIDForIndex(sdlIndex);
 }

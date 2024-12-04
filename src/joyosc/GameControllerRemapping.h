@@ -38,15 +38,21 @@ class GameControllerRemapping : public EventRemapping {
 		/// check indices & toss out any bad values
 		void check(Device *device);
 
+		/// set name mapping
+		void set(EventType type, const std::string &name, const std::string &mapping);
+
 		/// get name mapping, returns the given name if no mapping found
-		const std::string& mappingFor(EventType type, const std::string &name);
+		const std::string& get(EventType type, const std::string &name);
 
 		/// are there extended mappings?
-		bool hasExtendedMappings() {return extended.mappings;}
+		bool hasExtended() {return extended.mappings;}
+
+		/// set name mapping for joystick button or axis event
+		void setExtended(EventType type, int index, const std::string& name);
 
 		/// get name mapping for joystick button or axis event
 		/// returns "" if no mapping found
-		const std::string& mappingForExtended(EventType type, int index);
+		const std::string& getExtended(EventType type, int index);
 
 		/// print the current mappings
 		void print();

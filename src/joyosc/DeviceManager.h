@@ -70,6 +70,18 @@ class DeviceManager {
 		/// return the number of devices
 		unsigned int numDevices() {return m_devices.size();}
 
+		/// get the active device type at a given index
+		DeviceType getType(int index);
+
+		/// get device by it's address, ie. "/gc0"
+		Device* get(const std::string &address);
+
+		/// get device by it's index
+		Device* get(int index);
+
+		/// send device query info
+		void sendDeviceInfo(Device *device);
+
 		/// print active joystick list
 		void print(bool details=false);
 
@@ -92,20 +104,8 @@ class DeviceManager {
 		/// return the first available index in the active devices list
 		int firstAvailableIndex();
 
-		/// get the active device type at a given index
-		DeviceType getType(int index);
-
 		/// is an sdlIndex already in use by an active device?
 		bool sdlIndexExists(int sdlIndex);
-
-		/// get device by it's address, ie. "/gc0"
-		Device* deviceByAddress(const std::string &address);
-
-		/// get device by it's index
-		Device* deviceByIndex(int index);
-
-		/// send device query info
-		void sendDeviceInfo(Device *device);
 
 		/// known device settings, mapped by device name or guid
 		DeviceSettingsMap m_deviceSettings;

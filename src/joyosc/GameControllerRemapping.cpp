@@ -41,7 +41,7 @@ bool GameControllerRemapping::readXML(XMLElement *e) {
 			child->QueryIntAttribute("from", &from);
 			if(from != -1 && to != "") {
 				if((std::string)child->Name() == "button") {
-					extended.buttons[from] = to;
+					setExtended(BUTTON, from, to);
 					LOG_DEBUG << "GameController " << devName << ": "
 					          << "remapped extended button " << from
 					          << " to " << to << std::endl;
@@ -49,7 +49,7 @@ bool GameControllerRemapping::readXML(XMLElement *e) {
 					extended.mappings = true;
 				}
 				else if((std::string)child->Name() == "axis") {
-					extended.axes[from] = to;
+					setExtended(AXIS, from, to);
 					LOG_DEBUG << "GameController " << devName << ": "
 					          << "remapped extended axis " << from
 					          << " to " << to << std::endl;
@@ -69,21 +69,17 @@ bool GameControllerRemapping::readXML(XMLElement *e) {
 			if(child->Attribute("from")) {from = std::string(child->Attribute("from"));}
 			if(from != "" && to != "") {
 				if((std::string)child->Name() == "button") {
-					auto ret = buttons.insert(std::make_pair(from, to));
-					if(ret.second) {
-						LOG_DEBUG << "GameController " << devName << ": "
-						          << "remapped button " << from << " to "
-						          << to << std::endl;
-					}
+					set(BUTTON, from, to);
+					LOG_DEBUG << "GameController " << devName << ": "
+					          << "remapped button " << from << " to "
+					          << to << std::endl;
 					loaded = true;
 				}
 				else if((std::string)child->Name() == "axis") {
-					auto ret = axes.insert(std::make_pair(from, to));
-					if(ret.second) {
-						LOG_DEBUG << "GameController " << devName << ": "
-						          << "remapped axis " << from << " to "
-						          << to << std::endl;
-					}
+					set(AXIS, from, to);
+					LOG_DEBUG << "GameController " << devName << ": "
+					          << "remapped axis " << from << " to "
+					          << to << std::endl;
 					loaded = true;
 				}
 			}
@@ -152,7 +148,20 @@ void GameControllerRemapping::check(Device *device) {
 	}
 }
 
-const std::string& GameControllerRemapping::mappingFor(EventType type, const std::string &name) {
+void GameControllerRemapping::set(EventType type, const std::string &name, const std::string &mapping) {
+	switch(type) {
+		case BUTTON:
+			buttons[name] = mapping;
+			break;
+		case AXIS:
+			axes[name] = mapping;
+			break;
+		default:
+			return;
+	}
+}
+
+const std::string& GameControllerRemapping::get(EventType type, const std::string &name) {
 	switch(type) {
 		case BUTTON: {
 			auto iter = buttons.find(name);
@@ -167,7 +176,20 @@ const std::string& GameControllerRemapping::mappingFor(EventType type, const std
 	}
 }
 
-const std::string& GameControllerRemapping::mappingForExtended(EventType type, int index) {
+void GameControllerRemapping::setExtended(EventType type, int index, const std::string& mapping) {
+	switch(type) {
+		case BUTTON:
+			extended.buttons[index] = mapping;
+			break;
+		case AXIS:
+			extended.axes[index] = mapping;
+			break;
+		default:
+			return;
+	}
+}
+
+const std::string& GameControllerRemapping::getExtended(EventType type, int index) {
 	static const std::string empty(""); // avoid copies
 	switch(type) {
 		case BUTTON: {

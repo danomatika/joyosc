@@ -146,7 +146,7 @@ class Device {
 		virtual std::string toString();
 
 		/// return GUID for device at sdlIndex or "" on failure
-		static std::string guidForSdlIndex(int sdlIndex);
+		static std::string GUIDForSDLIndex(int sdlIndex);
 
 		static std::string notificationAddress; ///< base osc sending address for notifications
 		static std::string deviceAddress; ///< base osc sending addess for devices

@@ -105,7 +105,7 @@ bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
 		m_enableSensors = gcs->enableSensors;
 		m_normalizeSensors = gcs->normalizeSensors;
 		m_sensorRateMS = gcs->sensorRateMS;
-		m_extendedMappings = (m_remapping ? m_remapping->hasExtendedMappings() : false);
+		m_extendedMappings = (m_remapping ? m_remapping->hasExtended() : false);
 
 		// set color?
 		if(gcs->isColorValid()) {
@@ -172,7 +172,7 @@ bool GameController::handleEvent(SDL_Event *event) {
 				break;
 			}
 			if(m_remapping) {
-				axis = m_remapping->mappingFor(AXIS, axis);
+				axis = m_remapping->get(AXIS, axis);
 			}
 
 			// handle jitter by creating a dead zone
@@ -208,7 +208,7 @@ bool GameController::handleEvent(SDL_Event *event) {
 
 		case SDL_CONTROLLERTOUCHPADDOWN: case SDL_CONTROLLERTOUCHPADMOTION:
 		case SDL_CONTROLLERTOUCHPADUP: {
-			const std::string &action = nameForTouchEvent((SDL_EventType)event->type);
+			const std::string &action = touchEventName((SDL_EventType)event->type);
 			sender->send(Device::deviceAddress + m_address + "/touchpad",
 				"siifff", action.c_str(),
 				event->ctouchpad.touchpad,
@@ -231,7 +231,7 @@ bool GameController::handleEvent(SDL_Event *event) {
 
 		case SDL_CONTROLLERSENSORUPDATE: {
 			SDL_SensorType type = (SDL_SensorType)event->csensor.sensor;
-			const std::string &sensor = nameForSensor(type);
+			const std::string &sensor = sensorName(type);
 			float x = event->csensor.data[0];
 			float y = event->csensor.data[1];
 			float z = event->csensor.data[2];
@@ -243,12 +243,12 @@ bool GameController::handleEvent(SDL_Event *event) {
 				prev->second = event->csensor.timestamp;
 			}
 			if(m_normalizeSensors) {
-				if(shared::isAccelSensor(type)) { // m/s^2 -> standard gs
+				if(isSensorAccel(type)) { // m/s^2 -> standard gs
 					x /= SDL_STANDARD_GRAVITY;
 					y /= SDL_STANDARD_GRAVITY;
 					z /= SDL_STANDARD_GRAVITY;
 				}
-				else if(shared::isGyroSensor(type)) { // rad/2 -> rotation
+				else if(isSensorGyro(type)) { // rad/2 -> rotation
 					x /= M_2_PI;
 					y /= M_2_PI;
 					z /= M_2_PI;
@@ -267,7 +267,7 @@ bool GameController::handleEvent(SDL_Event *event) {
 		case SDL_JOYBUTTONDOWN: case SDL_JOYBUTTONUP: {
 			if(!m_remapping) {break;}
 			if(SDL_GameControllerHasButton(m_controller, (SDL_GameControllerButton)event->jbutton.button) == SDL_FALSE) {
-				std::string button = m_remapping->mappingForExtended(BUTTON, (int)event->jbutton.button);
+				std::string button = m_remapping->getExtended(BUTTON, (int)event->jbutton.button);
 				if(button != "") {
 					int value = (int)event->jbutton.state;
 					sender->send(Device::deviceAddress + m_address + "/button",
@@ -287,7 +287,7 @@ bool GameController::handleEvent(SDL_Event *event) {
 		case SDL_JOYAXISMOTION: {
 			if(!m_remapping) {break;}
 			if(SDL_GameControllerHasAxis(m_controller, (SDL_GameControllerAxis)event->jaxis.axis) == SDL_FALSE) {
-				std::string axis = m_remapping->mappingForExtended(AXIS, (int)event->jaxis.axis);
+				std::string axis = m_remapping->getExtended(AXIS, (int)event->jaxis.axis);
 				if(axis != "") {
 					int value = (int)event->caxis.value;
 					if(m_prevAxisValues[event->caxis.axis] == value) {
@@ -328,7 +328,7 @@ void GameController::rumble(float strength, int duration) {
 void GameController::print() {
 	LOG << toString() << std::endl;
 	if(m_controller) {
-		shared::printControllerDetails(m_controller, false);
+		shared::GameControllerPrintDetails(m_controller, false);
 	}
 }
 
@@ -360,17 +360,43 @@ int GameController::addMappingFile(std::string path) {
 	return ret;
 }
 
-std::string GameController::nameForSensor(SDL_SensorType sensor) {
-	return shared::nameForSensor(sensor);
+std::string GameController::sensorName(SDL_SensorType sensor) {
+	return shared::SensorName(sensor);
 }
 
 // naming matches RjDJ/PdParty #touch events
-std::string GameController::nameForTouchEvent(SDL_EventType type) {
+std::string GameController::touchEventName(SDL_EventType type) {
 	switch(type) {
 		case SDL_CONTROLLERTOUCHPADDOWN:   return "down";
 		case SDL_CONTROLLERTOUCHPADMOTION: return "xy";
 		case SDL_CONTROLLERTOUCHPADUP:     return "up";
 		default: return "unknown";
+	}
+}
+
+bool GameController::isSensorAccel(SDL_SensorType sensor) {
+	switch(sensor) {
+		case SDL_SENSOR_ACCEL:
+#if HAVE_DECL_SDL_SENSOR_ACCEL_L
+		case SDL_SENSOR_ACCEL_L:
+		case SDL_SENSOR_ACCEL_R:
+#endif
+			return true;
+		default:
+			return false;
+	}
+}
+
+bool GameController::isSensorGyro(SDL_SensorType sensor) {
+	switch(sensor) {
+		case SDL_SENSOR_GYRO:
+#if HAVE_DECL_SDL_SENSOR_ACCEL_L
+		case SDL_SENSOR_GYRO_L:
+		case SDL_SENSOR_GYRO_R:
+#endif
+			return true;
+		default:
+			return false;
 	}
 }
 
@@ -383,7 +409,7 @@ void GameController::enableAvailableSensors() {
 			int ret = SDL_GameControllerSetSensorEnabled(m_controller, sensor, SDL_TRUE);
 			if(ret < 0) {
 				LOG_WARN << "GameController " << m_name
-				         << ": could not enable sensor " << nameForSensor(sensor)
+				         << ": could not enable sensor " << sensorName(sensor)
 				         << ": " << SDL_GetError() << std::endl;
 				continue;
 			}
@@ -397,7 +423,7 @@ bool GameController::buttonPressed(std::string &button, int value) {
 		return false;
 	}
 	if(m_remapping) {
-		button = m_remapping->mappingFor(BUTTON, button);
+		button = m_remapping->get(BUTTON, button);
 	}
 
 	sender->send(Device::deviceAddress + m_address + "/button",

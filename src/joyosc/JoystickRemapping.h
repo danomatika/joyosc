@@ -38,8 +38,11 @@ class JoystickRemapping : public EventRemapping {
 		/// check indices & toss out any bad values
 		void check(Device *device);
 
+		/// set index mapping
+		void set(EventType type, int index, int mapping);
+
 		/// get index mapping, returns the given index if no mapping found
-		int mappingFor(EventType type, int index);
+		int get(EventType type, int index);
 
 		/// print the current mappings
 		void print();

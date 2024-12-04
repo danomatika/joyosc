@@ -125,9 +125,9 @@ int main(int argc, char **argv) {
 			if(joystick) {
 				if(printDetails) {LOG << std::endl;}
 				LOG << i << " Controller: \"" << SDL_GameControllerNameForIndex(i) << "\" "
-				    << shared::guidForSdlIndex(i) << std::endl;
+				    << shared::JoystickGUIDForIndex(i) << std::endl;
 				if(printDetails) {
-					shared::printControllerDetails(controller, true);
+					shared::GameControllerPrintDetails(controller, true);
 					if(i == numJoysticks - 1) {
 						LOG << std::endl;
 					}
@@ -139,9 +139,9 @@ int main(int argc, char **argv) {
 			if(!joystick) {continue;}
 			if(printDetails) {LOG << std::endl;}
 			LOG << i << " Joystick: \"" << SDL_JoystickNameForIndex(i)
-			    << "\" " << shared::guidForSdlIndex(i) << std::endl;
+			    << "\" " << shared::JoystickGUIDForIndex(i) << std::endl;
 			if(printDetails) {
-				shared::printJoystickDetails(joystick);
+				shared::JoystickPrintDetails(joystick);
 				if(i == numJoysticks - 1) {
 					LOG << std::endl;
 				}

@@ -82,7 +82,7 @@ bool DeviceExclusion::readXML(XMLElement *e) {
 }
 
 bool DeviceExclusion::isExcluded(DeviceType type, int sdlIndex) {
-	std::string guid = Device::guidForSdlIndex(sdlIndex);
+	std::string guid = Device::GUIDForSDLIndex(sdlIndex);
 	if(guid != "" && guids.find(guid) != guids.end()) {
 		return true;
 	}

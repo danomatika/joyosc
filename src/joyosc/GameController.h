@@ -107,10 +107,16 @@ class GameController : public Device {
 		static int addMappingFile(std::string path);
 
 		/// return sensor name from enum
-		static std::string nameForSensor(SDL_SensorType sensor);
+		static std::string sensorName(SDL_SensorType sensor);
 
 		/// return touchpad event from enum
-		static std::string nameForTouchEvent(SDL_EventType type);
+		static std::string touchEventName(SDL_EventType type);
+
+		/// returns true if sensor type is an accelerometer
+		static bool isSensorAccel(SDL_SensorType sensor);
+
+		/// returns true if sensor type is a gyro
+		static bool isSensorGyro(SDL_SensorType sensor);
 
 		/// report trigger buttons as axis values
 		/// note: this is the shared default, may be overriden per-instance
