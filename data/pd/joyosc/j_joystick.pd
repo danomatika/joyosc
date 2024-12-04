@@ -79,10 +79,10 @@
 #X obj 24 286 pack f f;
 #X obj 24 64 unpack f f;
 #X msg 242 122 3;
-#X obj 132 91 sel hid norm snorm midi;
-#X obj 98 187 j_hton;
-#X obj 115 218 j_htosn;
-#X obj 132 248 j_htom;
+#X obj 132 91 sel default norm snorm midi;
+#X obj 98 187 j_aton;
+#X obj 115 218 j_atosn;
+#X obj 132 248 j_atom;
 #X connect 0 0 9 0;
 #X connect 1 0 7 0;
 #X connect 3 0 8 1;

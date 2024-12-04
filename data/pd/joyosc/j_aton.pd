@@ -2,7 +2,7 @@
 #X obj 39 20 inlet;
 #X obj 39 165 outlet;
 #X obj 39 71 expr floor((($f1 + 32768) / 65535) * 100000) / 100000;
-#X text 94 20 16-bit HID -32768 - 32767 to normalized 0 - 1;
 #X text 57 123 avoids rounding errors at slight loss in precision;
+#X text 94 20 16-bit -32768 - 32767 to normalized 0 - 1;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;

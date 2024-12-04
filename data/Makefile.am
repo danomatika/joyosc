@@ -19,10 +19,10 @@ dist_joyosc_DATA = $(thisdir)/pd/joyosc/g_controller.pd \
                    $(thisdir)/pd/joyosc/j_joystick-help.pd \
                    $(thisdir)/pd/joyosc/j_hatdir-help.pd \
                    $(thisdir)/pd/joyosc/j_hatdir.pd \
-                   $(thisdir)/pd/joyosc/j_htom-help.pd \
-                   $(thisdir)/pd/joyosc/j_htom.pd \
-                   $(thisdir)/pd/joyosc/j_hton-help.pd \
-                   $(thisdir)/pd/joyosc/j_hton.pd \
-                   $(thisdir)/pd/joyosc/j_htosn-help.pd \
-                   $(thisdir)/pd/joyosc/j_htosn.pd
+                   $(thisdir)/pd/joyosc/j_atom-help.pd \
+                   $(thisdir)/pd/joyosc/j_atom.pd \
+                   $(thisdir)/pd/joyosc/j_aton-help.pd \
+                   $(thisdir)/pd/joyosc/j_aton.pd \
+                   $(thisdir)/pd/joyosc/j_atosn-help.pd \
+                   $(thisdir)/pd/joyosc/j_atosn.pd
 joyoscdir = $(docdir)/pd/joyosc
