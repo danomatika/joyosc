@@ -87,29 +87,33 @@ void DeviceSettingsMap::print() {
 
 bool DeviceSettingsMap::readXMLController(XMLElement *e) {
 	std::string name = "", guid = "", addr = "";
-	if(e->Attribute("name")) {name = std::string(e->Attribute("name"));}
-	if(e->Attribute("guid")) {guid = std::string(e->Attribute("guid"));}
+	if(e->Attribute("name")) {
+		name = std::string(e->Attribute("name"));
+		LOG_DEBUG << "<controller> " << name << std::endl;
+	}
+	if(e->Attribute("guid")) {
+		guid = std::string(e->Attribute("guid"));
+		LOG_DEBUG << "<controller> " << guid << std::endl;
+	}
 	if(e->Attribute("address")) {
 		addr = std::string(e->Attribute("address"));
 		if(addr == "" || addr[0] != '/') {
-			LOG_WARN << "game controller invalid address: "
+			LOG_WARN << "<controller> invalid address: "
 			         << addr << std::endl;
 			return false;
 		}
 	}
 	if(name == "" && guid == "") {
-		LOG_WARN << "game controller without name or guid"
+		LOG_WARN << "<controller> without name or guid"
 		         << std::endl;
 		return false;
 	}
 	if(settingsFor(GAMECONTROLLER, guid)) {
-		LOG_WARN << "game controller guid " << guid
-		         << " already exists" << std::endl;
+		LOG_WARN << "<controller> guid already exists: " << guid << std::endl;
 		return false;
 	}
 	if(settingsFor(GAMECONTROLLER, name)) {
-		LOG_WARN << "game controller name " << name
-		         << " already exists" << std::endl;
+		LOG_WARN << "<controller> name already exists: " << name << std::endl;
 		return false;
 	}
 	DeviceSettings device;
@@ -124,32 +128,32 @@ bool DeviceSettingsMap::readXMLController(XMLElement *e) {
 		if((std::string)child->Name() == "axes") {
 			device.axisDeadZone = child->UnsignedAttribute("deadZone", 0);
 			if(device.axisDeadZone > 0) {
-				LOG_DEBUG << "GameController " << name << ": "
+				LOG_DEBUG << "<controller> " << name << " "
 				          << "axis deadzone " << device.axisDeadZone << std::endl;
 			}
 			if(child->QueryBoolAttribute("triggers", &gc->triggersAsAxes) == XML_SUCCESS) {
-				LOG_DEBUG << "GameController " << name << ": "
+				LOG_DEBUG << "<controller> " << name << " "
 				          << "triggers as axes " << gc->triggersAsAxes << std::endl;
 			}
 			if(child->QueryBoolAttribute("normalize", &device.normalizeAxes) == XML_SUCCESS) {
-				LOG_DEBUG << "GameController " << name << ": "
+				LOG_DEBUG << "<controller> " << name << " "
 				          << "normalize axes " << device.normalizeAxes << std::endl;
 			}
 		}
 
 		if((std::string)child->Name() == "sensors") {
 			if(child->QueryBoolAttribute("enable", &gc->enableSensors) == XML_SUCCESS) {
-				LOG_DEBUG << "GameController " << name << ": "
+				LOG_DEBUG << "<controller> " << name << " "
 				          << "enable sensors " << gc->enableSensors << std::endl;
 			}
 			if(child->QueryBoolAttribute("normalize", &gc->normalizeSensors) == XML_SUCCESS) {
-				LOG_DEBUG << "GameController " << name << ": "
+				LOG_DEBUG << "<controller> " << name << " "
 				          << "normalize sensors " << gc->normalizeSensors << std::endl;
 			}
 			unsigned int rate = 0;
 			if(child->QueryUnsignedAttribute("rate", &rate) == XML_SUCCESS && rate > 0) {
 				gc->sensorRateMS = 1000 / rate; // hz -> ms
-				LOG_DEBUG << "GameController " << name << ": "
+				LOG_DEBUG << "<controller> " << name << " "
 				          << "sensor rate " << gc->sensorRateMS << std::endl;
 			}
 		}
@@ -158,7 +162,7 @@ bool DeviceSettingsMap::readXMLController(XMLElement *e) {
 		if((std::string)child->Name() == "thresholds") {
 			device.axisDeadZone = child->UnsignedAttribute("axisDeadZone", 0);
 			if(device.axisDeadZone > 0) {
-				LOG_DEBUG << "GameController " << name << ": "
+				LOG_DEBUG << "<controller> " << name << " "
 				          << "axis deadzone " << device.axisDeadZone << std::endl;
 			}
 		}
@@ -166,7 +170,7 @@ bool DeviceSettingsMap::readXMLController(XMLElement *e) {
 		// deprecated
 		if((std::string)child->Name() == "triggers") {
 			if(child->QueryBoolAttribute("asAxes", &gc->triggersAsAxes) == XML_SUCCESS) {
-				LOG_DEBUG << "GameController " << name << ": "
+				LOG_DEBUG << "<controller> " << name << " "
 				          << "triggers as axes " << gc->triggersAsAxes << std::endl;
 			}
 		}
@@ -176,7 +180,7 @@ bool DeviceSettingsMap::readXMLController(XMLElement *e) {
 			if(remap->readXML(child)) {
 				if(device.remap) {
 					delete device.remap;
-					LOG_WARN << "game controller remapping for "
+					LOG_WARN << "<controller> remap for "
 					         << name << " already exists" << std::endl;
 				}
 				device.remap = remap;
@@ -188,7 +192,7 @@ bool DeviceSettingsMap::readXMLController(XMLElement *e) {
 			if(ignore->readXML(child)) {
 				if(device.ignore) {
 					delete device.ignore;
-					LOG_WARN << "game controller ignore for "
+					LOG_WARN << "<controller> ignore for "
 					         << name << " already exists" << std::endl;
 				}
 				device.ignore = ignore;
@@ -199,7 +203,7 @@ bool DeviceSettingsMap::readXMLController(XMLElement *e) {
 			child->QueryIntAttribute("r", &gc->ledColor[0]);
 			child->QueryIntAttribute("g", &gc->ledColor[1]);
 			child->QueryIntAttribute("b", &gc->ledColor[2]);
-			LOG_DEBUG << "GameController: " << name << ": led color "
+			LOG_DEBUG << "<controller> " << name << " color "
 			          << gc->ledColor[0] << " "
 			          << gc->ledColor[1] << " "
 			          << gc->ledColor[2] << std::endl;
@@ -218,26 +222,31 @@ bool DeviceSettingsMap::readXMLController(XMLElement *e) {
 
 bool DeviceSettingsMap::readXMLJoystick(XMLElement *e) {
 	std::string name = "", guid = "", addr = "";
-	if(e->Attribute("name")) {name = std::string(e->Attribute("name"));}
-	if(e->Attribute("guid")) {guid = std::string(e->Attribute("guid"));}
+	if(e->Attribute("name")) {
+		name = std::string(e->Attribute("name"));
+		LOG_DEBUG << "<joystick> " << name << std::endl;
+	}
+	if(e->Attribute("guid")) {
+		guid = std::string(e->Attribute("guid"));
+		LOG_DEBUG << "<joystick> " << guid << std::endl;
+	}
 	if(e->Attribute("address")) {
 		addr = std::string(e->Attribute("address"));
 		if(addr == "" || addr[0] != '/') {
-			LOG_WARN << "joystick invalid address: "
-			         << addr << std::endl;
+			LOG_WARN << "<joystick> invalid address: " << addr << std::endl;
 			return false;
 		}
 	}
 	if(name == "" && guid == "") {
-		LOG_WARN << "joystick without name or guid" << std::endl;
+		LOG_WARN << "<joystick> without name or guid" << std::endl;
 		return false;
 	}
 	if(settingsFor(JOYSTICK, guid)) {
-		LOG_WARN << "joystick guid " << guid << " already exists" << std::endl;
+		LOG_WARN << "<joystick> guid already exists: " << guid << std::endl;
 		return false;
 	}
 	if(settingsFor(JOYSTICK, name)) {
-		LOG_WARN << "joystick name " << name << " already exists" << std::endl;
+		LOG_WARN << "<joystick> name already exists: " << name << std::endl;
 		return false;
 	}
 	DeviceSettings device;
@@ -248,18 +257,18 @@ bool DeviceSettingsMap::readXMLJoystick(XMLElement *e) {
 		if((std::string)child->Name() == "axes") {
 			device.axisDeadZone = child->UnsignedAttribute("deadZone", 0);
 			if(device.axisDeadZone > 0) {
-				LOG_DEBUG << "Joystick " << name << ": "
+				LOG_DEBUG << "<joystick> " << name << " "
 				          << "axis deadzone " << device.axisDeadZone << std::endl;
 			}
 			if(child->QueryBoolAttribute("normalize", &device.normalizeAxes) == XML_SUCCESS) {
-				LOG_DEBUG << "Joystick " << name << ": "
+				LOG_DEBUG << "<joystick> " << name << " "
 				          << "normalize axes " << device.normalizeAxes << std::endl;
 			}
 		}
 		if((std::string)child->Name() == "thresholds") { // deprecated
 			device.axisDeadZone = child->UnsignedAttribute("axisDeadZone", 0);
 			if(device.axisDeadZone > 0) {
-				LOG_DEBUG << "Joystick " << name << ": "
+				LOG_DEBUG << "<joystick> " << name << " "
 				          << "axis deadzone " << device.axisDeadZone << std::endl;
 			}
 		}
@@ -268,7 +277,7 @@ bool DeviceSettingsMap::readXMLJoystick(XMLElement *e) {
 			if(remap->readXML(child)) {
 				if(device.remap) {
 					delete device.remap;
-					LOG_WARN << "joystick remapping for "
+					LOG_WARN << "<joystick> remapping for "
 					         << name << " already exists" << std::endl;
 				}
 				device.remap = remap;
@@ -279,7 +288,7 @@ bool DeviceSettingsMap::readXMLJoystick(XMLElement *e) {
 			if(ignore->readXML(child)) {
 				if(device.ignore) {
 					delete device.ignore;
-					LOG_WARN << "joystick ignore for "
+					LOG_WARN << "<joystick> ignore for "
 					         << name << " already exists" << std::endl;
 				}
 				device.ignore = ignore;

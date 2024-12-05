@@ -62,7 +62,7 @@ class App {
 		/// returns true on success or false on failure
 		bool loadXMLFile(const std::string &path);
 
-		/// read <mappings></mappings>
+		/// read <mappings> tag
 		void readXMLMappings(tinyxml2::XMLElement *e, const std::string &dir);
 
 		/// received osc message callback

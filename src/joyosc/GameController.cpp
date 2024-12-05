@@ -22,14 +22,12 @@
 ==============================================================================*/
 #include "GameController.h"
 
-#include <cmath>
+#include <cmath> // M_2_PI
 #include <regex>
 #include "../shared.h"
 #include "GameControllerRemapping.h"
 #include "GameControllerIgnore.h"
 #include "Path.h"
-
-#include <cmath> // M_2_PI
 
 bool GameController::triggersAsAxes = false;
 bool GameController::enableSensors = false;
@@ -348,7 +346,7 @@ void GameController::setColor(int r, int g, int b) {
 int GameController::addMappingString(std::string mapping) {
 	int ret = SDL_GameControllerAddMapping(mapping.c_str());
 	if(ret < 0) {
-		LOG_WARN << "GameController mapping string error: " << SDL_GetError() << std::endl;
+		LOG_WARN << "GameController: could not add mapping: " << SDL_GetError() << std::endl;
 	}
 	return ret;
 }
@@ -357,7 +355,7 @@ int GameController::addMappingFile(std::string path) {
 	path = Path::absolutePath(path);
 	int ret = SDL_GameControllerAddMappingsFromFile(path.c_str());
 	if(ret < 0) {
-		LOG_WARN << "GameController mapping file error: " << SDL_GetError() << std::endl;
+		LOG_WARN << "GameController: could not add mapping file: " << SDL_GetError() << std::endl;
 	}
 	return ret;
 }

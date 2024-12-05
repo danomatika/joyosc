@@ -36,40 +36,35 @@ bool JoystickIgnore::readXML(XMLElement *e) {
 			if((std::string)child->Name() == "button") {
 				auto ret = buttons.insert(which);
 				if(ret.second) {
-					LOG_DEBUG << "Joystick " << devName << ": "
-					          << "ignoring button " << which << std::endl;
+					LOG_DEBUG << "<ignore> " << devName << " button "
+					          << which << std::endl;
 				}
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "axis") {
 				auto ret = axes.insert(which);
 				if(ret.second) {
-					LOG_DEBUG << "Joystick " << devName << ": "
-					          << "ignoring axis " << which << std::endl;
+					LOG_DEBUG << "<ignore> " << devName << " axis "
+					          << which << std::endl;
 				}
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "ball") {
 				auto ret = balls.insert(which);
 				if(ret.second) {
-					LOG_DEBUG << "Joystick " << devName << ": "
-					          << "ignoring ball " << which << std::endl;
+					LOG_DEBUG << "<ignore> " << devName << " ball "
+					          << which << std::endl;
 				}
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "hat") {
 				auto ret = balls.insert(which);
 				if(ret.second) {
-					LOG_DEBUG << "Joystick " << devName << ": "
-					          << "ignoring hat " << which << std::endl;
+					LOG_DEBUG << "<ignore> " << devName << " hat "
+					          << which << std::endl;
 				}
 				loaded = true;
 			}
-		}
-		else {
-			LOG_WARN << "Joystick " << devName << ": "
-			         << "ignoring invalid ignore xml element: \""
-			         << child->Name() << "\"" << std::endl;
 		}
 		child = child->NextSiblingElement();
 	}

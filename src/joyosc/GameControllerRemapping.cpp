@@ -42,25 +42,18 @@ bool GameControllerRemapping::readXML(XMLElement *e) {
 			if(from != -1 && to != "") {
 				if((std::string)child->Name() == "button") {
 					setExtended(BUTTON, from, to);
-					LOG_DEBUG << "GameController " << devName << ": "
-					          << "remapped extended button " << from
-					          << " to " << to << std::endl;
+					LOG_DEBUG << "<remap> " << devName << " extended button "
+					          << from << " to " << to << std::endl;
 					loaded = true;
 					extended.mappings = true;
 				}
 				else if((std::string)child->Name() == "axis") {
 					setExtended(AXIS, from, to);
-					LOG_DEBUG << "GameController " << devName << ": "
-					          << "remapped extended axis " << from
-					          << " to " << to << std::endl;
+					LOG_DEBUG << "<remap> " << devName << " extended axis "
+					          << from << " to " << to << std::endl;
 					loaded = true;
 					extended.mappings = true;
 				}
-			}
-			else {
-				LOG_WARN << "GameController " << devName << ": "
-				         << "ignoring invalid remap extended xml element: \""
-				         << child->Name() << "\"" << std::endl;
 			}
 		}
 		else {
@@ -70,23 +63,16 @@ bool GameControllerRemapping::readXML(XMLElement *e) {
 			if(from != "" && to != "") {
 				if((std::string)child->Name() == "button") {
 					set(BUTTON, from, to);
-					LOG_DEBUG << "GameController " << devName << ": "
-					          << "remapped button " << from << " to "
-					          << to << std::endl;
+					LOG_DEBUG << "<remap> " << devName << " button "
+					          << from << " to " << to << std::endl;
 					loaded = true;
 				}
 				else if((std::string)child->Name() == "axis") {
 					set(AXIS, from, to);
-					LOG_DEBUG << "GameController " << devName << ": "
-					          << "remapped axis " << from << " to "
-					          << to << std::endl;
+					LOG_DEBUG << "<remap> " << devName << " axis "
+					          << from << " to " << to << std::endl;
 					loaded = true;
 				}
-			}
-			else {
-				LOG_WARN << "GameController " << devName << ": "
-				         << "ignoring invalid remap xml element: \""
-				         << child->Name() << "\"" << std::endl;
 			}
 		}
 		child = child->NextSiblingElement();

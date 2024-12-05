@@ -36,7 +36,7 @@ bool DeviceExclusion::readXML(XMLElement *e) {
 				name = std::string(child->Attribute("name"));
 				auto ret = controllerNames.insert(name);
 				if(ret.second) {
-					LOG_DEBUG << "DeviceExclusion: exclude controller name "
+					LOG_DEBUG << "<exclude> controller name "
 					          << name << std::endl;
 				}
 				loaded = true;
@@ -45,7 +45,7 @@ bool DeviceExclusion::readXML(XMLElement *e) {
 				guid = std::string(child->Attribute("guid"));
 				auto ret = guids.insert(guid);
 				if(ret.second) {
-					LOG_DEBUG << "DeviceExclusion: exclude controller guid "
+					LOG_DEBUG << "<exclude> controller guid "
 					          << guid << std::endl;
 				}
 				loaded = true;
@@ -57,7 +57,7 @@ bool DeviceExclusion::readXML(XMLElement *e) {
 				name = std::string(child->Attribute("name"));
 				auto ret = joystickNames.insert(name);
 				if(ret.second) {
-					LOG_DEBUG << "DeviceExclusion: exclude joystick name "
+					LOG_DEBUG << "<exclude> joystick name "
 					          << name << std::endl;
 				}
 				loaded = true;
@@ -66,15 +66,11 @@ bool DeviceExclusion::readXML(XMLElement *e) {
 				guid = std::string(child->Attribute("guid"));
 				auto ret = guids.insert(guid);
 				if(ret.second) {
-					LOG_DEBUG << "DeviceExclusion: exclude joystick guid "
+					LOG_DEBUG << "<exclude> joystick guid "
 					          << guid << std::endl;
 				}
 				loaded = true;
 			}
-		}
-		else {
-			LOG_WARN << "DeviceExclusion: ignoring invalid xml element: \""
-			         << child->Name() << "\"" << std::endl;
 		}
 		child = child->NextSiblingElement();
 	}

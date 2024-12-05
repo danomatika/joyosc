@@ -36,33 +36,28 @@ bool JoystickRemapping::readXML(XMLElement *e) {
 		if(from > -1 && to > -1) {
 			if((std::string)child->Name() == "button") {
 				set(BUTTON, from, to);
-				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "remapped button " << from << " to " << to << std::endl;
+				LOG_DEBUG << "<remap> " << devName << " button "
+				          << from << " to " << to << std::endl;
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "axis") {
 				set(AXIS, from, to);
-				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "remapped axis " << from << " to " << to << std::endl;
+				LOG_DEBUG << "<remap> " << devName << " axis "
+				          << from << " to " << to << std::endl;
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "ball") {
 				set(BALL, from, to);
-				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "remapped ball " << from << " to " << to << std::endl;
+				LOG_DEBUG << "<remap> " << devName << " ball "
+				          << from << " to " << to << std::endl;
 				loaded = true;
 			}
 			else if((std::string)child->Name() == "hat") {
 				set(HAT, from, to);
-				LOG_DEBUG << "Joystick " << devName << ": "
-				          << "remapped hat " << from << " to " << to << std::endl;
+				LOG_DEBUG << "<remap> " << devName << " hat "
+				          << from << " to " << to << std::endl;
 				loaded = true;
 			}
-		}
-		else {
-			LOG_WARN << "Joystick " << devName << ": "
-			         << "ignoring invalid remap xml element: \""
-			         << child->Name() << "\"" << std::endl;
 		}
 		child = child->NextSiblingElement();
 	}
