@@ -25,6 +25,9 @@
 
 	<!-- app configuration
 
+		 note: sets device defaults, overriden by commandline options,
+		       overriden per-device in <controller> or <joystick>
+
 	     printEvents: print live events to to console? bool "true" or "false"
 	                  (default: false)
 

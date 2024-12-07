@@ -59,27 +59,66 @@ bool App::parseCommandLine(int argc, char **argv) {
 		SENSORS,
 		RATE,
 		NORM,
+		NORMAXES,
+		NORMSENSORS,
 		VERBOSE
 	};
 
 	// option and usage print descriptors
 	const option::Descriptor usage[] = {
-		{UNKNOWN, 0, "", "", Options::Arg::Unknown, "Options:"},
-		{HELP, 0, "h", "help", Options::Arg::None, "  -h, --help \tprint usage and exit"},
-		{VERS, 0, "", "version", Options::Arg::None, "  --version \tprint version and exit"},
-		{LISTENPORT, 0, "l", "listening-port", Options::Arg::Integer, "  -l, --listening-port \tlistening port (default: 7770)"},
-		{MULTICAST, 0, "m", "multicast", Options::Arg::NonEmpty, "  -m, --multicast \tmulticast listening group address (off by default)"},
-		{IP, 0, "i", "ip", Options::Arg::NonEmpty, "  -i, --ip \tip address, hostname, or multicast group to send to (default: 127.0.0.1)"},
-		{PORT, 0, "p", "port", Options::Arg::Integer, "  -p, --port \tport to send to (default: 8880)"},
-		{EVENTS, 0, "e", "events", Options::Arg::None, "  -e, --events \tprint incoming events, useful for debugging"},
-		{JSONLY, 0, "j", "joysticks-only", Options::Arg::None, "  -j, --joysticks-only \tdisable game controller support, joystick interface only"},
-		{WINDOW, 0, "w", "window", Options::Arg::None, "  -w, --window \topen window, helps on some platforms if device events are not being found, ex. MFi controllers on macOS"},
-		{SLEEP, 0, "", "sleep", Options::Arg::Integer, "  --sleep \tsleep time in usecs (default: 10000)"},
-		{TRIGGER, 0, "t", "triggers", Options::Arg::None, "  -t, --triggers \treport trigger buttons as axis values"},
-		{SENSORS, 0, "s", "sensors", Options::Arg::None, "  -s, --sensors \tenable controller sensor events (accelerometer, gyro)"},
-		{RATE, 0, "r", "rate", Options::Arg::Integer, "  -r, --rate \tsensor rate limit in hz (default: 0)"},
-		{NORM, 0, "n", "normalize", Options::Arg::None, "  -n, --normalize \tnormalize axis and sensor values"},
-		{VERBOSE, 0, "v", "verbose", Options::Arg::None, "  -v, --verbose \tverbose printing, call twice for debug printing -vv"},
+		{UNKNOWN, 0, "", "", Options::Arg::Unknown, "Options:"
+		},
+		{HELP, 0, "h", "help", Options::Arg::None,
+			"  -h, --help \tprint usage and exit"
+		},
+		{VERS, 0, "", "version", Options::Arg::None,
+			"  --version \tprint version and exit"
+		},
+		{LISTENPORT, 0, "l", "listening-port", Options::Arg::Integer,
+			"  -l, --listening-port \tlistening port (default: 7770)"
+		},
+		{MULTICAST, 0, "m", "multicast", Options::Arg::NonEmpty,
+			"  -m, --multicast \tmulticast listening group address (off by default)"
+		},
+		{IP, 0, "i", "ip", Options::Arg::NonEmpty,
+			"  -i, --ip \tip address, hostname, or multicast group to send to (default: 127.0.0.1)"
+		},
+		{PORT, 0, "p", "port", Options::Arg::Integer,
+			"  -p, --port \tport to send to (default: 8880)"
+		},
+		{EVENTS, 0, "e", "events", Options::Arg::None,
+			"  -e, --events \tprint incoming events, useful for debugging"
+		},
+		{JSONLY, 0, "j", "joysticks-only", Options::Arg::None,
+			"  -j, --joysticks-only \tdisable game controller support, joystick interface only"
+		},
+		{WINDOW, 0, "w", "window", Options::Arg::None,
+			"  -w, --window \topen window, helps on some platforms if device events are not being found, ex. MFi controllers on macOS"
+		},
+		{SLEEP, 0, "", "sleep", Options::Arg::Integer,
+			"  --sleep \tsleep time in usecs (default: 10000)"
+		},
+		{TRIGGER, 0, "t", "triggers", Options::Arg::None,
+			"  -t, --triggers \treport trigger buttons as axis values"
+		},
+		{SENSORS, 0, "s", "sensors", Options::Arg::None,
+			"  -s, --sensors \tenable controller sensor events (accelerometer, gyro)"
+		},
+		{RATE, 0, "r", "rate", Options::Arg::Integer,
+			"  -r, --rate \tsensor rate limit in hz (default: 0)"
+		},
+		{NORM, 0, "n", "normalize", Options::Arg::None,
+			"  -n, --normalize \tnormalize axis and sensor values"
+		},
+		{NORMAXES, 0, "", "norm-axes", Options::Arg::None,
+			"  --norm-axes \tnormalize axis values"
+		},
+		{NORMSENSORS, 0, "", "norm-sensors", Options::Arg::None,
+			"  --norm-sensors \tnormalize sensor values"
+		},
+		{VERBOSE, 0, "v", "verbose", Options::Arg::None,
+			"  -v, --verbose \tverbose printing, call twice for debug printing -vv"
+		},
 		{UNKNOWN, 0, "", "", Options::Arg::Unknown, "\nArguments:"},
 		{UNKNOWN, 0, "", "", Options::Arg::None, "  FILE \toptional XML config file(s)"},
 		{0, 0, 0, 0, 0, 0}
@@ -125,6 +164,8 @@ bool App::parseCommandLine(int argc, char **argv) {
 	if(options.isSet(RATE) && options.getInt(RATE) > 0) {
 		GameController::sensorRateMS = 1000 / options.getUInt(RATE); // hz -> ms
 	}
+	if(options.isSet(NORMAXES))    {Device::normalizeAxes = true;}
+	if(options.isSet(NORMSENSORS)) {GameController::normalizeSensors = true;}
 	if(options.isSet(NORM)) {
 		Device::normalizeAxes = true;
 		GameController::normalizeSensors = true;
