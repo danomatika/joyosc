@@ -398,14 +398,14 @@ joyosc also listens for osc control messages on a specified listening port (defa
 The current messages are:
 ~~~
 /joyosc/quit
-/joyosc/devices/color devAddr r g b
-/joyosc/devices/rumble devAddr strength duration
-/joyosc/devices/normalize devAddr enable
-/joyosc/devices/axes/triggers devAddr enable
-/joyosc/devices/axes/normalize devAddr enable
-/joyosc/devices/sensors devAddr enable
-/joyosc/devices/sensors/normalize devAddr enable
-/joyosc/devices/sensors/rate devAddr hz
+/joyosc/device/color devAddr r g b
+/joyosc/device/rumble devAddr strength duration
+/joyosc/device/normalize devAddr enable
+/joyosc/device/axes/triggers devAddr enable
+/joyosc/device/axes/normalize devAddr enable
+/joyosc/device/sensors devAddr enable
+/joyosc/device/sensors/normalize devAddr enable
+/joyosc/device/sensors/rate devAddr hz
 /joyosc/query/count
 /joyosc/query
 /joyosc/query devAddr
@@ -422,7 +422,7 @@ For game controllers with an LED such as PS4 and PS5 controllers, the color can 
 
 For example, to set the color of the device at OSC address "gc0" to cyan:
 ~~~
-/joyosc/devices/color gc0 0 255 255
+/joyosc/device/color gc0 0 255 255
 ~~~
 
 To turn the LED off, set "black": `0 0 0`. This message is ignored for joysticks and controllers without an LED.
@@ -433,10 +433,30 @@ For devices which support haptic "rumble" aka have vibration motors, rumble even
 
 To rumble device at OSC address "gc0" at 75% for 500 ms (a half second):
 ~~~
-/joyosc/devices/rumble gc0 0.75 500
+/joyosc/device/rumble gc0 0.75 500
 ~~~
 
 To stop current rumble event, set strength and duration to `0 0`. This message is ignored for unsupported devices.
+
+##### Axes and Sensors
+
+Axis and sensor settings can be configured over OSC:
+* triggers as axes
+* axis normalization
+* enable/disable sensors
+* sensor normalization
+* sensor rate in hz
+
+For example, to normalize both axes and sensors:
+~~~
+/joyosc/device/normalize gc0 1
+~~~
+
+To enable sensors and set the rate to 60 hz:
+~~~
+/joyosc/device/sensors gc0 1
+/joyosc/device/sensors/rate gc0 60
+~~~
 
 ##### Device Queries
 
