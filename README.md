@@ -400,6 +400,12 @@ The current messages are:
 /joyosc/quit
 /joyosc/devices/color devAddr r g b
 /joyosc/devices/rumble devAddr strength duration
+/joyosc/devices/normalize devAddr enable
+/joyosc/devices/axes/triggers devAddr enable
+/joyosc/devices/axes/normalize devAddr enable
+/joyosc/devices/sensors devAddr enable
+/joyosc/devices/sensors/normalize devAddr enable
+/joyosc/devices/sensors/rate devAddr hz
 /joyosc/query/count
 /joyosc/query
 /joyosc/query devAddr
