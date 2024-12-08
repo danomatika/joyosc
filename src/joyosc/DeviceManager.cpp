@@ -116,25 +116,25 @@ bool DeviceManager::open(int sdlIndex) {
 
 bool DeviceManager::close(SDL_JoystickID instanceID) {
 	if(m_devices.find(instanceID) != m_devices.end()) {
-		Device *dev = m_devices[instanceID];
+		Device *device = m_devices[instanceID];
 		if(sendDeviceEvents) {
-			std::string address = dev->getAddress().substr(1); // drop leading /
-			switch(dev->getType()) {
+			std::string address = device->getAddress().substr(1); // drop leading /
+			switch(device->getType()) {
 				case GAMECONTROLLER:
 					Device::sender->send(Device::notificationAddress + "/close",
-						"sis", "controller", ((GameController *)dev)->getIndex(),
+						"sis", "controller", ((GameController *)device)->getIndex(),
 						address.c_str());
 					break;
 				default: // JOYSTICK, should never be UNKNOWN
 					Device::sender->send(Device::notificationAddress + "/close",
-						"sis", "joystick", ((Joystick *)dev)->getIndex(),
+						"sis", "joystick", ((Joystick *)device)->getIndex(),
 						address.c_str());
 					break;
 			}
 		}
-		m_addresses.erase(dev->getAddress());
-		dev->close();
-		delete dev;
+		m_addresses.erase(device->getAddress());
+		device->close();
+		delete device;
 		m_devices.erase(instanceID);
 		return true;
 	}
@@ -149,9 +149,9 @@ void DeviceManager::openAll() {
 
 void DeviceManager::closeAll() {
 	for(auto &iter : m_devices) {
-		Device *dev = iter.second;
-		dev->close();
-		delete dev;
+		Device *device = iter.second;
+		device->close();
+		delete device;
 	}
 	m_devices.clear();	
 }
@@ -225,30 +225,103 @@ bool DeviceManager::handleEvent(SDL_Event *event) {
 	}
 }
 
+// get device from first arg, by address or by index
+#define LO_ARG_DEVICE(n) \
+	Device *device = nullptr; \
+	if(types == "") {return 0;} \
+	if(types[n] == 's') { \
+		device = get("/" + std::string(&argv[n]->s)); \
+	} \
+	else if(types[n] == 'f' || types[n] == 'i') { \
+		int index = (types[n] == 'f' ? argv[n]->f : argv[n]->i); \
+		if(index > -1 && index < (int)m_devices.size()) { \
+			device = get(index); \
+		} \
+	} \
+	if(!device) {return 0;}
+
+// get argument as a number, f or i
+#define LO_ARG_NUMBER(n) (types[n] == 'f' ? argv[n]->f : argv[n]->i)
+
 int DeviceManager::oscReceived(const std::string &address, const lo::Message &message) {
 	std::string types = message.types();
 	lo_arg **argv = message.argv();
 	if(address == "/" PACKAGE "/devices/rumble") {
 		if(types == "sff" || types == "sfi") {
-			std::string key = std::string(&argv[0]->s);
+			LO_ARG_DEVICE(0)
 			float strength = message.argv()[1]->f;
-			int duration = (types[2] == 'f' ? argv[2]->f : argv[2]->i);
-			Device *dev = get("/" + key);
-			if(dev) {
-				dev->rumble(strength, duration);
+			int duration = LO_ARG_NUMBER(2);
+			device->rumble(strength, duration);
+		}
+		return 0; // handled
+	}
+	else if(address == "/" PACKAGE "/devices/normalize") {
+		if(types == "sf" || types == "si") {
+			LO_ARG_DEVICE(0)
+			bool b = (bool)LO_ARG_NUMBER(1);
+			device->setNormalizeAxes(b);
+			if(device->getType() == GAMECONTROLLER) {
+				((GameController *)device)->setNormalizeSensors(b);
 			}
 		}
 		return 0; // handled
 	}
 	else if(address == "/" PACKAGE "/devices/color") {
 		if(types == "sfff" || types == "siii") {
-			std::string key = std::string(&argv[0]->s);
-			int r = (types[1] == 'f' ? argv[1]->f : argv[1]->i);
-			int g = (types[2] == 'f' ? argv[2]->f : argv[2]->i);
-			int b = (types[3] == 'f' ? argv[3]->f : argv[3]->i);
-			Device *dev = get("/" + key);
-			if(dev && dev->getType() == GAMECONTROLLER) {
-				((GameController *)dev)->setColor(r, g, b);
+			LO_ARG_DEVICE(0)
+			int r = LO_ARG_NUMBER(1);
+			int g = LO_ARG_NUMBER(2);
+			int b = LO_ARG_NUMBER(3);
+			if(device->getType() == GAMECONTROLLER) {
+				((GameController *)device)->setColor(r, g, b);
+			}
+		}
+		return 0; // handled
+	}
+	else if(address == "/" PACKAGE "/devices/axes/triggers") {
+		if(types == "sf" || types == "si") {
+			LO_ARG_DEVICE(0)
+			bool b = (bool)LO_ARG_NUMBER(1);
+			if(device->getType() == GAMECONTROLLER) {
+				((GameController *)device)->setTriggersAsAxes(b);
+			}
+		}
+		return 0; // handled
+	}
+	else if(address == "/" PACKAGE "/devices/axes/normalize") {
+		if(types == "sf" || types == "si") {
+			LO_ARG_DEVICE(0)
+			bool b = (bool)LO_ARG_NUMBER(1);
+			device->setNormalizeAxes(b);
+		}
+		return 0; // handled
+	}
+	else if(address == "/" PACKAGE "/devices/sensors") {
+		if(types == "sf" || types == "si") {
+			LO_ARG_DEVICE(0)
+			bool b = (bool)LO_ARG_NUMBER(1);
+			if(device->getType() == GAMECONTROLLER) {
+				((GameController *)device)->setEnableSensors(b);
+			}
+		}
+		return 0; // handled
+	}
+	else if(address == "/" PACKAGE "/devices/sensors/rate") {
+		if(types == "sf" || types == "si") {
+			LO_ARG_DEVICE(0)
+			int rate = (int)LO_ARG_NUMBER(1);
+			if(device->getType() == GAMECONTROLLER) {
+				((GameController *)device)->setSensorRate(rate);
+			}
+		}
+		return 0; // handled
+	}
+	else if(address == "/" PACKAGE "/devices/sensors/normalize") {
+		if(types == "sf" || types == "si") {
+			LO_ARG_DEVICE(0)
+			bool b = (bool)LO_ARG_NUMBER(1);
+			if(device->getType() == GAMECONTROLLER) {
+				((GameController *)device)->setNormalizeSensors(b);
 			}
 		}
 		return 0; // handled
@@ -266,22 +339,8 @@ int DeviceManager::oscReceived(const std::string &address, const lo::Message &me
 				sendDeviceInfo(iter.second);
 			}
 		}
-		else if(types == "s") { // single by address
-			std::string key = std::string(&argv[0]->s);
-			Device *dev = get("/" + key);
-			if(dev) {
-				sendDeviceInfo(dev);
-			}
-		}
-		else if(types == "i" || types == "f") { // single by index
-			int index = (types[0] == 'f' ? argv[0]->f : argv[0]->i);
-			if(index > -1 && index < (int)m_devices.size()) {
-				Device *dev = get(index);
-				if(dev) {
-					sendDeviceInfo(dev);
-				}
-			}
-		}
+		LO_ARG_DEVICE(0)
+		sendDeviceInfo(device);
 		return 0; // handled
 	}
 	return 1; // not handled

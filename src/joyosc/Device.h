@@ -126,6 +126,12 @@ class Device {
 		/// get axis dead zone
 		inline int getAxisDeadZone() {return m_axisDeadZone;}
 
+		/// enable/disable axis value normalization
+		void setNormalizeAxes(bool enable) {m_normalizeAxes = enable;}
+
+		/// get normalize axes
+		inline bool getNormalizeAxes() {return m_normalizeAxes;}
+
 		/// set button, axis, etc remappings
 		void setRemapping(EventRemapping *remapping);
 

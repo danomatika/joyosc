@@ -101,6 +101,19 @@ class GameController : public Device {
 		/// color range is 0-255
 		void setColor(int r, int g, int b);
 
+		/// enable/disable sensors
+		void setEnableSensors(bool enable);
+
+		/// enable/disable sensor normalization
+		inline void setNormalizeSensors(bool enable) {
+			m_normalizeSensors = enable;
+		}
+
+		/// set the sensor rate in hz
+		inline void setSensorRate(int rate) {
+			m_sensorRateMS = (rate > 0 ? 1000 / rate : 0); // hz -> ms
+		}
+
 	/// \section static utils
 
 		/// add a game controller mapping string to SDL,
@@ -145,6 +158,7 @@ class GameController : public Device {
 
 		/// enable (available) controller sensors
 		void enableAvailableSensors();
+		void disableAvailableSensors();
 
 		/// send button event
 		bool buttonPressed(std::string &name, int value);

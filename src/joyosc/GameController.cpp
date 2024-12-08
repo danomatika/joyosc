@@ -341,6 +341,17 @@ void GameController::setColor(int r, int g, int b) {
 	}
 }
 
+void GameController::setEnableSensors(bool enable) {
+	if(enable == m_enableSensors) {return;}
+	m_enableSensors = enable;
+	if(enable) {
+		enableAvailableSensors();
+	}
+	else {
+		disableAvailableSensors();
+	}
+}
+
 // STATIC UTILS
 
 int GameController::addMappingString(std::string mapping) {
@@ -414,6 +425,22 @@ void GameController::enableAvailableSensors() {
 				continue;
 			}
 			m_prevSensorTimestamps[sensor] = 0;
+		}
+	}
+}
+
+void GameController::disableAvailableSensors() {
+	for(unsigned int i = 0; i < SDL_arraysize(shared::s_sensors); ++i) {
+		SDL_SensorType sensor = shared::s_sensors[i];
+		if(SDL_GameControllerHasSensor(m_controller, sensor)) {
+			int ret = SDL_GameControllerSetSensorEnabled(m_controller, sensor, SDL_FALSE);
+			if(ret < 0) {
+				LOG_WARN << "GameController " << m_name
+				         << ": could not disble sensor " << sensorName(sensor)
+				         << ": " << SDL_GetError() << std::endl;
+				continue;
+			}
+			//m_prevSensorTimestamps[sensor] = 0;
 		}
 	}
 }
