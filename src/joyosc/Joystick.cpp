@@ -262,6 +262,27 @@ bool Joystick::handleEvent(SDL_Event *event) {
 	return false;
 }
 
+void Joystick::subscribe(lo::ServerThread *receiver) {
+	std::string baseAddress = receiveAddress + m_address;
+	receiver->add_method(baseAddress + "/normalize", "i", [this](lo_arg** argv, int argc) {
+		bool b = (bool)argv[0]->i;
+		setNormalizeAxes(b);
+		return 0; // handled
+	});
+	receiver->add_method(baseAddress + "/axes/normalize", "i", [this](lo_arg** argv, int argc) {
+		bool b = (bool)argv[0]->i;
+		setNormalizeAxes(b);
+		return 0; // handled
+	});
+}
+
+void Joystick::unsubscribe(lo::ServerThread *receiver) {
+	std::string baseAddress = receiveAddress + m_address;
+	receiver->del_method(baseAddress + "/normalize", "i");
+	receiver->del_method(baseAddress + "/axes/triggers", "i");
+	receiver->del_method(baseAddress + "/axes/normalize", "i");
+}
+
 void Joystick::rumble(float strength, int duration) {
 	if(m_haptic) {
 		strength = CLAMP(strength, 0, 1);

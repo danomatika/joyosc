@@ -302,6 +302,67 @@ bool GameController::handleEvent(SDL_Event *event) {
 	return false;
 }
 
+void GameController::subscribe(lo::ServerThread *receiver) {
+	std::string baseAddress = receiveAddress + m_address;
+	receiver->add_method(baseAddress + "/rumble", "fi", [this](lo_arg** argv, int argc) {
+		float strength = argv[0]->f;
+		int duration = argv[1]->i;
+		rumble(strength, duration);
+		return 0; // handled
+	});
+	receiver->add_method(baseAddress + "/color", "iii", [this](lo_arg** argv, int argc) {
+		int r = argv[0]->i;
+		int g = argv[1]->i;
+		int b = argv[2]->i;
+		setColor(r, g, b);
+		return 0; // handled
+	});
+	receiver->add_method(baseAddress + "/normalize", "i", [this](lo_arg** argv, int argc) {
+		bool b = (bool)argv[0]->i;
+		setNormalizeAxes(b);
+		setNormalizeSensors(b);
+		return 0; // handled
+	});
+	receiver->add_method(baseAddress + "/axes/triggers", "i", [this](lo_arg** argv, int argc) {
+		bool b = (bool)argv[0]->i;
+		setTriggersAsAxes(b);
+		return 0; // handled
+	});
+
+	receiver->add_method(baseAddress + "/axes/normalize", "i", [this](lo_arg** argv, int argc) {
+		bool b = (bool)argv[0]->i;
+		setNormalizeAxes(b);
+		return 0; // handled
+	});
+	receiver->add_method(baseAddress + "/sensors", "i", [this](lo_arg** argv, int argc) {
+		bool b = (bool)argv[0]->i;
+		setEnableSensors(b);
+		return 0; // handled
+	});
+	receiver->add_method(baseAddress + "/sensors/rate", "i", [this](lo_arg** argv, int argc) {
+		int rate = argv[0]->i;
+		setSensorRate(rate);
+		return 0; // handled
+	});
+	receiver->add_method(baseAddress + "/sensors/normalize", "i", [this](lo_arg** argv, int argc) {
+		bool b = (bool)argv[0]->i;
+		setNormalizeSensors(b);
+		return 0; // handled
+	});
+}
+
+void GameController::unsubscribe(lo::ServerThread *receiver) {
+	std::string baseAddress = receiveAddress + m_address;
+	receiver->del_method(baseAddress + "/rumble", "fi");
+	receiver->del_method(baseAddress + "/color", "iii");
+	receiver->del_method(baseAddress + "/normalize", "i");
+	receiver->del_method(baseAddress + "/axes/triggers", "i");
+	receiver->del_method(baseAddress + "/axes/normalize", "i");
+	receiver->del_method(baseAddress + "/sensors", "i");
+	receiver->del_method(baseAddress + "/sensors/rate", "i");
+	receiver->del_method(baseAddress + "/sensors/normalize", "i");
+}
+
 void GameController::rumble(float strength, int duration) {
 	if(SDL_GameControllerHasRumble(m_controller) == SDL_TRUE) {
 		strength = CLAMP(strength, 0, 1);

@@ -65,9 +65,6 @@ class App {
 		/// read <mappings> tag
 		void readXMLMappings(tinyxml2::XMLElement *e, const std::string &dir);
 
-		/// received osc message callback
-		int oscReceived(const std::string &address, const lo::Message &message);
-
 		/// osc server error callback
 		static void oscError(int num, const char *msg, const char *where);
 

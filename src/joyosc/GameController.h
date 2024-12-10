@@ -68,6 +68,12 @@ class GameController : public Device {
 		/// not been opened
 		bool handleEvent(SDL_Event *event);
 
+		/// subscribe to osc messages
+		void subscribe(lo::ServerThread *receiver);
+
+		/// unsubscribe from osc messages
+		void unsubscribe(lo::ServerThread *receiver);
+
 		/// rumble at strength % 0-1 for duration ms
 		/// ex. 75% for half a second: rumble(0.75, 500)
 		/// rumble at 0% to stop

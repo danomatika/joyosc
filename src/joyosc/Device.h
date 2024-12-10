@@ -88,6 +88,12 @@ class Device {
 		/// not been opened
 		virtual bool handleEvent(SDL_Event *event) = 0;
 
+		/// subscribe to OSC messages
+		virtual void subscribe(lo::ServerThread *receiver) {}
+
+		/// unsubscribe from OSC messages
+		virtual void unsubscribe(lo::ServerThread *receiver) {}
+
 		/// rumble at strength % 0-1 for duration ms
 		/// ex. 75% for half a second: rumble(0.75, 500)
 		/// rumble at 0% to stop
@@ -174,6 +180,9 @@ class Device {
 
 		/// base osc sending addess for devices
 		static std::string deviceAddress;
+
+		/// base osc receiving address for devices
+		static const std::string receiveAddress;
 
 		/// print lots of events?
 		static bool printEvents;

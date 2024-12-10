@@ -187,9 +187,12 @@ void App::run() {
 		else {
 			m_receiver = new lo::ServerThread(listeningMulticast, listeningPort, "", "", &App::oscError);
 		}
-		m_receiver->add_method(nullptr, nullptr, [this](const char *address, const lo::Message &message) {
-			return this->oscReceived(std::string(address), message);
+		m_receiver->add_method("/" PACKAGE "/quit", "", [this]() {
+			stop();
+			LOG_VERBOSE << std::endl << "	" << PACKAGE << ": quit message received, exiting ..." << std::endl;
+			return 0; // handled
 		});
+		m_deviceManager.subscribe(m_receiver);
 		m_sender = new lo::Address(sendingIp, sendingPort);
 		Device::sender = m_sender;
 	}
@@ -235,6 +238,7 @@ void App::run() {
 		usleep(sleepUS);
 	}
 	m_receiver->stop();
+	m_deviceManager.unsubscribe(m_receiver);
 
 	// close all opened devices
 	m_deviceManager.sendDeviceEvents = false;
@@ -412,15 +416,6 @@ void App::readXMLMappings(XMLElement *e, const std::string &dir) {
 		}
 		child = child->NextSiblingElement();
 	}
-}
-
-int App::oscReceived(const std::string &address, const lo::Message &message) {
-	if(address == "/" PACKAGE "/quit") {
-		stop();
-		LOG_VERBOSE << std::endl << "	" << PACKAGE << ": quit message received, exiting ..." << std::endl;
-		return 0; // handled
-	}
-	return m_deviceManager.oscReceived(address, message);
 }
 
 void App::oscError(int num, const char *msg, const char *where) {

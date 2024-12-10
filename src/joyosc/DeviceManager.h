@@ -64,8 +64,11 @@ class DeviceManager {
 		//// handle and send device event
 		bool handleEvent(SDL_Event *event);
 
-		/// received osc message callback
-		int oscReceived(const std::string &address, const lo::Message &message);
+		/// subscribe to osc messages
+		void subscribe(lo::ServerThread *receiver);
+
+		/// unsubscribe from osc messages
+		void unsubscribe(lo::ServerThread *receiver);
 
 		/// return the number of devices
 		size_t size() {return m_devices.size();}
@@ -103,6 +106,9 @@ class DeviceManager {
 
 	protected:
 
+		void registerDevice(Device *device);
+		void unregisterDevice(Device *device);
+
 		/// create default address using index, ex. "/gc1"
 		std::string addressForIndex(DeviceType type, int index);
 
@@ -114,6 +120,9 @@ class DeviceManager {
 
 		/// get the active device type at for an instanceID
 		DeviceType getDeviceType(int instanceID);
+
+		/// OSC receiver thread
+		lo::ServerThread *m_receiver = nullptr;
 
 		/// known device settings, mapped by device name or guid
 		DeviceSettingsMap m_deviceSettings;
