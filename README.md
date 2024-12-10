@@ -355,20 +355,22 @@ joyosc also sends status notification messages:
 ~~~
 /joyosc/notifications/startup
 /joyosc/notifications/ready
-/joyosc/notifications/open devType\* devID devAddr
-/joyosc/notifications/close devType\* devID devAddr
+/joyosc/notifications/open TYPE INDEX DEV
+/joyosc/notifications/close TYPE INDEX DEV
 /joyosc/notifications/shutdown
 ~~~
 
-\* devType is either "joystick" or "controller"
+`TYPE` is either "joystick" or "controller"  
+`INDEX` is the assigned index based on order of connection, indices are reused when available  
+`DEV` is the device address name, ie. `gc0`, `js1`, etc
 
 #### Device Queries
 
 In response to a query control message (see below), joyosc will send connected device info messages:
 ~~~
 /joyosc/query/count numDevs
-/joysoc/query/device controller devID devAddr buttons axes touchpads sensors rumble led
-/joyosc/query/device joystick devID devAddr buttons axes balls hats rumble
+/joysoc/query/device controller INDEX DEV buttons axes touchpads sensors rumble led
+/joyosc/query/device joystick INDEX DEV buttons axes balls hats rumble
 ~~~ 
 
 Device count: number of currently connected *and* active devices
@@ -398,19 +400,22 @@ joyosc also listens for osc control messages on a specified listening port (defa
 The current messages are:
 ~~~
 /joyosc/quit
-/joyosc/device/color devAddr r g b
-/joyosc/device/rumble devAddr strength duration
-/joyosc/device/normalize devAddr enable
-/joyosc/device/axes/triggers devAddr enable
-/joyosc/device/axes/normalize devAddr enable
-/joyosc/device/sensors devAddr enable
-/joyosc/device/sensors/normalize devAddr enable
-/joyosc/device/sensors/rate devAddr hz
+/joyosc/devices/DEV/color devAddr r g b
+/joyosc/devices/DEV/rumble devAddr strength duration
+/joyosc/devices/DEV/normalize devAddr enable
+/joyosc/devices/DEV/axes/triggers devAddr enable
+/joyosc/devices/DEV/axes/normalize devAddr enable
+/joyosc/devices/DEV/sensors devAddr enable
+/joyosc/devices/DEV/sensors/normalize devAddr enable
+/joyosc/devices/DEV/sensors/rate devAddr hz
 /joyosc/query/count
 /joyosc/query
-/joyosc/query devAddr
-/joyosc/query devID
+/joyosc/query INDEX
+/joyosc/query DEV
 ~~~
+
+`INDEX` is the assigned index based on order of connection, indices are reused when available  
+`DEV` is the device address name, ie. `gc0`, `js1`, etc
 
 ##### Quit joyosc
 
@@ -422,7 +427,7 @@ For game controllers with an LED such as PS4 and PS5 controllers, the color can 
 
 For example, to set the color of the device at OSC address "gc0" to cyan:
 ~~~
-/joyosc/device/color gc0 0 255 255
+/joyosc/devices/gc0/color 0 255 255
 ~~~
 
 To turn the LED off, set "black": `0 0 0`. This message is ignored for joysticks and controllers without an LED.
@@ -433,7 +438,7 @@ For devices which support haptic "rumble" aka have vibration motors, rumble even
 
 To rumble device at OSC address "gc0" at 75% for 500 ms (a half second):
 ~~~
-/joyosc/device/rumble gc0 0.75 500
+/joyosc/devices/gc0/rumble 0.75 500
 ~~~
 
 To stop current rumble event, set strength and duration to `0 0`. This message is ignored for unsupported devices.
@@ -441,21 +446,21 @@ To stop current rumble event, set strength and duration to `0 0`. This message i
 ##### Axes and Sensors
 
 Axis and sensor settings can be configured over OSC:
-* triggers as axes
 * axis normalization
+* triggers as axes
 * enable/disable sensors
 * sensor normalization
 * sensor rate in hz
 
 For example, to normalize both axes and sensors:
 ~~~
-/joyosc/device/normalize gc0 1
+/joyosc/devices/gc0/normalize 1
 ~~~
 
 To enable sensors and set the rate to 60 hz:
 ~~~
-/joyosc/device/sensors gc0 1
-/joyosc/device/sensors/rate gc0 60
+/joyosc/devices/gc0/sensors 1
+/joyosc/devices/gc0/sensors/rate 60
 ~~~
 
 ##### Device Queries
