@@ -67,7 +67,7 @@ void DeviceManager::subscribe(lo::ServerThread *receiver) {
 		return 0; // handled
 	});
 	m_receiver->add_method("/" PACKAGE "/query", "s", [this](lo_arg** argv, int argc) {
-		Device *device = device = get("/" + std::string(&argv[0]->s));
+		Device *device = get("/" + std::string(&argv[0]->s));
 		if(device) {sendDeviceInfo(device);}
 		return 0; // handled
 	});

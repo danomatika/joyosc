@@ -77,6 +77,7 @@ class DeviceManager {
 		Device* get(const std::string &address);
 
 		/// get device by it's index
+		/// note: slower than get(std::string)
 		Device* get(int index);
 
 		/// send device query info
