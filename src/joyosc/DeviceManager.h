@@ -64,10 +64,10 @@ class DeviceManager {
 		//// handle and send device event
 		bool handleEvent(SDL_Event *event);
 
-		/// subscribe to osc messages
+		/// subscribe to OSC messages
 		void subscribe(lo::ServerThread *receiver);
 
-		/// unsubscribe from osc messages
+		/// unsubscribe from OSC messages
 		void unsubscribe(lo::ServerThread *receiver);
 
 		/// return the number of devices
@@ -102,7 +102,7 @@ class DeviceManager {
 
 	/// \section shared settings
 
-		/// base osc sending address for queries
+		/// base OSC sending address for queries
 		static std::string queryAddress;
 
 	protected:

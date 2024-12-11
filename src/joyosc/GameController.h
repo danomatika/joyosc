@@ -51,7 +51,7 @@ class GameController : public Device {
 
 	public:
 
-		/// constructor with osc address
+		/// constructor with OSC address
 		GameController(std::string address="/controller");
 
 		/// open the controller
@@ -68,10 +68,10 @@ class GameController : public Device {
 		/// not been opened
 		bool handleEvent(SDL_Event *event);
 
-		/// subscribe to osc messages
+		/// subscribe to OSC messages
 		void subscribe(lo::ServerThread *receiver);
 
-		/// unsubscribe from osc messages
+		/// unsubscribe from OSC messages
 		void unsubscribe(lo::ServerThread *receiver);
 
 		/// rumble at strength % 0-1 for duration ms

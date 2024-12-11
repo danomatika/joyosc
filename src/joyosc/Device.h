@@ -70,7 +70,7 @@ class Device {
 
 	public:
 
-		/// constructor with osc address
+		/// constructor with OSC address
 		Device(std::string address="/device");
 		virtual ~Device() {}
 
@@ -111,10 +111,10 @@ class Device {
 		/// get device name ie. "P3 Controller"
 		inline std::string getName() {return m_name;}
 
-		/// set the osc address of this device ie. "/js0" etc
+		/// set the OSC address of this device ie. "/js0" etc
 		inline void setAddress(std::string address) {m_address = address;}
 
-		/// get the osc address of this device ie. "/js0" etc
+		/// get the OSC address of this device ie. "/js0" etc
 		inline std::string getAddress() {return m_address;}
 
 		/// get index in the devices list
@@ -175,19 +175,19 @@ class Device {
 
 	/// \section shared settings
 
-		/// base osc sending address for notifications
+		/// base OSC sending address for notifications
 		static std::string notificationAddress;
 
-		/// base osc sending addess for devices
+		/// base OSC sending addess for devices
 		static std::string deviceAddress;
 
-		/// base osc receiving address for devices
+		/// base OSC receiving address for devices
 		static const std::string receiveAddress;
 
 		/// print lots of events?
 		static bool printEvents;
 
-		/// shared osc sender, required!
+		/// shared OSC sender, required!
 		static lo::Address *sender;
 
 	/// \section shared defaults
@@ -199,7 +199,7 @@ class Device {
 	protected:
 
 		std::string	m_name = ""; ///< device name ie. "PS3 Controller"
-		std::string	m_address = ""; ///< osc address of this device ie. "/js0" etc
+		std::string	m_address = ""; ///< OSC address of this device ie. "/js0" etc
 
 		DeviceIndex m_index; ///< device list index & SDL index
 		SDL_JoystickID m_instanceID = -1; ///< unique SDL instance ID, *not* SDL index

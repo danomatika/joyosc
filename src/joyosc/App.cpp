@@ -179,7 +179,7 @@ void App::run() {
 		print();
 	}
 
-	// setup osc interface
+	// setup OSC interface
 	try {
 		if(listeningMulticast == "") {
 			m_receiver = new lo::ServerThread(listeningPort, 0, &App::oscError);
@@ -250,12 +250,12 @@ void App::run() {
 void App::print() {
 	LOG << "listening port:	 " << listeningPort << std::endl
 	    << "listening multicast group: " << (listeningMulticast == "" ? "none" : listeningMulticast) << std::endl
-	    << "listening addr:  " << "/" << PACKAGE << std::endl
+	    << "listening address: " << "/" << PACKAGE << std::endl
 	    << "sending ip:      " << sendingIp << std::endl
 	    << "sending port:    " << sendingPort << std::endl
-	    << "sending address for notifications: " << Device::notificationAddress << std::endl
-	    << "sending address for devices:       " << Device::deviceAddress << std::endl
-	    << "sending address for queries:       " << DeviceManager::queryAddress << std::endl
+	    << "notification address: " << Device::notificationAddress << std::endl
+	    << "device address:       " << Device::deviceAddress << std::endl
+	    << "query address:        " << DeviceManager::queryAddress << std::endl
 	    << "print events?:   " << (Device::printEvents ? "true" : "false") << std::endl
 	    << "joysticks only?: " << (m_deviceManager.joysticksOnly ? "true" : "false") << std::endl
 	    << "sleep us:        " << sleepUS << std::endl
@@ -282,25 +282,23 @@ bool App::loadXMLFile(const std::string &path) {
 	int ret = 0;
 
 	if(!Path::exists(path)) {
-		LOG_ERROR << "XML \"" << PACKAGE << "\": could not load \"" << path
-		          << "\": file does not exist" << std::endl;
+		LOG_ERROR << "could not load " << path
+		          << ": file does not exist" << std::endl;
 		goto error;
 	}
 
 	doc = new tinyxml2::XMLDocument;
 	ret = doc->LoadFile(path.c_str());
 	if(ret != XML_SUCCESS) {
-		LOG_ERROR << "XML \"" << PACKAGE << "\": could not load \"" << path
-		          << "\": " << doc->ErrorName() << " " << doc->ErrorStr()
-		          << std::endl;
+		LOG_ERROR << "could not load " << path << ": "
+		          << doc->ErrorName() << " " << doc->ErrorStr() << std::endl;
 		goto error;
 	}
 
 	root = doc->RootElement();
 	if(!root || (std::string)root->Name() != PACKAGE) {
-		LOG_ERROR << "XML \"" << PACKAGE << "\": xml file \"" << path
-		          << "\" does not have \"" << PACKAGE << "\" as the root element"
-		          << std::endl;
+		LOG_ERROR << "could not load " << path << ": does not have "
+		          << PACKAGE << " as root element" << std::endl;
 		goto error;
 	}
 
@@ -367,10 +365,6 @@ bool App::loadXMLFile(const std::string &path) {
 		else if((std::string)child->Name() == "mappings") {
 			readXMLMappings(child, Path::withoutLastComponent(path));
 		}
-		else {
-			LOG_WARN << "unknown xml element: \""
-			         << child->Name() << "\"" << std::endl;
-		}
 		child = child->NextSiblingElement();
 	}
 
@@ -390,12 +384,10 @@ void App::readXMLMappings(XMLElement *e, const std::string &dir) {
 			if(child->GetText()) {mapping = std::string(child->GetText());}
 			int ret = GameController::addMappingString(mapping);
 			if(ret == 0) {
-				LOG_DEBUG << "updated mapping: \""
-				          << mapping << "\"" << std::endl;
+				LOG_DEBUG << "<mapping> updated " << mapping << std::endl;
 			}
 			else if(ret == 1) {
-				LOG_DEBUG << "added mapping: \""
-				          << mapping << "\"" << std::endl;
+				LOG_DEBUG << "<mapping> added " << mapping << std::endl;
 			}
 		}
 		else if((std::string)child->Name() == "file") {
@@ -406,13 +398,9 @@ void App::readXMLMappings(XMLElement *e, const std::string &dir) {
 			}
 			int ret = GameController::addMappingFile(mpath);
 			if(ret >= 0) {
-				LOG_DEBUG << "added " << ret << " mappings from: "
-				          << "\"" << mpath << "\"" << std::endl;
+				LOG_DEBUG << "<file> added " << ret << " mappings from "
+				          << mpath << std::endl;
 			}
-		}
-		else {
-			LOG_WARN << "unknown mapping xml element: \""
-			         << child->Name() << "\"" << std::endl;
 		}
 		child = child->NextSiblingElement();
 	}
