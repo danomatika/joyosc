@@ -205,6 +205,10 @@ Options:
   --sleep              sleep time in usecs (default: 10000)
   -t, --triggers       report trigger buttons as axis values
   -s, --sensors        enable controller sensor events (accelerometer, gyro)
+  -r, --rate           sensor rate limit in hz (default: 0)
+  -n, --normalize      normalize axis and sensor values
+  --norm-axes          normalize axis values
+  --norm-sensors       normalize sensor values
   -v, --verbose        verbose printing, call twice for debug printing -vv
 
 Arguments:
