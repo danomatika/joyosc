@@ -175,9 +175,6 @@ class Device {
 
 	/// \section shared settings
 
-		/// base OSC sending address for notifications
-		static std::string notificationAddress;
-
 		/// base OSC sending addess for devices
 		static std::string deviceAddress;
 

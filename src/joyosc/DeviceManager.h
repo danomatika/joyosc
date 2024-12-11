@@ -102,6 +102,9 @@ class DeviceManager {
 
 	/// \section shared settings
 
+		/// base OSC sending address for notifications
+		static std::string notificationAddress;
+
 		/// base OSC sending address for queries
 		static std::string queryAddress;
 

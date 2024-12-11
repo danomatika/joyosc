@@ -203,7 +203,7 @@ void App::run() {
 		exit(EXIT_FAILURE);
 	}
 
-	m_sender->send(Device::notificationAddress + "/startup");
+	m_sender->send(DeviceManager::notificationAddress + "/startup");
 
 	// set signal handling
 	signal(SIGTERM, signalExit); // terminate
@@ -216,7 +216,7 @@ void App::run() {
 	m_deviceManager.openAll();
 	m_deviceManager.sendDeviceEvents = true;
 
-	m_sender->send(Device::notificationAddress + "/ready");
+	m_sender->send(DeviceManager::notificationAddress + "/ready");
 	
 	m_receiver->start();
 	m_run = true;
@@ -244,7 +244,7 @@ void App::run() {
 	m_deviceManager.sendDeviceEvents = false;
 	m_deviceManager.closeAll();
 
-	m_sender->send(Device::notificationAddress + "/shutdown");
+	m_sender->send(DeviceManager::notificationAddress + "/shutdown");
 }
 
 void App::print() {
@@ -253,7 +253,7 @@ void App::print() {
 	    << "listening address: " << "/" << PACKAGE << std::endl
 	    << "sending ip:      " << sendingIp << std::endl
 	    << "sending port:    " << sendingPort << std::endl
-	    << "notification address: " << Device::notificationAddress << std::endl
+	    << "notification address: " << DeviceManager::notificationAddress << std::endl
 	    << "device address:       " << Device::deviceAddress << std::endl
 	    << "query address:        " << DeviceManager::queryAddress << std::endl
 	    << "print events?:   " << (Device::printEvents ? "true" : "false") << std::endl
@@ -323,7 +323,7 @@ bool App::loadXMLFile(const std::string &path) {
 					LOG_WARN << "invalid notification address: " << address << std::endl;
 				}
 				else {
-					Device::notificationAddress = address;
+					DeviceManager::notificationAddress = address;
 				}
 			}
 			if(child->Attribute("device")) {

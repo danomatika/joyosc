@@ -26,6 +26,7 @@
 #include "Joystick.h"
 #include "GameController.h"
 
+std::string DeviceManager::notificationAddress = "/" PACKAGE "/notifications";
 std::string DeviceManager::queryAddress = "/" PACKAGE "/query";
 
 using namespace tinyxml2;
@@ -109,7 +110,7 @@ bool DeviceManager::open(int sdlIndex) {
 				controller->subscribe(m_receiver);
 				if(sendDeviceEvents) {
 					std::string address = controller->getAddress().substr(1); // drop leading /
-					Device::sender->send(Device::notificationAddress + "/open",
+					Device::sender->send(DeviceManager::notificationAddress + "/open",
 						"sis", "controller", index.index, address.c_str());
 				}
 				return true;
@@ -138,7 +139,7 @@ bool DeviceManager::open(int sdlIndex) {
 				joystick->subscribe(m_receiver);
 				if(sendDeviceEvents) {
 					std::string address = joystick->getAddress().substr(1); // drop leading /
-					Device::sender->send(Device::notificationAddress + "/open",
+					Device::sender->send(DeviceManager::notificationAddress + "/open",
 						"sis", "joystick", index.index, address.c_str());
 				}
 				return true;
@@ -156,12 +157,12 @@ bool DeviceManager::close(SDL_JoystickID instanceID) {
 			std::string address = device->getAddress().substr(1); // drop leading /
 			switch(device->getType()) {
 				case GAMECONTROLLER:
-					Device::sender->send(Device::notificationAddress + "/close",
+					Device::sender->send(DeviceManager::notificationAddress + "/close",
 						"sis", "controller", ((GameController *)device)->getIndex(),
 						address.c_str());
 					break;
 				default: // JOYSTICK, should never be UNKNOWN
-					Device::sender->send(Device::notificationAddress + "/close",
+					Device::sender->send(DeviceManager::notificationAddress + "/close",
 						"sis", "joystick", ((Joystick *)device)->getIndex(),
 						address.c_str());
 					break;

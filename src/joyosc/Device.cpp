@@ -24,7 +24,6 @@
 
 #include "../shared.h"
 
-std::string Device::notificationAddress = "/" PACKAGE "/notifications";
 std::string Device::deviceAddress = "/" PACKAGE "/devices";
 const std::string Device::receiveAddress = "/" PACKAGE "/devices";
 bool Device::printEvents = false;
