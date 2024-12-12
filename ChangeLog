@@ -1,3 +1,54 @@
+2024-12-** Dan Wilcox <danomatika@gmail.com>
+
+	1.0.0
+
+	* fixed remap and ignore range checks
+	* fixed device settings overwrite not generating a warning
+
+	* added device rumble support
+	* added controller sensor and touchpad support (Albert Graef)
+	* added controller LED color support
+	* added optional normalization for axes and sensor values
+	* added options
+	  -s/--sensors: enable sending controller sensor events
+	  -r/--rate: sensor rate limit
+	  -n/--normalize: normalize axes and sensors
+	  --norm-axes: normalize axes
+	  --norm-sensors: normalize sensors
+	  -v: verbose printing (was previously always on)
+	  -vv: increase verbosity to debug level
+    * XML
+	  - added <controller> and <joystick> GUID (Globally Unique ID) device
+	    matching and exclusions
+	  - added controller <color> tag to set led rgb color (if supported)
+	  - added extended controller remap for unmapped joystic events,
+	    ie. button pressure values
+	  - added <controller> and <joystick> address # pattern which is replaced by
+	    index for use with multiple controllers of the same name or GUID
+	  - added <address> tag to set base send addresses (was previously
+	    undocumented <osc> tag)
+	  - added <config> attributes for triggers, sensors, etc options
+	* OSC
+	  - added control messages for rumble, LED color, sensors, triggers, and
+	    normalization
+	  - added query messages to query connected device capabilities
+	* Pure Data
+	  - added accel smoothing example, added norm axis value conversion example
+	  - added subpatch and abstractions for axis range conversion
+	  - updated axis range references to note -32768 min value
+	  - added info about joystick hat values-> directions
+
+	* XML: now check if device addresses are valid
+	* XML: no longer print warnings for unknown tags
+	* OSC: open and close notifications now send device address
+	* improved print and error message output and formatting
+	* refactored and modernized codebase
+	* Pure Data: patch modernization
+
+	* printing now disabled by default, use -v to enable
+	* removed -s option for setting sleep
+	* XML: no longer print warnings for unknown tags
+
 2024-11-09 Dan Wilcox <danomatika@gmail.com>
 
 	0.7.0
