@@ -17,7 +17,8 @@ jobs:
       run: |
         git submodule init
         git submodule update
-        sudo apt-get install libsdl2-dev liblo-dev libtinyxml2-dev
+        sudo apt update
+        sudo apt install libsdl2-dev liblo-dev libtinyxml2-dev
     - name: autogen
       run: ./autogen.sh
     - name: configure
