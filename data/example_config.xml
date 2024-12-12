@@ -21,7 +21,8 @@
 
 	     query: base osc sending address for queries
 	-->
-	<address notification="/joyosc/notifications" device="/joyosc/devices" query="/joyosc/query"/>
+	<address notification="/joyosc/notifications" device="/joyosc/devices"
+	         query="/joyosc/query"/>
 
 	<!-- app configuration
 
@@ -99,8 +100,8 @@
 
 			     triggers: some controllers report variable triggers as axes
 			              and joyosc treats them as binary buttons by default,
-			               disable this per controller by setting triggers to true
-			               (default: false)
+			               disable this per controller by setting triggers to
+			               true (default: false)
 			-->
 			<axes deadZone="4000" triggers="false" normalize="false"/>
 
@@ -128,9 +129,10 @@
 			
 			     types: button, axis
 
-			     SDL game controller button names: a, b, x, y, start, back, guide,
-			     leftshoudler, lefttrigger, rightshoulder, righttrigger, leftstick,
-			     rightstick, dpup, dpdown, dpleft, dpright (dp = digital pad)
+			     SDL game controller button names: a, b, x, y, start, back,
+			     guide, leftshoudler, lefttrigger, rightshoulder, righttrigger,
+			     leftstick, rightstick, dpup, dpdown, dpleft, dpright
+			     (dp = digital pad), misc1
 
 			     SDL game controller axis names: leftx, lefty, rightx, righty
 			-->
@@ -245,8 +247,8 @@
 
 	<!-- mappings: custom SDL game controller mappings to add at runtime
 
-	     useful if you want to remap buttons/axes or you have a device which does
-	     not have a game controller mapping and only detects as a joystick
+	     useful if you want to remap buttons/axes or you have a device which
+	     does not have a game controller mapping and only detects as a joystick
 
 	     use lsjs -m to print the default SDL mappings for the currently plugged
 	     in devices, if there is no mapping for a device, you'll need to provide
