@@ -54,6 +54,7 @@ bool App::parseCommandLine(int argc, char **argv) {
 		EVENTS,
 		JSONLY,
 		WINDOW,
+		WINSIZE,
 		SLEEP,
 		TRIGGER,
 		SENSORS,
@@ -92,8 +93,11 @@ bool App::parseCommandLine(int argc, char **argv) {
 		{JSONLY, 0, "j", "joysticks-only", Options::Arg::None,
 			"  -j, --joysticks-only \tdisable game controller support, joystick interface only"
 		},
-		{WINDOW, 0, "w", "window", Options::Arg::None,
+		{WINDOW, 0, "w", "window", Options::Arg::Optional,
 			"  -w, --window \topen window, helps on some platforms if device events are not being found, ex. MFi controllers on macOS"
+		},
+		{WINSIZE, 0, "", "window-size", Options::Arg::NonEmpty,
+			"  --window-size \tset window size on open (default: 160x120)"
 		},
 		{SLEEP, 0, "", "sleep", Options::Arg::Integer,
 			"  --sleep \tsleep time in usecs (default: 10000)"
@@ -158,19 +162,42 @@ bool App::parseCommandLine(int argc, char **argv) {
 	if(options.isSet(EVENTS))     {Device::printEvents = true;}
 	if(options.isSet(JSONLY))     {m_deviceManager.joysticksOnly = true;}
 	if(options.isSet(WINDOW))     {openWindow = true;}
-	if(options.isSet(SLEEP))      {sleepUS = options.getUInt(SLEEP);}
-	if(options.isSet(TRIGGER))    {GameController::triggersAsAxes = true;}
-	if(options.isSet(SENSORS))    {GameController::enableSensors = true;}
+	if(options.isSet(WINSIZE)) {
+		bool valid = false;
+		std::string size = options.getString(WINSIZE);
+		std::size_t found = size.find_last_of("x");
+		if(found == std::string::npos) {
+			found = size.find_last_of("X"); // try uppercase too
+		}
+		if(found != std::string::npos) {
+			int w = 0, h = 0;
+			try {
+				w = std::stoi(size.substr(0, found));
+				h = std::stoi(size.substr(found + 1));
+				if(w > 0 && h > 0) {
+					windowSize.width = w;
+					windowSize.height = h;
+					valid = true;
+				}
+			}
+			catch(...) {}
+		}
+		if(!valid) {
+			LOG_WARN << "ignoring invalid size: " << size << std::endl;
+		}
+	}
+	if(options.isSet(SLEEP))   {sleepUS = options.getUInt(SLEEP);}
+	if(options.isSet(TRIGGER)) {GameController::triggersAsAxes = true;}
+	if(options.isSet(SENSORS)) {GameController::enableSensors = true;}
 	if(options.isSet(RATE) && options.getInt(RATE) > 0) {
 		GameController::sensorRateMS = 1000 / options.getUInt(RATE); // hz -> ms
 	}
-	if(options.isSet(NORMAXES))    {Device::normalizeAxes = true;}
-	if(options.isSet(NORMSENSORS)) {GameController::normalizeSensors = true;}
 	if(options.isSet(NORM)) {
 		Device::normalizeAxes = true;
 		GameController::normalizeSensors = true;
 	}
-
+	if(options.isSet(NORMAXES))    {Device::normalizeAxes = true;}
+	if(options.isSet(NORMSENSORS)) {GameController::normalizeSensors = true;}
 	return true;
 }
 		
@@ -357,6 +384,18 @@ bool App::loadXMLFile(const std::string &path) {
 			unsigned int rate = 0;
 			if(child->QueryUnsignedAttribute("sensorRate", &rate) == XML_SUCCESS && rate > 0) {
 				GameController::sensorRateMS = 1000 / rate; // hz -> ms
+			}
+		}
+		else if((std::string)child->Name() == "window") {
+			unsigned int w = 0, h = 0;
+			child->QueryBoolAttribute("enable", &openWindow);
+			if(child->QueryUnsignedAttribute("width", &w) == XML_SUCCESS && w > 0) {
+				windowSize.width = w;
+				LOG_DEBUG << "<window> width " << w << std::endl;
+			}
+			if(child->QueryUnsignedAttribute("height", &h) == XML_SUCCESS && h > 0) {
+				windowSize.height = h;
+				LOG_DEBUG << "<window> height " << h << std::endl;
 			}
 		}
 		else if((std::string)child->Name() == "devices") {

@@ -18,7 +18,8 @@ joyosc_SOURCES = main.cpp Common.h Common.cpp ../shared.h App.h App.cpp \
                  GameControllerRemapping.h GameControllerRemapping.cpp
 
 # include paths
-AM_CXXFLAGS = $(SDL_CFLAGS) $(LO_CFLAGS) $(TINYXML2_CFLAGS) $(HELPERS_INCLUDE)
+AM_CXXFLAGS = $(SDL_CFLAGS) $(LO_CFLAGS) $(TINYXML2_CFLAGS) $(HELPERS_INCLUDE) \
+              -DRESOURCE_PATH="\"$(docdir)\""
 
 # libs to link
 AM_LDFLAGS = $(SDL_LIBS) $(LO_LIBS) $(TINYXML2_LIBS)

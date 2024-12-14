@@ -62,6 +62,16 @@
 	        sleepUS="20000" triggersAsAxes="false" normalizeAxes="false"
 	        enableSensors="false" normalizeSensors="false" sensorRate="0"/>
 
+	<!-- window configuration, only used if window is opened
+
+	     enable: open window, alt to <config openWindow>
+
+	     width: width in pixels (default: 240)
+
+	     height: height in pixels (default: 240)
+	-->
+	<window enable="false" width="240" height="240"/>
+
 	<!-- device types to for mapping names to OSC send addresses and event
 	     customization, use lsjs to get the names and guids of the devices
 	     currently plugged in

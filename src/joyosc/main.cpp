@@ -51,12 +51,26 @@ int main(int argc, char **argv) {
 	// open optional window?
 	SDL_Window *window = nullptr;
 	if(app.openWindow) {
-		window = SDL_CreateWindow(PACKAGE, 50, 100, 160, 120, 0);
+		window = SDL_CreateWindow(PACKAGE, 50, 100,
+			app.windowSize.width, app.windowSize.height, SDL_WINDOW_RESIZABLE);
 		if(window == nullptr) {
 			LOG_ERROR << "could not create window: " << SDL_GetError() << std::endl;
 			SDL_Quit();
 			return EXIT_FAILURE;
 		}
+		// try loading icon
+		SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
+		SDL_Surface *image = SDL_LoadBMP("icon.bmp");
+		if(!image) {image = SDL_LoadBMP("../../data/icon.bmp");}
+		if(!image) {image = SDL_LoadBMP(RESOURCE_PATH "/icon.bmp");}
+		if(renderer && image) {
+			SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, image);
+			SDL_RenderCopy(renderer, texture, NULL, NULL);
+			SDL_RenderPresent(renderer);
+			SDL_DestroyTexture(texture);
+		}
+		if(image) {SDL_FreeSurface(image);}
+		if(renderer) {SDL_DestroyRenderer(renderer);}
 	}
 
 	// run the application

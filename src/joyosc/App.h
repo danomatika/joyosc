@@ -54,6 +54,10 @@ class App {
 		unsigned int sendingPort = 8880; ///< port to send to
 
 		bool openWindow = false; ///< open window? helps to receive events on some platforms
+		struct {
+			int width = 240;
+			int height = 240;
+		} windowSize; ///< window size on open
 		unsigned int sleepUS = 10000; ///< how long to sleep in the run loop
 
 	protected:
