@@ -262,6 +262,15 @@ void App::run() {
 		while(SDL_PollEvent(&event)) {
 			if(!m_deviceManager.handleEvent(&event)) {
 				switch(event.type) {
+					case SDL_WINDOWEVENT: // only if window opened
+						if(event.window.event == SDL_WINDOWEVENT_EXPOSED) {
+							LOG << "window exposed" << std::endl;
+							SDL_Window *window = SDL_GetWindowFromID(event.window.windowID);
+							if(window) {
+								updateWindow(window);
+							}
+						}
+						break;
 					case SDL_QUIT:
 						m_run = false;
 						break;
@@ -280,6 +289,24 @@ void App::run() {
 	m_deviceManager.closeAll();
 
 	m_sender->send(DeviceManager::notificationAddress + "/shutdown");
+}
+
+// try loading icon
+void App::updateWindow(SDL_Window *window) {
+	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
+	SDL_Surface *image = SDL_LoadBMP("icon.bmp");
+	if(!image) {image = SDL_LoadBMP("../../data/icon.bmp");}
+	if(!image) {image = SDL_LoadBMP(RESOURCE_PATH "/icon.bmp");}
+	if(renderer && image) {
+		SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, image);
+		if(texture) {
+			SDL_RenderCopy(renderer, texture, NULL, NULL);
+			SDL_RenderPresent(renderer);
+			SDL_DestroyTexture(texture);
+		}
+	}
+	if(image) {SDL_FreeSurface(image);}
+	if(renderer) {SDL_DestroyRenderer(renderer);}
 }
 
 void App::print() {

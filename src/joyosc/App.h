@@ -42,6 +42,9 @@ class App {
 		/// stop the main loop
 		inline void stop() {m_run = false;}
 
+		/// update window with app icon background
+		void updateWindow(SDL_Window *window);
+
 		/// print the current config values
 		void print();
 

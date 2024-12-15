@@ -58,19 +58,7 @@ int main(int argc, char **argv) {
 			SDL_Quit();
 			return EXIT_FAILURE;
 		}
-		// try loading icon
-		SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
-		SDL_Surface *image = SDL_LoadBMP("icon.bmp");
-		if(!image) {image = SDL_LoadBMP("../../data/icon.bmp");}
-		if(!image) {image = SDL_LoadBMP(RESOURCE_PATH "/icon.bmp");}
-		if(renderer && image) {
-			SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, image);
-			SDL_RenderCopy(renderer, texture, NULL, NULL);
-			SDL_RenderPresent(renderer);
-			SDL_DestroyTexture(texture);
-		}
-		if(image) {SDL_FreeSurface(image);}
-		if(renderer) {SDL_DestroyRenderer(renderer);}
+		app.updateWindow(window);
 	}
 
 	// run the application
