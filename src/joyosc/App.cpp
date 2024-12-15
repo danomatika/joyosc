@@ -62,6 +62,7 @@ bool App::parseCommandLine(int argc, char **argv) {
 		NORM,
 		NORMAXES,
 		NORMSENSORS,
+		START,
 		VERBOSE
 	};
 
@@ -119,6 +120,9 @@ bool App::parseCommandLine(int argc, char **argv) {
 		},
 		{NORMSENSORS, 0, "", "norm-sensors", Options::Arg::None,
 			"  --norm-sensors \tnormalize sensor values"
+		},
+		{START, 0, "", "start", Options::Arg::Integer,
+			"  --start \tdefault address start index, ie. /gc# (default: 0)"
 		},
 		{VERBOSE, 0, "v", "verbose", Options::Arg::None,
 			"  -v, --verbose \tverbose printing, call twice for debug printing -vv"
@@ -198,6 +202,10 @@ bool App::parseCommandLine(int argc, char **argv) {
 	}
 	if(options.isSet(NORMAXES))    {Device::normalizeAxes = true;}
 	if(options.isSet(NORMSENSORS)) {GameController::normalizeSensors = true;}
+	if(options.isSet(START) && options.getInt(START) > 0) {
+		m_deviceManager.startIndex = options.getUInt(START);
+	}
+
 	return true;
 }
 		
@@ -296,6 +304,7 @@ void App::print() {
 		LOG << "sensor rate:     unlimited" << std::endl;
 	}
 	LOG << "normalize sensors?: " << (GameController::normalizeSensors ? "true" : "false") << std::endl;
+	LOG << "start index: " << m_deviceManager.startIndex << std::endl;
 	m_deviceManager.printKnownDevices();
 	m_deviceManager.printExclusions();
 }
@@ -385,6 +394,7 @@ bool App::loadXMLFile(const std::string &path) {
 			if(child->QueryUnsignedAttribute("sensorRate", &rate) == XML_SUCCESS && rate > 0) {
 				GameController::sensorRateMS = 1000 / rate; // hz -> ms
 			}
+			child->QueryUnsignedAttribute("startIndex", &m_deviceManager.startIndex);
 		}
 		else if((std::string)child->Name() == "window") {
 			unsigned int w = 0, h = 0;

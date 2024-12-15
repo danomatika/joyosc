@@ -343,7 +343,7 @@ std::string DeviceManager::addressForIndex(DeviceType type, int index) {
 		case JOYSTICK:       stream << "/js";  break;
 		default:             stream << "/dev"; break;
 	}
-	stream << index;
+	stream << index + startIndex;
 	return stream.str();
 }
 

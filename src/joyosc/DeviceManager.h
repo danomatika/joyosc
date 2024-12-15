@@ -100,6 +100,9 @@ class DeviceManager {
 		/// send device open/close events?
 		bool sendDeviceEvents = false;
 
+		/// default address start index
+		unsigned int startIndex = 0;
+
 	/// \section shared settings
 
 		/// base OSC sending address for notifications

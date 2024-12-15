@@ -57,10 +57,13 @@
 	                       * gyro rad/s -> rotation
 
 	     sensorRate: sensor rate limit in hz, 0 is unlimited
+
+	     startIndex: default device index start index, ex. /gc# (default: 0)
 	 -->
 	<config printEvents="false" joysticksOnly="false" openWindow="false"
 	        sleepUS="20000" triggersAsAxes="false" normalizeAxes="false"
-	        enableSensors="false" normalizeSensors="false" sensorRate="0"/>
+	        enableSensors="false" normalizeSensors="false" sensorRate="0"
+	        startIndex="0"/>
 
 	<!-- window configuration, only used if window is opened
 
