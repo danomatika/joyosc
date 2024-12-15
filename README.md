@@ -204,6 +204,7 @@ Options:
   -j, --joysticks-only disable game controller support, joystick interface only
   -w, --window         open window, helps on some platforms if device events are
                        not being found, ex. MFi controllers on macOS
+  --window-size        set window size on open (default: 240x240)
   --sleep              sleep time in usecs (default: 10000)
   -t, --triggers       report trigger buttons as axis values
   -s, --sensors        enable controller sensor events (accelerometer, gyro)
@@ -211,6 +212,7 @@ Options:
   -n, --normalize      normalize axis and sensor values
   --norm-axes          normalize axis values
   --norm-sensors       normalize sensor values
+  --start              default address start index, ie. /gc# (default: 0)
   -v, --verbose        verbose printing, call twice for debug printing -vv
 
 Arguments:
