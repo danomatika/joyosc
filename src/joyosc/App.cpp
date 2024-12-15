@@ -98,7 +98,7 @@ bool App::parseCommandLine(int argc, char **argv) {
 			"  -w, --window \topen window, helps on some platforms if device events are not being found, ex. MFi controllers on macOS"
 		},
 		{WINSIZE, 0, "", "window-size", Options::Arg::NonEmpty,
-			"  --window-size \tset window size on open (default: 160x120)"
+			"  --window-size \tset window size on open (default: 240x240)"
 		},
 		{SLEEP, 0, "", "sleep", Options::Arg::Integer,
 			"  --sleep \tsleep time in usecs (default: 10000)"
