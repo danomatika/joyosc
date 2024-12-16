@@ -264,7 +264,6 @@ void App::run() {
 				switch(event.type) {
 					case SDL_WINDOWEVENT: // only if window opened
 						if(event.window.event == SDL_WINDOWEVENT_EXPOSED) {
-							LOG << "window exposed" << std::endl;
 							SDL_Window *window = SDL_GetWindowFromID(event.window.windowID);
 							if(window) {
 								updateWindow(window);
