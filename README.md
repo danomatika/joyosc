@@ -1,7 +1,7 @@
 joyosc
 ======
 
-![joyosc icon](data/icon/icon_small.jpg)
+![joyosc icon](data/icon/joyosc_icon_small.jpg)
 
 joystick & game controller hid device event to Open Sound Control daemon and associated tools
 

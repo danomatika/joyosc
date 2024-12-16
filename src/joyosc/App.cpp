@@ -293,9 +293,9 @@ void App::run() {
 // try loading icon
 void App::updateWindow(SDL_Window *window) {
 	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
-	SDL_Surface *image = SDL_LoadBMP("icon.bmp");
-	if(!image) {image = SDL_LoadBMP("../../data/icon.bmp");}
-	if(!image) {image = SDL_LoadBMP(RESOURCE_PATH "/icon.bmp");}
+	SDL_Surface *image = SDL_LoadBMP("joyosc.bmp");
+	if(!image) {image = SDL_LoadBMP("../../data/joyosc.bmp");}
+	if(!image) {image = SDL_LoadBMP(RESOURCE_PATH "/joyosc.bmp");}
 	if(renderer && image) {
 		SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, image);
 		if(texture) {
