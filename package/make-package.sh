@@ -92,6 +92,7 @@ mkdir -p $targetdir
 cp $build/$prefix/bin/* $libs $targetdir
 cp -r $build/$prefix/share/doc/joyosc $targetdir/doc
 cp $targetdir/doc/icon.bmp $targetdir
+cp $scriptdir/app/README.md $targetdir
 
 # copy the app icon
 cp -r $scriptdir/app/png $targetdir
