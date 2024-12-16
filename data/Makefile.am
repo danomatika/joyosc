@@ -3,7 +3,8 @@
 thisdir = $(srcdir)
 
 # include files
-dist_datafiles_DATA = example_config.xml icon.bmp
+dist_datafiles_DATA = example_config.xml \
+                      joyosc.bmp joyosc.icns joyosc.ico joyosc.png
 datafilesdir = $(docdir)
 
 # include pd files
