@@ -49,13 +49,14 @@ arch=$(uname -m)
 # canonical OS/platform name
 if [ "$os" == "Darwin" ]; then
     os="macos"
-elif [ "$os" == "msys" ]; then
+elif [ "$os" == "Msys" ]; then
     os="mingw"
 elif [ "$os" == "GNU/Linux" ]; then
     os="linux"
 fi
 
 # platform-specific configuration
+prefix=/usr/local
 if [ "$os" == "macos" ]; then
     echo "building macOS package"
     if [ "$arch" == "arm64" ]; then
@@ -63,11 +64,12 @@ if [ "$os" == "macos" ]; then
     else
 	libdir=/usr/local/homebrew/opt
     fi
-    libs=$libdir/sdl2/lib/libSDL2-2.0.0.dylib $libdir/liblo/lib/liblo.7.dylib $libdir/tinyxml2/lib/libtinyxml2.10.dylib
+    libs="$libdir/sdl2/lib/libSDL2-2.0.0.dylib $libdir/liblo/lib/liblo.7.dylib $libdir/tinyxml2/lib/libtinyxml2.10.dylib"
 elif [ "$os" == "mingw" ]; then
     echo "building Windows (mingw) package"
+    prefix=/mingw64
     libdir=/mingw64/bin
-    libs=$libdir/SDL2.dll $libdir/libgcc_s_seh-1.dll $libdir/liblo-7.dll $libdir/libstdc++-6.dll $libdir/libtinyxml2.dll $libdir/libwinpthread-1.dll
+    libs="$libdir/SDL2.dll $libdir/libgcc_s_seh-1.dll $libdir/liblo-7.dll $libdir/libstdc++-6.dll $libdir/libtinyxml2.dll $libdir/libwinpthread-1.dll"
 elif [ "$os" == "linux" ]; then
     echo "building Linux package"
     # don't package any libraries
@@ -87,8 +89,8 @@ make -C $srcdir install DESTDIR=$cwd/$build >/dev/null
 
 # populate the package contents
 mkdir -p $targetdir
-cp $build/usr/local/bin/* $libs $targetdir
-cp -r $build/usr/local/share/doc/joyosc $targetdir/doc
+cp $build/$prefix/bin/* $libs $targetdir
+cp -r $build/$prefix/share/doc/joyosc $targetdir/doc
 cp $targetdir/doc/icon.bmp $targetdir
 
 # copy the app icon
