@@ -113,8 +113,8 @@ if [ "$os" == "macos" ]; then
 # fix up the lib dependenciess
 
 for lib in $libs; do
-    install_name_tool -change $lib @executable_path/$(basename $lib) $app/$app/lsjs
-    install_name_tool -change $lib @executable_path/$(basename $lib) $app/$app/joyosc
+    install_name_tool -change $lib @executable_path/$(basename $lib) $app/$app/bin/lsjs
+    install_name_tool -change $lib @executable_path/$(basename $lib) $app/$app/bin/joyosc
 done
 
 # self-sign
