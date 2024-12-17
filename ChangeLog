@@ -9,12 +9,15 @@
 	* added controller sensor and touchpad support (Albert Graef)
 	* added controller LED color support
 	* added optional normalization for axes and sensor values
+	* added app icon & window background
 	* added options
 	  -s/--sensors: enable sending controller sensor events
 	  -r/--rate: sensor rate limit
 	  -n/--normalize: normalize axes and sensors
 	  --norm-axes: normalize axes
 	  --norm-sensors: normalize sensors
+	  --window-size: set window size WxH
+	  --start: set default device address start index
 	  -v: verbose printing (was previously always on)
 	  -vv: increase verbosity to debug level
     * XML
@@ -28,6 +31,7 @@
 	  - added <address> tag to set base send addresses (was previously
 	    undocumented <osc> tag)
 	  - added <config> attributes for triggers, sensors, etc options
+	  - added config <window> attributes for window-specific configuration
 	* OSC
 	  - added control messages for rumble, LED color, sensors, triggers, and
 	    normalization
