@@ -1,7 +1,7 @@
 [Desktop Entry]
 Comment[en_US]=
 Comment=
-Exec=bash -c "cd `dirname %k` && ./joyosc -w"
+Exec=bash -c "cd `dirname %k`/bin && ./joyosc -w"
 GenericName[en_US]=
 GenericName=
 Icon=gamepad.png

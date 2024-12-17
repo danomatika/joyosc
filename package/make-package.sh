@@ -35,9 +35,12 @@ srcdir="$(cd $scriptdir/..; pwd)"
 cwd=$(pwd)
 build=build
 
+echo scriptdir: $scriptdir
+echo srcdir: $srcdir
+
 # You can pass the joyosc version as the first script argument. By default, it
 # is extracted from the configure.ac file.
-version=$(grep AC_INIT configure.ac | sed 's/AC_INIT.*\[\([0-9.]*\)\].*/\1/')
+version=$(grep AC_INIT $srcdir/configure.ac | sed 's/AC_INIT.*\[\([0-9.]*\)\].*/\1/')
 
 # Usually you shouldn't have to edit anything below this line.
 
@@ -88,17 +91,16 @@ rm -rf $build
 make -C $srcdir install DESTDIR=$cwd/$build >/dev/null
 
 # populate the package contents
-mkdir -p $targetdir
-cp $build/$prefix/bin/* $libs $targetdir
+mkdir -p $targetdir/bin
+cp $build/$prefix/bin/* $libs $targetdir/bin
 cp -r $build/$prefix/share/doc/joyosc $targetdir/doc
-cp $targetdir/doc/icon.bmp $targetdir
+cp $targetdir/doc/joyosc.bmp $targetdir/bin
 cp $scriptdir/app/README.md $targetdir
 
 # copy the app icon
-cp -r $scriptdir/app/png $targetdir
 if [ "$os" == "macos" ]; then
     cp -r $scriptdir/app/Joyosc.app $targetdir
-    fileicon set $targetdir/Joyosc.app $targetdir/png/gamepad.png
+    fileicon set $targetdir/Joyosc.app $targetdir/doc/joyosc.icns
 elif [ "$os" == "mingw" ]; then
     cp $scriptdir/app/joyosc.lnk $targetdir
 elif [ "$os" == "linux" ]; then
