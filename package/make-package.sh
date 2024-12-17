@@ -35,9 +35,6 @@ srcdir="$(cd $scriptdir/..; pwd)"
 cwd=$(pwd)
 build=build
 
-echo scriptdir: $scriptdir
-echo srcdir: $srcdir
-
 # You can pass the joyosc version as the first script argument. By default, it
 # is extracted from the configure.ac file.
 version=$(grep AC_INIT $srcdir/configure.ac | sed 's/AC_INIT.*\[\([0-9.]*\)\].*/\1/')
