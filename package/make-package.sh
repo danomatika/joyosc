@@ -26,7 +26,7 @@
 # package manager of your distribution. A .desktop file is included in the
 # package which can be used to launch the program. However, you may have to
 # adjust the desktop file depending on where you install the package, and copy
-# the png/gamepad.png icon file to some location searched by the desktop
+# the joyosc.png icon file to some location searched by the desktop
 # environment that you use.
 
 # stop on error
