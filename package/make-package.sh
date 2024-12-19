@@ -30,10 +30,15 @@
 # the png/gamepad.png icon file to some location searched by the desktop
 # environment that you use.
 
+# stop on error
+set -e
+
 scriptdir=$(dirname $0)
 srcdir="$(cd $scriptdir/..; pwd)"
 cwd=$(pwd)
 build=build
+signatureid="-"
+keep=false
 
 # You can pass the joyosc version as the first script argument. By default, it
 # is extracted from the configure.ac file.
@@ -41,7 +46,55 @@ version=$(grep AC_INIT $srcdir/configure.ac | sed 's/AC_INIT.*\[\([0-9.]*\)\].*/
 
 # Usually you shouldn't have to edit anything below this line.
 
-if [ -n "$1" ]; then version="$1"; fi
+#-------------------------------------------------------------------------------
+
+##### parse
+
+# parse options
+while [ "$1" != "" ] ; do
+    case $1 in
+        --sign)
+            shift 1
+            if [ $# = 0 ] ; then
+                echo "--sign option requires a macOS developer SIGNATURE_ID"
+                exit 1
+            fi
+            signatureid="$1"
+            ;;
+        --keep)
+            keep=true
+            ;;
+        -h|--help)
+ cat <<EOF
+Usage: make-package.sh [OPTIONS] [VERSION]
+
+  creates a distributable platform-specific joyosc package
+
+Options:
+  -h,--help           display this help message
+  --sign SIGNATURE_ID macOS developer id for signing the Joyosc.app bundle,
+                      the default is "-" for ad-hoc signing
+  --keep              keep build directory, do not delete after creating package
+
+Arguments:
+
+  VERSION             optional version string, configure version used if not set
+
+EOF
+            exit 0
+            ;;
+        *)
+            break ;;
+    esac
+    shift 1
+done
+
+# parse arguments
+if [ "$1" != "" ] ; then
+    version="$1"
+fi
+
+##### main
 
 os=$(uname -o)
 arch=$(uname -m)
@@ -59,12 +112,12 @@ fi
 prefix=/usr/local
 if [ "$os" == "macos" ]; then
     echo "building macOS package"
-    if [ "$arch" == "arm64" ]; then
-	libdir=/opt/homebrew/opt
+    libdir=$(brew --prefix)
+    if [ -f "$libdir/sdl2/lib" ]; then # check lib location
+        libs="$libdir/sdl2/lib/libSDL2-2.0.0.dylib $libdir/liblo/lib/liblo.7.dylib $libdir/tinyxml2/lib/libtinyxml2.10.dylib"
     else
-	libdir=/usr/local/homebrew/opt
+        libs="$libdir/lib/libSDL2-2.0.0.dylib $libdir/lib/liblo.7.dylib $libdir/lib/libtinyxml2.10.dylib"
     fi
-    libs="$libdir/sdl2/lib/libSDL2-2.0.0.dylib $libdir/liblo/lib/liblo.7.dylib $libdir/tinyxml2/lib/libtinyxml2.10.dylib"
 elif [ "$os" == "mingw" ]; then
     echo "building Windows (mingw) package"
     prefix=/mingw64
@@ -79,9 +132,10 @@ else
     exit 1
 fi
 
-app=joyosc
-pkgname=$app-$version-$os-$arch
-targetdir=$build/$app/$app
+name=joyosc
+app=$name-$version
+pkgname=$name-$version-$os-$arch
+targetdir=$build/$name/$app
 
 # install to staging area
 rm -rf $build
@@ -96,8 +150,23 @@ cp $scriptdir/app/README.md $targetdir
 
 # copy the app icon
 if [ "$os" == "macos" ]; then
-    cp -r $scriptdir/app/Joyosc.app $targetdir
-    fileicon set $targetdir/Joyosc.app $targetdir/doc/joyosc.icns
+    # ...and build runner .app bundle
+
+    PLIST_BUDDY=/usr/libexec/PlistBuddy
+    appbundle=$targetdir/Joyosc.app
+    plist=$targetdir/Joyosc.app/Contents/Info.plist
+
+    mkdir -p $targetdir/Joyosc.app/Contents/MacOS $appbundle/Contents/Resources
+    cp $scriptdir/app/mac/Info.plist $appbundle/Contents
+    cp $scriptdir/app/mac/Joyosc $appbundle/Contents/MacOS
+    cp $targetdir/doc/joyosc.icns $appbundle/Contents/Resources
+
+    # set version identifiers & contextual strings in Info.plist
+    $PLIST_BUDDY -c "Set:CFBundleVersion \"$version\"" $plist
+    $PLIST_BUDDY -c "Set:CFBundleShortVersionString \"$version\"" $plist
+    # remove deprecated key as this will display in Finder instead of version
+    $PLIST_BUDDY -c "Delete:CFBundleGetInfoString" $plist
+
 elif [ "$os" == "mingw" ]; then
     cp $scriptdir/app/joyosc.lnk $targetdir
 elif [ "$os" == "linux" ]; then
@@ -110,22 +179,19 @@ cd $build
 
 if [ "$os" == "macos" ]; then
 
-# fix up the lib dependenciess
-
+# fix up the lib dependencies
 for lib in $libs; do
-    install_name_tool -change $lib @executable_path/$(basename $lib) $app/$app/bin/lsjs
-    install_name_tool -change $lib @executable_path/$(basename $lib) $app/$app/bin/joyosc
+    install_name_tool -change $lib @executable_path/$(basename $lib) $name/$app/bin/lsjs
+    install_name_tool -change $lib @executable_path/$(basename $lib) $name/$app/bin/joyosc
 done
 
-# self-sign
-codesign --deep --sign "-" $app/$app
-
-# TODO: add the icon to the app bundle, not sure how to do this from the
-# command line
+# self-sign app
+codesign --deep --sign "$signatureid" $name/$app/Joyosc.app
 
 # create dmg
 rm -f $app.dmg
-hdiutil create -volname $app -srcfolder $app $app.dmg
+hdiutil create -volname $app -srcfolder $name $app.dmg
+codesign --deep --sign "$signatureid" $app.dmg
 
 # zip
 zip $pkgname.zip $app.dmg
@@ -146,8 +212,7 @@ cd $cwd
 rm -f $scriptdir/$pkgname.zip
 mv $build/$pkgname.zip $scriptdir
 
-# remove the staging directory
-rm -rf $build
-
-# done
-exit 0
+# remove the staging directory?
+if ! $keep ; then
+    rm -rf $build
+fi

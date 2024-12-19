@@ -2,6 +2,11 @@
 src/joyosc/joyosc
 src/lsjs/lsjs
 
+# packaging
+package/build
+package/*.zip
+package/*.dmg
+
 # autotools files
 autom4te.cache
 INSTALL
