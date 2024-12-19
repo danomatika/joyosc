@@ -1,9 +1,8 @@
 #! /bin/bash
 
 # Prerequisites: Anything that you need to build joyosc on the host platform +
-# the install_name_tool, codesign, and hdiutil utilities on macOS (these
-# should be included in your Xcode installation) + the fileicon utility
-# (available in Homebrew).
+# the PlistBuddy, install_name_tool, codesign, and hdiutil utilities on macOS
+# (these should be included in your Command Line Tools or Xcode installation).
 
 # The script can be called from anywhere as long as the proper (relative or
 # absolute) path to the script is included. (Usually you'll invoke it from the
