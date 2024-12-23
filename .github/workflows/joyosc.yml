@@ -12,23 +12,25 @@ jobs:
     name: Ubuntu
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: dependencies
-      run: |
-        git submodule init
-        git submodule update
-        sudo apt update
-        sudo apt install libsdl2-dev liblo-dev libtinyxml2-dev
-    - name: autogen
-      run: ./autogen.sh
-    - name: configure
-      run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+      - uses: actions/checkout@v4
+      - name: dependencies
+        run: |
+          git submodule init
+          git submodule update
+          sudo apt update
+          sudo apt install libsdl2-dev liblo-dev libtinyxml2-dev
+      - name: autogen
+        run: ./autogen.sh
+      - name: configure
+        run: ./configure
+      - name: make
+        run: make
+      - name: make check
+        run: make check
+      - name: make distcheck
+        run: make distcheck
+      - name: make-package.sh
+        run: ./package/make-package.sh
 
   build-msys2:
     name: Windows MSYS2
@@ -63,3 +65,5 @@ jobs:
         run: make check
       - name: make distcheck
         run: make distcheck
+      - name: make-package.sh
+        run: ./package/make-package.sh
