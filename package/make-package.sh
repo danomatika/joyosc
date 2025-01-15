@@ -38,6 +38,7 @@ cwd=$(pwd)
 build=build
 signatureid="-"
 keep=false
+vername=false
 
 # You can pass the joyosc version as the first script argument. By default, it
 # is extracted from the configure.ac file.
@@ -63,6 +64,9 @@ while [ "$1" != "" ] ; do
         --keep)
             keep=true
             ;;
+        --vername)
+            vername=true
+            ;;
         -h|--help)
  cat <<EOF
 Usage: make-package.sh [OPTIONS] [VERSION]
@@ -74,6 +78,8 @@ Options:
   --sign SIGNATURE_ID macOS developer id for signing the Joyosc.app bundle,
                       the default is "-" for ad-hoc signing
   --keep              keep build directory, do not delete after creating package
+  --vername           use version when naming app dir, ie. joyosc-1.2.3
+                      *note* will break Windows .lnk
 
 Arguments:
 
@@ -132,7 +138,11 @@ else
 fi
 
 name=joyosc
-app=$name-$version
+if $vername ; then
+    app=$name-$version
+else
+    app=$name
+fi
 pkgname=$name-$version-$os-$arch
 targetdir=$build/$name/$app
 
