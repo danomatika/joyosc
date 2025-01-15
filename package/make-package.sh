@@ -68,7 +68,7 @@ while [ "$1" != "" ] ; do
             vername=true
             ;;
         -h|--help)
- cat <<EOF
+cat <<EOF
 Usage: make-package.sh [OPTIONS] [VERSION]
 
   creates a distributable platform-specific joyosc package
@@ -188,31 +188,27 @@ cd $build
 
 if [ "$os" == "macos" ]; then
 
-# fix up the lib dependencies
-for lib in $libs; do
-    install_name_tool -change $lib @executable_path/$(basename $lib) $name/$app/bin/lsjs
-    install_name_tool -change $lib @executable_path/$(basename $lib) $name/$app/bin/joyosc
-done
+    # fix up the lib dependencies
+    for lib in $libs; do
+        install_name_tool -change $lib @executable_path/$(basename $lib) $name/$app/bin/lsjs
+        install_name_tool -change $lib @executable_path/$(basename $lib) $name/$app/bin/joyosc
+    done
 
-# self-sign app
-codesign --deep --sign "$signatureid" $name/$app/Joyosc.app
+    # self-sign app
+    codesign --deep --sign "$signatureid" $name/$app/Joyosc.app
 
-# create dmg
-rm -f $app.dmg
-hdiutil create -volname $app -srcfolder $name $app.dmg
-codesign --deep --sign "$signatureid" $app.dmg
+    # create dmg
+    rm -f $app.dmg
+    hdiutil create -volname $app -srcfolder $name $app.dmg
+    codesign --deep --sign "$signatureid" $app.dmg
 
-# zip
-zip $pkgname.zip $app.dmg
+    # zip
+    zip $pkgname.zip $app.dmg
 
-else
-
-# linux/mingw: just zip the package contents
-
-cd $app
-zip -r $pkgname.zip $app
-mv $pkgname.zip ..
-
+else # linux/mingw: just zip the package contents
+    cd $app
+    zip -r $pkgname.zip $app
+    mv $pkgname.zip ..
 fi
 
 cd $cwd
