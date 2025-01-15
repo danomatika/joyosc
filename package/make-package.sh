@@ -177,9 +177,9 @@ if [ "$os" == "macos" ]; then
     $PLIST_BUDDY -c "Delete:CFBundleGetInfoString" $plist
 
 elif [ "$os" == "mingw" ]; then
-    cp $scriptdir/app/joyosc.lnk $targetdir
+    cp $scriptdir/app/win/joyosc.lnk $targetdir
 elif [ "$os" == "linux" ]; then
-    cp $scriptdir/app/joyosc.desktop $targetdir
+    cp $scriptdir/app/linux/joyosc.desktop $targetdir
 fi
 
 # zip it up
