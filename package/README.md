@@ -29,11 +29,12 @@ Options:
   --sign SIGNATURE_ID macOS developer id for signing the Joyosc.app bundle,
                       the default is "-" for ad-hoc signing
   --keep              keep build directory, do not delete after creating package
+  --vername           use version when naming app dir, ie. joyosc-1.2.3
+                      *note* will break Windows .lnk
 
 Arguments:
 
   VERSION             optional version string, configure version used if not set
-
 ~~~
 
 For more details, see the header in `make-package.sh`.
