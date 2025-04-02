@@ -1,4 +1,4 @@
-2025-02-04 Dan Wilcox <danomatika@gmail.com>
+2025-04-03 Dan Wilcox <danomatika@gmail.com>
 
 	1.0.0
 
@@ -43,6 +43,7 @@
 	  - added info about joystick hat values-> directions
 	* added make-package.sh script to create simple build packages macOS,
 	  Windows (msys/mingw), & Linux (experimental) (Albert Graef)
+	* added Github ci actions for Ubuntu and Windows (Msys)
 
 	* XML: now check if device addresses are valid
 	* XML: no longer print warnings for unknown tags
