@@ -39,6 +39,8 @@ build=build
 signatureid="-"
 keep=false
 vername=false
+prefix=
+verbose=true
 
 # You can pass the joyosc version as the first script argument. By default, it
 # is extracted from the configure.ac file.
@@ -67,6 +69,14 @@ while [ "$1" != "" ] ; do
         --vername)
             vername=true
             ;;
+        --prefix)
+            shift 1
+            if [ $# = 0 ] ; then
+                echo "--prefix option requires an argument"
+                exit 1
+            fi
+            prefix="$1"
+            ;;
         -h|--help)
 cat <<EOF
 Usage: make-package.sh [OPTIONS] [VERSION]
@@ -80,6 +90,7 @@ Options:
   --keep              keep build directory, do not delete after creating package
   --vername           use version when naming app dir, ie. joyosc-1.2.3
                       *note* will break Windows .lnk
+  --prefix            set environment prefix
 
 Arguments:
 
@@ -114,9 +125,11 @@ elif [ "$os" == "GNU/Linux" ]; then
 fi
 
 # platform-specific configuration
-prefix=/usr/local
 if [ "$os" == "macos" ]; then
     echo "building macOS package"
+    if [ "$prefix" = "" ] ; then
+        prefix=/usr/local
+    fi
     libdir=$(brew --prefix)
     if [ -f "$libdir/sdl2/lib" ]; then # check lib location
         libs="$libdir/sdl2/lib/libSDL2-2.0.0.dylib $libdir/liblo/lib/liblo.7.dylib $libdir/tinyxml2/lib/libtinyxml2.10.dylib"
@@ -125,11 +138,24 @@ if [ "$os" == "macos" ]; then
     fi
 elif [ "$os" == "mingw" ]; then
     echo "building Windows (mingw) package"
-    prefix=/mingw64
-    libdir=/mingw64/bin
+    if [ "$prefix" == "" ] ; then
+        if [ -d "/mingw64" ] ; then
+            # default mingw
+            prefix=/mingw64
+        else
+            # some other env ie. ucrt64, try grabbing from $PATH
+            # if this doesn't work, use --prefix
+            prefix=${PATH%%:*}
+        fi
+    fi
+    echo "environment $prefix"
+    libdir=$prefix/bin
     libs="$libdir/SDL2.dll $libdir/libgcc_s_seh-1.dll $libdir/liblo-7.dll $libdir/libstdc++-6.dll $libdir/libtinyxml2.dll $libdir/libwinpthread-1.dll"
 elif [ "$os" == "linux" ]; then
     echo "building Linux package"
+    if [ "$prefix" == "" ] ; then
+        prefix=/usr/local
+    fi
     # don't package any libraries
     libs=
 else
@@ -148,7 +174,7 @@ targetdir=$build/$name/$app
 
 # install to staging area
 rm -rf $build
-make -C $srcdir install DESTDIR=$cwd/$build >/dev/null
+make -C $srcdir install DESTDIR=$cwd/$build
 
 # populate the package contents
 mkdir -p $targetdir/bin

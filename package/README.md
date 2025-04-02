@@ -31,6 +31,7 @@ Options:
   --keep              keep build directory, do not delete after creating package
   --vername           use version when naming app dir, ie. joyosc-1.2.3
                       *note* will break Windows .lnk
+  --prefix            set environment prefix
 
 Arguments:
 

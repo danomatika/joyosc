@@ -46,7 +46,7 @@ jobs:
         with:
           msystem: UCRT64
           update: true
-          install: git mingw-w64-ucrt-x86_64-clang
+          install: git zip mingw-w64-ucrt-x86_64-clang
 
       # the rest is for joyosc
       - name: dependencies
@@ -66,4 +66,4 @@ jobs:
       - name: make distcheck
         run: make distcheck
       - name: make-package.sh
-        run: ./package/make-package.sh
+        run: ./package/make-package.sh --prefix /ucrt64
