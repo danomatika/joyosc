@@ -560,6 +560,12 @@ A small library of Pure Data abstractions is provided in the `data/pd` folder fo
 KNOWN ISSUES
 ------------
 
+### macOS Game Controller Button Opens Launchpad
+
+Newer versions of macOS 14.5+ map the Home or "logo" button to automatically open the Launchpad app selector. This behavior can be disabled in Systems Settings:
+
+Game Controllers -> Controller Shortcuts -> uncheck Press Home button to open Launchpad
+
 ### macOS "MFi" Controllers Not Detected On Start
 
 As of spring 2024, game controllers designed to work with iOS, ie. Apple "MFi-certified", are supported by SDL2 on newer versions of macOS circa 10.15+, however they are often not detected if connected *before* starting joyosc. In order for controllers to be recognized, open joyosc or lsjs with an optional window using the `-w/--window` flag in order the OS to deliver events:
