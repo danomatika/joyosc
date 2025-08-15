@@ -322,10 +322,10 @@ See the [Pure Data](https://puredata.info) patches installed to the system doc f
 
 joyosc streams device event information in the following OSC address format:
 
-    /joyosc/devices/DEVICE_NAME/INPUT_TYPE ID VALUE
+    /joyosc/devices/NAME/INPUT ID VALUE
 
-* _DEVICE_NAME_ is the mapped name to the device as specified in the config file, otherwise it is "gc#" or "js#" with # being the current device id
-* _INPUT_TYPE_ can be `button`, `axis`, `ball`, or `hat` for joysticks and `button`, `axis`, `touchpad`, or `sensor` for game controllers
+* _NAME_ is the mapped name to the device as specified in the config file, otherwise it is "gc#" or "js#" with # being the current device id
+* _INPUT_ can be `button`, `axis`, `ball`, or `hat` for joysticks and `button`, `axis`, `touchpad`, or `sensor` for game controllers
 * _ID_ is the joystick id number or game controller name string for the control (aka joystick button 1, axis 2, etc / game controller button x, axis lefty, sensor gyro, etc); these are likely different between joystick devices but largely the same between game controllers
 * _VALUE_ is the current value of the control:
   * button state: 1 or 0 for pressed & released
@@ -363,22 +363,22 @@ joyosc also sends status notification messages:
 ~~~
 /joyosc/notifications/startup
 /joyosc/notifications/ready
-/joyosc/notifications/open TYPE INDEX DEV
-/joyosc/notifications/close TYPE INDEX DEV
+/joyosc/notifications/open TYPE INDEX NAME
+/joyosc/notifications/close TYPE INDEX NAME
 /joyosc/notifications/shutdown
 ~~~
 
 `TYPE` is either "joystick" or "controller"  
 `INDEX` is the assigned index based on order of connection, indices are reused when available  
-`DEV` is the device address name, ie. `gc0`, `js1`, etc
+`NAME` is the device address name, ie. `gc0`, `js1`, etc
 
 #### Device Queries
 
 In response to a query control message (see below), joyosc will send connected device info messages:
 ~~~
 /joyosc/query/count numDevs
-/joysoc/query/device controller INDEX DEV buttons axes touchpads sensors rumble led
-/joyosc/query/device joystick INDEX DEV buttons axes balls hats rumble
+/joysoc/query/device controller INDEX NAME buttons axes touchpads sensors rumble led
+/joyosc/query/device joystick INDEX NAME buttons axes balls hats rumble
 ~~~ 
 
 Device count: number of currently connected *and* active devices
@@ -408,22 +408,22 @@ joyosc also listens for OSC control messages on a specified listening port (defa
 The current messages are:
 ~~~
 /joyosc/quit
-/joyosc/devices/DEV/color devAddr r g b
-/joyosc/devices/DEV/rumble devAddr strength duration
-/joyosc/devices/DEV/normalize devAddr enable
-/joyosc/devices/DEV/axes/triggers devAddr enable
-/joyosc/devices/DEV/axes/normalize devAddr enable
-/joyosc/devices/DEV/sensors devAddr enable
-/joyosc/devices/DEV/sensors/normalize devAddr enable
-/joyosc/devices/DEV/sensors/rate devAddr hz
+/joyosc/devices/NAME/color r g b
+/joyosc/devices/NAME/rumble strength duration
+/joyosc/devices/NAME/normalize enable
+/joyosc/devices/NAME/axes/triggers enable
+/joyosc/devices/NAME/axes/normalize enable
+/joyosc/devices/NAME/sensors devAddr enable
+/joyosc/devices/NAME/sensors/normalize enable
+/joyosc/devices/NAME/sensors/rate hz
 /joyosc/query/count
 /joyosc/query
 /joyosc/query INDEX
-/joyosc/query DEV
+/joyosc/query NAME
 ~~~
 
 `INDEX` is the assigned index based on order of connection, indices are reused when available  
-`DEV` is the device address name, ie. `gc0`, `js1`, etc
+`NAME` is the device address name, ie. `gc0`, `js1`, etc
 
 ##### Quit joyosc
 
@@ -485,10 +485,10 @@ To query all active devices:
 /joyosc/query
 ~~~
 
-To query a single device by address, ie. "gc0", or index:
+To query a single device by device address name, ie. "gc0", or assigned index:
 ~~~
-/joyosc/query devAddr
-/joyosc/query devID
+/joyosc/query NAME
+/joyosc/query INDEX
 ~~~
 
 ---
