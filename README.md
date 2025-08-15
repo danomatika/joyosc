@@ -413,7 +413,7 @@ The current messages are:
 /joyosc/devices/NAME/normalize enable
 /joyosc/devices/NAME/axes/triggers enable
 /joyosc/devices/NAME/axes/normalize enable
-/joyosc/devices/NAME/sensors devAddr enable
+/joyosc/devices/NAME/sensors enable
 /joyosc/devices/NAME/sensors/normalize enable
 /joyosc/devices/NAME/sensors/rate hz
 /joyosc/query/count
