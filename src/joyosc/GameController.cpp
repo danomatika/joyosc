@@ -246,7 +246,7 @@ bool GameController::handleEvent(SDL_Event *event) {
 					y /= SDL_STANDARD_GRAVITY;
 					z /= SDL_STANDARD_GRAVITY;
 				}
-				else if(isSensorGyro(type)) { // rad/2 -> rotation
+				else if(isSensorGyro(type)) { // rad/s -> rotation
 					x /= M_2_PI;
 					y /= M_2_PI;
 					z /= M_2_PI;
