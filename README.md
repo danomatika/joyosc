@@ -19,8 +19,7 @@ The joyosc package contains the following parts:
 
 This group of tools allows any OSC capable program to receive joystick & game controller event data aka button presses, axis movements, etc. Specific joysticks & game controllers can be mapped by name or Globally Unique ID to specific OSC send addresses and button, axis, etc ids can be remapped or ignored.
 
-These tools were developed for the robotcowboy project, a wearable computer
-music system using [Pure Data](https://puredata.info) in GNU/Linux, macOS, and [iOS](https://danomatika.com/code/pdparty). See <https://robotcowboy.com> and the initial version, then named "rc-unitd" in _[robotcowboy: A One Man Band Musical Cyborg](https://danomatika.com/publications/robotcowboy_thesis_07.pdf)_ Master’s thesis, Chalmers University of Technology 2007.
+These tools were developed for the robotcowboy project, a wearable computer music system using [Pure Data](https://puredata.info) in GNU/Linux, macOS, and [iOS](https://danomatika.com/code/pdparty). See <https://robotcowboy.com> and the initial version, then named "rc-unitd" in _[robotcowboy: A One Man Band Musical Cyborg](https://danomatika.com/publications/robotcowboy_thesis_07.pdf)_ Master’s thesis, Chalmers University of Technology 2007.
 
 QUICK START
 -----------
@@ -209,9 +208,7 @@ Options:
   -t, --triggers       report trigger buttons as axis values
   -s, --sensors        enable controller sensor events (accelerometer, gyro)
   -r, --rate           sensor rate limit in hz (default: 0)
-  -n, --normalize      normalize axis and sensor values
-  --norm-axes          normalize axis values
-  --norm-sensors       normalize sensor values
+  -n, --normalize      normalize axis values
   --start              default address start index, ie. /gc# (default: 0)
   -v, --verbose        verbose printing, call twice for debug printing -vv
 
@@ -336,6 +333,7 @@ joyosc streams device event information in the following OSC address format:
     - pressure is normalized 0 to 1 (0 no press, 1 "full" press))
   * sensor: x, y, z
     - floating point values in m/s^2 (accelerometer) or radians/s (gyro)
+    - orientation: user holding controller, viewer's perspective -> "backwards"
     - see the [SDL docs](https://wiki.libsdl.org/SDL2/SDL_SensorType#remarks) for details
   * hat: binary bitmask representing the hat buttons:
     - cardinal directions: 0 center, 1 up, 2 right, 4 down, 8 left
@@ -410,11 +408,9 @@ The current messages are:
 /joyosc/quit
 /joyosc/devices/NAME/color r g b
 /joyosc/devices/NAME/rumble strength duration
-/joyosc/devices/NAME/normalize enable
 /joyosc/devices/NAME/axes/triggers enable
 /joyosc/devices/NAME/axes/normalize enable
 /joyosc/devices/NAME/sensors enable
-/joyosc/devices/NAME/sensors/normalize enable
 /joyosc/devices/NAME/sensors/rate hz
 /joyosc/query/count
 /joyosc/query
@@ -457,12 +453,11 @@ Axis and sensor settings can be configured over OSC:
 * axis normalization
 * triggers as axes
 * enable/disable sensors
-* sensor normalization
 * sensor rate in hz
 
-For example, to normalize both axes and sensors:
+For example, to normalize axes:
 ~~~
-/joyosc/devices/gc0/normalize 1
+/joyosc/devices/gc0/axes/normalize 1
 ~~~
 
 To enable sensors and set the rate to 60 hz:

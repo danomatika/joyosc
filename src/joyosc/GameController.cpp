@@ -31,13 +31,11 @@
 
 bool GameController::triggersAsAxes = false;
 bool GameController::enableSensors = false;
-bool GameController::normalizeSensors = false;
 unsigned int GameController::sensorRateMS = 0;
 
 GameController::GameController(std::string address) : Device(address) {
 	m_triggersAsAxes = GameController::triggersAsAxes;
 	m_enableSensors = GameController::enableSensors;
-	m_normalizeSensors = GameController::normalizeSensors;
 	m_sensorRateMS = GameController::sensorRateMS;
 }
 
@@ -101,7 +99,6 @@ bool GameController::open(DeviceIndex index, DeviceSettings *settings) {
 		GameControllerSettings *gcs = (GameControllerSettings *)settings->data;
 		m_triggersAsAxes = gcs->triggersAsAxes;
 		m_enableSensors = gcs->enableSensors;
-		m_normalizeSensors = gcs->normalizeSensors;
 		m_sensorRateMS = gcs->sensorRateMS;
 		m_extendedMappings = (m_remapping ? m_remapping->hasExtended() : false);
 
@@ -240,18 +237,6 @@ bool GameController::handleEvent(SDL_Event *event) {
 				}
 				prev->second = event->csensor.timestamp;
 			}
-			if(m_normalizeSensors) {
-				if(isSensorAccel(type)) { // m/s^2 -> standard gs
-					x /= SDL_STANDARD_GRAVITY;
-					y /= SDL_STANDARD_GRAVITY;
-					z /= SDL_STANDARD_GRAVITY;
-				}
-				else if(isSensorGyro(type)) { // rad/s -> rotation
-					x /= M_2_PI;
-					y /= M_2_PI;
-					z /= M_2_PI;
-				}
-			}
 			sender->send(Device::deviceAddress + m_address + "/sensor",
 				"sfff", sensor.c_str(), x, y, z);
 			if(Device::printEvents) {
@@ -317,12 +302,6 @@ void GameController::subscribe(lo::ServerThread *receiver) {
 		setColor(r, g, b);
 		return 0; // handled
 	});
-	receiver->add_method(baseAddress + "/normalize", "i", [this](lo_arg** argv, int argc) {
-		bool b = (bool)argv[0]->i;
-		setNormalizeAxes(b);
-		setNormalizeSensors(b);
-		return 0; // handled
-	});
 	receiver->add_method(baseAddress + "/axes/triggers", "i", [this](lo_arg** argv, int argc) {
 		bool b = (bool)argv[0]->i;
 		setTriggersAsAxes(b);
@@ -344,23 +323,16 @@ void GameController::subscribe(lo::ServerThread *receiver) {
 		setSensorRate(rate);
 		return 0; // handled
 	});
-	receiver->add_method(baseAddress + "/sensors/normalize", "i", [this](lo_arg** argv, int argc) {
-		bool b = (bool)argv[0]->i;
-		setNormalizeSensors(b);
-		return 0; // handled
-	});
 }
 
 void GameController::unsubscribe(lo::ServerThread *receiver) {
 	std::string baseAddress = receiveAddress + m_address;
 	receiver->del_method(baseAddress + "/rumble", "fi");
 	receiver->del_method(baseAddress + "/color", "iii");
-	receiver->del_method(baseAddress + "/normalize", "i");
 	receiver->del_method(baseAddress + "/axes/triggers", "i");
 	receiver->del_method(baseAddress + "/axes/normalize", "i");
 	receiver->del_method(baseAddress + "/sensors", "i");
 	receiver->del_method(baseAddress + "/sensors/rate", "i");
-	receiver->del_method(baseAddress + "/sensors/normalize", "i");
 }
 
 void GameController::rumble(float strength, int duration) {
