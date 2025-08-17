@@ -146,10 +146,6 @@ bool DeviceSettingsMap::readXMLController(XMLElement *e) {
 				LOG_DEBUG << "<controller> " << name << " "
 				          << "enable sensors " << gc->enableSensors << std::endl;
 			}
-			if(child->QueryBoolAttribute("normalize", &gc->normalizeSensors) == XML_SUCCESS) {
-				LOG_DEBUG << "<controller> " << name << " "
-				          << "normalize sensors " << gc->normalizeSensors << std::endl;
-			}
 			unsigned int rate = 0;
 			if(child->QueryUnsignedAttribute("rate", &rate) == XML_SUCCESS && rate > 0) {
 				gc->sensorRateMS = 1000 / rate; // hz -> ms

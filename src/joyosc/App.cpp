@@ -60,8 +60,6 @@ bool App::parseCommandLine(int argc, char **argv) {
 		SENSORS,
 		RATE,
 		NORM,
-		NORMAXES,
-		NORMSENSORS,
 		START,
 		VERBOSE
 	};
@@ -113,13 +111,7 @@ bool App::parseCommandLine(int argc, char **argv) {
 			"  -r, --rate \tsensor rate limit in hz (default: 0)"
 		},
 		{NORM, 0, "n", "normalize", Options::Arg::None,
-			"  -n, --normalize \tnormalize axis and sensor values"
-		},
-		{NORMAXES, 0, "", "norm-axes", Options::Arg::None,
-			"  --norm-axes \tnormalize axis values"
-		},
-		{NORMSENSORS, 0, "", "norm-sensors", Options::Arg::None,
-			"  --norm-sensors \tnormalize sensor values"
+			"  -n, --normalize \tnormalize axis values"
 		},
 		{START, 0, "", "start", Options::Arg::Integer,
 			"  --start \tdefault address start index, ie. /gc# (default: 0)"
@@ -196,12 +188,7 @@ bool App::parseCommandLine(int argc, char **argv) {
 	if(options.isSet(RATE) && options.getInt(RATE) > 0) {
 		GameController::sensorRateMS = 1000 / options.getUInt(RATE); // hz -> ms
 	}
-	if(options.isSet(NORM)) {
-		Device::normalizeAxes = true;
-		GameController::normalizeSensors = true;
-	}
-	if(options.isSet(NORMAXES))    {Device::normalizeAxes = true;}
-	if(options.isSet(NORMSENSORS)) {GameController::normalizeSensors = true;}
+	if(options.isSet(NORM)) {Device::normalizeAxes = true;}
 	if(options.isSet(START) && options.getInt(START) > 0) {
 		m_deviceManager.startIndex = options.getUInt(START);
 	}
@@ -329,7 +316,6 @@ void App::print() {
 	else {
 		LOG << "sensor rate:     unlimited" << std::endl;
 	}
-	LOG << "normalize sensors?: " << (GameController::normalizeSensors ? "true" : "false") << std::endl;
 	LOG << "start index: " << m_deviceManager.startIndex << std::endl;
 	m_deviceManager.printKnownDevices();
 	m_deviceManager.printExclusions();
@@ -415,7 +401,6 @@ bool App::loadXMLFile(const std::string &path) {
 			child->QueryBoolAttribute("triggersAsAxes", &GameController::triggersAsAxes);
 			child->QueryBoolAttribute("normalizeAxes", &Device::normalizeAxes);
 			child->QueryBoolAttribute("enableSensors", &GameController::enableSensors);
-			child->QueryBoolAttribute("normalizeSensors", &GameController::normalizeSensors);
 			unsigned int rate = 0;
 			if(child->QueryUnsignedAttribute("sensorRate", &rate) == XML_SUCCESS && rate > 0) {
 				GameController::sensorRateMS = 1000 / rate; // hz -> ms

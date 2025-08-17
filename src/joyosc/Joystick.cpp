@@ -264,11 +264,6 @@ bool Joystick::handleEvent(SDL_Event *event) {
 
 void Joystick::subscribe(lo::ServerThread *receiver) {
 	std::string baseAddress = receiveAddress + m_address;
-	receiver->add_method(baseAddress + "/normalize", "i", [this](lo_arg** argv, int argc) {
-		bool b = (bool)argv[0]->i;
-		setNormalizeAxes(b);
-		return 0; // handled
-	});
 	receiver->add_method(baseAddress + "/axes/normalize", "i", [this](lo_arg** argv, int argc) {
 		bool b = (bool)argv[0]->i;
 		setNormalizeAxes(b);
@@ -278,7 +273,6 @@ void Joystick::subscribe(lo::ServerThread *receiver) {
 
 void Joystick::unsubscribe(lo::ServerThread *receiver) {
 	std::string baseAddress = receiveAddress + m_address;
-	receiver->del_method(baseAddress + "/normalize", "i");
 	receiver->del_method(baseAddress + "/axes/triggers", "i");
 	receiver->del_method(baseAddress + "/axes/normalize", "i");
 }
