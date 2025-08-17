@@ -52,17 +52,13 @@
 	                    note: this can be overridden per controller with the
 	                    controller <sensors> tag, see below
 
-	     normalizeSensors: normalize sensor values:
-	                       * accel m/s^2 -> standard gs
-	                       * gyro rad/s -> rotation
-
 	     sensorRate: sensor rate limit in hz, 0 is unlimited
 
 	     startIndex: default device index start index, ex. /gc# (default: 0)
 	 -->
 	<config printEvents="false" joysticksOnly="false" openWindow="false"
 	        sleepUS="20000" triggersAsAxes="false" normalizeAxes="false"
-	        enableSensors="false" normalizeSensors="false" sensorRate="0"
+	        enableSensors="false" sensorRate="0"
 	        startIndex="0"/>
 
 	<!-- window configuration, only used if window is opened
@@ -112,7 +108,7 @@
 			               documentation)
 
 			     triggers: some controllers report variable triggers as axes
-			              and joyosc treats them as binary buttons by default,
+			               and joyosc treats them as binary buttons by default,
 			               disable this per controller by setting triggers to
 			               true (default: false)
 			-->
@@ -122,13 +118,9 @@
 
 			     enable: enable sensor events (accelerometer, gyro)
 
-			     normalize: normalize sensor events:
-			                * accel m/s^2 -> standard gs
-			                * gyro rad/s -> rotation
-
 			     rate: sensor rate limit in hz, 0 is unlimited
 			-->
-			<sensors enable="false" normalize="false" rate="0"/>
+			<sensors enable="false" rate="0"/>
 
 			<!-- axisDeadZone: old version of <axes deadZone> -->
 			<!-- <thresholds axisDeadZone="3000"/> -->
