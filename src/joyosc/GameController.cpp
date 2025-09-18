@@ -230,6 +230,9 @@ bool GameController::handleEvent(SDL_Event *event) {
 			float x = event->csensor.data[0];
 			float y = event->csensor.data[1];
 			float z = event->csensor.data[2];
+			if(isnan(x) || isinf(x)) {x = 0;}
+			if(isnan(y) || isinf(y)) {y = 0;}
+			if(isnan(z) || isinf(z)) {z = 0;}
 			auto prev = m_prevSensorTimestamps.find(type);
 			if(prev != m_prevSensorTimestamps.end()) { // limit sensor rate
 				if(event->csensor.timestamp - prev->second < m_sensorRateMS) {
