@@ -136,6 +136,12 @@ class GameController : public Device {
 		/// returns true if sensor type is a gyro
 		static bool isSensorGyro(SDL_SensorType sensor);
 
+		/// clean non-numbers in a sensor value:
+		/// *  nan:  0
+		/// * -inf: -1000
+		/// * +inf:  1000
+		static float cleanSensorValue(float v);
+
 	/// \section shared defaults
 
 		/// report trigger buttons as axis values

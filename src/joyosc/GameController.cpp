@@ -227,12 +227,9 @@ bool GameController::handleEvent(SDL_Event *event) {
 		case SDL_CONTROLLERSENSORUPDATE: {
 			SDL_SensorType type = (SDL_SensorType)event->csensor.sensor;
 			const std::string &sensor = sensorName(type);
-			float x = event->csensor.data[0];
-			float y = event->csensor.data[1];
-			float z = event->csensor.data[2];
-			if(isnan(x) || isinf(x)) {x = 0;}
-			if(isnan(y) || isinf(y)) {y = 0;}
-			if(isnan(z) || isinf(z)) {z = 0;}
+			float x = cleanSensorValue(event->csensor.data[0]);
+			float y = cleanSensorValue(event->csensor.data[1]);
+			float z = cleanSensorValue(event->csensor.data[2]);
 			auto prev = m_prevSensorTimestamps.find(type);
 			if(prev != m_prevSensorTimestamps.end()) { // limit sensor rate
 				if(event->csensor.timestamp - prev->second < m_sensorRateMS) {
@@ -444,6 +441,17 @@ bool GameController::isSensorGyro(SDL_SensorType sensor) {
 			return true;
 		default:
 			return false;
+	}
+}
+
+float GameController::cleanSensorValue(float v) {
+	switch(fpclassify(v)) {
+		case FP_NORMAL:
+			return v;
+		case FP_INFINITE:
+			return (v > FLT_MAX ? 1000 : -1000);
+		default: // FP_NAN, FP_ZERO, FP_SUBNORMAL
+			return 0;
 	}
 }
 
