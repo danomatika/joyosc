@@ -92,7 +92,7 @@ bool App::parseCommandLine(int argc, char **argv) {
 		{JSONLY, 0, "j", "joysticks-only", Options::Arg::None,
 			"  -j, --joysticks-only \tdisable game controller support, joystick interface only"
 		},
-		{WINDOW, 0, "w", "window", Options::Arg::Optional,
+		{WINDOW, 0, "w", "window", Options::Arg::None,
 			"  -w, --window \topen window, helps on some platforms if device events are not being found, ex. MFi controllers on macOS"
 		},
 		{WINSIZE, 0, "", "window-size", Options::Arg::NonEmpty,
