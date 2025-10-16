@@ -555,9 +555,25 @@ A small library of Pure Data abstractions is provided in the `data/pd` folder fo
 KNOWN ISSUES
 ------------
 
+### Nintendo Joycons Appear As Single Device
+
+By default, SDL will combine two connected Joycons (L/R) as a single device. To have them appear as seperate devices, set the `SDL_JOYSTICK_HIDAPI_COMBINE_JOY_CONS` environment variable to 0 before running joyosc:
+
+    SDL_JOYSTICK_HIDAPI_COMBINE_JOY_CONS=0 joyosc
+
+### macOS Controller Rumble, Light, Sensors Not Sending
+
+As of fall 2025, some devices such as PS5 DualSense controllers, rumble motor, LED color, and sensor sending may not work by default when connected over Bluetooth. Try "identifying" the controller in macOS by connecting the device, then open System Settings:
+
+Game Controllers -> click "Identify" under the controller in the list
+
+For a PS5 controller, the device will rumble once. Restart joyosc and the rumble, LED, and sensors should now work. In testing, this has to be done *each time* the controller is newly connected.
+
+_Note: Hopefully this behavior may change with newer versions of SDL and/or macOS._
+
 ### macOS Game Controller Button Opens Launchpad
 
-Newer versions of macOS 14.5+ map the Home or "logo" button to automatically open the Launchpad app selector. This behavior can be disabled in Systems Settings:
+Newer versions of macOS 14.5+ map the Home or "logo" button to automatically open the Launchpad app selector. This behavior can be disabled in System Settings:
 
 Game Controllers -> Controller Shortcuts -> uncheck Press Home button to open Launchpad
 
