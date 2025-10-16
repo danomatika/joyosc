@@ -1,3 +1,24 @@
+2025-10-16 Dan Wilcox <danomatika@gmail.com>
+
+	1.1.0
+
+	* fixed -w,--window swallowing next option value
+	* clean bad sensor values: nan to 0, -inf to -1000, inf to 1000
+
+	* updated readme
+	  - added info about disabling home button opens launchpad behavior on macos
+	  - remove references to control message NAME arguments
+	  - consistent placeholder names in OSC spec ie. NAME, INDEX, etc
+
+	* removed sensor normalization as it wasn't true normalization and this is
+	  best left to receiving environments
+	  - removed --norm-axes & --norm-sensors commandline options
+	  - removed normalizeSensors XML config tag
+	  - removed OSC */normalize & */sensors/normalize receivers
+      - remove sensor normalization from example config and patches
+	  - added note about wrapper patch axis norm types only working if
+	    -n/--normalize is not used
+
 2025-04-03 Dan Wilcox <danomatika@gmail.com>
 
 	1.0.0
