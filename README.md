@@ -561,7 +561,7 @@ By default, SDL will combine two connected Joycons (L/R) as a single device. To 
 
     SDL_JOYSTICK_HIDAPI_COMBINE_JOY_CONS=0 joyosc
 
-### macOS Controller Rumble, Light, Sensors Not Sending
+### macOS Controller Rumble, LED, Sensors Not Sending
 
 As of fall 2025, some devices such as PS5 DualSense controllers, rumble motor, LED color, and sensor sending may not work by default when connected over Bluetooth. Try "identifying" the controller in macOS by connecting the device, then open System Settings:
 
