@@ -6,7 +6,9 @@
 	* clean bad sensor values: nan to 0, -inf to -1000, inf to 1000
 
 	* updated readme
-	  - added info about disabling home button opens launchpad behavior on macos
+	  - added info about nintendo joycons appearing as single device
+	  - added info about rumble, light, and sensors not working on macOS
+	  - added info about disabling home button opens launchpad behavior on macOS
 	  - remove references to control message NAME arguments
 	  - consistent placeholder names in OSC spec ie. NAME, INDEX, etc
 
